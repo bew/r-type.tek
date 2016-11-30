@@ -7,7 +7,7 @@
  *
  */
 
-#include "Document.hh"
+#include "../include/Document.hh"
 
 namespace bson {
     Document::Document() :_nextInputType(bson::Document::KEY) {
