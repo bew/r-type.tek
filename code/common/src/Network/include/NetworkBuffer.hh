@@ -1,7 +1,7 @@
 /**
  * @file NetworkBuffer.hh
  * @author Tookie
- * @brief abstraction of circular buffer
+ * @brief encapsulation of circular buffer
  */
 
 #pragma once

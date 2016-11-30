@@ -1,7 +1,7 @@
 /**
  * @file NetworkBuffer.cpp
  * @author Tookie
- * @brief abstraction of circular buffer implementation
+ * @brief encapsulation of circular buffer implementation
  */
 
 #include <iostream>

@@ -1,7 +1,7 @@
 /**
  * @file SocketException.cpp
  * @author Tookie
- * @brief encapsulation of select system call
+ * @brief class for socket exception
  */
 
 #include "../include/SocketException.hh"
