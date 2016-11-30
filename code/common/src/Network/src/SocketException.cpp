@@ -6,11 +6,9 @@
 
 #include "../include/SocketException.hh"
 
-namespace network
-{
-    SocketException::SocketException(const std::string &error): std::runtime_error(error)
-    {
+namespace network {
 
+    SocketException::SocketException(const std::string &error) : std::runtime_error(error) {
     }
 
 }

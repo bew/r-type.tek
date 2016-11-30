@@ -4,16 +4,14 @@
  * @brief abstraction of circular buffer implementation
  */
 
-
 #include <iostream>
 #include "../include/NetworkBuffer.hh"
 
 namespace network {
 
-    NetworkBuffer::NetworkBuffer() {
+    NetworkBuffer::NetworkBuffer() :
+            _readPosition(0), _writePosition(0) {
         initBuffer();
-        _readPosition = 0;
-        _writePosition = 0;
     }
 
     NetworkBuffer::~NetworkBuffer() {
@@ -36,7 +34,7 @@ namespace network {
             ++_readPosition;
             if (_readPosition == BUFFER_SIZE)
                 _readPosition = 0;
-            i++;
+            ++i;
         }
         if (_buffer[_readPosition] == CR || _buffer[_readPosition] == LF || _buffer[_readPosition] == 0) {
             _buffer[_readPosition] = -1;
@@ -54,7 +52,7 @@ namespace network {
                 size_t beg = _readPosition;
                 while (readPosition != beg) {
                     msg += _buffer[beg];
-                    beg++;
+                    ++beg;
                     if (beg == BUFFER_SIZE)
                         beg = 0;
                 }
@@ -69,9 +67,8 @@ namespace network {
     }
 
     void NetworkBuffer::initBuffer() {
-        for (int i = 0; i < BUFFER_SIZE; i++) {
+        for (int i = 0; i < BUFFER_SIZE; ++i)
             _buffer[i] = -1;
-        }
     }
 
 }

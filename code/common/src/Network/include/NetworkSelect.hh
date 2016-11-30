@@ -14,7 +14,6 @@
 
 #endif
 
-
 /**
  * namespace that contains all network abstraction
  */
