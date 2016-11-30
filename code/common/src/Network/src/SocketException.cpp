@@ -2,7 +2,7 @@
 // Created by Tookie on 12/10/2016.
 //
 
-#include "Network/SocketException.h"
+#include "../include/SocketException.hh"
 
 SocketException::SocketException(const std::string& error) throw():
         _msg(error)
