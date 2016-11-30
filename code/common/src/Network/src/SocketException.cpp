@@ -1,6 +1,9 @@
-//
-// Created by Tookie on 12/10/2016.
-//
+/**
+ * @file SocketException.cpp
+ * @author Tookie
+ * @brief encapsulation of select system call
+ */
+
 
 #include "../include/SocketException.hh"
 

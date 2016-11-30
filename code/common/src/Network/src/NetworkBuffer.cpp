@@ -1,5 +1,5 @@
 /**
- * @file NetworkBuffer.hh
+ * @file NetworkBuffer.cpp
  * @author Tookie
  * @brief abstraction of circular buffer implementation
  */

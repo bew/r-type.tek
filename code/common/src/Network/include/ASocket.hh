@@ -44,7 +44,7 @@ namespace network {
         ASocket(const unsigned short port);
 
         /**
-         * @brief function bind socket
+         * @brief bind socket
          */
         virtual void bind() = 0;
 

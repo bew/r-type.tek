@@ -1,5 +1,5 @@
 /**
- * @file ASocket.hh
+ * @file NetworkSelect.hh
  * @author Tookie
  * @brief encapsulation of select system call
  */

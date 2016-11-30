@@ -1,10 +1,10 @@
-//
-// Created by Tookie on 12/10/2016.
-//
+/**
+ * @file SocketException.hh
+ * @author Tookie
+ * @brief encapsulation of select system call
+ */
 
-#ifndef ABSTRACTIONSOCKET_SOCKETEXCEPTION_H
-#define ABSTRACTIONSOCKET_SOCKETEXCEPTION_H
-
+#pragma once
 
 #include <exception>
 #include <string>
@@ -22,6 +22,3 @@ private:
     std::string _msg;
 
 };
-
-
-#endif //ABSTRACTIONSOCKET_SOCKETEXCEPTION_H
