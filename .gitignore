@@ -1,3 +1,10 @@
+# Project files
+
+/build
+/bin
+/gen
+/lib
+
 
 # Created by https://www.gitignore.io/api/intellij,vim,emacs,c,c++,visualstudiocode,visualstudio,intellij,cmake
 
