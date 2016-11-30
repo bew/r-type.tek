@@ -8,7 +8,7 @@ set(LIB_SOURCE)
 # BSON sources
 #------------------------------------
 
-add(LIB_SOURCE bson/some.cpp)
+add(LIB_SOURCE BSON/src/Document.cpp)
 #add(LIB_SOURCE bson/file.cpp)
 
 add_library(${RT_COMMON_NAME} ${LIB_SOURCE})
