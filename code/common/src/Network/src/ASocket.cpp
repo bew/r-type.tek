@@ -17,7 +17,7 @@ namespace network {
 
     void ASocket::update() {
         struct timeval timer;
-        timer.tv_sec = 5;
+        timer.tv_sec = 1;
         timer.tv_usec = 0;
         _selector.select(&timer);
         if (_selector.isReadable(this)) {
@@ -27,7 +27,8 @@ namespace network {
             std::string msg;
             if ((msg = _writeBuffer.get()) != "") {
                 send(msg);
-                _selector.unmonitor(this, NetworkSelect::WRITE);
+                if (get() == "")
+                    _selector.unmonitor(this, NetworkSelect::WRITE);
             }
         }
     }
@@ -40,7 +41,9 @@ namespace network {
 
     void ASocket::add(const std::string &msg) {
         _writeBuffer.fill(msg);
-        _selector.monitor(this, NetworkSelect::WRITE);
+        if (*(--msg.end()) == CR || *(--msg.end()) == LF) {
+            _selector.monitor(this, NetworkSelect::WRITE);
+        }
     }
 
     Socket_t ASocket::getSocket() const {

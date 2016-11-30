@@ -40,38 +40,50 @@ namespace network {
         NetworkSelect();
 
         /**
-         * @brief test if the readfd is monitored
+         * test if the readfd is monitored
+         *
          * @return true if it's readable else false
+         *
          * @param socket represent the socket that will be tested
          */
         bool isReadable(const ASocket *socket) const;
 
         /**
-         * @brief test if the writefd is monitored
+         * test if the writefd is monitored
+         *
          * @return true if it's readable else false
+         *
          * @params socket represent the socket that will be tested
         */
         bool isWritable(const ASocket *) const;
 
         /**
-         * @brief monitor socket's fd in read or write mode according to the type
+         * monitor socket's fd in read or write mode according to the type
+         *
          * @param socket socket that will be monitor
+         *
          * @param type READ or WRITE
+         *
          * @throw SocketException if socket is invalid
          */
         void monitor(const ASocket *socket, SelectType type);
 
         /**
-         * @brief unmonitor socket's fd in read or write mode according to the type
+         * unmonitor socket's fd in read or write mode according to the type
+         *
          * @param socket socket that will be unmonitor
+         *
          * @param type READ or WRITE
+         *
          * @throw SocketException if socket is invalid
          */
         void unmonitor(const ASocket *socket, SelectType type);
 
         /**
-         * @brief call select system call
+         * call select system call
+         *
          * @param timer struct that will be pass to select
+         *
          * @throw SocketException if socket is invalid
          */
         void select(struct timeval *timer);

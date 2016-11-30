@@ -38,35 +38,37 @@ namespace network {
     public:
 
         /**
-         * @brief Constructor of ASocket
-         * @params port port use to socket connection
+         * Constructor of ASocket
+         * @param port port use to socket connection
          */
         ASocket(const unsigned short port);
 
         /**
-         * @brief bind socket
+         *  bind socket
          */
         virtual void bind() = 0;
 
         /**
-         * @brief test if socket is writable or readable and calls send or recv
+         * test if socket is writable or readable and calls send or recv
          */
         virtual void update();
 
         /**
-         * @brief get message by read buffer
+         * get message by read buffer
+         *
          * @return message or empty string if nothing was read
          */
         virtual std::string get();
 
         /**
-         * @brief add message to the write buffer
+         * add message to the write buffer
+         *
          * @param msg message that will be add to buffer
          */
         virtual void add(const std::string &msg);
 
         /**
-         * @brief close socket
+         * close socket
          */
         virtual void close() = 0;
 
@@ -78,12 +80,13 @@ namespace network {
     protected:
 
         /**
-         * @brief read in socket and add read message to the read buffer
+         * read in socket and add read message to the read buffer
          */
         virtual void recv() = 0;
 
         /**
-         * @brief write message in socket and update position of write buffer
+         * write message in socket and update position of write buffer
+         *
          * @param msg message that will be sent
          */
         virtual void send(std::string &msg) = 0;

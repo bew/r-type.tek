@@ -6,19 +6,25 @@
 
 #pragma once
 
-#include <exception>
-#include <string>
+#include <stdexcept>
 
-class SocketException: public std::exception {
-public:
-    SocketException(const std::string&) throw();
+/**
+ * namespace that contains all network abstraction
+ */
+namespace network {
 
-    virtual const char* what() const throw();
+    /**
+    * Representation of socket exception
+    */
+    class SocketException : public std::runtime_error {
+    public:
 
-    virtual ~SocketException() throw() {}
+        /**
+         * ctor of SocketException
+         *
+         * @param error: message of the exception
+         */
+        SocketException(const std::string &error);
+    };
 
-
-private:
-    std::string _msg;
-
-};
+}
