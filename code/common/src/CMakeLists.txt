@@ -8,8 +8,6 @@ add(LIB_SOURCE Network/src/NetworkBuffer.cpp)
 add(LIB_SOURCE Network/src/NetworkSelect.cpp)
 add(LIB_SOURCE Network/src/SocketException.cpp)
 
-#add(LIB_SOURCE, network/my_file.cpp)
-
 # BSON sources
 #------------------------------------
 
