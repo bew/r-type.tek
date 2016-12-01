@@ -7,6 +7,7 @@ add(LIB_SOURCE Network/src/ASocket.cpp)
 add(LIB_SOURCE Network/src/NetworkBuffer.cpp)
 add(LIB_SOURCE Network/src/NetworkSelect.cpp)
 add(LIB_SOURCE Network/src/SocketException.cpp)
+add(LIB_SOURCE Network/src/ASocketTCP.cpp)
 
 # BSON sources
 #------------------------------------
