@@ -14,8 +14,8 @@
 namespace network {
 
     /**
-    * Representation of socket exception
-    */
+     * Representation of socket exception
+     */
     class SocketException : public std::runtime_error {
     public:
 
