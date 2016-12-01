@@ -20,8 +20,8 @@
 namespace network {
 
     /**
-    * Representation of select system call encapsulation
-    */
+     * Representation of select system call encapsulation
+     */
     class NetworkSelect {
     public:
 
@@ -53,7 +53,7 @@ namespace network {
          * @return true if it's readable else false
          *
          * @params socket represent the socket that will be tested
-        */
+         */
         bool isWritable(const ASocket *) const;
 
         /**
@@ -104,8 +104,8 @@ namespace network {
         fd_set _readfds_result;
 
         /**
-        * represent set of write fd that will be pass to select
-        */
+         * represent set of write fd that will be pass to select
+         */
         fd_set _writefds_result;
     };
 
