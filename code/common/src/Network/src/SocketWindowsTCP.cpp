@@ -54,7 +54,18 @@ namespace network {
     }
 
     void SocketWindowsTCP::connect() {
+        _from.sin_addr.s_addr = inet_addr(SERVER_ADDR);
 
+        int ret = ::WSAConnect(_socket,
+                             reinterpret_cast<SOCKADDR*>(&_from),
+                             sizeof(_from),
+                             nullptr,
+                             nullptr,
+                             nullptr,
+                             nullptr);
+
+        if (ret == SOCKET_ERROR)
+            throw SocketException("Connect failed with error " + WSAGetLastError());
     }
 
     void SocketWindowsTCP::close() {
@@ -83,7 +94,7 @@ namespace network {
         int fromSize = sizeof(_from);
         while (buffer.buf[0] == 0) {
             flag = 0;
-            int ret = ret = WSARecv(_socket, &buffer, 1, &numberOfBytesRecv, &flag, &recvOverlapped, nullptr);
+            int ret = WSARecv(_socket, &buffer, 1, &numberOfBytesRecv, &flag, &recvOverlapped, nullptr);
             if (((ret == SOCKET_ERROR) && (WSA_IO_PENDING != WSAGetLastError()))) {
                 WSACloseEvent(recvOverlapped.hEvent);
                 throw SocketException("recv failed with error: " + WSAGetLastError());
@@ -105,7 +116,6 @@ namespace network {
         }
         WSACloseEvent(recvOverlapped.hEvent);
 
-        std::cout << buffer.buf << "  " << buffer.len << " " << numberOfBytesRecv << std::endl;
         std::string msg(buffer.buf, numberOfBytesRecv);
 
         msg += CR;
