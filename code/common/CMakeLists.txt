@@ -5,9 +5,6 @@ set(LIB_SOURCE)
 set(LIB_DEPENDENCES)
 # Add sources
 
-add_subdirectory(fileSystemWatcher)
-add_subdirectory(generatorUtils)
-
 # Build common library
 include_directories(${RT_COMMON_INCLUDE})
 add_library(${RT_COMMON_NAME} SHARED ${LIB_SOURCE})
