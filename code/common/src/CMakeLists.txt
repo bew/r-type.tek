@@ -9,7 +9,11 @@ add(LIB_SOURCE Network/src/NetworkSelect.cpp)
 add(LIB_SOURCE Network/src/SocketException.cpp)
 add(LIB_SOURCE Network/src/ASocketTCP.cpp)
 add(LIB_SOURCE Network/src/ASocketUDP.cpp)
-add(LIB_SOURCE Network/src/SocketWindowsTCP.cpp)
+
+if (WIN32)
+    add(LIB_SOURCE Network/src/SocketWindowsTCP.cpp)
+    add(LIB_SOURCE Network/src/SocketWindowsUDP.cpp)
+ENDIF (WIN32)
 
 # BSON sources
 #------------------------------------
