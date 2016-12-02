@@ -21,10 +21,12 @@ namespace network {
 
 #include <netinet/in.h>
 #elif defined _WIN32
-#define Socket_t long long
+#define Socket_t SOCKET
 
 
 #endif
+
+#define SERVER_ADDR "127.0.0.1"
 
 /**
  * namespace that contains all network abstraction

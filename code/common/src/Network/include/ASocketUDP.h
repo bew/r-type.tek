@@ -1,8 +1,8 @@
- /**
- * @file ASocketUDP.hh
- * @author Tookie
- * @brief abstraction of UDP socket
- */
+/**
+* @file ASocketUDP.hh
+* @author Tookie
+* @brief abstraction of UDP socket
+*/
 
 #pragma once
 
