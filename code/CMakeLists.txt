@@ -20,8 +20,7 @@ endfunction(add)
 
 # MAIN COMMON LIB
 #------------------------------------
-
-set(RT_COMMON_NAME rt_common)
+set(RT_COMMON_NAMES)
 set(RT_COMMON_INCLUDE)
 add_subdirectory("common")
 
