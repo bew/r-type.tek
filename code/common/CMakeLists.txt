@@ -5,7 +5,7 @@ project("common")
 set(RT_COMMON_NAMES)
 
 # Add librariries
-#add_subdirectory(exemple)
+add_subdirectory(BSON)
 
 # Every sub libs must do more or less this
 #set(LIB_NAME ...)
