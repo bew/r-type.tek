@@ -7,8 +7,8 @@
  *
  */
 
-#include "../include/Document.hh"
-#include "../include/Endianess.hh"
+#include "Document.hh"
+#include "Endianess.hh"
 
 namespace bson {
     Document::Document() :_nextInputType(bson::Document::KEY) {
