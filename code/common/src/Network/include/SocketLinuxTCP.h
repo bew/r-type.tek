@@ -24,7 +24,7 @@ namespace network {
          *
          * @params port port use to socket connection
          */
-        SocketLinuxTCP(const unsigned short port);
+        SocketLinuxTCP(unsigned short port);
 
         /**
          * Destructor of SocketLinuxTCP, call method close
@@ -79,7 +79,7 @@ namespace network {
          *
          *  @throw SocketException if send fail
          */
-        virtual void send(std::string &msg);
+        virtual void send(const std::string &msg);
     };
 
 }

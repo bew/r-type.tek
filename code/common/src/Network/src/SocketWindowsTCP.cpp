@@ -13,7 +13,7 @@
 namespace network
 {
 
-    SocketWindowsTCP::SocketWindowsTCP(unsigned short port) : ASocketTCP(port)
+    SocketWindowsTCP::SocketWindowsTCP(short port) : ASocketTCP(port)
     {
         WSADATA wsd;
 
@@ -135,7 +135,7 @@ namespace network
         _readBuffer.fill(msg);
     }
 
-    void SocketWindowsTCP::send(std::string &msg)
+    void SocketWindowsTCP::send(const std::string &msg)
     {
         WSABUF buffer;
 

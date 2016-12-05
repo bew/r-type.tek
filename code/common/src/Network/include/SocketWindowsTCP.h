@@ -26,7 +26,7 @@ namespace network {
          *
          * @throw SocketException if socket couldn't be created
          */
-        SocketWindowsTCP(const unsigned short port);
+        SocketWindowsTCP(unsigned short port);
 
         /**
          * Destructor of SocketWindowsTCP, call method close
@@ -81,7 +81,7 @@ namespace network {
          *
          *  @throw SocketException if send fail
          */
-        virtual void send(std::string &msg);
+        virtual void send(const std::string &msg);
     };
 
 }

@@ -9,7 +9,7 @@
 namespace network
 {
 
-    ASocket::ASocket(const unsigned short port)
+    ASocket::ASocket(unsigned short port)
             : _port(port)
     {
         _from.sin_family = AF_INET;
@@ -24,7 +24,7 @@ namespace network
         timer.tv_usec = 0;
         _selector.select(&timer);
         if (_selector.isReadable(this))
-        {g
+        {
             recv();
         }
         if (_selector.isWritable(this))

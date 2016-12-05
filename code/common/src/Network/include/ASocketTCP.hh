@@ -23,7 +23,7 @@ namespace network {
          *  Constructor of ASocketTCP
          * @params port port use to socket connection
          */
-        ASocketTCP(const unsigned short);
+        ASocketTCP(unsigned short);
 
         /**
          * encapsulation of listen system call who marks socket as a passive socket

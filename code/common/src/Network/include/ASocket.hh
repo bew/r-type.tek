@@ -7,9 +7,9 @@
 #pragma once
 
 #include <string>
-#include<winsock2.h>
 
-namespace network {
+namespace network
+{
     class ASocket;
 }
 
@@ -20,9 +20,10 @@ namespace network {
 #define Socket_t int
 
 #include <netinet/in.h>
-#elif defined _WIN32
-#define Socket_t SOCKET
 
+#elif defined _WIN32
+#include<winsock2.h>
+#define Socket_t SOCKET
 
 #endif
 
@@ -31,19 +32,21 @@ namespace network {
 /**
  * namespace that contains all network abstraction
  */
-namespace network {
+namespace network
+{
 
     /**
      * Representation of socket abstraction
      */
-    class ASocket {
+    class ASocket
+    {
     public:
 
         /**
          * Constructor of ASocket
          * @param port port use to socket connection
          */
-        ASocket(const unsigned short port);
+        ASocket(unsigned short port);
 
         /**
          *  bind socket
@@ -91,7 +94,7 @@ namespace network {
          *
          * @param msg message that will be sent
          */
-        virtual void send(std::string &msg) = 0;
+        virtual void send(const std::string &msg) = 0;
 
         /**
          * contain the socket

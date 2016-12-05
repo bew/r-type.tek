@@ -24,7 +24,7 @@ namespace network {
          *
          * @params port port use to socket connection
          */
-        SocketWindowsUDP(const unsigned short port);
+        SocketWindowsUDP(unsigned short port);
 
         /**
          * Destructor of SocketWindowsUDP, call method close
@@ -58,7 +58,7 @@ namespace network {
          *
          *  @throw SocketException if send fail
          */
-        virtual void send(std::string &msg);
+        virtual void send(const std::string &msg);
     };
 
 }

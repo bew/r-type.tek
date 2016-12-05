@@ -13,7 +13,7 @@
 namespace network
 {
 
-    SocketWindowsUDP::SocketWindowsUDP(const unsigned short port) : ASocketUDP(port)
+    SocketWindowsUDP::SocketWindowsUDP(unsigned short port) : ASocketUDP(port)
     {
         WSAData wsd;
         if (WSAStartup(MAKEWORD(2, 2), &wsd) != 0)
@@ -99,7 +99,7 @@ namespace network
         _readBuffer.fill(msg);
     }
 
-    void SocketWindowsUDP::send(std::string &msg)
+    void SocketWindowsUDP::send(const std::string &msg)
     {
         WSABUF buffer;
 

@@ -9,7 +9,7 @@
 namespace network
 {
 
-    ASocketUDP::ASocketUDP(const unsigned short port) : ASocket(port)
+    ASocketUDP::ASocketUDP(unsigned short port) : ASocket(port)
     {
 
     }
