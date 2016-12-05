@@ -17,9 +17,7 @@ namespace network
     SocketLinuxTCP::SocketLinuxTCP(unsigned short port) : ASocketTCP(port)
     {
         if ((_socket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1)
-        {
             throw ("Could not create socket: " + std::to_string(errno));
-        }
     }
 
     SocketLinuxTCP::~SocketLinuxTCP()

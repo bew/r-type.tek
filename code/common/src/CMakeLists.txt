@@ -15,6 +15,7 @@ if (WIN32)
     add(LIB_SOURCE Network/src/SocketWindowsUDP.cpp)
 ELSEIF (UNIX)
     add(LIB_SOURCE Network/src/SocketLinuxTCP.cpp)
+    add(LIB_SOURCE Network/src/SocketLinuxUDP.cpp)
 ENDIF (WIN32)
 
 # BSON sources
