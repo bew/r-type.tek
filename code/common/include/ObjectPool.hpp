@@ -67,7 +67,7 @@ public:
 
     ~ObjectPool()
 	{
-	    for (auto &e : _elems)
+	    for (const auto &e : _elems)
 		_factory.remove(e);
 	}
 
