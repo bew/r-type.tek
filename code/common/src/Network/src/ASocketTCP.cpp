@@ -6,9 +6,11 @@
 
 #include "../include/ASocketTCP.hh"
 
-namespace network {
+namespace network
+{
 
-    ASocketTCP::ASocketTCP(const unsigned short port) : ASocket(port) {
+    ASocketTCP::ASocketTCP(const unsigned short port) : ASocket(port)
+    {
 
     }
 

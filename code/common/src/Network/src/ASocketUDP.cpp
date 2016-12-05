@@ -6,9 +6,11 @@
 
 #include "../include/ASocketUDP.h"
 
-namespace network {
+namespace network
+{
 
-    ASocketUDP::ASocketUDP(const unsigned short port) : ASocket(port) {
+    ASocketUDP::ASocketUDP(const unsigned short port) : ASocket(port)
+    {
 
     }
 

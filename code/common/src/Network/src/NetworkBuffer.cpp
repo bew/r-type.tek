@@ -7,19 +7,24 @@
 #include <iostream>
 #include "../include/NetworkBuffer.hh"
 
-namespace network {
+namespace network
+{
 
     NetworkBuffer::NetworkBuffer() :
-            _readPosition(0), _writePosition(0) {
+            _readPosition(0), _writePosition(0)
+    {
         initBuffer();
     }
 
-    NetworkBuffer::~NetworkBuffer() {
+    NetworkBuffer::~NetworkBuffer()
+    {
 
     }
 
-    void NetworkBuffer::fill(const std::string &msg) {
-        for (char c : msg) {
+    void NetworkBuffer::fill(const std::string &msg)
+    {
+        for (char c : msg)
+        {
             _buffer[_writePosition] = c;
             ++_writePosition;
             if (_writePosition == BUFFER_SIZE)
@@ -27,30 +32,37 @@ namespace network {
         }
     }
 
-    void NetworkBuffer::updatePosition(size_t length) {
+    void NetworkBuffer::updatePosition(size_t length)
+    {
         size_t i = 0;
 
-        while (i < length) {
+        while (i < length)
+        {
             ++_readPosition;
             if (_readPosition == BUFFER_SIZE)
                 _readPosition = 0;
             ++i;
         }
-        if (_buffer[_readPosition] == CR || _buffer[_readPosition] == LF || _buffer[_readPosition] == 0) {
+        if (_buffer[_readPosition] == CR || _buffer[_readPosition] == LF || _buffer[_readPosition] == 0)
+        {
             _buffer[_readPosition] = -1;
             updatePosition(1);
         }
     }
 
-    std::string NetworkBuffer::get() {
+    std::string NetworkBuffer::get()
+    {
         int i = 0;
 
         size_t readPosition = _readPosition;
-        while (i < BUFFER_SIZE) {
-            if (_buffer[readPosition] == CR || _buffer[readPosition] == LF) {
+        while (i < BUFFER_SIZE)
+        {
+            if (_buffer[readPosition] == CR || _buffer[readPosition] == LF)
+            {
                 std::string msg;
                 size_t beg = _readPosition;
-                while (readPosition != beg) {
+                while (readPosition != beg)
+                {
                     msg += _buffer[beg];
                     ++beg;
                     if (beg == BUFFER_SIZE)
@@ -66,7 +78,8 @@ namespace network {
         return "";
     }
 
-    void NetworkBuffer::initBuffer() {
+    void NetworkBuffer::initBuffer()
+    {
         for (int i = 0; i < BUFFER_SIZE; ++i)
             _buffer[i] = -1;
     }
