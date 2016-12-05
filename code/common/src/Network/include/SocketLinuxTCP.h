@@ -1,7 +1,7 @@
 /**
- * @file SocketWindowsTCP.hh
+ * @file SocketLinuxTCP.hh
  * @author Tookie
- * @brief TCP socket encapsulation for windows
+ * @brief TCP socket encapsulation for linux
  */
 
 #pragma once
@@ -14,24 +14,22 @@
 namespace network {
 
     /**
-     * Representation of TCP socket for windows
+     * Representation of TCP socket for linux
      */
-    class SocketWindowsTCP : public ASocketTCP {
+    class SocketLinuxTCP : public ASocketTCP {
     public:
 
         /**
-         * Constructor of SocketWindowsTCP
+         * Constructor of SocketLinuxTCP
          *
          * @params port port use to socket connection
-         *
-         * @throw SocketException if socket couldn't be created
          */
-        SocketWindowsTCP(unsigned short port);
+        SocketLinuxTCP(unsigned short port);
 
         /**
-         * Destructor of SocketWindowsTCP, call method close
+         * Destructor of SocketLinuxTCP, call method close
          */
-        ~SocketWindowsTCP();
+        ~SocketLinuxTCP();
 
         /**
          * bind socket

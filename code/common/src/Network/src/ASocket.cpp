@@ -6,26 +6,32 @@
 
 #include "../include/ASocket.hh"
 
-namespace network {
+namespace network
+{
 
-    ASocket::ASocket(const unsigned short port)
-            : _port(port) {
+    ASocket::ASocket(unsigned short port)
+            : _port(port)
+    {
         _from.sin_family = AF_INET;
         _from.sin_addr.s_addr = INADDR_ANY;
         _from.sin_port = htons(_port);
     }
 
-    void ASocket::update() {
+    void ASocket::update()
+    {
         struct timeval timer;
         timer.tv_sec = 1;
         timer.tv_usec = 0;
         _selector.select(&timer);
-        if (_selector.isReadable(this)) {
+        if (_selector.isReadable(this))
+        {
             recv();
         }
-        if (_selector.isWritable(this)) {
+        if (_selector.isWritable(this))
+        {
             std::string msg;
-            if ((msg = _writeBuffer.get()) != "") {
+            if ((msg = _writeBuffer.get()) != "")
+            {
                 send(msg);
                 if (get() == "")
                     _selector.unmonitor(this, NetworkSelect::WRITE);
@@ -33,20 +39,24 @@ namespace network {
         }
     }
 
-    std::string ASocket::get() {
+    std::string ASocket::get()
+    {
         std::string msg = _readBuffer.get();
         _readBuffer.updatePosition(msg.length());
         return msg;
     }
 
-    void ASocket::add(const std::string &msg) {
+    void ASocket::add(const std::string &msg)
+    {
         _writeBuffer.fill(msg);
-        if (*(--msg.end()) == CR || *(--msg.end()) == LF) {
+        if (*(--msg.end()) == CR || *(--msg.end()) == LF)
+        {
             _selector.monitor(this, NetworkSelect::WRITE);
         }
     }
 
-    Socket_t ASocket::getSocket() const {
+    Socket_t ASocket::getSocket() const
+    {
         return _socket;
     }
 

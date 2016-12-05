@@ -22,7 +22,7 @@ namespace network {
          * Constructor of ASocketUDP
          * @param port port use to socket connection
          */
-        ASocketUDP(const unsigned short port);
+        ASocketUDP(unsigned short port);
     };
 
 }
