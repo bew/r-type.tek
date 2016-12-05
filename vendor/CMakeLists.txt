@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 
 # Google test
-add_subdirectory(googletest/googletest)
+add_subdirectory(googletest)
 # !! IMPORTANT !!
 # Each project should have their own folder "test" which is added by the root cmake
 # Inside this folder the cmake should contain at least the following rules :
