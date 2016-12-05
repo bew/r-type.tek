@@ -3,8 +3,9 @@
 #set(RT_GEN_COMMON_NAME gen_helper)
 #add_subdirectory("helpers")
 
-# This automatically add generators
+set(GENERATORS_DIST bin/generators)
 
+# This automatically add generators
 macro(SUBDIRLIST result_name curdir)
     file(GLOB children RELATIVE ${curdir} ${curdir}/*)
     set(dirlist "")

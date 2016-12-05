@@ -45,7 +45,7 @@ public:
    * @return Vector of new entity to add
    * @param Vector of current entity
    */
-  //virtual std::vector<Entity>process(std::vector<Entity> &, EngineStatus &) = 0;
+  virtual std::vector<Entity>process(std::vector<Entity> &, EngineStatus &) = 0;
 };
 
 /**
