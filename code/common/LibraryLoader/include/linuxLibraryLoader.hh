@@ -16,16 +16,23 @@ class LinuxLibraryLoader;
 class LinuxLibraryLoader : public ALibraryLoader {
 public:
   /**
+   * Open the library and load symbols 
+   *
    * @throw LibraryLoaderException
-   * @param libName The name of the mibrary to load
+   * @param libName The name of the library to load
    * @return
    */
   LinuxLibraryLoader(const std::string &);
+  
   /**
    * @return A new instance of the class exported by the library specified in constructor.
    *         Caller is responsible for destruction of said instance.
    */
   IGenerator *newInstance(void) const;
+
+  /**
+   * Close the library
+   */
   ~LinuxLibraryLoader(void);
 private:
   const std::string _libName;

@@ -5,10 +5,6 @@
 #ifndef CONCEPTION_RTYPE_LIB_H
 #define CONCEPTION_RTYPE_LIB_H
 
-/**
- * This header contain everything needed to create a generator
- */
-
 #include <type_traits>
 #include <memory>
 #include <stdexcept>
@@ -17,7 +13,13 @@
 
 #include "ALibraryLoader.hh"
 
+/**
+ * Placeholder class for entity
+ */
 class Entity {};
+/**
+ * Placeholder class for storing game status
+ */
 class EngineStatus {
   /*
     TO UPDATE
@@ -35,6 +37,12 @@ class IGenerator {
 public:
   IGenerator(void) {};
   virtual ~IGenerator(void) {};
+
+  /**
+   * Method to access the name of the generator.
+   *
+   * @return The name of the generator.
+   */
   virtual const std::string &getName(void) const = 0;
   
   /**
@@ -63,10 +71,12 @@ public:
  */
 #define EXPAND_STRING(s) STRING(s)
 
+
 /**
  * The name of the exported symbols
  */
 #define EXPORT_SYMBOL_NAME export_library_factory
+
 /**
  * Usefull for code factorisation issue.
  * See macro EXPORT
@@ -81,7 +91,7 @@ public:
  * Macro for exporting the dynamically loaded class, to add in the library implementation once.
  *
  * Exemple:
- *  class libhello : public IGenerator {};
+ *  class libhello : public IGenerator {...};
  *  EXPORT(libhello);
  *
  *  Target must have a default constructor.

@@ -12,9 +12,17 @@ class IGenerator;
  * Abstract class for all LibraryLoader
  */
 class ALibraryLoader {
-protected:
-  virtual IGenerator *newInstance(void) const = 0;
 public:
+  /**
+   * Construct a instance of the generator on the heap
+   *
+   * @return A new instance of the IGenerator based class exported into the loaded library
+   */
+  virtual IGenerator *newInstance(void) const = 0;
+
+  /**
+   * Virtual dtor
+   */
   virtual ~ALibraryLoader(void) {};
 };
 
@@ -41,7 +49,12 @@ public:
  */
 class LibraryLoaderException : public std::runtime_error {
 public:
-    LibraryLoaderException(const std::string &e) : std::runtime_error(e) {};
+  /**
+   * Construct a LibraryLoader EXception with a message
+   *
+   * @param e The reason taht lead to throwing this exception. It can be accessed through the `what` method
+   */
+  LibraryLoaderException(const std::string &e) : std::runtime_error(e) {};
 };
 
 #include "libraryUtils.hh"
