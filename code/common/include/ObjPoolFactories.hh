@@ -1,6 +1,6 @@
 
 /**
- * @file ObPoolFactories.hh
+ * @file ObjPoolFactories.hh
  * @author Alexis
  * @brief The factories needed for the object pool go there.
  * According to ObjectPool.hpp,

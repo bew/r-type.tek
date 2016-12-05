@@ -69,11 +69,12 @@ namespace ECS {
 	     * Return an element in the pool.
 	     * @param obj The object taken from pool.
 	     */
-	    void	operator<<(T *obj)
+	    void	operator<<(T *&obj)
 		{
 		    if (obj && _offset != 0) {
 			_offset--;
 			_elems[_offset] = obj;
+			obj = nullptr;
 		    }
 		}
 	    

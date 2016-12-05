@@ -1,6 +1,6 @@
 
 /**
- * @file WorldPools.hh
+ * @file AComponent.hh
  * @author Alexis.
  * @brief This abstract class is destinated to manipulate the components.
  *

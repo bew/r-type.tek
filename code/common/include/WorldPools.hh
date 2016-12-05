@@ -7,14 +7,14 @@
  * and simplify the access behind all the pools.
  *
  * Basically, create a pool of the object you need, and the related factory
- * (check ObjectPool.hpp) in ObPoolFactories.hh, then overload the << >>
+ * (check ObjectPool.hpp) in ObjPoolFactories.hh, then overload the << >>
  * operators of the world factory and the type of your object.
  *
  */
 
 #pragma once
 
-#include "ObPoolFactories.hh"
+#include "ObjPoolFactories.hh"
 #include "Entity.hh"
 #include "ObjectPool.hpp"
 
