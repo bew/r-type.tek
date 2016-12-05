@@ -6,6 +6,7 @@ set(RT_COMMON_NAMES)
 
 # Add librariries
 add_subdirectory(BSON)
+add_subdirectory(LibraryLoader)
 
 # Every sub libs must do more or less this
 #set(LIB_NAME ...)
