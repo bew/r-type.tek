@@ -1,21 +1,51 @@
 
-/*
-** Started by Alexis Mongin 2016-11-30
-*/
+/**
+ * @file ISystem.hh
+ * @author Alexis
+ * @brief Interface for the different systems.
+ */
 
-/*
+#pragma once
 
-Interface for the different systems !
+#include "WorldPools.hh"
 
-*/
+/**
+ * Namespace of ECS.
+ */
+namespace ECS {
 
-class ISystem
-{
-    ISystem() = delete;
-    virtual ~ISystem();
+    /**
+     * Declaration of WorldData struct of World.hh.
+     * Here in order to avoid a forward declaration of header include.
+     */
+    struct WorldData;
 
-    ISystem(const ISystem &) = delete;
-    ISystem &operator=(const ISystem &) = delete;
+    /**
+     * Namespace of systems.
+     */
+    namespace System {
 
-    virtual void	update(WorldData &, WorldFactories &) = 0;
-};
+	/**
+	 * Interface for manipulating the systems.
+	 */
+	class ISystem
+	{
+	public:
+	    ISystem() = delete;
+
+	    /**
+	     * virtual destructor.
+	     */
+	    virtual ~ISystem() {}
+
+	    ISystem(const ISystem &) = delete;
+	    ISystem &operator=(const ISystem &) = delete;
+
+	    /**
+	     * Update the world using the system logic.
+	     */
+	    virtual void	update(WorldData &, Pools::WorldPools &) = 0;
+	};
+
+    }
+}

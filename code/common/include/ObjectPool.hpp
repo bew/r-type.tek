@@ -1,95 +1,108 @@
 
-// written by Alexis Mongin. Started 2016-09-10
-
-/*
-
-HASHTAG NO MEMORY LEAKS
-
-Implement a generic object pool, made for not allocating objects you
-  need outside the initialisation of the pool. It is safer for memory
-  management and awesome for real-time programs.
-  It take as template type T the type you want to allocate, and as F a
-  simple factory for building the objects with their defaults arguments.
-  The factory must be a simple fonctor returning an dynamically
- allocated object, which will be freed at the end of the pool's life
- with the factory method remove.
- Each factory must implement this simple interface.
-
- The constructor take the initial number of objects in the pool
- but don't worry, if you run out it will just make more.
-
-Here's what a string factory with the default argument "jej" should look like
-
-class StringFactory
-{
-public:
-    StringFactory() : _arg("jej") {}
-    ~StringFactory() {}
-    
-    std::string *operator() ()
-	{
-	    return new std::string(_arg);
-	}
-    
-    void remove(std::string *str)
-	{
-	    delete str;
-	}
-
-private:
-    const std::string	_arg;
-};
-
-NOTHING should be allocated during the exec loop of the game.
-We got no time for debugging memory leaks.
-If you're working on the ECS, use this!
-
-*/
+/**
+ * @file ObjectPool.hpp
+ * @author Alexis
+ * @brief A generic object pool.
+ */
 
 #pragma once
-
 
 #include <vector>
 #include <iostream>
 
-template<typename T, typename F>
-class ObjectPool
-{
-public:
-    ObjectPool(unsigned nbr)
-	: _elems(nbr),
-	  _offset(0),
-	  _factory(F())
-	{    
-	    for (auto &e : _elems)
-		e = _factory();
-	}
+/**
+ * Namespace of ECS.
+ */
+namespace ECS {
 
-    ~ObjectPool()
-	{
-	    for (const auto &e : _elems)
-		_factory.remove(e);
-	}
+    /**
+     * Namespace of the generic pools used to abstract objects allocation.
+     */
+    namespace Pools {
 
-    void	operator<<(T *obj)
+	/**
+	 *	Implement a generic object pool, made for not allocating objects you
+	 *   need outside the initialisation of the pool. It is safer for memory
+	 *   management and awesome for real-time programs.
+	 *   It take as template type T the type you want to allocate, and as F a
+	 *   simple factory for building the objects with their defaults arguments.
+	 *   The factory must be a simple fonctor returning an dynamically
+	 *  allocated object, which will be freed at the end of the pool's life
+	 *  with the factory method remove.
+	 *  Each factory must implement this simple interface. See ObPoolsFactories.hpp.
+	 *
+	 *  The constructor take the initial number of objects in the pool
+	 *  but don't worry, if you run out it will just make more.
+	 * 
+	 * NOTHING should be allocated during the exec loop of the game.
+	 * We got no time for debugging memory leaks.
+	 * If you're working on the ECS, use this!
+	 * 
+	 */
+	template<typename T, typename F>
+	class ObjectPool
 	{
-	    if (obj && _offset != 0) {
-		_offset--;
-		_elems[_offset] = obj;
-	    }
-	}
+	public:
 
-    void	operator>>(T *&obj)
-	{
-	    if (_offset == _elems.size())
-		_elems.push_back(_factory());
-	    obj = _elems[_offset];
-	    _elems[_offset] = nullptr;
-	    _offset++;
-	}
+	    /**
+	     * Constructor. Allocate the objects.
+	     */
+	    ObjectPool(unsigned nbr)
+		: _elems(nbr),
+		  _offset(0),
+		  _factory(F())
+		{    
+		    for (auto &e : _elems)
+			e = _factory();
+		}
+	    
+	    /**
+	     * Destructor. Delete the objects.
+	     */
+	    ~ObjectPool()
+		{
+		    for (const auto &e : _elems)
+			_factory.remove(e);
+		}
+
+	    /**
+	     * Return an element in the pool.
+	     */
+	    void	operator<<(T *obj)
+		{
+		    if (obj && _offset != 0) {
+			_offset--;
+			_elems[_offset] = obj;
+		    }
+		}
+	    
+	    /**
+	     * Insert an element in the pool.
+	     */
+	    void	operator>>(T *&obj)
+		{
+		    if (_offset == _elems.size())
+			_elems.push_back(_factory());
+		    obj = _elems[_offset];
+		    _elems[_offset] = nullptr;
+		    _offset++;
+		}
   
-private:
-    std::vector<T *>	_elems;
-    unsigned		_offset;
-    F			_factory;
-};
+	private:
+	    /**
+	     * Objects contained in the pool.
+	     */
+	    std::vector<T *>	_elems;
+
+	    /**
+	     * Offset of the last disponible object of the pool.
+	     */
+	    unsigned		_offset;
+
+	    /**
+	     * Factory for generating the objects.
+	     */
+	    F			_factory;
+	};
+    }
+}

@@ -1,41 +1,68 @@
 
-/*
-** Started by Alexis Mongin 2016-11-30
-*/
-
-/*
-
-This abstract class is destinated to manipulate the components.
-
-*/
+/**
+ * @file WorldPools.hh
+ * @author Alexis.
+ * @brief This abstract class is destinated to manipulate the components.
+ *
+ */
 
 #pragma once
 
 #include <map>
 
-class AComponent
-{
-public:
-    AComponent() = delete;
-    virtual ~AComponent();
+/**
+ * Namespace of ECS.
+ */
+namespace ECS {
 
-    AComponent(const AComponent &) = delete;
-    AComponent &operator=(const AComponent &) = delete;
+    /**
+     * Namespace of components.
+     */
+    namespace Component {
 
-    enum ComponentType : unsigned char {
-	NONE = 0,
-        TYPE,
-	SPRITE,
-	LIFE,
-	MOVEMENT,
-	SHOOT,
-	NETWORK,
-	GRAPHX,    
-    };
-    
-    virtual ComponentType	getType() const = 0;
+	/**
+	 * Component types.
+	 */
+	enum ComponentType : unsigned char
+	{
+	    NONE = 0,
+	    TYPE,
+	    SPRITE,
+	    LIFE,
+	    MOVEMENT,
+	    SHOOT,
+	    NETWORK,
+	    GRAPHX,    
+	};
 
-private:
-    std::map<ComponentType, AComponent *>	_component;
-    const ComponentType	_type;
-};
+        /**
+	 * Abstract class for components.
+	 */
+	class AComponent
+	{
+	public:
+	    AComponent() = delete;
+
+	    /**
+	     * Virtual destructor.
+	     */
+	    virtual ~AComponent() {}
+
+	    AComponent(const AComponent &) = delete;
+	    AComponent &operator=(const AComponent &) = delete;
+
+	    /**
+	     * Getter for the component type.
+	     */
+	    virtual ComponentType	getType() const = 0;
+
+	private:
+
+	    /**
+	     * Type of the component.
+	     */
+	    const ComponentType	_type;
+	};
+
+    }
+}

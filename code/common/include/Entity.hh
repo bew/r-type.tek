@@ -1,11 +1,9 @@
 
-/*
-** Started by Alexis Mongin 2016-11-30
-*/
-
-/*
-** Put the E in... E C S 
-*/
+/**
+ * @file Entity.hh
+ * @author Alexis
+ * @brief This class implement the entities.
+ */
 
 #pragma once
 
@@ -13,18 +11,50 @@
 
 #include <map>
 
-class Entity
-{
-public:
-    Entity();
-    ~Entity();
+/**
+ * Namespace of ECS.
+ */
+namespace ECS {
 
-    Entity(const Entity &) = delete;
-    Entity &operator=(const Entity &) = delete;
+    /**
+     * Namespace of entities.
+     */
+    namespace Entity {
 
-    AComponent	*getComponent(AComponent::ComponentType) const;
-    void	addComponent(AComponent::ComponentType, AComponent *);
-    
-private:
-    std::map<AComponent::ComponentType, AComponent *>	_component;
-};
+	/**
+	 * Class implementing an entity.
+	 */
+	class Entity
+	{
+	public:
+	    /**
+	     * Constructor.
+	     */
+	    Entity();
+	    /**
+	     * Destructor.
+	     */
+	    ~Entity();
+
+	    Entity(const Entity &) = delete;
+	    Entity &operator=(const Entity &) = delete;
+
+	    /**
+	     * Get the entity's component of a given type, or Component::NONE.
+	     */
+	    Component::AComponent	*getComponent(Component::ComponentType) const;
+
+	    /**
+	     * add a component.
+	     */
+	    void			addComponent(Component::ComponentType, Component::AComponent *);
+
+	private:
+	    /**
+	     * Map of components of the entity.
+	     */
+	    std::map<Component::ComponentType, Component::AComponent *>	_component;
+	};
+
+    }
+}
