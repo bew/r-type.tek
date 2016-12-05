@@ -24,9 +24,6 @@ set(RT_COMMON_NAMES)
 set(RT_COMMON_INCLUDE)
 add_subdirectory("common")
 
-
-message(WARNING ${RT_COMMON_INCLUDE})
-
 # CLIENT/SERVER PROJECTS
 #------------------------------------
 
