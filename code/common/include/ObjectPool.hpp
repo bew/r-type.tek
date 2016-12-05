@@ -67,6 +67,7 @@ namespace ECS {
 
 	    /**
 	     * Return an element in the pool.
+	     * @param obj The object taken from pool.
 	     */
 	    void	operator<<(T *obj)
 		{
@@ -78,6 +79,7 @@ namespace ECS {
 	    
 	    /**
 	     * Insert an element in the pool.
+	     * @param obj The object returned in pool.
 	     */
 	    void	operator>>(T *&obj)
 		{

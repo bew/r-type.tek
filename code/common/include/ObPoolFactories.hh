@@ -62,6 +62,7 @@ namespace ECS {
 
 	    /**
 	     * allocator.
+	     * @return Pointer to the new object.
 	     */
 	    T *operator()()
 		{
@@ -69,7 +70,8 @@ namespace ECS {
 		}
 
 	    /**
-	     * destructor.
+	     * desallocator.
+	     * @param stuff The object to be deleted.
 	     */
 	    void remove(T *stuff)
 		{

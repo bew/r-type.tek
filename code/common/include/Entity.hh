@@ -46,8 +46,10 @@ namespace ECS {
 
 	    /**
 	     * add a component.
+	     * @param type the type of the component.
+	     * @param comp the component.
 	     */
-	    void			addComponent(Component::ComponentType, Component::AComponent *);
+	    void	addComponent(Component::ComponentType type, Component::AComponent *comp);
 
 	private:
 	    /**

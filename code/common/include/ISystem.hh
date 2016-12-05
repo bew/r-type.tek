@@ -43,8 +43,10 @@ namespace ECS {
 
 	    /**
 	     * Update the world using the system logic.
+	     * @param data The persistent information of the ECS.
+	     * @param pools The pools for getting/freeing objects.
 	     */
-	    virtual void	update(WorldData &, Pools::WorldPools &) = 0;
+	    virtual void	update(WorldData &data, Pools::WorldPools &pools) = 0;
 	};
 
     }

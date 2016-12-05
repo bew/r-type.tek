@@ -50,11 +50,13 @@ namespace ECS {
 
 	    /**
 	     * operator overloading for borrowing an entity.
+	     * @param obj The object taken from pool.
 	     */
 	    void	operator>>(Entity::Entity *obj);
 
 	    /**
 	     * operator overloading for borrowing an entity.
+	     * @param obj The object returned in pool.
 	     */
 	    void	operator<<(Entity::Entity *&obj);
     
@@ -62,7 +64,7 @@ namespace ECS {
 	    /**
 	     * Generic pool of entities.
 	     */
-	    ObjectPool<Entity::Entity, EntityFactory>	_entityPool;
+	    ObjectPool<Entity::Entity, CommonFactory<Entity::Entity>>	_entityPool;
 	};
     }
 }
