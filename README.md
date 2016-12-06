@@ -76,3 +76,5 @@ To install to bin directory:
 Be sure to replace `..` with path to project root.  
 Be sure cmake is up to date, and same for VS14. (Note `CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS=TRUE` is recent)  
 Else, maybe we fucked up something, no idea.
+
+## **TEST**
