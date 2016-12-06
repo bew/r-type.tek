@@ -40,8 +40,9 @@ namespace ECS {
 	    Entity &operator=(const Entity &) = delete;
 
 	    /**
-	     * Get the entity's component of a given type, or Component::NONE.
-	     * @param type
+	     * Get the entity's component of a given type.
+	     * @param type The type of component requested.
+	     * @return The component requested, or a nullptr if it doesn't exist.
 	     */
 	    Component::AComponent	*getComponent(Component::ComponentType type) const;
 
