@@ -35,8 +35,19 @@ public:
    */
   ~WindowsLibraryLoader(void);
 private:
+  /**
+   * File name of the dll to load
+   */
   const std::string _libName;
+
+  /**
+   * Handl of the openened dll
+   */
   HMODULE _handle;
+
+  /**
+   * Adress of factory function exported by the loaded dll
+   */
   IGenerator *(*_factory)(void);
 };
 

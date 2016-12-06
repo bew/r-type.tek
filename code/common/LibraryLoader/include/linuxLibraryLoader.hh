@@ -35,8 +35,19 @@ public:
    */
   ~LinuxLibraryLoader(void);
 private:
+  /**
+   * Name of the file of library to load
+   */
   const std::string _libName;
+
+  /**
+   * Result of dlopen
+   */
   void *_handle;
+
+  /**
+   * Adress of the factory function exported in the library
+   */
   IGenerator *(*_factory)(void);
 };
 
