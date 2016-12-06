@@ -92,7 +92,7 @@ TEST(Serialization, Document) {
     ASSERT_EQ(retrievedBuffer, expectedBuffer);
 }
 
-TEST(Serialization, BOOL) {
+TEST(Serialization, Bool) {
     bson::Document documentTrue;
 
     documentTrue << u8"boolKey" << true;
@@ -118,4 +118,18 @@ TEST(Serialization, BOOL) {
                                                             0};                                 // end of document
 
     ASSERT_EQ(retrievedBufferFalse, expectedBufferFalse);
+}
+
+TEST(Serialization, NullValue) {
+    bson::Document document;
+
+    document << u8"nullKey" << nullptr;
+
+    const std::vector<unsigned char> &retrievedBuffer = document.getBuffer();
+    const std::vector<unsigned char> expectedBuffer = {14, 0, 0, 0,                         // size of document
+                                                       10,                                  // id for null value element
+                                                       110, 117, 108, 108, 75, 101, 121, 0, // e_name of the value
+                                                       0};                                  // end of document
+
+    ASSERT_EQ(retrievedBuffer, expectedBuffer);
 }
