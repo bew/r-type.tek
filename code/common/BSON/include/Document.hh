@@ -147,7 +147,7 @@ namespace bson {
          * @throw BsonException if the waiting input is not a value
          * @return the Document with the null value added
          */
-        Document &operator<<(std::nullptr_t __attribute__((unused)) ptr);
+        Document &operator<<(std::nullptr_t ptr);
         
         /**
          * Add a int32 into the Document

@@ -53,7 +53,7 @@ namespace bson {
             int32_t integer;
             unsigned char bytes[4];
         } cutInteger;
-        cutInteger.integer = (CHOOSE_ENDIANESS_32(_buffer.size() + 5));
+        cutInteger.integer = (swap_endian<uint32_t>(_buffer.size() + 5));
 
         for (const auto &byte : cutInteger.bytes)
             entireBuffer.push_back(byte);
@@ -84,7 +84,7 @@ namespace bson {
             double floating;
             unsigned char bytes[8];
         } cutFloating;
-        cutFloating.floating = CHOOSE_ENDIANESS_64(floating);
+        cutFloating.floating = swap_endian<double>(floating);
         type valueType = DOUBLE;
 
         this->writeTypeCodeAndKey(typesCodes.at(valueType));
@@ -104,7 +104,7 @@ namespace bson {
                 int32_t integer;
                 unsigned char bytes[4];
             } cutInteger;
-            cutInteger.integer = (CHOOSE_ENDIANESS_32(string.length() + 1));
+            cutInteger.integer = (swap_endian<uint32_t>(string.length() + 1));
             type valueType = STRING;
 
             this->writeTypeCodeAndKey(typesCodes.at(valueType));
@@ -147,7 +147,7 @@ namespace bson {
         return *this;
     }
 
-    Document &Document::operator<<(std::nullptr_t __attribute__((unused)) ptr) {
+    Document &Document::operator<<(std::nullptr_t) {
         this->isInputValue();
 
         type valueType = NULLVALUE;
@@ -166,7 +166,7 @@ namespace bson {
             int32_t integer;
             unsigned char bytes[4];
         } cutInteger;
-        cutInteger.integer = (CHOOSE_ENDIANESS_32(integer));
+        cutInteger.integer = (swap_endian<uint32_t>(integer));
         type valueType = INT32;
 
         this->writeTypeCodeAndKey(typesCodes.at(valueType));
@@ -185,7 +185,7 @@ namespace bson {
             int64_t integer;
             unsigned char bytes[8];
         } cutInteger;
-        cutInteger.integer = (CHOOSE_ENDIANESS_64(integer));
+        cutInteger.integer = (swap_endian<uint64_t>(integer));
         type valueType = INT64;
 
         this->writeTypeCodeAndKey(typesCodes.at(valueType));
