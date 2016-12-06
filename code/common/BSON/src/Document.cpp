@@ -36,7 +36,7 @@ namespace bson {
 
     void Document::isInputValue() const {
         if (_nextInputType != Document::VALUE)
-            throw std::runtime_error("Next input into the document should be a key as a string.");
+            throw BsonException("Next input into the document should be a key as a string.");
     }
 
     void Document::writeTypeCodeAndKey(unsigned char typeCode) {
@@ -66,11 +66,11 @@ namespace bson {
 
     Document &Document::operator<<(const char *string) {
         if (_nextInputType != KEY)
-            throw std::runtime_error("A C string can only be used as a key.");
+            throw BsonException("A C string can only be used as a key.");
 
         std::string key(string);
         if (!key.size())
-            throw std::runtime_error("A key can't be empty.");
+            throw BsonException("A key can't be empty.");
 
         _lastKey = key;
         _nextInputType = VALUE;

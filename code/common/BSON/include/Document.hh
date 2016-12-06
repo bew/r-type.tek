@@ -75,7 +75,7 @@ namespace bson {
         /**
          * Check if the Document is waiting a value as an input
          *
-         * @throw std::runtime_error if the waiting input is not a value
+         * @throw BsonException if the waiting input is not a value
          */
         void isInputValue() const;
 
@@ -98,8 +98,8 @@ namespace bson {
          * Add a string as key into the Document
          *
          * @param string the string to add
-         * @throw std::runtime_error if the waiting input is not a key
-         * @throw std::runtime_error if the key is empty
+         * @throw BsonException if the waiting input is not a key
+         * @throw BsonException if the key is empty
          * @return the Document with the string added
          */
         Document &operator<<(const char *string);
@@ -108,7 +108,7 @@ namespace bson {
          * Add a double into the Document
          *
          * @param floating the double to add
-         * @throw std::runtime_error if the waiting input is not a value
+         * @throw BsonException if the waiting input is not a value
          * @return the Document with the double added
          */
         Document &operator<<(double floating);
@@ -117,7 +117,7 @@ namespace bson {
          * Add a string as a key or as a value into the Document
          *
          * @param string the string to add
-         * @throw std::runtime_error if the input shiuld be a key and something went wrong
+         * @throw BsonException if the input should be a key and something went wrong
          * @return the Document with the string added
          */
         Document &operator<<(const std::string &string);
@@ -126,7 +126,7 @@ namespace bson {
          * Add a Document into the Document
          * 
          * @param document the Document to add
-         * @throw std::runtime_error if the waiting input is not a value
+         * @throw BsonException if the waiting input is not a value
          * @return the Document with the Document added
          */
         Document &operator<<(const Document &document);
@@ -135,7 +135,7 @@ namespace bson {
          * Add a bool into the Document
          * 
          * @param boolean the bool to add
-         * @throw std::runtime_error if the waiting input is not a value
+         * @throw BsonException if the waiting input is not a value
          * @return the Document with the bool added
          */
         Document &operator<<(bool boolean);
@@ -144,7 +144,7 @@ namespace bson {
          * Add a null value into the Document
          * 
          * @param ptr the pointer as a null value
-         * @throw std::runtime_error if the waiting input is not a value
+         * @throw BsonException if the waiting input is not a value
          * @return the Document with the null value added
          */
         Document &operator<<(std::nullptr_t __attribute__((unused)) ptr);
@@ -153,7 +153,7 @@ namespace bson {
          * Add a int32 into the Document
          * 
          * @param integer the int32 to add
-         * @throw std::runtime_error if the waiting input is not a value
+         * @throw BsonException if the waiting input is not a value
          * @return the Document with the int32 added
          */
         Document &operator<<(int32_t integer);
@@ -162,7 +162,7 @@ namespace bson {
          * Add a int64 into the Document
          * 
          * @param integer the int64 to add
-         * @throw std::runtime_error if the waiting input is not a value
+         * @throw BsonException if the waiting input is not a value
          * @return the Document with the int64 added
          */
         Document &operator<<(int64_t integer);
