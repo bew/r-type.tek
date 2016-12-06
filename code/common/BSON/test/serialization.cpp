@@ -92,6 +92,9 @@ TEST(Serialization, Document) {
     ASSERT_EQ(retrievedBuffer, expectedBuffer);
 }
 
+/**
+ * Check if the bool serialize correctly
+ */
 TEST(Serialization, Bool) {
     bson::Document documentTrue;
 
@@ -120,6 +123,9 @@ TEST(Serialization, Bool) {
     ASSERT_EQ(retrievedBufferFalse, expectedBufferFalse);
 }
 
+/**
+ * Check if the null value serialize correctly
+ */
 TEST(Serialization, NullValue) {
     bson::Document document;
 
@@ -134,6 +140,9 @@ TEST(Serialization, NullValue) {
     ASSERT_EQ(retrievedBuffer, expectedBuffer);
 }
 
+/**
+ * Check if the int32 serialize correctly
+ */
 TEST(Serialization, Int32) {
     bson::Document document;
 
@@ -149,6 +158,9 @@ TEST(Serialization, Int32) {
     ASSERT_EQ(retrievedBuffer, expectedBuffer);
 }
 
+/**
+ * Check if the int64 serialize correctly
+ */
 TEST(Serialization, Int64) {
     bson::Document document;
 
