@@ -7,8 +7,8 @@
  *
  */
 
-#include "Document.hh"
 #include <gtest/gtest.h>
+#include "Document.hh"
 
 /**
  * Check if the double serialize correctly

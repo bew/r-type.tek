@@ -1,5 +1,5 @@
 include_directories(BSON_test ${gtest_SOURCE_DIR}/include)
 include_directories(BSON_test ${LIB_INCLUDE})
-add_executable(BSON_test main.cpp serialization.cpp)
+add_executable(BSON_test main.cpp serialization.cpp miscellaneous.cpp)
 target_link_libraries(BSON_test gtest)
 target_link_libraries(BSON_test libBSON_test)

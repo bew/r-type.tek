@@ -90,7 +90,7 @@ namespace bson {
         /**
          * Get the BSON representation of the Document
          *
-         * @return the binarry buffer which is the BSON representation of the Document
+         * @return the binary buffer which is the BSON representation of the Document
          */
         std::vector<unsigned char> getBuffer() const;
 
