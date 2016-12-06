@@ -148,3 +148,18 @@ TEST(Serialization, Int32) {
 
     ASSERT_EQ(retrievedBuffer, expectedBuffer);
 }
+
+TEST(Serialization, Int64) {
+    bson::Document document;
+
+    document << u8"int64Key" << (int64_t)42;
+
+    const std::vector<unsigned char> &retrievedBuffer = document.getBuffer();
+    const std::vector<unsigned char> expectedBuffer = {23, 0, 0, 0,                            // size of document
+                                                       18,                                     // id for int64 element
+                                                       105, 110, 116, 54, 52, 75, 101, 121, 0, // e_name of the value
+                                                       42, 0, 0, 0, 0, 0, 0, 0,                // value of the int64
+                                                       0};                                     // end of document
+
+    ASSERT_EQ(retrievedBuffer, expectedBuffer);
+}
