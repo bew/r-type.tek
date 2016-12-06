@@ -1,5 +1,7 @@
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
+use_msvc_static_runtime()
+
 add_executable(${LIB_TEST_NAME}_exe main.cpp)
 include_directories(${LIB_TEST_NAME}_exe ${gtest_SOURCE_DIR}/include)
 target_link_libraries(${LIB_TEST_NAME}_exe ${LIB_TEST_NAME} gtest)

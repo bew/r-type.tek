@@ -4,7 +4,6 @@
 
 #include <iostream>
 #include <string>
-#include <unistd.h>
 
 #include "ALibraryLoader.hh"
 #include "Dependent_ptr.hpp"
