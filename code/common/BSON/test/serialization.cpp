@@ -89,6 +89,33 @@ TEST(Serialization, Document) {
                                                        0,                                                                     // end of documentString
                                                        0};                                                                    // end of document
 
-
     ASSERT_EQ(retrievedBuffer, expectedBuffer);
+}
+
+TEST(Serialization, BOOL) {
+    bson::Document documentTrue;
+
+    documentTrue << u8"boolKey" << true;
+
+    const std::vector<unsigned char> &retrievedBufferTrue = documentTrue.getBuffer();
+    const std::vector<unsigned char> expectedBufferTrue = {15, 0, 0, 0,                        // size of document
+                                                           8,                                  // id for bool element
+                                                           98, 111, 111, 108, 75, 101, 121, 0, // e_name of the value
+                                                           1,                                  // value of the bool
+                                                           0};                                 // end of document
+
+    ASSERT_EQ(retrievedBufferTrue, expectedBufferTrue);
+
+    bson::Document documentFalse;
+
+    documentFalse << u8"boolKey" << false;
+
+    const std::vector<unsigned char> &retrievedBufferFalse = documentFalse.getBuffer();
+    const std::vector<unsigned char> expectedBufferFalse = {15, 0, 0, 0,                        // size of document
+                                                            8,                                  // id for bool element
+                                                            98, 111, 111, 108, 75, 101, 121, 0, // e_name of the value
+                                                            0,                                  // value of the bool
+                                                            0};                                 // end of document
+
+    ASSERT_EQ(retrievedBufferFalse, expectedBufferFalse);
 }
