@@ -46,6 +46,7 @@ namespace ECS {
 
 	    /**
 	     * Constructor. Allocate the objects.
+	     * @param nbr The number of initially created objects.
 	     */
 	    ObjectPool(unsigned nbr)
 		: _elems(nbr),

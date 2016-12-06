@@ -41,8 +41,9 @@ namespace ECS {
 
 	    /**
 	     * Get the entity's component of a given type, or Component::NONE.
+	     * @param type
 	     */
-	    Component::AComponent	*getComponent(Component::ComponentType) const;
+	    Component::AComponent	*getComponent(Component::ComponentType type) const;
 
 	    /**
 	     * add a component.
