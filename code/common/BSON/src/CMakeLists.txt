@@ -1,4 +1,4 @@
-set(LIB_NAME BSON)
+set(LIB_NAME libBSON)
 set(LIB_SOURCE Document.cpp)
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
 add_library(${LIB_NAME}_test SHARED ${LIB_SOURCE})

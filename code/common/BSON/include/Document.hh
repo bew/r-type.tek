@@ -92,7 +92,7 @@ namespace bson {
          *
          * @return the binarry buffer which is the BSON representation of the Document
          */
-        const std::vector<unsigned char> &getBuffer() const;
+        std::vector<unsigned char> getBuffer() const;
 
         /**
          * Add a string as key into the Document

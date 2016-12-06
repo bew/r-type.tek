@@ -42,12 +42,26 @@ namespace bson {
     void Document::writeTypeCodeAndKey(unsigned char typeCode) {
         _buffer.push_back(typeCode);
         for (int i = 0; _lastKey[i]; ++i)
-            _buffer.push_back(static_cast<unsigned char>(_lastKey[i]));
+            _buffer.push_back((unsigned char &&) static_cast<unsigned char>(_lastKey[i]));
         _buffer.push_back('\x00');
     }
 
-    const std::vector<unsigned char> &Document::getBuffer() const {
-        return _buffer;
+    std::vector<unsigned char> Document::getBuffer() const {
+        std::vector<unsigned char> entireBuffer;
+
+        union {
+            int32_t integer;
+            unsigned char bytes[4];
+        } cutInteger;
+        cutInteger.integer = (CHOOSE_ENDIANESS_32(_buffer.size() + 5));
+
+        for (const auto &byte : cutInteger.bytes)
+            entireBuffer.push_back(byte);
+        for (const auto &byte : _buffer)
+            entireBuffer.push_back(byte);
+        entireBuffer.push_back('\x00');
+
+        return entireBuffer;
     }
 
     Document &Document::operator<<(const char *string) {
@@ -97,7 +111,7 @@ namespace bson {
             for (const auto &byte : cutInteger.bytes)
                 _buffer.push_back(byte);
             for (const auto &character : string)
-                _buffer.push_back(static_cast<unsigned char>(character));
+                _buffer.push_back((unsigned char &&) static_cast<unsigned char>(character));
             _buffer.push_back('\x00');
 
             _nextInputType = KEY;
@@ -111,19 +125,11 @@ namespace bson {
 
         const std::vector<unsigned char> &buffer = document.getBuffer();
 
-        union {
-            int32_t integer;
-            unsigned char bytes[4];
-        } cutInteger;
-        cutInteger.integer = (CHOOSE_ENDIANESS_32(buffer.size() + 1));
         type valueType = DOCUMENT;
 
         this->writeTypeCodeAndKey(typesCodes.at(valueType));
-        for (const auto &byte : cutInteger.bytes)
-            _buffer.push_back(byte);
         for (const auto &byte : buffer)
             _buffer.push_back(byte);
-        _buffer.push_back('\x00');
 
         _nextInputType = KEY;
         return *this;
@@ -135,7 +141,7 @@ namespace bson {
         type valueType = BOOL;
 
         this->writeTypeCodeAndKey(typesCodes.at(valueType));
-        _buffer.push_back(static_cast<unsigned char>(boolean));
+        _buffer.push_back((unsigned char &&) static_cast<unsigned char>(boolean));
 
         _nextInputType = KEY;
         return *this;
