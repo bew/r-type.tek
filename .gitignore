@@ -4,7 +4,7 @@
 /bin
 /gen
 /lib
-
+/include
 
 # Created by https://www.gitignore.io/api/intellij,vim,emacs,c,c++,visualstudiocode,visualstudio,intellij,cmake
 
