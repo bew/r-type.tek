@@ -1,4 +1,3 @@
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 set(GENERATOR_NAME empty)
 set(GENERATOR_SOURCE empty.cpp)
 add_library(${GENERATOR_NAME} SHARED ${GENERATOR_SOURCE})
