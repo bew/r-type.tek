@@ -39,7 +39,7 @@ namespace ECS {
 	    /**
 	     * Number of elements built in pools during initialisation.
 	     */
-	    const unsigned	NB_BASE_ELEM = 600;
+	    static const unsigned	NB_BASE_ELEM = 600;
 
 	    /**
 	     * Constructor.
