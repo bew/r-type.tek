@@ -6,7 +6,6 @@ add_subdirectory(googletest)
 # Each project should have their own folder "test" which is added by the root cmake
 # Inside this folder the cmake should contain at least the following rules :
 #
-# include_directories(PROJECT_test ${gtest_SOURCE_DIR}/include)
 # add_executable(PROJECT_test FILES)
 # target_link_libraries(PROJECT_test gtest)
 #

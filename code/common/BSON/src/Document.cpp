@@ -36,27 +36,42 @@ namespace bson {
 
     void Document::isInputValue() const {
         if (_nextInputType != Document::VALUE)
-            throw std::runtime_error("Next input into the document should be a key as a string.");
+            throw BsonException("Next input into the document should be a key as a string.");
     }
 
     void Document::writeTypeCodeAndKey(unsigned char typeCode) {
         _buffer.push_back(typeCode);
         for (int i = 0; _lastKey[i]; ++i)
-            _buffer.push_back(static_cast<unsigned char>(_lastKey[i]));
+            _buffer.push_back((unsigned char &&) static_cast<unsigned char>(_lastKey[i]));
         _buffer.push_back('\x00');
     }
 
-    const std::vector<unsigned char> &Document::getBuffer() const {
-        return _buffer;
+    std::vector<unsigned char> Document::getBuffer() const {
+        std::vector<unsigned char> entireBuffer;
+
+        union {
+            int32_t integer;
+            unsigned char bytes[4];
+        } cutInteger;
+        int32_t size = static_cast<int32_t >(_buffer.size() + 5);
+        cutInteger.integer = (IS_BIG_ENDIAN ? swap_endian<int32_t>(size) : size);
+
+        for (const auto &byte : cutInteger.bytes)
+            entireBuffer.push_back(byte);
+        for (const auto &byte : _buffer)
+            entireBuffer.push_back(byte);
+        entireBuffer.push_back('\x00');
+
+        return entireBuffer;
     }
 
     Document &Document::operator<<(const char *string) {
         if (_nextInputType != KEY)
-            throw std::runtime_error("A C string can only be used as a key.");
+            throw BsonException("A C string can only be used as a key.");
 
         std::string key(string);
         if (!key.size())
-            throw std::runtime_error("A key can't be empty.");
+            throw BsonException("A key can't be empty.");
 
         _lastKey = key;
         _nextInputType = VALUE;
@@ -70,7 +85,7 @@ namespace bson {
             double floating;
             unsigned char bytes[8];
         } cutFloating;
-        cutFloating.floating = CHOOSE_ENDIANESS_64(floating);
+        cutFloating.floating = (IS_BIG_ENDIAN ? swap_endian<double>(floating) : floating);
         type valueType = DOUBLE;
 
         this->writeTypeCodeAndKey(typesCodes.at(valueType));
@@ -90,14 +105,15 @@ namespace bson {
                 int32_t integer;
                 unsigned char bytes[4];
             } cutInteger;
-            cutInteger.integer = (CHOOSE_ENDIANESS_32(string.length() + 1));
+            int32_t size = static_cast<int32_t >(string.length() + 1);
+            cutInteger.integer = (IS_BIG_ENDIAN ? swap_endian<int32_t>(size) : size);
             type valueType = STRING;
 
             this->writeTypeCodeAndKey(typesCodes.at(valueType));
             for (const auto &byte : cutInteger.bytes)
                 _buffer.push_back(byte);
             for (const auto &character : string)
-                _buffer.push_back(static_cast<unsigned char>(character));
+                _buffer.push_back((unsigned char &&) static_cast<unsigned char>(character));
             _buffer.push_back('\x00');
 
             _nextInputType = KEY;
@@ -111,19 +127,11 @@ namespace bson {
 
         const std::vector<unsigned char> &buffer = document.getBuffer();
 
-        union {
-            int32_t integer;
-            unsigned char bytes[4];
-        } cutInteger;
-        cutInteger.integer = (CHOOSE_ENDIANESS_32(buffer.size() + 1));
         type valueType = DOCUMENT;
 
         this->writeTypeCodeAndKey(typesCodes.at(valueType));
-        for (const auto &byte : cutInteger.bytes)
-            _buffer.push_back(byte);
         for (const auto &byte : buffer)
             _buffer.push_back(byte);
-        _buffer.push_back('\x00');
 
         _nextInputType = KEY;
         return *this;
@@ -135,13 +143,13 @@ namespace bson {
         type valueType = BOOL;
 
         this->writeTypeCodeAndKey(typesCodes.at(valueType));
-        _buffer.push_back(static_cast<unsigned char>(boolean));
+        _buffer.push_back((unsigned char &&) static_cast<unsigned char>(boolean));
 
         _nextInputType = KEY;
         return *this;
     }
 
-    Document &Document::operator<<(std::nullptr_t __attribute__((unused)) ptr) {
+    Document &Document::operator<<(std::nullptr_t) {
         this->isInputValue();
 
         type valueType = NULLVALUE;
@@ -160,7 +168,7 @@ namespace bson {
             int32_t integer;
             unsigned char bytes[4];
         } cutInteger;
-        cutInteger.integer = (CHOOSE_ENDIANESS_32(integer));
+        cutInteger.integer = (IS_BIG_ENDIAN ? swap_endian<int32_t>(integer) : integer);
         type valueType = INT32;
 
         this->writeTypeCodeAndKey(typesCodes.at(valueType));
@@ -179,7 +187,7 @@ namespace bson {
             int64_t integer;
             unsigned char bytes[8];
         } cutInteger;
-        cutInteger.integer = (CHOOSE_ENDIANESS_64(integer));
+        cutInteger.integer = (IS_BIG_ENDIAN ? swap_endian<int64_t>(integer) : integer);
         type valueType = INT64;
 
         this->writeTypeCodeAndKey(typesCodes.at(valueType));
