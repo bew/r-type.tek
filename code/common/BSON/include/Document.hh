@@ -23,6 +23,57 @@ namespace bson {
     class Document {
     private:
         /**
+         * Class that will be used to hold an element (deserialization purpose)
+         */
+        class Element {
+        private:
+            /**
+             * The type of the value store inside the element
+             */
+            type _valueType;
+
+            /**
+             * The key of the value store inside the element
+             */
+            std::string _key;
+
+            /**
+             * The value inside the element as it's BSON representation
+             */
+            std::vector<unsigned char> _value;
+
+        public:
+            /**
+             * Create an element from some information
+             *
+             * @param valueType the type of the value passed
+             * @param key the key of the value passed
+             * @param value the value as it's BSON representation
+             */
+            Element(type valueType, const std::string &key, const std::vector<unsigned char> &value);
+
+            /**
+             * Create an Element by copy and retrieve the values store from the given Element
+             *
+             * @param element the Element that need to be copy
+             */
+            Element(const Element &element);
+
+            /**
+             * Create a Element by assignment and retrieve the values store from the right Element
+             *
+             * @param element the Element that need to be copy
+             * @return a Element containing the values of the Element pass in parameter
+             */
+            Element& operator=(const Element &element);
+
+            /**
+             * Destroy the Element
+             */
+            ~Element();
+        };
+
+        /**
          * The input types the Document can have
          */
         enum inputTypes {
@@ -45,6 +96,11 @@ namespace bson {
          */
         std::vector<unsigned char> _buffer;
 
+        /**
+         * Store the BSON represensation of the Document composed of all the given inputs as Element usable
+         */
+        std::map<const std::string, Element> _elements;
+
     public:
         /**
          * Create an empty Document in order to serialize data into BSON and store them
@@ -56,8 +112,8 @@ namespace bson {
          *
          * @param document the Document that need to be copy
          */
-
         Document(const Document &document);
+
         /**
          * Create a Document by assignment and retrieve the values store from the right Document
          *
@@ -166,6 +222,8 @@ namespace bson {
          * @return the Document with the int64 added
          */
         Document &operator<<(int64_t integer);
+
+        void operator[](const std::string &key);
     };
 }
 
