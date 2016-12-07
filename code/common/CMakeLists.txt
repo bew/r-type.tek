@@ -5,7 +5,8 @@ project("common")
 set(RT_COMMON_NAMES)
 
 # Add librariries
-add_subdirectory(BSON)
+#add_subdirectory(BSON)
+add_subdirectory(LibraryLoader)
 
 # Every sub libs must do more or less this
 #set(LIB_NAME ...)
@@ -21,3 +22,5 @@ add_subdirectory(BSON)
 #set(RT_COMMON_NAMES ${RT_COMMON_NAMES} ${LIB_NAME} PARENT_SCOPE)
 
 set(RT_COMMON_NAMES ${RT_COMMON_NAMES} PARENT_SCOPE)
+
+message(STATUS "The common libraries names are : \n ${RT_COMMON_NAMES}\nIf something is missing, please check RT_COMMON_NAMES scope")

@@ -1,0 +1,8 @@
+SET(CROSS_COMPILE true)
+SET(CMAKE_SYSTEM_NAME Windows)
+SET(CMAKE_C_COMPILER i686-w64-mingw32-cc)
+SET(CMAKE_CXX_COMPILER i686-w64-mingw32-c++)
+SET(CMAKE_AR /usr/i686-w64-mingw32/bin/ar)
+SET(CMAKE_RANLIB /usr/i686-w64-mingw32/bin/ranlib)
+INCLUDE_DIRECTORIES(SYSTEM /usr/i686-w64-mngw32/include)
+LINK_DIRECTORIES(/usr/i686-w64-mingw32/bin /usr/i686-w64-mingw32/lib)
