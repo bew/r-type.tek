@@ -7,14 +7,14 @@
  * and simplify the access behind all the pools.
  *
  * Basically, create a pool of the object you need, and the related factory
- * (check ObjectPool.hpp) in ObjPoolFactories.hh, then overload the << >>
+ * (check ObjectPool.hpp) in ObjPoolFactories.hpp, then overload the << >>
  * operators of the world factory and the type of your object.
  *
  */
 
 #pragma once
 
-#include "ObjPoolFactories.hh"
+#include "ObjPoolFactories.hpp"
 #include "Entity.hh"
 #include "ObjectPool.hpp"
 
@@ -35,6 +35,12 @@ namespace ECS {
 	class WorldPools
 	{
 	public:
+
+	    /**
+	     * Number of elements built in pools during initialisation.
+	     */
+	    const unsigned	NB_BASE_ELEM = 600;
+
 	    /**
 	     * Constructor.
 	     */
@@ -52,7 +58,7 @@ namespace ECS {
 	     * operator overloading for borrowing an entity.
 	     * @param obj The object taken from pool.
 	     */
-	    void	operator>>(Entity::Entity *obj);
+	    void	operator>>(Entity::Entity *&obj);
 
 	    /**
 	     * operator overloading for borrowing an entity.
