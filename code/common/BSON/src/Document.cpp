@@ -53,7 +53,8 @@ namespace bson {
             int32_t integer;
             unsigned char bytes[4];
         } cutInteger;
-        cutInteger.integer = (swap_endian<uint32_t>(_buffer.size() + 5));
+        int32_t size = static_cast<int32_t >(_buffer.size() + 5);
+        cutInteger.integer = (IS_BIG_ENDIAN ? swap_endian<int32_t>(size) : size);
 
         for (const auto &byte : cutInteger.bytes)
             entireBuffer.push_back(byte);
@@ -84,7 +85,7 @@ namespace bson {
             double floating;
             unsigned char bytes[8];
         } cutFloating;
-        cutFloating.floating = swap_endian<double>(floating);
+        cutFloating.floating = (IS_BIG_ENDIAN ? swap_endian<double>(floating) : floating);
         type valueType = DOUBLE;
 
         this->writeTypeCodeAndKey(typesCodes.at(valueType));
@@ -104,7 +105,8 @@ namespace bson {
                 int32_t integer;
                 unsigned char bytes[4];
             } cutInteger;
-            cutInteger.integer = (swap_endian<uint32_t>(string.length() + 1));
+            int32_t size = static_cast<int32_t >(string.length() + 1);
+            cutInteger.integer = (IS_BIG_ENDIAN ? swap_endian<int32_t>(size) : size);
             type valueType = STRING;
 
             this->writeTypeCodeAndKey(typesCodes.at(valueType));
@@ -166,7 +168,7 @@ namespace bson {
             int32_t integer;
             unsigned char bytes[4];
         } cutInteger;
-        cutInteger.integer = (swap_endian<uint32_t>(integer));
+        cutInteger.integer = (IS_BIG_ENDIAN ? swap_endian<int32_t>(integer) : integer);
         type valueType = INT32;
 
         this->writeTypeCodeAndKey(typesCodes.at(valueType));
@@ -185,7 +187,7 @@ namespace bson {
             int64_t integer;
             unsigned char bytes[8];
         } cutInteger;
-        cutInteger.integer = (swap_endian<uint64_t>(integer));
+        cutInteger.integer = (IS_BIG_ENDIAN ? swap_endian<int64_t>(integer) : integer);
         type valueType = INT64;
 
         this->writeTypeCodeAndKey(typesCodes.at(valueType));
