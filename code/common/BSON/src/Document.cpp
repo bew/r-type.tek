@@ -265,7 +265,7 @@ namespace bson {
         return *this;
     }
 
-    void Document::operator[](const std::string &key) {
-        std::cout << key << std::endl;
+    Document::Element& Document::operator[](const std::string &key) {
+        return _elements.at(key);
     }
 }

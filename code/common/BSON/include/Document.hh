@@ -71,6 +71,20 @@ namespace bson {
              * Destroy the Element
              */
             ~Element();
+
+            /**
+             * Get the type of the value store inside the Element
+             *
+             * @return the type of the value store inside the Element
+             */
+            type getTypeValue() const;
+
+            /**
+             * Get the key of the value store inside the Element
+             *
+             * @return the key of the value store inside the Element
+             */
+            const std::string &getKey() const;
         };
 
         /**
@@ -223,7 +237,7 @@ namespace bson {
          */
         Document &operator<<(int64_t integer);
 
-        void operator[](const std::string &key);
+        Document::Element& operator[](const std::string &key);
     };
 }
 
