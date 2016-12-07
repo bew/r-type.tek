@@ -84,4 +84,5 @@ namespace network {
         virtual void send(const std::string &msg);
     };
 
+    typedef SocketWindowsTCP SocketTCP;
 }

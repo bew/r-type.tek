@@ -63,4 +63,6 @@ namespace network
         virtual void send(std::string &msg);
     };
 
+    typedef SocketLinuxUDP SocketUDP;
+
 }
