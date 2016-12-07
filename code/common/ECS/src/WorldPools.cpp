@@ -1,3 +1,9 @@
+/**
+ * @file WorldPools.cpp
+ * @brief Implementation of an encapsulation of all the generic object pools.
+ * @author Alexis Mongin
+ *
+ */
 
 #include "WorldPools.hh"
 
