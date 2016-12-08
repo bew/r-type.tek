@@ -18,5 +18,12 @@ TEST(DESERIALIZATION, Double) {
 
     document << u8"doubleKey" << 42.42;
 
-    document["doubleKey"];
+    bson::Document::Element element =  document["doubleKey"];
+    double floating;
+
+    EXPECT_EQ(element.getValueType(), bson::DOUBLE);
+    EXPECT_EQ(element.getKey(), u8"doubleKey");
+    EXPECT_EQ(element.getValueDouble(), 42.42);
+    element.getValue(floating);
+    EXPECT_EQ(floating, 42.42);
 }

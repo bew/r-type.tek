@@ -37,6 +37,27 @@ namespace bson {
     Document::Element::~Element() {
     }
 
+    type Document::Element::getValueType() const {
+        return _valueType;
+    }
+
+    const std::string& Document::Element::getKey() const {
+        return _key;
+    }
+
+    double Document::Element::getValueDouble() const {
+
+        union {
+            double floating;
+            unsigned char bytes[8];
+        } cutFloating;
+
+        for (size_t i = 0; i < 8; ++i)
+            cutFloating.bytes[i] = _value[i];
+
+        return (IS_BIG_ENDIAN ? swap_endian<double>(cutFloating.floating) : cutFloating.floating);
+    }
+
     Document::Document() :_nextInputType(bson::Document::KEY) {
     }
 
@@ -70,6 +91,11 @@ namespace bson {
         for (int i = 0; _lastKey[i]; ++i)
             _buffer.push_back((unsigned char &&) static_cast<unsigned char>(_lastKey[i]));
         _buffer.push_back('\x00');
+    }
+
+    void Document::insertElement(type valueType, const std::vector<unsigned char> &elementBuffer) {
+        Element element(valueType, _lastKey, elementBuffer);
+        _elements.insert(std::pair<const std::string, Element>(_lastKey, element));
     }
 
     std::vector<unsigned char> Document::getBuffer() const {
@@ -121,8 +147,7 @@ namespace bson {
             elementBuffer.push_back(byte);
         }
 
-        Element element(valueType, _lastKey, elementBuffer);
-        _elements.insert(std::pair<const std::string, Element>(_lastKey, element));
+        this->insertElement(valueType, elementBuffer);
 
         _nextInputType = KEY;
 
@@ -154,8 +179,7 @@ namespace bson {
             _buffer.push_back('\x00');
             elementBuffer.push_back('\x00');
 
-            Element element(valueType, _lastKey, elementBuffer);
-            _elements.insert(std::pair<const std::string, Element>(_lastKey, element));
+            this->insertElement(valueType, elementBuffer);
 
             _nextInputType = KEY;
         }
@@ -177,8 +201,7 @@ namespace bson {
             elementBuffer.push_back(byte);
         }
 
-        Element element(valueType, _lastKey, elementBuffer);
-        _elements.insert(std::pair<const std::string, Element>(_lastKey, element));
+        this->insertElement(valueType, elementBuffer);
 
         _nextInputType = KEY;
         return *this;
@@ -194,8 +217,7 @@ namespace bson {
         _buffer.push_back(static_cast<unsigned char>(boolean));
         elementBuffer.push_back(static_cast<unsigned char>(boolean));
 
-        Element element(valueType, _lastKey, elementBuffer);
-        _elements.insert(std::pair<const std::string, Element>(_lastKey, element));
+        this->insertElement(valueType, elementBuffer);
 
         _nextInputType = KEY;
         return *this;
@@ -208,8 +230,7 @@ namespace bson {
 
         this->writeTypeCodeAndKey(typesCodes.at(valueType));
 
-        Element element(valueType, _lastKey, std::vector<unsigned char>());
-        _elements.insert(std::pair<const std::string, Element>(_lastKey, element));
+        this->insertElement(valueType, std::vector<unsigned char>());
 
         _nextInputType = KEY;
         return *this;
@@ -233,8 +254,7 @@ namespace bson {
             elementBuffer.push_back(byte);
         }
 
-        Element element(valueType, _lastKey, std::vector<unsigned char>());
-        _elements.insert(std::pair<const std::string, Element>(_lastKey, element));
+        this->insertElement(valueType, elementBuffer);
 
         _nextInputType = KEY;
         return *this;
@@ -258,8 +278,7 @@ namespace bson {
             elementBuffer.push_back(byte);
         }
 
-        Element element(valueType, _lastKey, std::vector<unsigned char>());
-        _elements.insert(std::pair<const std::string, Element>(_lastKey, element));
+        this->insertElement(valueType, elementBuffer);
 
         _nextInputType = KEY;
         return *this;

@@ -21,7 +21,7 @@ namespace bson {
      * Represent a BSON document
      */
     class Document {
-    private:
+    public:
         /**
          * Class that will be used to hold an element (deserialization purpose)
          */
@@ -77,7 +77,7 @@ namespace bson {
              *
              * @return the type of the value store inside the Element
              */
-            type getTypeValue() const;
+            type getValueType() const;
 
             /**
              * Get the key of the value store inside the Element
@@ -85,8 +85,27 @@ namespace bson {
              * @return the key of the value store inside the Element
              */
             const std::string &getKey() const;
+
+            /**
+             * Get the real value representation from the value store in it's BSON representation
+             *
+             * @tparam ValueType the type of the value that need to be converted
+             * @param[out] value where to store the value converted
+             */
+            template <typename ValueType>
+            void getValue(ValueType &value) const {
+                value = this->getValueDouble();
+            }
+
+            /**
+             * Get the double representation from the value store in it's BSON representation
+             *
+             * @return the double representation from the value store in it's BSON representation
+             */
+            double getValueDouble() const;
         };
 
+    private:
         /**
          * The input types the Document can have
          */
@@ -155,6 +174,15 @@ namespace bson {
          * @param typeCode the typeCode to write into the Document
          */
         void writeTypeCodeAndKey(unsigned char typeCode);
+
+        /**
+         * Insert an element inside the document with the given information
+         * The key will be find in _lastKey attribute
+         *
+         * @param valueType the type of the value store inside the element
+         * @param elementBuffer the value to store inside the element as it's BSON representation
+         */
+        void insertElement(type valueType, const std::vector<unsigned char> &elementBuffer);
 
     public:
         /**
