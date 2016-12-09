@@ -23,7 +23,7 @@ namespace network {
         _addr.sin_port = htons(port);
     }
 
-    sockaddr_in SockAddr::getAddr() const
+    const sockaddr_in& SockAddr::getAddr() const
     {
         return _addr;
     }

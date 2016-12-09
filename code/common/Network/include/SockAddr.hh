@@ -54,7 +54,7 @@ namespace network {
          * getter the sockaddr_in structure
          * @return the sockaddr_in structure
          */
-        sockaddr_in getAddr() const;
+        const sockaddr_in& getAddr() const;
 
         /**
          * set ip of host
