@@ -52,7 +52,7 @@ namespace network {
 
         /**
          * getter the sockaddr_in structure
-         * @return reference to sockaddr_in structure
+         * @return the sockaddr_in structure
          */
         sockaddr_in getAddr() const;
 
