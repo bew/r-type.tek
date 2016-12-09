@@ -34,8 +34,7 @@ namespace network {
     void SocketWindowsUDP::bind() {
         SockAddr from(_port);
         sockaddr_in addr = from.getAddr();
-        int ret = ::bind(_socket, reinterpret_cast<SOCKADDR *>(&addr), sizeof(addr));
-        if (ret == SOCKET_ERROR)
+        if (::bind(_socket, reinterpret_cast<SOCKADDR *>(&addr), sizeof(addr)) == SOCKET_ERROR)
             throw SocketException("bind failed with error: " + std::to_string(WSAGetLastError()));
         _selector.monitor(this, NetworkSelect::READ);
     }

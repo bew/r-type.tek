@@ -6,6 +6,12 @@
 
 #pragma once
 
+#ifdef __linux__
+
+#include <arpa/inet.h>
+
+#endif
+
 #include <list>
 #include <map>
 #include "ASocket.hh"
@@ -15,12 +21,14 @@
 /**
  * namespace that contains all network abstraction
  */
-namespace network {
+namespace network
+{
 
     /**
      * Representation of UDP socket abstraction
      */
-    class ASocketUDP : public ASocket {
+    class ASocketUDP : public ASocket
+    {
     public:
         /**
          * Constructor of ASocketUDP
@@ -41,7 +49,7 @@ namespace network {
          *
          * @throw SocketException if the host is unknown
          */
-        virtual void add(const SockAddr& hostInfos, const std::string &msg);
+        virtual void add(const SockAddr &hostInfos, const std::string &msg);
 
         /**
          * get message by read buffer
@@ -51,9 +59,10 @@ namespace network {
          *
          * @throw SocketException the host is unknown
          */
-        virtual std::string get(const SockAddr& hostInfos);
+        virtual std::string get(const SockAddr &hostInfos);
 
         std::list<SockAddr> getConnections() const;
+
     protected:
 
         /**
@@ -67,7 +76,7 @@ namespace network {
          * @param hostInfos represents the host IP address and port
          * @param msg message that will be sent
          */
-        virtual void send(const SockAddr& hostInfos, const std::string &msg) = 0;
+        virtual void send(const SockAddr &hostInfos, const std::string &msg) = 0;
 
         /**
          * contains all hosts IPs and two buffers for each host, first is the write buffer and second is the read buffer

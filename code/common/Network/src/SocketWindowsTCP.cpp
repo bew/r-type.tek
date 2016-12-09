@@ -39,7 +39,8 @@ namespace network
 
     void SocketWindowsTCP::bind()
     {
-        if (::bind(_socket, reinterpret_cast<SOCKADDR *>(&_from), sizeof(_from)) == SOCKET_ERROR)
+        sockaddr_in addr = _from.getAddr();
+        if (::bind(_socket, reinterpret_cast<SOCKADDR *>(&addr), sizeof(addr)) == SOCKET_ERROR)
             throw SocketException("bind failed with error: " + std::to_string(WSAGetLastError()));
 
     }
