@@ -49,18 +49,21 @@ namespace network
         /**
          * read in socket and add read message to the read buffer
          *
+         * @param hostIp string that represents the host IP address or if the host address is unknown
+         *
          * @throw SocketException if connect fail
          */
-        virtual void recv();
+        virtual void recv(const std::string &hostIp);
 
         /**
-         * write message in socket and update position of write buffer
-         *
-         * @param msg message that will be sent
-         *
-         *  @throw SocketException if send fail
-         */
-        virtual void send(std::string &msg);
+          * write message in socket and update position of write buffer
+          *
+          * @param hostIp string that represents the host IP address
+          * @param msg message that will be sent
+          *
+          *  @throw SocketException if send fail or if the host address is unknown
+          */
+        virtual void send(const std::string &hostIp, const std::string &msg);
     };
 
 }

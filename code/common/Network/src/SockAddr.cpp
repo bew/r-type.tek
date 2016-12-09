@@ -23,7 +23,7 @@ namespace network {
         _addr.sin_port = htons(port);
     }
 
-    sockaddr_in &SockAddr::getAddr()
+    sockaddr_in SockAddr::getAddr() const
     {
         return _addr;
     }
@@ -32,4 +32,10 @@ namespace network {
         _addr.sin_addr.s_addr = inet_addr(addr.c_str());
     }
 
+    bool SockAddr::operator<(const SockAddr& rhs) const
+    {
+        std::string thisId(std::to_string(_addr.sin_addr.s_addr) + std::to_string(_addr.sin_port));
+        std::string rhsId(std::to_string(rhs._addr.sin_addr.s_addr) + std::to_string(rhs._addr.sin_port));
+        return thisId < rhsId;
+    }
 }

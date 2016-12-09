@@ -8,21 +8,16 @@
 
 #include <string>
 
-namespace network
-{
+namespace network {
     class ASocket;
 }
 
-#include "NetworkBuffer.hh"
 #include "NetworkSelect.hh"
 
 #ifdef __linux__
 #define Socket_t int
 
-#include <netinet/in.h>
-
 #elif defined _WIN32
-#include<winsock2.h>
 #define Socket_t SOCKET
 
 #endif
@@ -32,14 +27,12 @@ namespace network
 /**
  * namespace that contains all network abstraction
  */
-namespace network
-{
+namespace network {
 
     /**
      * Representation of socket abstraction
      */
-    class ASocket
-    {
+    class ASocket {
     public:
 
         /**
@@ -54,25 +47,6 @@ namespace network
         virtual void bind() = 0;
 
         /**
-         * test if socket is writable or readable and calls send or recv
-         */
-        virtual void update();
-
-        /**
-         * get message by read buffer
-         *
-         * @return message or empty string if nothing was read
-         */
-        virtual std::string get();
-
-        /**
-         * add message to the write buffer
-         *
-         * @param msg message that will be add to buffer
-         */
-        virtual void add(const std::string &msg);
-
-        /**
          * close socket
          */
         virtual void close() = 0;
@@ -85,31 +59,9 @@ namespace network
     protected:
 
         /**
-         * read in socket and add read message to the read buffer
-         */
-        virtual void recv() = 0;
-
-        /**
-         * write message in socket and update position of write buffer
-         *
-         * @param msg message that will be sent
-         */
-        virtual void send(const std::string &msg) = 0;
-
-        /**
          * contain the socket
          */
         Socket_t _socket;
-
-        /**
-         * circular buffer that contains read messages
-         */
-        NetworkBuffer _readBuffer;
-
-        /**
-         * circular buffer that contains message to send
-         */
-        NetworkBuffer _writeBuffer;
 
         /*
          * contain select encapsulation
@@ -120,11 +72,6 @@ namespace network
          * port use to socket connection
          */
         const unsigned short _port;
-
-        /*
-         * struct contain all information util for connection
-         */
-        sockaddr_in _from;
     };
 
 }

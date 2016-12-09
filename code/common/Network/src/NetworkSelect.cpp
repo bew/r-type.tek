@@ -4,8 +4,8 @@
  * @brief encapsulation of select system call
  */
 
-#include "../include/ASocket.hh"
-#include "../include/SocketException.hh"
+#include "ASocket.hh"
+#include "SocketException.hh"
 
 namespace network
 {

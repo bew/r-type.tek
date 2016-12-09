@@ -53,13 +53,20 @@ namespace network {
          * getter the sockaddr_in structure
          * @return reference to sockaddr_in structure
          */
-        sockaddr_in &getAddr();
+        sockaddr_in getAddr() const;
 
         /**
          * set ip of host
          * @param addr ip of host
          */
         void setAddr(const std::string &addr);
+
+        /**
+         * Compare two Sockaddr. Use to store Sockaddr in std map
+         * @param rhs Sockaddr that will be comparated with this
+         * @return true if ip and port of are less than rhs else false
+         */
+        bool operator<(const SockAddr& rhs) const;
 
     private:
 

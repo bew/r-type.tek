@@ -8,8 +8,8 @@
 #include <unistd.h>
 #include <cstring>
 #include <iostream>
-#include "../include/SocketLinuxTCP.h"
-#include "../include/SocketException.hh"
+#include "SocketLinuxTCP.h"
+#include "SocketException.hh"
 
 namespace network
 {
@@ -27,7 +27,7 @@ namespace network
 
     void SocketLinuxTCP::bind()
     {
-        if (::bind(_socket, reinterpret_cast<sockaddr *>(&_from), sizeof(_from)) != 0)
+        if (::bind(_socket, reinterpret_cast<sockaddr *>(&(_from.getAddr())), sizeof(_from.getAddr())) != 0)
             throw SocketException("could not bind TCP socket: " + std::to_string(errno));
         _selector.monitor(this, NetworkSelect::READ);
     }
@@ -49,8 +49,8 @@ namespace network
 
     void SocketLinuxTCP::connect()
     {
-        _from.sin_addr.s_addr = inet_addr(SERVER_ADDR);
-        if (::connect(_socket, reinterpret_cast<struct sockaddr *>(&_from), sizeof(_from)) < 0)
+        _from.setAddr(SERVER_ADDR);
+        if (::connect(_socket, reinterpret_cast<struct sockaddr *>(&(_from.getAddr())), sizeof(_from.getAddr())) < 0)
             throw SocketException("Connect failed: " + std::to_string(errno));
     }
 
