@@ -39,7 +39,8 @@ namespace network
 
     void SocketWindowsTCP::bind()
     {
-        if (::bind(_socket, reinterpret_cast<SOCKADDR *>(&_from), sizeof(_from)) == SOCKET_ERROR)
+        sockaddr_in addr = _from.getAddr();
+        if (::bind(_socket, reinterpret_cast<SOCKADDR *>(&addr), sizeof(addr)) == SOCKET_ERROR)
             throw SocketException("bind failed with error: " + std::to_string(WSAGetLastError()));
 
     }
@@ -61,11 +62,12 @@ namespace network
 
     void SocketWindowsTCP::connect()
     {
-        _from.sin_addr.s_addr = inet_addr(SERVER_ADDR);
+        _from.setAddr(SERVER_ADDR);
+        sockaddr_in from = _from.getAddr();
 
         int ret = ::WSAConnect(_socket,
-                               reinterpret_cast<SOCKADDR *>(&_from),
-                               sizeof(_from),
+                               reinterpret_cast<SOCKADDR *>(&from),
+                               sizeof(_from.getAddr()),
                                nullptr,
                                nullptr,
                                nullptr,
@@ -100,7 +102,6 @@ namespace network
         recvOverlapped.hEvent = WSACreateEvent();
         if (recvOverlapped.hEvent == nullptr)
             throw SocketException("WSACreateEvent failed: " + std::to_string(WSAGetLastError()));
-        int fromSize = sizeof(_from);
         while (buffer.buf[0] == 0)
         {
             flag = 0;
@@ -144,7 +145,6 @@ namespace network
 
         WSAOVERLAPPED sndOverlapped;
         DWORD flag;
-        int fromSize = sizeof(_from);
         DWORD numberOfBytesSnd = 0;
 
         flag = 0;

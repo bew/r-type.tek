@@ -4,7 +4,7 @@
  * @brief class for socket exception
  */
 
-#include "../include/SocketException.hh"
+#include "SocketException.hh"
 
 namespace network {
 
