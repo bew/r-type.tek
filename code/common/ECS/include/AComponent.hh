@@ -26,6 +26,7 @@ namespace ECS {
 	enum ComponentType : unsigned char
 	{
 	    NONE = 0,
+	    TEST,
 	    TYPE,
 	    SPRITE,
 	    LIFE,
@@ -57,8 +58,7 @@ namespace ECS {
 	     */
 	    virtual ComponentType	getType() const = 0;
 
-	private:
-
+	protected:
 	    /**
 	     * Type of the component.
 	     */
