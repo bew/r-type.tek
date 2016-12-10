@@ -24,8 +24,11 @@ namespace ECS {
 	 * Implement a generic object pool, made for not allocating objects you
 	 * need outside the initialisation of the pool. It is safer for memory
 	 * management and awesome for real-time programs.
-	 * It take as template type T the type you want to allocate, and as F a
+	 * It take as template type ObjectType the type you want to allocate, and as Factory a
 	 * simple factory for building the objects with their defaults arguments.
+	 * The type ObjecType must inherit from Poolable class and implement its own clean
+	 * method.
+	 *
 	 * The factory must be a simple fonctor returning an dynamically
 	 * allocated object, which will be freed at the end of the pool's life
 	 * with the factory method remove.
@@ -73,6 +76,7 @@ namespace ECS {
 	    void	operator<<(ObjectType *&obj)
 		{
 		    if (obj && _offset != 0) {
+			obj->clean();
 			_offset--;
 			_elems[_offset] = obj;
 			obj = nullptr;
