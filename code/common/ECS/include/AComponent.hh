@@ -55,7 +55,7 @@ namespace ECS {
 	     * Getter for the component type.
 	     * @return the component type.
 	     */
-	    virtual ComponentType	getType() const = 0;
+	    ComponentType	getType() const;
 
 	private:
 
