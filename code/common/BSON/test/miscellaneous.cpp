@@ -16,7 +16,7 @@
 TEST(Miscellaneous, Value_cant_be_key) {
     bson::Document document;
 
-    EXPECT_THROW(document << 42, bson::BsonException);
+    ASSERT_THROW(document << 42, bson::BsonException);
 }
 
 /**
@@ -27,7 +27,7 @@ TEST(Miscellaneous, C_string_can_only_be_key) {
 
     document << u8"stringKey";
 
-    EXPECT_THROW(document << u8"toto", bson::BsonException);
+    ASSERT_THROW(document << u8"toto", bson::BsonException);
 }
 
 /**
@@ -36,5 +36,14 @@ TEST(Miscellaneous, C_string_can_only_be_key) {
 TEST(Miscellaneous, Key_cant_be_empty) {
     bson::Document document;
 
-    EXPECT_THROW(document << u8"", bson::BsonException);
+    ASSERT_THROW(document << u8"", bson::BsonException);
+}
+
+/**
+ * Check if a key must exist
+ */
+TEST(Miscellaneous, Key_must_exist) {
+    bson::Document document;
+
+    ASSERT_THROW(document["none"], std::out_of_range);
 }

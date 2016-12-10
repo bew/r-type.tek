@@ -31,7 +31,7 @@ namespace bson {
             /**
              * The type of the value store inside the element
              */
-            type _valueType;
+            bson::type _valueType;
 
             /**
              * The key of the value store inside the element
@@ -51,7 +51,7 @@ namespace bson {
              * @param key the key of the value passed
              * @param value the value as it's BSON representation
              */
-            Element(type valueType, const std::string &key, const std::vector<unsigned char> &value);
+            Element(bson::type valueType, const std::string &key, const std::vector<unsigned char> &value);
 
             /**
              * Create an Element by copy and retrieve the values store from the given Element
@@ -80,7 +80,7 @@ namespace bson {
              * @param valueType the type that need to match the Element's value type
              * @throw BsonException if the type given in parameter doesn't match the Element's value type
              */
-            void isRightType(type valueType) const;
+            void isRightType(bson::type valueType) const;
 
         public:
             /**
@@ -124,6 +124,20 @@ namespace bson {
              * @param[out] string the string representation from the value store in it's BSON representation
              */
             void getValue(std::string &string) const;
+
+            /**
+             * Get the Document representation from the value store in it's BSON representation
+             *
+             * @return the Document representation from the value store in it's BSON representation
+             */
+            Document getValueDocument() const;
+
+            /**
+             * Get the Document representation from the value store in it's BSON representation
+             *
+             * @param[out] document the Document representation from the value store in it's BSON representation
+             */
+            void getValue (Document &document) const;
         };
 
     private:
@@ -151,9 +165,9 @@ namespace bson {
         std::vector<unsigned char> _buffer;
 
         /**
-         * Store the BSON represensation of the Document composed of all the given inputs as Element usable
+         * Store the BSON representation of the Document composed of all the given inputs as Element usable
          */
-        std::map<const std::string, Element> _elements;
+        std::map<const std::string, Document::Element> _elements;
 
     public:
         /**
@@ -175,6 +189,14 @@ namespace bson {
          * @return a Document containing the values of the Document pass in parameter
          */
         Document &operator=(const Document &document);
+
+        /**
+         * Create a Document by deserialization of the given buffer which is a valid BSON representation of a Document
+         *
+         * @param buffer the buffer which will be deserialiazed to get the Document
+         * @throw BsonException if the given buffer is invalid
+         */
+        Document(const std::vector<unsigned char> &buffer);
 
         /**
          * Destroy the Document
@@ -286,7 +308,29 @@ namespace bson {
          */
         Document &operator<<(int64_t integer);
 
-        Document::Element& operator[](const std::string &key);
+        /**
+         * Get the Element linked to the given key which is the representation of a value inside the BSON representation of the Document
+         *
+         * @param key the key of the Element to get
+         * @return the Element of the given key with the value store in it
+         */
+        const Document::Element& operator[](const std::string &key) const;
+
+        /**
+         * Compare if two Documents are the same
+         *
+         * @param document the second Document to compare
+         * @return true if the Documents are the same else false
+         */
+        bool operator==(const Document &document) const;
+
+        /**
+         * Compare if two Documents aren't the same
+         *
+         * @param document the second Document to compare
+         * @return true if the Documents aren't the same else false
+         */
+        bool operator!=(const Document &document) const;
     };
 }
 
