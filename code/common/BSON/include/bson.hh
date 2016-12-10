@@ -54,6 +54,11 @@ namespace bson {
             {'\x10', bson::INT32},
             {'\x12', bson::INT64},
     };
+
+    class BsonException : public std::runtime_error {
+    public:
+        BsonException(const std::string &e) : std::runtime_error(e) {}
+    };
 }
 
 #endif //BSON_HH

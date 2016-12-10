@@ -2,7 +2,7 @@
 /**
  * @file Entity.hh
  * @author Alexis
- * @brief This class implement the entities.
+ * @brief This class implement the base entity.
  */
 
 #pragma once

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(LibraryLoader)
-set(LIB_NAME libraryLoader)
+project(ECS)
+set(LIB_NAME libECS)
 set(LIB_TEST_NAME ${LIB_NAME}_test)
 set(TEST_EXE ${LIB_TEST_NAME}_exe)
 
