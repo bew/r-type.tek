@@ -76,6 +76,7 @@ namespace ECS {
 	    void	operator<<(ObjectType *&obj)
 		{
 		    if (obj && _offset != 0) {
+			obj->clean();
 			_offset--;
 			_elems[_offset] = obj;
 			obj = nullptr;
