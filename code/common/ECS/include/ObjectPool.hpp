@@ -21,6 +21,11 @@ namespace ECS {
     namespace Pools {
 
 	/**
+	 * WorldPools needed for the factories.
+	 */
+	class WorldPools;
+
+       /**
 	 * Implement a generic object pool, made for not allocating objects you
 	 * need outside the initialisation of the pool. It is safer for memory
 	 * management and awesome for real-time programs.
@@ -51,10 +56,10 @@ namespace ECS {
 	     * Constructor. Allocate the objects.
 	     * @param nbr The number of initially created objects.
 	     */
-	    ObjectPool(unsigned nbr)
+	    ObjectPool(unsigned nbr, WorldPools &pools)
 		: _elems(nbr),
 		  _offset(0),
-		  _factory(Factory())
+		  _factory(Factory(pools))
 		{    
 		    for (auto &e : _elems)
 			e = _factory();
