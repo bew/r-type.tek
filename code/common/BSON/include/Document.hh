@@ -11,6 +11,7 @@
 #define BSON_DOCUMENT_HH
 
 #include <vector>
+#include <typeinfo>
 #include "bson.hh"
 
 /**
@@ -72,6 +73,16 @@ namespace bson {
              */
             ~Element();
 
+        private:
+            /**
+             * Check if the Element's value type is of the type given in parameter
+             *
+             * @param valueType the type that need to match the Element's value type
+             * @throw BsonException if the type given in parameter doesn't match the Element's value type
+             */
+            void isRightType(type valueType) const;
+
+        public:
             /**
              * Get the type of the value store inside the Element
              *
@@ -87,22 +98,32 @@ namespace bson {
             const std::string &getKey() const;
 
             /**
-             * Get the real value representation from the value store in it's BSON representation
-             *
-             * @tparam ValueType the type of the value that need to be converted
-             * @param[out] value where to store the value converted
-             */
-            template <typename ValueType>
-            void getValue(ValueType &value) const {
-                value = this->getValueDouble();
-            }
-
-            /**
              * Get the double representation from the value store in it's BSON representation
              *
              * @return the double representation from the value store in it's BSON representation
              */
             double getValueDouble() const;
+
+            /**
+             * Get the double representation from the value store in it's BSON representation
+             *
+             * @param[out] floating the double representation from the value store in it's BSON representation
+             */
+            void getValue(double &floating) const;
+
+            /**
+             * Get the string representation from the value store in it's BSON representation
+             *
+             * @return the string representation from the value store in it's BSON representation
+             */
+            std::string getValueString() const;
+
+            /**
+             * Get the string representation from the value store in it's BSON representation
+             *
+             * @param[out] string the string representation from the value store in it's BSON representation
+             */
+            void getValue(std::string &string) const;
         };
 
     private:

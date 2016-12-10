@@ -9,8 +9,6 @@
 
 #include "Document.hh"
 #include "Endianess.hh"
-#include <iostream>
-
 
 namespace bson {
 
@@ -37,6 +35,11 @@ namespace bson {
     Document::Element::~Element() {
     }
 
+    void Document::Element::isRightType(type valueType) const {
+        if (valueType != _valueType)
+            throw BsonException("The value store inside the element is not the same as requested.");
+    }
+
     type Document::Element::getValueType() const {
         return _valueType;
     }
@@ -46,6 +49,7 @@ namespace bson {
     }
 
     double Document::Element::getValueDouble() const {
+        this->isRightType(DOUBLE);
 
         union {
             double floating;
@@ -56,6 +60,20 @@ namespace bson {
             cutFloating.bytes[i] = _value[i];
 
         return (IS_BIG_ENDIAN ? swap_endian<double>(cutFloating.floating) : cutFloating.floating);
+    }
+
+    void Document::Element::getValue(double &floating) const {
+        floating = getValueDouble();
+    }
+
+    std::string Document::Element::getValueString() const {
+        this->isRightType(STRING);
+
+        return std::string(_value.begin(), _value.end());
+    }
+
+    void Document::Element::getValue(std::string &string) const {
+        string = getValueString();
     }
 
     Document::Document() :_nextInputType(bson::Document::KEY) {
@@ -168,16 +186,13 @@ namespace bson {
 
             this->writeTypeCodeAndKey(typesCodes.at(valueType));
             std::vector<unsigned char> elementBuffer;
-            for (const auto &byte : cutInteger.bytes) {
+            for (const auto &byte : cutInteger.bytes)
                 _buffer.push_back(byte);
-                elementBuffer.push_back(byte);
-            }
             for (const auto &character : string) {
                 _buffer.push_back(static_cast<unsigned char>(character));
                 elementBuffer.push_back(static_cast<unsigned char>(character));
             }
             _buffer.push_back('\x00');
-            elementBuffer.push_back('\x00');
 
             this->insertElement(valueType, elementBuffer);
 
