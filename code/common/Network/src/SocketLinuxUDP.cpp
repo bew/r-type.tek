@@ -8,7 +8,7 @@
 #include <netdb.h>
 #include <cstring>
 #include <iostream>
-#include "SocketLunixUDP.h"
+#include "SocketLinuxUDP.h"
 #include "SocketException.hh"
 
 namespace network
