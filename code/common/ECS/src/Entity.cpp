@@ -22,9 +22,9 @@ namespace ECS {
 	{
 	}
 	
-	Component::AComponent	*Entity::getComponent(Component::ComponentType type)
+	Component::AComponent	&Entity::getComponent(Component::ComponentType type)
 	{
-	    return _component[type];
+	    return *(_component[type]);
 	}
 
 	void	Entity::clean()

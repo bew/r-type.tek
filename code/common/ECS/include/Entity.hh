@@ -46,7 +46,7 @@ namespace ECS {
 	     * @param type The type of component requested.
 	     * @return The component requested, or a nullptr if it doesn't exist.
 	     */
-	    Component::AComponent	*getComponent(Component::ComponentType type);
+	    Component::AComponent	&getComponent(Component::ComponentType type);
 
 	    /**
 	     * add a component.
@@ -59,7 +59,11 @@ namespace ECS {
 		    _component[type] = static_cast<Component::AComponent *>(comp);
 		}
 
+	    /**
+	     * Clean function from poolable, return all the components to the WorldPool.
+	     */
 	    void	clean() override;
+
 	private:
 	    /**
 	     * Map of components of the entity.
