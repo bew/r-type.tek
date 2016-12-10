@@ -7,6 +7,8 @@
 
 #pragma once
 
+#include "WorldPools.hh"
+#include "APoolable.hh"
 #include "AComponent.hh"
 
 #include <map>
@@ -24,13 +26,13 @@ namespace ECS {
 	/**
 	 * Class implementing an entity.
 	 */
-	class Entity
+	class Entity : public Pools::APoolable
 	{
 	public:
 	    /**
 	     * Constructor.
 	     */
-	    Entity();
+	    Entity(Pools::WorldPools &pools);
 	    /**
 	     * Destructor.
 	     */
@@ -57,6 +59,7 @@ namespace ECS {
 		    _component[type] = static_cast<Component::AComponent *>(comp);
 		}
 
+	    void	clean() override;
 	private:
 	    /**
 	     * Map of components of the entity.

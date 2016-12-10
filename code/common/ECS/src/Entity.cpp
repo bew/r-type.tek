@@ -5,13 +5,16 @@
  * @brief This class implement the base entity.
  */
 
+#include "WorldPools.hh"
+#include "APoolable.hh"
 #include "Entity.hh"
 
 namespace ECS {
 
     namespace Entity {
     
-	Entity::Entity()
+	Entity::Entity(Pools::WorldPools &pools)
+	    : Pools::APoolable(pools)
 	{
 	}
 
@@ -22,6 +25,14 @@ namespace ECS {
 	Component::AComponent	*Entity::getComponent(Component::ComponentType type)
 	{
 	    return _component[type];
+	}
+
+	void	Entity::clean()
+	{
+	    // for (auto& kv : _component) {
+	    //     _pools << kv.second;
+	    // }
+	    
 	}
 
     }

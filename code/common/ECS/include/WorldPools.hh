@@ -14,6 +14,15 @@
 
 #pragma once
 
+/**
+ * Forward declaration of WorldPools class.
+ */
+namespace ECS {
+    namespace Pools {
+class WorldPools;
+    }
+}
+
 #include "ObjPoolFactories.hpp"
 #include "Entity.hh"
 #include "ObjectPool.hpp"
