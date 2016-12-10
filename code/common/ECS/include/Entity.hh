@@ -44,14 +44,18 @@ namespace ECS {
 	     * @param type The type of component requested.
 	     * @return The component requested, or a nullptr if it doesn't exist.
 	     */
-	    Component::AComponent	*getComponent(Component::ComponentType type) const;
+	    Component::AComponent	*getComponent(Component::ComponentType type);
 
 	    /**
 	     * add a component.
 	     * @param type the type of the component.
 	     * @param comp the component.
 	     */
-	    void	addComponent(Component::ComponentType type, Component::AComponent *comp);
+	    template<typename CompoType>
+	    void	addComponent(Component::ComponentType type, CompoType *comp)
+		{
+		    _component[type] = static_cast<Component::AComponent *>(comp);
+		}
 
 	private:
 	    /**
