@@ -8,6 +8,7 @@ set(RT_COMMON_NAMES)
 add_subdirectory(BSON)
 add_subdirectory(LibraryLoader)
 add_subdirectory(ECS)
+add_subdirectory(Network)
 
 # Every sub libs must do more or less this
 #set(LIB_NAME ...)
