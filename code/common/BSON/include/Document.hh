@@ -236,28 +236,28 @@ namespace bson {
         };
 
         /**
-         * stored the next input type the document need to receive
+         * Store the next input type the document need to receive
          */
         inputTypes _nextInputType;
 
         /**
-         * stored the last key given
+         * Store the last key given
          */
         std::string _lastKey;
 
         /**
-         * stored the BSON representation of the Document composed of all the given inputs
+         * Store the BSON representation of the Document composed of all the given inputs
          */
         std::vector<unsigned char> _buffer;
 
         /**
-         * stored the BSON representation of the Document composed of all the given inputs as Element usable
+         * Store the BSON representation of the Document composed of all the given inputs as Element usable
          */
         std::map<const std::string, Document::Element> _elements;
 
     public:
         /**
-         * Create an empty Document in order to serialize data into BSON and stored them
+         * Create an empty Document in order to serialize data into BSON and store them
          */
         Document(void);
 
