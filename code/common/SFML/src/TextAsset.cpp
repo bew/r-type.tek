@@ -1,10 +1,15 @@
 #include "TextAsset.hh"
 
+const unsigned int graphic::TextStyle::DEFAULT_SIZE = 30;
+const float graphic::TextStyle::DEFAULT_THICKNESS = 1;
+const sf::Color graphic::TextStyle::DEFAULT_FILL(255, 255, 255, 255);
+const sf::Color graphic::TextStyle::DEFAULT_OUT(255, 255, 255, 255);
+
 graphic::TextStyle::TextStyle(void) :
-  thickness(graphic::TextStyle::DEFAUL_THICKNESS),
-  size(graphic::TextStyle::DEFAUL_SIZE),
-  fill(graphic::TextStyle::DEFAUL_FILL),
-  out(graphic::TextStyle::DEFAUL_OUT)
+  thickness(graphic::TextStyle::DEFAULT_THICKNESS),
+  size(graphic::TextStyle::DEFAULT_SIZE),
+  fill(graphic::TextStyle::DEFAULT_FILL),
+  out(graphic::TextStyle::DEFAULT_OUT)
 {}
 
 void graphic::TextStyle::setFill(unsigned char r, unsigned char g, unsigned char b, unsigned char a) {
@@ -21,11 +26,11 @@ graphic::TextAsset::TextAsset(const std::string &path) {
   asset.open(path, std::fstream::in);
   if (!asset.is_open())
     throw AssetException("Unable to load text asset '" + path + "'");
-  _text = new std::String(std::istreambuf_iterator<char>(asset), std::istreambuf_iterator<char>());
+  _text = new std::string(std::istreambuf_iterator<char>(asset), std::istreambuf_iterator<char>());
   asset.close();
 }
 
-const std::String &graphic::TextAsset::getText(void) const {
+const std::string &graphic::TextAsset::getText(void) const {
   return *_text;
 }
 

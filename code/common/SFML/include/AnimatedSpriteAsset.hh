@@ -6,10 +6,8 @@
 
 #include "Document.hh"
 #include "Window.hh"
-#inclued "Animation.hh"
+#include "Animation.hh"
 #include "AssetException.hh"
-
-#include "FORWARD.hh"
 
 namespace graphic {
 
@@ -28,14 +26,7 @@ namespace graphic {
      */
     AnimatedSpriteAsset(const std::string &path, const std::string &animSpecPath);
 
-    /**
-     * Draw the current texture
-     *
-     * @param window: the window to draw the texture on
-     * @param position: where to draw the texture
-     * @param animation: the object used to determine which part of the texture to draw
-     */
-    void draw(graphic::Window &window, const world::position &position, const graphic::Animation &animation) const;
+    //get Frame Return a SPRITE BY COPY with rect done right, depending of Animation and tick
     
   protected:
 

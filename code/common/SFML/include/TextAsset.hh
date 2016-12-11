@@ -43,7 +43,7 @@ namespace graphic {
     static const sf::Color DEFAULT_FILL;
     static const sf::Color DEFAULT_OUT;
     static const unsigned int DEFAULT_SIZE;
-    static const float DEFAUL_THICKNESS;
+    static const float DEFAULT_THICKNESS;
   };
   
   class TextAsset {
@@ -56,6 +56,11 @@ namespace graphic {
      */
     TextAsset(const std::string &path);
 
+    /*
+     * Default dtor
+     */
+    ~TextAsset(void);
+    
     /**
      * Get the stored text
      *
@@ -63,14 +68,6 @@ namespace graphic {
      */
     const std::string &getText(void) const;
 
-    /**
-     * Draw the text on surface
-     *
-     * @param window: surface to draw on
-     * @param font: font to use when drawing
-     * @param style: style to use when drawing
-     */
-    void draw(graphic::Window &window, graphic::FontAsset font, const graphic::TextStyle &style);
   protected:
     std::string *_text;
   };

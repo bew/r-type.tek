@@ -7,8 +7,6 @@
 #include "Window.hh"
 #include "AssetException.hh"
 
-#include "FORWARD.hh"
-
 namespace graphic {
 
   /**
@@ -26,12 +24,11 @@ namespace graphic {
     SpriteAsset(const std::string &path);
 
     /**
-     * Draw the current texture
+     * Return the wrapped texture
      *
-     * @param window: the window to draw the texture on
-     * @param position: where to draw the texture
+     * @reetur the texture
      */
-    void draw(graphic::Window &window, const world::Position &position) const;
+    const sf::Texture &getLowLevelTexture(void) const;
     
   protected:
     /**

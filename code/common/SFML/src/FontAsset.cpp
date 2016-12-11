@@ -5,6 +5,6 @@ graphic::FontAsset::FontAsset(const std::string &path) {
     throw AssetException("Unable to load font from asset '" + path + "'");
 }
 
-const sf::Font &graphic::FontAsset::getLowLevelFont(void) {
+const sf::Font &graphic::FontAsset::getLowLevelFont(void) const {
   return _font;
 }

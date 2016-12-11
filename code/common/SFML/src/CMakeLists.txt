@@ -1,4 +1,4 @@
-set(LIB_SOURCE Window.cpp Animation.cpp AssetException.cpp SpriteAsset.cpp FontAsset.cpp)
+set(LIB_SOURCE AssetException.cpp SpriteAsset.cpp AnimatedSpriteAsset.cpp FontAsset.cpp TextAsset.cpp MusicAsset.cpp SoundAsset.cpp AssetStore.cpp)
 set(LIB_DEPENDENCIES sfml-graphics sfml-audio sfml-window sfml-system)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
