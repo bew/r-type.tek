@@ -88,7 +88,7 @@ namespace bson {
              *
              * @return the type of the value stored inside the Element
              */
-            type getValueType(void) const;
+            bson::type getValueType(void) const;
 
             /**
              * Get the key of the value stored inside the Element
@@ -311,7 +311,7 @@ namespace bson {
          * @param valueType the type of the value stored inside the element
          * @param elementBuffer the value to stored inside the element as it's BSON representation
          */
-        void insertElement(type valueType, const std::vector<unsigned char> &elementBuffer);
+        void insertElement(bson::type valueType, const std::vector<unsigned char> &elementBuffer);
 
     public:
         /**
