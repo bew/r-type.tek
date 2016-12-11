@@ -16,14 +16,19 @@ graphic::AssetStore::~AssetStore(void)
 // MUSIC
 
 void graphic::AssetStore::loadMusic(const std::string &path) {
-  _musics.emplace(path, _root + "/" + graphic::AssetStore::MUSIC_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::MUSIC_EXTENSION);
+  try {
+    _musics.emplace(path, _root + "/" + graphic::AssetStore::MUSIC_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::MUSIC_EXTENSION);
+  }
+  catch (const AssetException &e) {
+    _musics.emplace(path, _root + "/" + graphic::AssetStore::MUSIC_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::MUSIC_EXTENSION);
+  }
 }
 
 graphic::MusicAsset &graphic::AssetStore::getMusic(const std::string &path) {
   try {
     return _musics.at(path);
   }
-  catch (const std:: out_of_range &e) {
+  catch (const std::out_of_range &e) {
     throw AssetException(std::string("Unable to find asset '") + e.what() + "'");
   }
 };
@@ -35,7 +40,12 @@ void graphic::AssetStore::freeMusic(const std::string &path) {
 // SOUND
 
 void graphic::AssetStore::loadSound(const std::string &path) {
-  _sounds.emplace(path, _root + "/" + graphic::AssetStore::SOUND_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::SOUND_EXTENSION);
+  try {
+    _sounds.emplace(path, _root + "/" + graphic::AssetStore::SOUND_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::SOUND_EXTENSION);
+  }
+  catch (const AssetException &e) {
+    _sounds.emplace(path, _root + "/" + graphic::AssetStore::SOUND_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::SOUND_EXTENSION);
+  }
 }
 
 graphic::SoundAsset &graphic::AssetStore::getSound(const std::string &path) {
@@ -54,14 +64,19 @@ void graphic::AssetStore::freeSound(const std::string &path) {
 // SPRITE
 
 void graphic::AssetStore::loadSprite(const std::string &path) {
-  _sprites.emplace(path, _root + "/" + graphic::AssetStore::SPRITE_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::SPRITE_EXTENSION);
+  try {
+    _sprites.emplace(path, _root + "/" + graphic::AssetStore::SPRITE_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::SPRITE_EXTENSION);
+  }
+  catch (const AssetException &e) {
+    _sprites.emplace(path, _root + "/" + graphic::AssetStore::SPRITE_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::SPRITE_EXTENSION);
+  }
 }
 
 graphic::SpriteAsset &graphic::AssetStore::getSprite(const std::string &path) {
   try {
     return _sprites.at(path);
   }
-  catch (const std:: out_of_range &e) {
+  catch (const std::out_of_range &e) {
     throw AssetException(std::string("Unable to find asset '") + e.what() + "'");
   }
 };
@@ -73,18 +88,29 @@ void graphic::AssetStore::freeSprite(const std::string &path) {
 // ANIMATEDSPRITE
 
 void graphic::AssetStore::loadAnimatedSprite(const std::string &path) {
-  _animatedSprites.emplace(std::piecewise_construct,
-			   std::forward_as_tuple(path),
-			   std::forward_as_tuple(_root + "/" + graphic::AssetStore::SPRITE_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::SPRITE_EXTENSION,
-			   _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::ANIMATED_EXTENSION
-						 ));
+  try {
+    _animatedSprites.emplace(std::piecewise_construct,
+			     std::forward_as_tuple(path),
+			     std::forward_as_tuple(_root + "/" + graphic::AssetStore::SPRITE_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::SPRITE_EXTENSION,
+						   _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::ANIMATED_EXTENSION
+						   )
+			     );
+  }
+  catch (const AssetException &e) {
+    _animatedSprites.emplace(std::piecewise_construct,
+                             std::forward_as_tuple(path),
+                             std::forward_as_tuple(_root + "/" + graphic::AssetStore::SPRITE_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::SPRITE_EXTENSION,
+                                                   _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::ANIMATED_EXTENSION
+                                                   )
+                             );
+  }
 }
 
 graphic::AnimatedSpriteAsset &graphic::AssetStore::getAnimatedSprite(const std::string &path) {
   try {
     return _animatedSprites.at(path);
   }
-  catch (const std:: out_of_range &e) {
+  catch (const std::out_of_range &e) {
     throw AssetException(std::string("Unable to find asset '") + e.what() + "'");
   }
 };
@@ -96,14 +122,19 @@ void graphic::AssetStore::freeAnimatedSprite(const std::string &path) {
 // FONT
 
 void graphic::AssetStore::loadFont(const std::string &path) {
-  _fonts.emplace(path, _root + "/" + graphic::AssetStore::FONT_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::FONT_EXTENSION);
+  try {
+    _fonts.emplace(path, _root + "/" + graphic::AssetStore::FONT_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::FONT_EXTENSION);
+  }
+  catch (const AssetException &e) {
+    _fonts.emplace(path, _root + "/" + graphic::AssetStore::FONT_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::FONT_EXTENSION);
+  }
 }
 
 graphic::FontAsset &graphic::AssetStore::getFont(const std::string &path) {
   try {
     return _fonts.at(path);
   }
-  catch (const std:: out_of_range &e) {
+  catch (const std::out_of_range &e) {
     throw AssetException(std::string("Unable to find asset '") + e.what() + "'");
   }
 };
@@ -115,14 +146,19 @@ void graphic::AssetStore::freeFont(const std::string &path) {
 // TEXT
 
 void graphic::AssetStore::loadText(const std::string &path) {
-  _texts.emplace(path, _root + "/" + graphic::AssetStore::TEXT_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::TEXT_EXTENSION);
+  try {
+    _texts.emplace(path, _root + "/" + graphic::AssetStore::TEXT_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::TEXT_EXTENSION);
+  }
+  catch (const AssetException &e) {
+    _texts.emplace(path, _root + "/" + graphic::AssetStore::TEXT_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::TEXT_EXTENSION);
+  }
 }
 
 graphic::TextAsset &graphic::AssetStore::getText(const std::string &path) {
   try {
     return _texts.at(path);
   }
-  catch (const std:: out_of_range &e) {
+  catch (const std::out_of_range &e) {
     throw AssetException(std::string("Unable to find asset '") + e.what() + "'");
   }
 };

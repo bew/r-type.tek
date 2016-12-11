@@ -4,7 +4,7 @@
 #include <string>
 #include <SFML/Graphics/Texture.hpp>
 
-#include "Document.hh"
+#include "BSON/Document.hh"
 #include "Window.hh"
 #include "Animation.hh"
 #include "AssetException.hh"
