@@ -104,6 +104,24 @@ namespace bson {
         ptr = nullptr;
     }
 
+    int32_t Document::Element::getValueInt32() const {
+        this->isRightType(bson::INT32);
+
+        union {
+            int32_t integer;
+            unsigned char bytes[4];
+        } cutInteger;
+
+        for (size_t i = 0; i < 4; ++i)
+            cutInteger.bytes[i] = _value[i];
+
+        return (IS_BIG_ENDIAN ? swap_endian<int32_t >(cutInteger.integer) : cutInteger.integer);
+    }
+
+    void Document::Element::getValue(int32_t &integer) const {
+        integer = this->getValueInt32();
+    }
+
     Document::Document()
     : _nextInputType(Document::KEY) {
     }

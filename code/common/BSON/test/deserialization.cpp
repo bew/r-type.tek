@@ -160,3 +160,23 @@ TEST(Deserialization, NullValue) {
     element.getValue(ptr);
     EXPECT_EQ(ptr, expected);
 }
+
+/**
+ * Check if the int32 deserialize correctly
+ */
+TEST(Deserialization, Int32) {
+    bson::Document document;
+    std::string key = u8"int32Key";
+    int32_t expected = 42;
+
+    document << key << expected;
+
+    bson::Document::Element element =  document[key];
+
+    EXPECT_EQ(element.getValueType(), bson::INT32);
+    EXPECT_EQ(element.getKey(), key);
+    EXPECT_EQ(element.getValueInt32(), expected);
+    int32_t integer;
+    element.getValue(integer);
+    EXPECT_EQ(integer, expected);
+}
