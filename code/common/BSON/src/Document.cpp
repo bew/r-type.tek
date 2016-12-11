@@ -214,7 +214,9 @@ namespace bson {
                 }
                 if (IS_BIG_ENDIAN)
                     size.integer = swap_endian<int32_t >(size.integer);
-                for (size_t limitIndex = bufferIndex + size.integer; bufferIndex < limitIndex; ++bufferIndex) {
+                if (valueType == bson::DOCUMENT)
+                    size.integer -= 4;
+                for (size_t limitIndex = bufferIndex + (size.integer); bufferIndex < limitIndex; ++bufferIndex) {
                     _buffer.push_back(buffer.at(bufferIndex));
                     elementBuffer.push_back(buffer.at(bufferIndex));
                 }
@@ -224,7 +226,6 @@ namespace bson {
                     _buffer.push_back(buffer.at(bufferIndex));
                     elementBuffer.push_back(buffer.at(bufferIndex));
                 }
-                ++bufferIndex;
             }
             this->insertElement(valueType, elementBuffer);
         }

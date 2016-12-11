@@ -88,3 +88,31 @@ TEST(Miscellaneous, Incomplete_Document) {
     document << "test";
     ASSERT_THROW(document.getBuffer(), bson::BsonException);
 }
+
+TEST(Miscellaneous, Integration1) {
+    bson::Document message;
+    bson::Document tomato;
+    bson::Document apple;
+
+    tomato << "price" << 21;
+    tomato << "vendor" << std::string(u8"Auchan");
+
+    apple << "price" << 42;
+    apple << "vendor" << std::string(u8"Carrefour");
+
+    message << "tomato" << tomato
+            << "apple" << apple;
+
+    int tomatoPrice;
+    tomatoPrice = tomato["price"].getValueInt32();
+    std::string tomatoVendor;
+    tomato["vendor"].getValue(tomatoVendor);
+
+    int applePrice;
+    applePrice = message["apple"].getValueDocument()["price"].getValueInt32();
+    std::string appleVendor;
+    message["apple"].getValueDocument()["vendor"].getValue(tomatoVendor);
+
+    const std::vector<unsigned char> &buffer = message.getBuffer();
+    bson::Document copyMessage(buffer);
+}
