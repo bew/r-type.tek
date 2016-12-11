@@ -108,6 +108,39 @@ TEST(Deserialization, Document) {
     EXPECT_EQ(string, expectedString);
 }
 
+
+/**
+ * Check if the bool deserialize correctly
+ */
+TEST(Deserialization, Bool) {
+    bson::Document expectedDocumentTrue;
+    std::string keyTrue = u8"trueKey";
+    bool expectedBoolTrue = true;
+    expectedDocumentTrue << keyTrue << expectedBoolTrue;
+
+    bson::Document::Element elementTrue =  expectedDocumentTrue[keyTrue];
+    EXPECT_EQ(elementTrue.getValueType(), bson::BOOL);
+    EXPECT_EQ(elementTrue.getKey(), keyTrue);
+    EXPECT_EQ(elementTrue.getValueBool(), expectedBoolTrue);
+    bool booleanTrue;
+    elementTrue.getValue(booleanTrue);
+    EXPECT_EQ(booleanTrue, expectedBoolTrue);
+
+    
+    bson::Document expectedDocumentFalse;
+    std::string keyFalse = u8"falseKey";
+    bool expectedBoolFalse = false;
+    expectedDocumentFalse << keyFalse << expectedBoolFalse;
+
+    bson::Document::Element elementFalse =  expectedDocumentFalse[keyFalse];
+    EXPECT_EQ(elementFalse.getValueType(), bson::BOOL);
+    EXPECT_EQ(elementFalse.getKey(), keyFalse);
+    EXPECT_EQ(elementFalse.getValueBool(), expectedBoolFalse);
+    bool booleanFalse;
+    elementFalse.getValue(booleanFalse);
+    EXPECT_EQ(booleanFalse, expectedBoolFalse);
+}
+
 /**
  * Check if the null value deserialize correctly
  */

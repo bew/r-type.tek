@@ -84,6 +84,16 @@ namespace bson {
         document = this->getValueDocument();
     }
 
+    bool Document::Element::getValueBool() const {
+        this->isRightType(bson::BOOL);
+
+        return _value.at(0);
+    }
+
+    void Document::Element::getValue(bool &boolean) const {
+        boolean = this->getValueBool();
+    }
+
     std::nullptr_t Document::Element::getValueNullValue() const {
         this->isRightType(bson::NULLVALUE);
 

@@ -146,6 +146,22 @@ namespace bson {
             void getValue(Document &document) const;
 
             /**
+             * Get the bool representation from the value store in it's BSON representation
+             *
+             * @throw BsonException if the asked type is not the one store
+             * @return the bool representation from the value store in it's BSON representation
+             */
+            bool getValueBool() const;
+
+            /**
+             * Get the bool representation from the value store in it's BSON representation
+             *
+             * @throw BsonException if the asked type is not the one store
+             * @param[out] boolean the bool representation from the value store in it's BSON representation
+             */
+            void getValue(bool &boolean) const;
+
+            /**
              * Get the null value representation from the value store in it's BSON representation
              *
              * @throw BsonException if the asked type is not the one store
