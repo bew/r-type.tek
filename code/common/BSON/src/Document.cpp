@@ -251,6 +251,9 @@ namespace bson {
     }
 
     std::vector<unsigned char> Document::getBuffer() const {
+        if (_nextInputType != Document::KEY)
+            throw BsonException("Incomplete document");
+
         std::vector<unsigned char> entireBuffer;
 
         union {

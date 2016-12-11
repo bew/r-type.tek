@@ -61,7 +61,7 @@ TEST(Miscellaneous, Ask_type_must_match) {
 
     document << "keyDouble" << 42.42;
     document << "keyString" << std::string("test");
-    document << "keyDocument" << document;
+    document << "keyDocument" << bson::Document();
     document << "keyBool" << true;
     document << "keyNullValue" << nullptr;
     document << "keyInt32" << static_cast<int32_t >(42);
@@ -77,4 +77,14 @@ TEST(Miscellaneous, Ask_type_must_match) {
     EXPECT_THROW(document["keyNullValue"].getValue(integer), bson::BsonException);
     EXPECT_THROW(document["keyInt32"].getValue(floating), bson::BsonException);
     EXPECT_THROW(document["keyInt64"].getValue(integer), bson::BsonException);
+}
+
+/**
+ * Check if the document is complete before serialization
+ */
+TEST(Miscellaneous, Incomplete_Document) {
+    bson::Document document;
+
+    document << "test";
+    ASSERT_THROW(document.getBuffer(), bson::BsonException);
 }
