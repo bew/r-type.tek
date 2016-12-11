@@ -317,6 +317,7 @@ namespace bson {
         /**
          * Get the BSON representation of the Document
          *
+         * @throw BsonException if the document is incomplete (next input is not key)
          * @return the binary buffer which is the BSON representation of the Document
          */
         std::vector<unsigned char> getBuffer() const;
