@@ -71,7 +71,7 @@ namespace bson {
             /**
              * Destroy the Element
              */
-            ~Element();
+            ~Element(void);
 
         private:
             /**
@@ -88,14 +88,14 @@ namespace bson {
              *
              * @return the type of the value store inside the Element
              */
-            type getValueType() const;
+            type getValueType(void) const;
 
             /**
              * Get the key of the value store inside the Element
              *
              * @return the key of the value store inside the Element
              */
-            const std::string &getKey() const;
+            const std::string &getKey(void) const;
 
             /**
              * Get the double representation from the value store in it's BSON representation
@@ -103,7 +103,7 @@ namespace bson {
              * @throw BsonException if the asked type is not the one store
              * @return the double representation from the value store in it's BSON representation
              */
-            double getValueDouble() const;
+            double getValueDouble(void) const;
 
             /**
              * Get the double representation from the value store in it's BSON representation
@@ -119,7 +119,7 @@ namespace bson {
              * @throw BsonException if the asked type is not the one store
              * @return the string representation from the value store in it's BSON representation
              */
-            std::string getValueString() const;
+            std::string getValueString(void) const;
 
             /**
              * Get the string representation from the value store in it's BSON representation
@@ -135,7 +135,7 @@ namespace bson {
              * @throw BsonException if the asked type is not the one store
              * @return the Document representation from the value store in it's BSON representation
              */
-            Document getValueDocument() const;
+            Document getValueDocument(void) const;
 
             /**
              * Get the Document representation from the value store in it's BSON representation
@@ -151,7 +151,7 @@ namespace bson {
              * @throw BsonException if the asked type is not the one store
              * @return the bool representation from the value store in it's BSON representation
              */
-            bool getValueBool() const;
+            bool getValueBool(void) const;
 
             /**
              * Get the bool representation from the value store in it's BSON representation
@@ -167,7 +167,7 @@ namespace bson {
              * @throw BsonException if the asked type is not the one store
              * @return the null value representation from the value store in it's BSON representation
              */
-            std::nullptr_t getValueNullValue() const;
+            std::nullptr_t getValueNullValue(void) const;
 
             /**
              * Get the null value representation from the value store in it's BSON representation
@@ -183,7 +183,7 @@ namespace bson {
              * @throw BsonException if the asked type is not the one store
              * @return the int32 representation from the value store in it's BSON representation
              */
-            int32_t getValueInt32() const;
+            int32_t getValueInt32(void) const;
 
             /**
              * Get the int32 representation from the value store in it's BSON representation
@@ -199,7 +199,7 @@ namespace bson {
              * @throw BsonException if the asked type is not the one store
              * @return the int64 representation from the value store in it's BSON representation
              */
-            int64_t getValueInt64() const;
+            int64_t getValueInt64(void) const;
 
             /**
              * Get the int64 representation from the value store in it's BSON representation
@@ -259,7 +259,7 @@ namespace bson {
         /**
          * Create an empty Document in order to serialize data into BSON and store them
          */
-        Document();
+        Document(void);
 
         /**
          * Create a Document by copy and retrieve the values store from the given Document
@@ -287,7 +287,7 @@ namespace bson {
         /**
          * Destroy the Document
          */
-        ~Document();
+        ~Document(void);
 
     private:
         /**
@@ -295,7 +295,7 @@ namespace bson {
          *
          * @throw BsonException if the waiting input is not a value
          */
-        void isInputValue() const;
+        void isInputValue(void) const;
 
         /**
          * Write the given typeCode followed by the last key received into the Document
@@ -320,7 +320,7 @@ namespace bson {
          * @throw BsonException if the document is incomplete (next input is not key)
          * @return the binary buffer which is the BSON representation of the Document
          */
-        std::vector<unsigned char> getBuffer() const;
+        std::vector<unsigned char> getBuffer(void) const;
 
         /**
          * Add a string as key into the Document
