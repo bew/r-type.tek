@@ -122,6 +122,16 @@ namespace bson {
         integer = this->getValueInt32();
     }
 
+    bool Document::Element::operator==(const Element &element) const {
+        return this == &element || (_valueType == element._valueType &&
+                                   _key == element._key &&
+                                   _value == element._value);
+    }
+
+    bool Document::Element::operator!=(const Element &element) const {
+        return !this->operator==(element);
+    }
+
     Document::Document()
     : _nextInputType(Document::KEY) {
     }
@@ -411,10 +421,10 @@ namespace bson {
     }
 
     bool Document::operator==(const Document &document) const {
-        return this == &document ||
-               (_nextInputType == document._nextInputType &&
-                _lastKey == document._lastKey &&
-                this->getBuffer() == document.getBuffer());
+        return this == &document || (_nextInputType == document._nextInputType &&
+                                    _lastKey == document._lastKey &&
+                                    this->getBuffer() == document.getBuffer() &&
+                                    _elements == document._elements);
     }
 
     bool Document::operator!=(const Document &document) const {

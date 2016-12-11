@@ -192,6 +192,22 @@ namespace bson {
              * @param[out] integer the int32 representation from the value store in it's BSON representation
              */
             void getValue(int32_t &integer) const;
+
+            /**
+             * Compare if two Elements are the same
+             *
+             * @param element the second Element to compare
+             * @return true if the Elements are the same else false
+             */
+            bool operator==(const Element& element) const;
+
+            /**
+             * Compare if two Elements aren't the same
+             *
+             * @param element the second Element to compare
+             * @return true if the Elements aren't the same else false
+             */
+            bool operator!=(const Element& element) const;
         };
 
     private:
