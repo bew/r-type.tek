@@ -84,6 +84,16 @@ namespace bson {
         document = this->getValueDocument();
     }
 
+    std::nullptr_t Document::Element::getValueNullValue() const {
+        this->isRightType(bson::NULLVALUE);
+
+        return nullptr;
+    }
+
+    void Document::Element::getValue(std::nullptr_t &ptr) const {
+        ptr = nullptr;
+    }
+
     Document::Document()
     : _nextInputType(Document::KEY) {
     }

@@ -100,6 +100,7 @@ namespace bson {
             /**
              * Get the double representation from the value store in it's BSON representation
              *
+             * @throw BsonException if the asked type is not the one store
              * @return the double representation from the value store in it's BSON representation
              */
             double getValueDouble() const;
@@ -107,6 +108,7 @@ namespace bson {
             /**
              * Get the double representation from the value store in it's BSON representation
              *
+             * @throw BsonException if the asked type is not the one store
              * @param[out] floating the double representation from the value store in it's BSON representation
              */
             void getValue(double &floating) const;
@@ -114,6 +116,7 @@ namespace bson {
             /**
              * Get the string representation from the value store in it's BSON representation
              *
+             * @throw BsonException if the asked type is not the one store
              * @return the string representation from the value store in it's BSON representation
              */
             std::string getValueString() const;
@@ -121,6 +124,7 @@ namespace bson {
             /**
              * Get the string representation from the value store in it's BSON representation
              *
+             * @throw BsonException if the asked type is not the one store
              * @param[out] string the string representation from the value store in it's BSON representation
              */
             void getValue(std::string &string) const;
@@ -128,6 +132,7 @@ namespace bson {
             /**
              * Get the Document representation from the value store in it's BSON representation
              *
+             * @throw BsonException if the asked type is not the one store
              * @return the Document representation from the value store in it's BSON representation
              */
             Document getValueDocument() const;
@@ -135,9 +140,26 @@ namespace bson {
             /**
              * Get the Document representation from the value store in it's BSON representation
              *
+             * @throw BsonException if the asked type is not the one store
              * @param[out] document the Document representation from the value store in it's BSON representation
              */
-            void getValue (Document &document) const;
+            void getValue(Document &document) const;
+
+            /**
+             * Get the null value representation from the value store in it's BSON representation
+             *
+             * @throw BsonException if the asked type is not the one store
+             * @return the null value representation from the value store in it's BSON representation
+             */
+            std::nullptr_t getValueNullValue() const;
+
+            /**
+             * Get the null value representation from the value store in it's BSON representation
+             *
+             * @throw BsonException if the asked type is not the one store
+             * @param[out] ptr the null value representation from the value store in it's BSON representation
+             */
+            void getValue(std::nullptr_t &ptr) const;
         };
 
     private:
@@ -312,6 +334,7 @@ namespace bson {
          * Get the Element linked to the given key which is the representation of a value inside the BSON representation of the Document
          *
          * @param key the key of the Element to get
+         * @throw std::out_of_range if the key doesn't exist
          * @return the Element of the given key with the value store in it
          */
         const Document::Element& operator[](const std::string &key) const;

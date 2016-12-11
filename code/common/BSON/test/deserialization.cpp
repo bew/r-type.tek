@@ -21,11 +21,11 @@ TEST(Deserialization, Double) {
     document << key << expected;
 
     bson::Document::Element element =  document[key];
-    double floating;
 
     EXPECT_EQ(element.getValueType(), bson::DOUBLE);
     EXPECT_EQ(element.getKey(), key);
     EXPECT_EQ(element.getValueDouble(), expected);
+    double floating;
     element.getValue(floating);
     EXPECT_EQ(floating, expected);
 }
@@ -41,11 +41,11 @@ TEST(Deserialization, String) {
     document << key << expected;
 
     bson::Document::Element element =  document[key];
-    std::string string;
 
     EXPECT_EQ(element.getValueType(), bson::STRING);
     EXPECT_EQ(element.getKey(), key);
-    EXPECT_EQ(element.getValueString (), expected);
+    EXPECT_EQ(element.getValueString(), expected);
+    std::string string;
     element.getValue(string);
     EXPECT_EQ(string, expected);
 }
@@ -106,4 +106,24 @@ TEST(Deserialization, Document) {
     std::string string;
     elementString.getValue(string);
     EXPECT_EQ(string, expectedString);
+}
+
+/**
+ * Check if the null value deserialize correctly
+ */
+TEST(Deserialization, NullValue) {
+    bson::Document document;
+    std::string key = u8"nullKey";
+    std::nullptr_t expected = nullptr;
+
+    document << key << expected;
+
+    bson::Document::Element element =  document[key];
+
+    EXPECT_EQ(element.getValueType(), bson::NULLVALUE);
+    EXPECT_EQ(element.getKey(), key);
+    EXPECT_EQ(element.getValueNullValue(), expected);
+    std::nullptr_t ptr;
+    element.getValue(ptr);
+    EXPECT_EQ(ptr, expected);
 }
