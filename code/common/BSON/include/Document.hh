@@ -29,12 +29,12 @@ namespace bson {
         class Element {
         private:
             /**
-             * The type of the value store inside the element
+             * The type of the value stored inside the element
              */
             bson::type _valueType;
 
             /**
-             * The key of the value store inside the element
+             * The key of the value stored inside the element
              */
             std::string _key;
 
@@ -54,14 +54,14 @@ namespace bson {
             Element(bson::type valueType, const std::string &key, const std::vector<unsigned char> &value);
 
             /**
-             * Create an Element by copy and retrieve the values store from the given Element
+             * Create an Element by copy and retrieve the values stored from the given Element
              *
              * @param element the Element that need to be copy
              */
             Element(const Element &element);
 
             /**
-             * Create a Element by assignment and retrieve the values store from the right Element
+             * Create a Element by assignment and retrieve the values stored from the right Element
              *
              * @param element the Element that need to be copy
              * @return a Element containing the values of the Element pass in parameter
@@ -84,128 +84,128 @@ namespace bson {
 
         public:
             /**
-             * Get the type of the value store inside the Element
+             * Get the type of the value stored inside the Element
              *
-             * @return the type of the value store inside the Element
+             * @return the type of the value stored inside the Element
              */
             type getValueType(void) const;
 
             /**
-             * Get the key of the value store inside the Element
+             * Get the key of the value stored inside the Element
              *
-             * @return the key of the value store inside the Element
+             * @return the key of the value stored inside the Element
              */
             const std::string &getKey(void) const;
 
             /**
-             * Get the double representation from the value store in it's BSON representation
+             * Get the double representation from the value stored in it's BSON representation
              *
-             * @throw BsonException if the asked type is not the one store
-             * @return the double representation from the value store in it's BSON representation
+             * @throw BsonException if the asked type is not the one stored
+             * @return the double representation from the value stored in it's BSON representation
              */
             double getValueDouble(void) const;
 
             /**
-             * Get the double representation from the value store in it's BSON representation
+             * Get the double representation from the value stored in it's BSON representation
              *
-             * @throw BsonException if the asked type is not the one store
-             * @param[out] floating the double representation from the value store in it's BSON representation
+             * @throw BsonException if the asked type is not the one stored
+             * @param[out] floating the double representation from the value stored in it's BSON representation
              */
             void getValue(double &floating) const;
 
             /**
-             * Get the string representation from the value store in it's BSON representation
+             * Get the string representation from the value stored in it's BSON representation
              *
-             * @throw BsonException if the asked type is not the one store
-             * @return the string representation from the value store in it's BSON representation
+             * @throw BsonException if the asked type is not the one stored
+             * @return the string representation from the value stored in it's BSON representation
              */
             std::string getValueString(void) const;
 
             /**
-             * Get the string representation from the value store in it's BSON representation
+             * Get the string representation from the value stored in it's BSON representation
              *
-             * @throw BsonException if the asked type is not the one store
-             * @param[out] string the string representation from the value store in it's BSON representation
+             * @throw BsonException if the asked type is not the one stored
+             * @param[out] string the string representation from the value stored in it's BSON representation
              */
             void getValue(std::string &string) const;
 
             /**
-             * Get the Document representation from the value store in it's BSON representation
+             * Get the Document representation from the value stored in it's BSON representation
              *
-             * @throw BsonException if the asked type is not the one store
-             * @return the Document representation from the value store in it's BSON representation
+             * @throw BsonException if the asked type is not the one stored
+             * @return the Document representation from the value stored in it's BSON representation
              */
             Document getValueDocument(void) const;
 
             /**
-             * Get the Document representation from the value store in it's BSON representation
+             * Get the Document representation from the value stored in it's BSON representation
              *
-             * @throw BsonException if the asked type is not the one store
-             * @param[out] document the Document representation from the value store in it's BSON representation
+             * @throw BsonException if the asked type is not the one stored
+             * @param[out] document the Document representation from the value stored in it's BSON representation
              */
             void getValue(Document &document) const;
 
             /**
-             * Get the bool representation from the value store in it's BSON representation
+             * Get the bool representation from the value stored in it's BSON representation
              *
-             * @throw BsonException if the asked type is not the one store
-             * @return the bool representation from the value store in it's BSON representation
+             * @throw BsonException if the asked type is not the one stored
+             * @return the bool representation from the value stored in it's BSON representation
              */
             bool getValueBool(void) const;
 
             /**
-             * Get the bool representation from the value store in it's BSON representation
+             * Get the bool representation from the value stored in it's BSON representation
              *
-             * @throw BsonException if the asked type is not the one store
-             * @param[out] boolean the bool representation from the value store in it's BSON representation
+             * @throw BsonException if the asked type is not the one stored
+             * @param[out] boolean the bool representation from the value stored in it's BSON representation
              */
             void getValue(bool &boolean) const;
 
             /**
-             * Get the null value representation from the value store in it's BSON representation
+             * Get the null value representation from the value stored in it's BSON representation
              *
-             * @throw BsonException if the asked type is not the one store
-             * @return the null value representation from the value store in it's BSON representation
+             * @throw BsonException if the asked type is not the one stored
+             * @return the null value representation from the value stored in it's BSON representation
              */
             std::nullptr_t getValueNullValue(void) const;
 
             /**
-             * Get the null value representation from the value store in it's BSON representation
+             * Get the null value representation from the value stored in it's BSON representation
              *
-             * @throw BsonException if the asked type is not the one store
-             * @param[out] ptr the null value representation from the value store in it's BSON representation
+             * @throw BsonException if the asked type is not the one stored
+             * @param[out] ptr the null value representation from the value stored in it's BSON representation
              */
             void getValue(std::nullptr_t &ptr) const;
 
             /**
-             * Get the int32 representation from the value store in it's BSON representation
+             * Get the int32 representation from the value stored in it's BSON representation
              *
-             * @throw BsonException if the asked type is not the one store
-             * @return the int32 representation from the value store in it's BSON representation
+             * @throw BsonException if the asked type is not the one stored
+             * @return the int32 representation from the value stored in it's BSON representation
              */
             int32_t getValueInt32(void) const;
 
             /**
-             * Get the int32 representation from the value store in it's BSON representation
+             * Get the int32 representation from the value stored in it's BSON representation
              *
-             * @throw BsonException if the asked type is not the one store
-             * @param[out] integer the int32 representation from the value store in it's BSON representation
+             * @throw BsonException if the asked type is not the one stored
+             * @param[out] integer the int32 representation from the value stored in it's BSON representation
              */
             void getValue(int32_t &integer) const;
 
             /**
-             * Get the int64 representation from the value store in it's BSON representation
+             * Get the int64 representation from the value stored in it's BSON representation
              *
-             * @throw BsonException if the asked type is not the one store
-             * @return the int64 representation from the value store in it's BSON representation
+             * @throw BsonException if the asked type is not the one stored
+             * @return the int64 representation from the value stored in it's BSON representation
              */
             int64_t getValueInt64(void) const;
 
             /**
-             * Get the int64 representation from the value store in it's BSON representation
+             * Get the int64 representation from the value stored in it's BSON representation
              *
-             * @throw BsonException if the asked type is not the one store
-             * @param[out] integer the int64 representation from the value store in it's BSON representation
+             * @throw BsonException if the asked type is not the one stored
+             * @param[out] integer the int64 representation from the value stored in it's BSON representation
              */
             void getValue(int64_t &integer) const;
 
@@ -236,40 +236,40 @@ namespace bson {
         };
 
         /**
-         * Store the next input type the document need to receive
+         * stored the next input type the document need to receive
          */
         inputTypes _nextInputType;
 
         /**
-         * Store the last key given
+         * stored the last key given
          */
         std::string _lastKey;
 
         /**
-         * Store the BSON representation of the Document composed of all the given inputs
+         * stored the BSON representation of the Document composed of all the given inputs
          */
         std::vector<unsigned char> _buffer;
 
         /**
-         * Store the BSON representation of the Document composed of all the given inputs as Element usable
+         * stored the BSON representation of the Document composed of all the given inputs as Element usable
          */
         std::map<const std::string, Document::Element> _elements;
 
     public:
         /**
-         * Create an empty Document in order to serialize data into BSON and store them
+         * Create an empty Document in order to serialize data into BSON and stored them
          */
         Document(void);
 
         /**
-         * Create a Document by copy and retrieve the values store from the given Document
+         * Create a Document by copy and retrieve the values stored from the given Document
          *
          * @param document the Document that need to be copy
          */
         Document(const Document &document);
 
         /**
-         * Create a Document by assignment and retrieve the values store from the right Document
+         * Create a Document by assignment and retrieve the values stored from the right Document
          *
          * @param document the Document that need to be copy
          * @return a Document containing the values of the Document pass in parameter
@@ -308,8 +308,8 @@ namespace bson {
          * Insert an element inside the document with the given information
          * The key will be find in _lastKey attribute
          *
-         * @param valueType the type of the value store inside the element
-         * @param elementBuffer the value to store inside the element as it's BSON representation
+         * @param valueType the type of the value stored inside the element
+         * @param elementBuffer the value to stored inside the element as it's BSON representation
          */
         void insertElement(type valueType, const std::vector<unsigned char> &elementBuffer);
 
@@ -400,7 +400,7 @@ namespace bson {
          *
          * @param key the key of the Element to get
          * @throw std::out_of_range if the key doesn't exist
-         * @return the Element of the given key with the value store in it
+         * @return the Element of the given key with the value stored in it
          */
         const Document::Element& operator[](const std::string &key) const;
 
