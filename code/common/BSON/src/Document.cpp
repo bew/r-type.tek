@@ -152,6 +152,8 @@ namespace bson {
 
         for (size_t i = 0; i < 4; ++i)
             size.bytes[i] = buffer.at(i);
+        if (IS_BIG_ENDIAN)
+            size.integer = swap_endian<int32_t >(size.integer);
 
         if (size.integer != buffer.size())
             throw BsonException("The given document is invalid");
@@ -182,6 +184,8 @@ namespace bson {
                     size.bytes[j] = buffer.at(bufferIndex);
                     ++j;
                 }
+                if (IS_BIG_ENDIAN)
+                    size.integer = swap_endian<int32_t >(size.integer);
                 for (size_t limitIndex = bufferIndex + size.integer; bufferIndex < limitIndex; ++bufferIndex) {
                     _buffer.push_back(buffer.at(bufferIndex));
                     elementBuffer.push_back(buffer.at(bufferIndex));
