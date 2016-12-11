@@ -1,3 +1,5 @@
-add_executable(BSON_test main.cpp miscellaneous.cpp serialization.cpp deserialization.cpp)
-target_link_libraries(BSON_test gtest)
-target_link_libraries(BSON_test libBSON_test)
+use_msvc_static_runtime()
+
+add_executable(${TEST_EXE} main.cpp serialization.cpp miscellaneous.cpp)
+target_link_libraries(${TEST_EXE} ${LIB_TEST_NAME} gtest)
+install(TARGETS ${TEST_EXE} DESTINATION bin/test)
