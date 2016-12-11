@@ -178,22 +178,6 @@ namespace bson {
             void getValue(std::nullptr_t &ptr) const;
 
             /**
-             * Get the int32 representation from the value store in it's BSON representation
-             *
-             * @throw BsonException if the asked type is not the one store
-             * @return the int32 representation from the value store in it's BSON representation
-             */
-            int32_t getValueInt32() const;
-
-            /**
-             * Get the int32 representation from the value store in it's BSON representation
-             *
-             * @throw BsonException if the asked type is not the one store
-             * @param[out] integer the int32 representation from the value store in it's BSON representation
-             */
-            void getValue(int32_t &integer) const;
-
-            /**
              * Compare if two Elements are the same
              *
              * @param element the second Element to compare
@@ -208,6 +192,22 @@ namespace bson {
              * @return true if the Elements aren't the same else false
              */
             bool operator!=(const Element& element) const;
+
+            /**
+             * Get the int32 representation from the value store in it's BSON representation
+             *
+             * @throw BsonException if the asked type is not the one store
+             * @return the int32 representation from the value store in it's BSON representation
+             */
+            int32_t getValueInt32() const;
+
+            /**
+             * Get the int32 representation from the value store in it's BSON representation
+             *
+             * @throw BsonException if the asked type is not the one store
+             * @param[out] integer the int32 representation from the value store in it's BSON representation
+             */
+            void getValue(int32_t &integer) const;
         };
 
     private:
