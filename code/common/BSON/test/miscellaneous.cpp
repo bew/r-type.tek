@@ -52,3 +52,29 @@ TEST(Miscellaneous, Key_must_exist) {
 
     ASSERT_THROW(document["none"], std::out_of_range);
 }
+
+/**
+ * Check if the ask type match the stored one
+ */
+TEST(Miscellaneous, Ask_type_must_match) {
+    bson::Document document;
+
+    document << "keyDouble" << 42.42;
+    document << "keyString" << std::string("test");
+    document << "keyDocument" << document;
+    document << "keyBool" << true;
+    document << "keyNullValue" << nullptr;
+    document << "keyInt32" << static_cast<int32_t >(42);
+    document << "keyInt64" << static_cast<int64_t >(42);
+
+    int32_t integer;
+    double floating;
+
+    EXPECT_THROW(document["keyDouble"].getValue(integer), bson::BsonException);
+    EXPECT_THROW(document["keyString"].getValue(integer), bson::BsonException);
+    EXPECT_THROW(document["keyDocument"].getValue(integer), bson::BsonException);
+    EXPECT_THROW(document["keyBool"].getValue(integer), bson::BsonException);
+    EXPECT_THROW(document["keyNullValue"].getValue(integer), bson::BsonException);
+    EXPECT_THROW(document["keyInt32"].getValue(floating), bson::BsonException);
+    EXPECT_THROW(document["keyInt64"].getValue(integer), bson::BsonException);
+}
