@@ -16,7 +16,12 @@
 TEST(Miscellaneous, Value_cant_be_key) {
     bson::Document document;
 
-    ASSERT_THROW(document << 42, bson::BsonException);
+    ASSERT_THROW(document << 42.42, bson::BsonException);
+    ASSERT_THROW(document << document, bson::BsonException);
+    ASSERT_THROW(document << true, bson::BsonException);
+    ASSERT_THROW(document << nullptr, bson::BsonException);
+    ASSERT_THROW(document << static_cast<int32_t >(42), bson::BsonException);
+    ASSERT_THROW(document << static_cast<int64_t >(42), bson::BsonException);
 }
 
 /**
