@@ -9,6 +9,7 @@
 
 #include "ISystem.hh"
 #include "Entity.hh"
+#include "WorldPools.hh"
 
 #include <vector>
 
@@ -23,6 +24,16 @@ namespace ECS {
      */
     struct WorldData
     {
+	/**
+	 * Constructor.
+	 */
+	WorldData(Pools::WorldPools &pools);
+	
+	/**
+	 * Destructor.
+	 */
+	~WorldData();
+	
 	/**
 	 * packets read on the network, waiting to be consumed.
 	 */
@@ -74,15 +85,15 @@ namespace ECS {
 	 */
 	std::vector<System::ISystem *>	_systems;
 
-        /**
-	 * Data of the ecs. The systems will read and update these datas.
-	 */
-	WorldData			_world;
-
 	/**
 	 * Pools of objects used by the ECS.
 	 */
 	Pools::WorldPools		_pools;
+
+        /**
+	 * Data of the ecs. The systems will read and update these datas.
+	 */
+	WorldData			_world;
     };
 
 }
