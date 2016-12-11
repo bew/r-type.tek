@@ -122,6 +122,24 @@ namespace bson {
         integer = this->getValueInt32();
     }
 
+    int64_t Document::Element::getValueInt64() const {
+        this->isRightType(bson::INT64);
+
+        union {
+            int64_t integer;
+            unsigned char bytes[8];
+        } cutInteger;
+
+        for (size_t i = 0; i < 8; ++i)
+            cutInteger.bytes[i] = _value[i];
+
+        return (IS_BIG_ENDIAN ? swap_endian<int64_t >(cutInteger.integer) : cutInteger.integer);
+    }
+
+    void Document::Element::getValue(int64_t &integer) const {
+        integer = this->getValueInt64();
+    }
+
     bool Document::Element::operator==(const Element &element) const {
         return this == &element || (_valueType == element._valueType &&
                                    _key == element._key &&

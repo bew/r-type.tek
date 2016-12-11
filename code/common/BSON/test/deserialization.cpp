@@ -180,3 +180,23 @@ TEST(Deserialization, Int32) {
     element.getValue(integer);
     EXPECT_EQ(integer, expected);
 }
+
+/**
+ * Check if the int64 deserialize correctly
+ */
+TEST(Deserialization, Int64) {
+    bson::Document document;
+    std::string key = u8"int64Key";
+    int64_t expected = 42;
+
+    document << key << expected;
+
+    bson::Document::Element element =  document[key];
+
+    EXPECT_EQ(element.getValueType(), bson::INT64);
+    EXPECT_EQ(element.getKey(), key);
+    EXPECT_EQ(element.getValueInt64(), expected);
+    int64_t integer;
+    element.getValue(integer);
+    EXPECT_EQ(integer, expected);
+}
