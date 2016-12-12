@@ -1,6 +1,6 @@
 
 /**
- * @file ObjPoolFactories.hh
+ * @file ObjPoolFactories.hpp
  * @author Alexis
  * @brief The factories needed for the object pool go there.
  * According to ObjectPool.hpp,
@@ -30,7 +30,7 @@
 
 #pragma once
 
-#include "Entity.hh"
+#include "WorldPools.hh"
 
 /**
  * Namespace of ECS.
@@ -53,7 +53,9 @@ namespace ECS {
             /**
 	     * Constructor.
 	     */ 
-	    CommonFactory() {}
+	    CommonFactory(WorldPools &pools)
+		: _pools(pools)
+		{}
 
 	    /**
 	     * Destructor.
@@ -66,7 +68,7 @@ namespace ECS {
 	     */
 	    T *operator()()
 		{
-		    return new T();
+		    return new T(this->_pools);
 		}
 
 	    /**
@@ -77,6 +79,12 @@ namespace ECS {
 		{
 		    delete stuff;
 		}
+
+	private:
+	    /**
+	     * Worldpool needed for created objects to manage their owned poolable objects.
+	     */
+	    WorldPools	&_pools;
 	};
 
     }
