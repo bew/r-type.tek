@@ -12,7 +12,7 @@
 #include <algorithm>
 
 /**
- * Abstarct base class for filesystemwatcher
+ * Abstract base class for filesystemwatcher
  */
 class AFileSystemWatcher {
 public:
@@ -32,6 +32,10 @@ public:
    * @param directoryName: name of directory to watch
    */
   AFileSystemWatcher(const std::string &directoryName);
+
+  /**
+   * Default dtor
+   */
   virtual ~AFileSystemWatcher(void);
 
   /**
@@ -55,7 +59,12 @@ protected:
  */
 class FileSystemWatcherException : public std::runtime_error {
 public:
-    FileSystemWatcherException(const std::string &error);
+  /**
+   * Exception thrown in case of file system error 
+   *
+   * @param error: string descibing what cause the exception
+   */
+  FileSystemWatcherException(const std::string &error);
 };
 
 /**
