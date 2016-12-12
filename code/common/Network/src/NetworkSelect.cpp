@@ -4,6 +4,7 @@
  * @brief encapsulation of select system call
  */
 
+#include <iostream>
 #include "ASocket.hh"
 #include "SocketException.hh"
 
@@ -15,49 +16,48 @@ namespace network
         _readfds = _writefds = _readfds_result = _writefds_result = {0};
     }
 
-    bool NetworkSelect::isReadable(const network::ASocket *socket) const
+    bool NetworkSelect::isReadable(Socket_t sockFd) const
     {
-        if (socket->getSocket() == -1)
+        if (sockFd == -1)
             throw SocketException("Invalid Socket");
 
-        return FD_ISSET(socket->getSocket(), &_readfds_result) != 0;
+        std::cout << "socketFd: " << sockFd << std::endl;
+        std::cout << "socketFd: " << &_readfds_result << std::endl;
+
+        return FD_ISSET(sockFd, &_readfds_result) != 0;
 
     }
 
-    bool NetworkSelect::isWritable(const network::ASocket *socket) const
+    bool NetworkSelect::isWritable(Socket_t sockFd) const
     {
-        if (socket->getSocket() == -1)
+        if (sockFd == -1)
             throw SocketException("Invalid Socket");
 
-        return FD_ISSET(socket->getSocket(), &_writefds_result) != 0;
+        return FD_ISSET(sockFd, &_writefds_result) != 0;
     }
 
-    void NetworkSelect::monitor(const network::ASocket *socket, NetworkSelect::SelectType type)
+    void NetworkSelect::monitor(Socket_t sockFd, NetworkSelect::SelectType type)
     {
-        if (socket->getSocket() == -1)
+        if (sockFd == -1)
             throw SocketException("Invalid Socket");
 
         if (type == READ)
-        {
-            FD_SET(socket->getSocket(), &_readfds);
-        }
+            FD_SET(sockFd, &_readfds);
         else if (type == WRITE)
-        {
-            FD_SET(socket->getSocket(), &_writefds);
-        }
+            FD_SET(sockFd, &_writefds);
 
     }
 
-    void NetworkSelect::unmonitor(const network::ASocket *socket, NetworkSelect::SelectType type)
+    void NetworkSelect::unmonitor(Socket_t sockFd, NetworkSelect::SelectType type)
     {
-        if (socket->getSocket() == -1)
+        if (sockFd == -1)
             throw SocketException("Invalid Socket");
 
         if (type == READ)
-            FD_CLR(socket->getSocket(), &_readfds);
+            FD_CLR(sockFd, &_readfds);
 
         else if (type == WRITE)
-            FD_CLR(socket->getSocket(), &_writefds);
+            FD_CLR(sockFd, &_writefds);
     }
 
     void NetworkSelect::select(struct timeval *timeout)

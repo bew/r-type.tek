@@ -32,7 +32,7 @@ namespace network
         sockaddr_in addr = from.getAddr();
         if (::bind(_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)))
             throw SocketException("could not bind UDP socket, error code: " + std::to_string(errno));
-        _selector.monitor(this, NetworkSelect::READ);
+        _selector.monitor(_socket, NetworkSelect::READ);
     }
 
     void SocketLinuxUDP::recv()

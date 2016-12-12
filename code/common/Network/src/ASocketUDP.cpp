@@ -20,16 +20,16 @@ namespace network {
         timer.tv_usec = 0;
         _selector.select(&timer);
 
-        if (_selector.isReadable(this))
+        if (_selector.isReadable(_socket))
             recv();
 
         for (auto &buffer : _buffers) {
-            if (_selector.isWritable(this)) {
+            if (_selector.isWritable(_socket)) {
                 std::string msg;
                 if ((msg = buffer.second.first.get()) != "") {
                     send(buffer.first, msg);
                     if (buffer.second.first.get() == "")
-                        _selector.unmonitor(this, NetworkSelect::WRITE);
+                        _selector.unmonitor(_socket, NetworkSelect::WRITE);
                 }
             }
         }
@@ -58,7 +58,7 @@ namespace network {
         }
         buffer->second.first.fill(msg);
         if (buffer->second.first.get() != "")
-            _selector.monitor(this, NetworkSelect::WRITE);
+            _selector.monitor(_socket, NetworkSelect::WRITE);
     }
 
     std::list<SockAddr> ASocketUDP::getConnections() const {

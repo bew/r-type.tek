@@ -70,7 +70,7 @@ namespace network {
          *
          * @throw SocketException if connect fail
          */
-        virtual void recv();
+        virtual void recv(Socket_t sockFd);
 
         /**
          * write message in socket and update position of write buffer
@@ -79,7 +79,7 @@ namespace network {
          *
          *  @throw SocketException if send fail
          */
-        virtual void send(const std::string &msg);
+        virtual void send(Socket_t sockFd, const std::string &msg);
     };
 
     typedef SocketLinuxTCP SocketTCP;
