@@ -33,7 +33,7 @@ namespace ECS {
 	    MOVEMENT,
 	    SHOOT,
 	    NETWORK,
-	    GRAPHX,    
+	    GRAPHX,
 	};
 
         /**
@@ -42,15 +42,12 @@ namespace ECS {
 	class AComponent
 	{
 	public:
-	    AComponent() = delete;
+	    AComponent(ComponentType type);
 
 	    /**
 	     * Virtual destructor.
 	     */
-	    virtual ~AComponent() {}
-
-	    AComponent(const AComponent &) = delete;
-	    AComponent &operator=(const AComponent &) = delete;
+	    virtual ~AComponent();
 
 	    /**
 	     * Getter for the component type.

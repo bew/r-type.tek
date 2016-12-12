@@ -12,7 +12,7 @@
 /**
  * Namespace of ECS.
  */
-namespace eCS {
+namespace ECS {
 
     /**
      * Namespace of systems.

@@ -19,11 +19,12 @@
  */
 namespace ECS {
     namespace Pools {
-class WorldPools;
+	class WorldPools;
     }
 }
 
 #include "ObjPoolFactories.hpp"
+#include "ComponentTest.hh"
 #include "Entity.hh"
 #include "ObjectPool.hpp"
 
@@ -74,12 +75,35 @@ namespace ECS {
 	     * @param obj The object returned in pool.
 	     */
 	    void	operator<<(Entity::Entity *&obj);
-    
+
+	    /**
+	     * operator overloading for borrowing a ComponentTest.
+	     * @param obj The object taken from pool.
+	     */
+	    void	operator>>(Component::ComponentTest *&obj);
+	    
+	    /**
+	     * operator overloading for borrowing a ComponentTest.
+	     * @param obj The object returned in pool.
+	     */
+	    void	operator<<(Component::ComponentTest *&obj);
+
+	    /**
+	     * operator overloading for borrowing an AComponent.
+	     * @param obj The object returned in pool.
+	     */
+	    void        operator<<(Component::AComponent *&obj);
+	    
 	private:
 	    /**
 	     * Generic pool of entities.
 	     */
 	    ObjectPool<Entity::Entity, CommonFactory<Entity::Entity>>	_entityPool;
+
+	    /**
+	     * Generic pool of ComponentTest.
+	     */
+	    ObjectPool<Component::ComponentTest, CommonFactory<Component::ComponentTest>>	_componentTestPool;
 	};
     }
 }

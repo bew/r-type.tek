@@ -6,8 +6,9 @@
  *
  */
 
-#include "AComponent.hh"
+#pragma once
 
+#include "AComponent.hh"
 
 /**
  * Namespace of ECS.

@@ -30,8 +30,6 @@
 
 #pragma once
 
-#include "WorldPools.hh"
-
 /**
  * Namespace of ECS.
  */
@@ -53,8 +51,7 @@ namespace ECS {
             /**
 	     * Constructor.
 	     */ 
-	    CommonFactory(WorldPools &pools)
-		: _pools(pools)
+	    CommonFactory()
 		{}
 
 	    /**
@@ -68,7 +65,7 @@ namespace ECS {
 	     */
 	    T *operator()()
 		{
-		    return new T(this->_pools);
+		    return new T();
 		}
 
 	    /**
@@ -79,12 +76,6 @@ namespace ECS {
 		{
 		    delete stuff;
 		}
-
-	private:
-	    /**
-	     * Worldpool needed for created objects to manage their owned poolable objects.
-	     */
-	    WorldPools	&_pools;
 	};
 
     }
