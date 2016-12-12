@@ -62,4 +62,6 @@ namespace network
         virtual void send(const SockAddr &hostInfos, const std::string &msg);
     };
 
+    typedef SocketLinuxUDP SocketUDP;
+
 }

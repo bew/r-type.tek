@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <vector>
+#include <map>
 #include "ASocket.hh"
 #include "SockAddr.hh"
 #include "NetworkBuffer.hh"
@@ -52,30 +54,36 @@ namespace network {
         /**
          * get message by read buffer
          *
+         * @param fd that represents the client connection
          * @return message or empty string if nothing was read
          */
-        virtual std::string get();
+        virtual std::string get(Socket_t sockFd);
 
         /**
          * add message to the write buffer
          *
+         * @param fd that represents the client connection
          * @param msg message that will be add to buffer
          */
-        virtual void add(const std::string &msg);
+        virtual void add(Socket_t sockFd, const std::string &msg);
 
+        std::vector<Socket_t> getConnections() const;
     protected:
 
         /**
          * read in socket and add read message to the read buffer
+         *
+         * @param fd that represents the client connection
          */
-        virtual void recv() = 0;
+        virtual void recv(Socket_t sockFd) = 0;
 
         /**
          * write message in socket and update position of write buffer
          *
+         * @param fd that represents the client connection
          * @param msg message that will be sent
          */
-        virtual void send(const std::string &msg) = 0;
+        virtual void send(Socket_t sockFd, const std::string &msg) = 0;
 
         /*
          * class contain all information util for connection
@@ -83,14 +91,9 @@ namespace network {
         SockAddr _from;
 
         /**
-         * circular buffer that contains message to send
+         * contains all hosts IPs and two buffers for each host, first is the write buffer and second is the read buffer
          */
-        NetworkBuffer _writeBuffer;
-
-        /**
-         * circular buffer that contains read messages
-         */
-        NetworkBuffer _readBuffer;
+        std::map<Socket_t, std::pair<NetworkBuffer, NetworkBuffer> > _buffers;
     };
 
 }

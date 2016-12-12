@@ -60,4 +60,6 @@ namespace network {
         virtual void send(const SockAddr &hostIp, const std::string &msg);
     };
 
+    typedef SocketWindowsUDP SocketUDP;
+
 }

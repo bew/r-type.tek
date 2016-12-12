@@ -12,7 +12,6 @@ namespace network {
     class ASocket;
 }
 
-#include "NetworkSelect.hh"
 
 #ifdef __linux__
 #define Socket_t int
@@ -21,6 +20,8 @@ namespace network {
 #define Socket_t SOCKET
 
 #endif
+
+#include "NetworkSelect.hh"
 
 #define SERVER_ADDR "127.0.0.1"
 
