@@ -9,6 +9,7 @@ set(RT_COMMON_INCLUDES ${CMAKE_CURRENT_BINARY_DIR}/include)
 add_subdirectory(BSON)
 add_subdirectory(LibraryLoader)
 add_subdirectory(Network)
+add_subdirectory(FSWatcher)
 
 set(RT_COMMON_NAMES ${RT_COMMON_NAMES} PARENT_SCOPE)
 
