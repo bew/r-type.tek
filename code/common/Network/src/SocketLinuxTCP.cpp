@@ -14,10 +14,15 @@
 namespace network
 {
 
-    SocketLinuxTCP::SocketLinuxTCP(unsigned short port) : ASocketTCP(port)
+    SocketLinuxTCP::SocketLinuxTCP() : ASocketTCP()
     {
         if ((_socket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1)
             throw ("Could not create socket: " + std::to_string(errno));
+    }
+
+    SocketLinuxTCP::SocketLinuxTCP(Socket_t socket) : ASocketTCP(socket)
+    {
+
     }
 
     SocketLinuxTCP::~SocketLinuxTCP()
@@ -25,9 +30,9 @@ namespace network
         close();
     }
 
-    void SocketLinuxTCP::bind()
+    void SocketLinuxTCP::bind(const SockAddr& hostInfos)
     {
-        sockaddr_in addr = _from.getAddr();
+        sockaddr_in addr = hostInfos.getAddr();
         if (::bind(_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) != 0)
             throw SocketException("could not bind TCP socket: " + std::to_string(errno));
     }
@@ -38,7 +43,7 @@ namespace network
             throw SocketException("Listen failed: " + std::to_string(errno));
     }
 
-    void SocketLinuxTCP::accept()
+    Socket_t SocketLinuxTCP::accept()
     {
         sockaddr clientInfos;
         std::memset(&clientInfos, 0, sizeof(clientInfos));
@@ -46,50 +51,35 @@ namespace network
         Socket_t newConnection;
         if ((newConnection = ::accept(_socket, &clientInfos, &clientInfosSize)) == -1)
             throw SocketException("Accept failed: " + std::to_string(errno));
-        _selector.monitor(newConnection, NetworkSelect::READ);
-        NetworkBuffer readBuffer;
-        NetworkBuffer writeBuffer;
-        _buffers.insert(std::pair<Socket_t, std::pair<NetworkBuffer, NetworkBuffer> >(newConnection,
-                                                                                      std::pair<NetworkBuffer, NetworkBuffer>(
-                                                                                              writeBuffer,
-                                                                                              readBuffer)));
+        return newConnection;
     }
 
-    void SocketLinuxTCP::connect()
+    void SocketLinuxTCP::connect(const SockAddr& hostInfos)
     {
-        _from.setAddr(SERVER_ADDR);
-        sockaddr_in from = _from.getAddr();
+        sockaddr_in from = hostInfos.getAddr();
         if (::connect(_socket, reinterpret_cast<struct sockaddr *>(&from), sizeof(from)) < 0)
             throw SocketException("Connect failed: " + std::to_string(errno));
-        _selector.monitor(_socket, NetworkSelect::READ);
-        NetworkBuffer readBuffer;
-        NetworkBuffer writeBuffer;
-        _buffers.insert(std::pair<Socket_t, std::pair<NetworkBuffer, NetworkBuffer> >(_socket,
-                                                                                      std::pair<NetworkBuffer, NetworkBuffer>(
-                                                                                              writeBuffer,
-                                                                                              readBuffer)));
     }
 
-    void SocketLinuxTCP::recv(Socket_t sockFd)
+    std::string SocketLinuxTCP::recv()
     {
         char buffer[BUFFER_SIZE];
         std::memset(buffer, 0, BUFFER_SIZE);
-        socklen_t fromLen = sizeof(_from);
-        ssize_t ret = ::recv(sockFd, buffer, BUFFER_SIZE, 0);
+        ssize_t ret = ::recv(_socket, buffer, BUFFER_SIZE, 0);
         if (ret < 0)
-            throw SocketException("Read from failed: " + std::to_string(errno));
-
+            throw SocketException("Read failed: " + std::to_string(errno));
+        else if (ret == 0)
+            close();
         std::string msg(buffer, ret);
-        msg += CR;
-        _buffers.find(sockFd)->second.second.fill(msg);
+        return msg;
     }
 
-    void SocketLinuxTCP::send(Socket_t sockFd, const std::string &msg)
+    int SocketLinuxTCP::send(const std::string &msg) const
     {
-        ssize_t ret = ::send(sockFd, msg.c_str(), msg.length(), 0);
+        ssize_t ret = ::send(_socket, msg.c_str(), msg.length(), 0);
         if (ret < 0)
-            throw SocketException("Send to failed: " + std::to_string(errno));
-        _buffers.find(sockFd)->second.first.updatePosition(static_cast<size_t>(ret));
+            throw SocketException("Send failed: " + std::to_string(errno));
+        return ret;
     }
 
     void SocketLinuxTCP::close()
@@ -99,10 +89,8 @@ namespace network
             ::close(_socket);
             _socket = -1;
         }
-        for (auto socket = _buffers.begin(); socket != _buffers.end(); ++socket)
-        {
-            ::close(socket->first);
-        }
     }
+
+
 
 }

@@ -60,7 +60,7 @@ namespace network {
          * set ip of host
          * @param addr ip of host
          */
-        void setAddr(const std::string &addr);
+        void setIPAddr(const std::string &addr);
 
         /**
          * Compare two Sockaddr. Use to store Sockaddr in std map
@@ -68,6 +68,12 @@ namespace network {
          * @return true if ip and port of are less than rhs else false
          */
         bool operator<(const SockAddr& rhs) const;
+
+        bool operator==(const SockAddr& rhs) const;
+
+        bool operator!=(const SockAddr& rhs) const;
+
+        void setAddr(const sockaddr_in& addr);
 
     private:
 

@@ -9,6 +9,11 @@
 #include <mutex>
 #include <queue>
 #include <atomic>
+#include <ClientTCP.hpp>
+#include <ServerTCP.hpp>
+#include <cstdlib>
+#include <ClientUDP.hpp>
+#include <ServerUDP.hpp>
 
 #ifdef __linux__
 
@@ -88,215 +93,518 @@ protected:
     std::mutex _mutex;
 };
 
-class Client : public ATask
+class ClientTCP : public ATask
 {
 public:
-    Client(unsigned short port) : ATask()
+    ClientTCP(const network::SockAddr& serverInfos) : ATask(), _client(), _serverInfos(serverInfos)
     {
-        _socketClient = new network::SocketTCP(port);
     };
 
-    ~Client()
+    ~ClientTCP()
     {
-        _socketClient->close();
-        delete _socketClient;
     };
 
     virtual void execLoop()
     {
 
-        _socketClient->connect();
+        _client.connect(_serverInfos);
 
         std::string login("login");
         login += CR;
+        login += LF;
 
-        _socketClient->add(_socketClient->getSocket(), login);
+        _client.addMessage(login);
 
-        _socketClient->update();
+        _client.update();
 
         std::string ok = "";
 
-        while ((ok = _socketClient->get(_socketClient->getSocket())) == "")
-            _socketClient->update();
+        while ((ok = _client.getMessage()) == "")
+            _client.update();
 
         ASSERT_STREQ("OK", ok.c_str());
     };
 
 private:
-    network::ASocketTCP *_socketClient;
+    network::ClientTCP _client;
+    network::SockAddr _serverInfos;
 };
 
-TEST(Network, SingleSocketTcp)
+class ClientUDP : public ATask
 {
+public:
+    ClientUDP(const network::SockAddr& serverInfos) : ATask(), _client(serverInfos)
+    {
+    };
+
+    ~ClientUDP()
+    {
+
+    };
+
+    virtual void execLoop()
+    {
+
+        std::string login("login");
+        login += CR;
+        login += LF;
+
+        _client.addMessage(login);
+
+        _client.update();
+
+        std::string ok = "";
+
+        while ((ok = _client.getMessage()) == "")
+            _client.update();
+
+        ASSERT_STREQ("OK", ok.c_str());
+    };
+
+private:
+    network::ClientUDP _client;
+};
+
+TEST(Network, SingleClientUdp)
+{
+
     try
     {
-        network::ASocketTCP *socketServer = new network::SocketTCP(26121);
-        Client client(26121);
+        std::srand(std::time(0)); // use current time as seed for random generator
+        unsigned short random_variable = std::rand() % 65000 + 2500;
 
-        socketServer->bind();
+        network::SockAddr clienInfos(random_variable);
 
-        socketServer->listen();
+        network::SockAddr serverInfos(random_variable, SERVER_ADDR);
+
+        network::ServerUDP server;
+        ClientUDP client(serverInfos);
+
+        server.bind(clienInfos);
 
         client.launch();
-        client.detach();
-
-        socketServer->accept();
 
         std::string login = "";
 
-        while ((login = socketServer->get(socketServer->getConnections().at(0))) == "")
-            socketServer->update();
+        while(server.getConnections().size() == 0)
+            server.update();
+
+        login = server.get(server.getConnections().at(0));
+
+        ASSERT_STREQ("login", login.c_str());
 
         std::string ok("OK");
         ok += CR;
+        ok += LF;
 
-        socketServer->add(socketServer->getConnections().at(0), ok);
-        socketServer->update();
+        server.add(server.getConnections().at(0), ok);
+        server.update();
 
-        socketServer->close();
-        delete (socketServer);
+        client.join();
     }
-    catch (network::SocketException &e)
+    catch (std::exception &e)
     {
         std::cerr << e.what() << std::endl;
     }
 }
 
-TEST(Network, Singlepd)
+
+TEST(Network, TwoClientUdp)
 {
     try
     {
-        network::ASocketTCP *socketServer = new network::SocketTCP(26129);
-        Client client(26129);
+        std::srand(std::time(0)); // use current time as seed for random generator
+        unsigned short random_variable = std::rand() % 65000 + 2500;
 
-        socketServer->bind();
+        network::SockAddr clienInfos(random_variable);
+        network::SockAddr serverInfos(random_variable, SERVER_ADDR);
 
-        socketServer->listen();
+        network::ServerUDP server;
 
-        client.launch();
-        client.detach();
+        ClientUDP client0(serverInfos);
+        ClientUDP client1(serverInfos);
 
-        socketServer->accept();
-
-        std::string login = "";
-
-        while ((login = socketServer->get(socketServer->getConnections().at(0))) == "")
-            socketServer->update();
-
-        std::string ok("OK");
-        ok += CR;
-
-        socketServer->add(socketServer->getConnections().at(0), ok);
-        socketServer->update();
-
-        socketServer->close();
-        delete (socketServer);
-    }
-    catch (network::SocketException &e)
-    {
-        std::cerr << e.what() << std::endl;
-    }
-}
-
-/**
-TEST(Network, MultipleSocketTcp)
-{
-    try
-    {
-        network::ASocketTCP *socketServer = new network::SocketTCP(26120);
-
-        Client client0(26120);
-        Client client1(26120);
-        Client client2(26120);
-        Client client3(26120);
-
-        socketServer->bind();
-
-        socketServer->listen();
+        server.bind(clienInfos);
 
         client0.launch();
-        client0.detach();
 
-        socketServer->accept();
+        while (server.getConnections().size() == 0)
+            server.update();
 
         std::string login = "";
 
         // Client 0
 
-        while ((login = socketServer->get(socketServer->getConnections().at(0))) == "")
-            socketServer->update();
+        login = server.get(server.getConnections().at(0));
 
         ASSERT_STREQ("login", login.c_str());
+
         std::string ok("OK");
         ok += CR;
+        ok += LF;
 
-        socketServer->add(socketServer->getConnections().at(0), ok);
-        socketServer->update();
+        server.add(server.getConnections().at(0), ok);
+        server.update();
+        client0.join();
 
         client1.launch();
-        client1.detach();
 
-        socketServer->accept();
+        while (server.getConnections().size() == 1)
+            server.update();
 
         //Client 1
         login = "";
-        while ((login = socketServer->get(socketServer->getConnections().at(1))) == "")
-            socketServer->update();
+        login = server.get(server.getConnections().at(1));
 
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
         ok += CR;
+        ok += LF;
 
-        socketServer->add(socketServer->getConnections().at(1), ok);
-        socketServer->update();
-
-        client2.launch();
-        client2.detach();
-
-        socketServer->accept();
-
-        //Client 2
-        login = "";
-        while ((login = socketServer->get(socketServer->getConnections().at(2))) == "")
-            socketServer->update();
-
-        ASSERT_STREQ("login", login.c_str());
-
-        ok = "OK";
-        ok += CR;
-
-        socketServer->add(socketServer->getConnections().at(2), ok);
-        socketServer->update();
-
-        //Client 3
-        client3.launch();
-        client3.detach();
-
-        socketServer->accept();
-
-        login = "";
-        while ((login = socketServer->get(socketServer->getConnections().at(3))) == "")
-            socketServer->update();
-
-        ASSERT_STREQ("login", login.c_str());
-
-        ok = "OK";
-        ok += CR;
-
-        socketServer->add(socketServer->getConnections().at(3), ok);
-        socketServer->update();
-
-        socketServer->close();
-
-        delete (socketServer);
+        server.add(server.getConnections().at(1), ok);
+        server.update();
+        client1.join();
     }
     catch (network::SocketException &e)
     {
         std::cerr << e.what() << std::endl;
     }
 }
- */
+
+TEST(Network, FourClientUdp)
+{
+    try
+    {
+        std::srand(std::time(0)); // use current time as seed for random generator
+        unsigned short random_variable = std::rand() % 65000 + 2500;
+
+        network::SockAddr clienInfos(random_variable);
+        network::SockAddr serverInfos(random_variable, SERVER_ADDR);
+
+        network::ServerUDP server;
+
+        ClientUDP client0(serverInfos);
+        ClientUDP client1(serverInfos);
+        ClientUDP client2(serverInfos);
+        ClientUDP client3(serverInfos);
+
+        server.bind(clienInfos);
+
+        client0.launch();
+        // Client 0
+
+        while (server.getConnections().size() == 0)
+            server.update();
+
+        std::string login = "";
+
+
+        login = server.get(server.getConnections().at(0));
+
+        ASSERT_STREQ("login", login.c_str());
+
+        std::string ok("OK");
+        ok += CR;
+        ok += LF;
+
+        server.add(server.getConnections().at(0), ok);
+        server.update();
+        client0.join();
+
+        //Client 1
+
+        client1.launch();
+
+        while (server.getConnections().size() == 1)
+            server.update();
+
+        login = "";
+        login = server.get(server.getConnections().at(1));
+
+        ASSERT_STREQ("login", login.c_str());
+
+        ok = "OK";
+        ok += CR;
+        ok += LF;
+
+        server.add(server.getConnections().at(1), ok);
+        server.update();
+        client1.join();
+
+        //Client 2
+
+        client2.launch();
+
+        while (server.getConnections().size() == 2)
+            server.update();
+
+        login = "";
+        login = server.get(server.getConnections().at(2));
+
+        ASSERT_STREQ("login", login.c_str());
+
+        ok = "OK";
+        ok += CR;
+        ok += LF;
+
+        server.add(server.getConnections().at(2), ok);
+        server.update();
+        client2.join();
+
+        //Client 3
+
+        client3.launch();
+
+        while (server.getConnections().size() == 3)
+            server.update();
+
+        login = "";
+        login = server.get(server.getConnections().at(3));
+
+        ASSERT_STREQ("login", login.c_str());
+
+        ok = "OK";
+        ok += CR;
+        ok += LF;
+
+        server.add(server.getConnections().at(3), ok);
+        server.update();
+        client3.join();
+    }
+    catch (network::SocketException &e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
+}
+
+TEST(Network, SingleClientTcp)
+{
+
+    try
+    {
+        std::srand(std::time(0)); // use current time as seed for random generator
+        unsigned short random_variable = std::rand() % 65000 + 2500;
+        network::SockAddr clienInfos(random_variable);
+        network::SockAddr serverInfos(random_variable, SERVER_ADDR);
+
+        network::ServerTCP server;
+        ClientTCP client(serverInfos);
+
+        server.bind(clienInfos);
+
+        server.listen();
+
+        client.launch();
+
+        while (server.getConnections().size() == 0)
+            server.update();
+
+        std::string login = "";
+
+        while ((login = server.getMessage(server.getConnections().at(0))) == "")
+            server.update();
+
+        ASSERT_STREQ("login", login.c_str());
+
+        std::string ok("OK");
+        ok += CR;
+        ok += LF;
+
+        server.add(server.getConnections().at(0), ok);
+        server.update();
+
+        client.join();
+    }
+    catch (std::exception &e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
+}
+
+TEST(Network, TwoClientTcp)
+{
+    try
+    {
+        std::srand(std::time(0)); // use current time as seed for random generator
+        unsigned short random_variable = std::rand() % 65000 + 2500;
+
+        network::SockAddr clienInfos(random_variable);
+        network::SockAddr serverInfos(random_variable, SERVER_ADDR);
+
+        network::ServerTCP server;
+
+        ClientTCP client0(serverInfos);
+        ClientTCP client1(serverInfos);
+
+        server.bind(clienInfos);
+
+        server.listen();
+
+        client0.launch();
+
+        while (server.getConnections().size() == 0)
+            server.update();
+
+        std::string login = "";
+
+        // Client 0
+
+        while ((login = server.getMessage(server.getConnections().at(0))) == "")
+            server.update();
+
+        ASSERT_STREQ("login", login.c_str());
+
+        std::string ok("OK");
+        ok += CR;
+        ok += LF;
+
+        server.add(server.getConnections().at(0), ok);
+        server.update();
+        client0.join();
+
+        client1.launch();
+
+        while (server.getConnections().size() == 1)
+            server.update();
+
+        //Client 1
+        login = "";
+        while ((login = server.getMessage(server.getConnections().at(1))) == "") {
+            server.update();
+        }
+
+        ASSERT_STREQ("login", login.c_str());
+
+        ok = "OK";
+        ok += CR;
+        ok += LF;
+
+        server.add(server.getConnections().at(1), ok);
+        server.update();
+        client1.join();
+    }
+    catch (network::SocketException &e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
+}
+
+TEST(Network, FourClientTcp)
+{
+    try
+    {
+        std::srand(std::time(0)); // use current time as seed for random generator
+        unsigned short random_variable = std::rand() % 65000 + 2500;
+
+        network::SockAddr clienInfos(random_variable);
+        network::SockAddr serverInfos(random_variable, SERVER_ADDR);
+
+        network::ServerTCP server;
+
+        ClientTCP client0(serverInfos);
+        ClientTCP client1(serverInfos);
+        ClientTCP client2(serverInfos);
+        ClientTCP client3(serverInfos);
+
+        server.bind(clienInfos);
+
+        server.listen();
+
+        client0.launch();
+        // Client 0
+
+        while (server.getConnections().size() == 0)
+            server.update();
+
+        std::string login = "";
+
+
+        while ((login = server.getMessage(server.getConnections().at(0))) == "")
+            server.update();
+
+        ASSERT_STREQ("login", login.c_str());
+
+        std::string ok("OK");
+        ok += CR;
+        ok += LF;
+
+        server.add(server.getConnections().at(0), ok);
+        server.update();
+        client0.join();
+
+        //Client 1
+
+        client1.launch();
+
+        while (server.getConnections().size() == 1)
+            server.update();
+
+        login = "";
+        while ((login = server.getMessage(server.getConnections().at(1))) == "") {
+            server.update();
+        }
+
+        ASSERT_STREQ("login", login.c_str());
+
+        ok = "OK";
+        ok += CR;
+        ok += LF;
+
+        server.add(server.getConnections().at(1), ok);
+        server.update();
+        client1.join();
+
+        //Client 2
+
+        client2.launch();
+
+        while (server.getConnections().size() == 2)
+            server.update();
+
+        login = "";
+        while ((login = server.getMessage(server.getConnections().at(2))) == "") {
+            server.update();
+        }
+
+        ASSERT_STREQ("login", login.c_str());
+
+        ok = "OK";
+        ok += CR;
+        ok += LF;
+
+        server.add(server.getConnections().at(2), ok);
+        server.update();
+        client2.join();
+
+        //Client 3
+
+        client3.launch();
+
+        while (server.getConnections().size() == 3)
+            server.update();
+
+        login = "";
+        while ((login = server.getMessage(server.getConnections().at(3))) == "") {
+            server.update();
+        }
+
+        ASSERT_STREQ("login", login.c_str());
+
+        ok = "OK";
+        ok += CR;
+        ok += LF;
+
+        server.add(server.getConnections().at(3), ok);
+        server.update();
+        client3.join();
+    }
+    catch (network::SocketException &e)
+    {
+        std::cerr << e.what() << std::endl;
+    }
+}
+
 
 int main(int ac, char **av)
 {

@@ -5,7 +5,8 @@
  */
 
 #include <iostream>
-#include "ASocket.hh"
+#include <ASocket.hh>
+#include "NetworkSelect.hh"
 #include "SocketException.hh"
 
 namespace network
@@ -21,11 +22,7 @@ namespace network
         if (sockFd == -1)
             throw SocketException("Invalid Socket");
 
-        std::cout << "socketFd: " << sockFd << std::endl;
-        std::cout << "socketFd: " << &_readfds_result << std::endl;
-
         return FD_ISSET(sockFd, &_readfds_result) != 0;
-
     }
 
     bool NetworkSelect::isWritable(Socket_t sockFd) const
@@ -66,7 +63,7 @@ namespace network
         _writefds_result = _writefds;
 
         if ((::select(FD_SETSIZE, &_readfds_result, &_writefds_result, NULL, timeout)) == -1)
-            throw SocketException("Select failed");
+            throw SocketException("Select failed with error: " + std::to_string(errno));
     }
 
 }

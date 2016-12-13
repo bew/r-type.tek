@@ -1,0 +1,106 @@
+/**
+ * @file ServerTCP.hpp
+ * @author Tookie
+ * @brief representation of server tcp
+ */
+
+#pragma once
+
+#ifdef __linux__
+
+#include "SocketLinuxTCP.h"
+
+#elif defined _WIN32
+#include "SocketWindowsTCP.h"
+#endif
+
+#include <vector>
+#include <memory>
+#include "AServer.hpp"
+#include "ClientTCP.hpp"
+
+/**
+ * namespace that contains all network abstraction
+ */
+namespace network
+{
+
+    /**
+     * Representation of Server TCP
+     */
+    class ServerTCP: public AServer
+    {
+    public:
+
+        /**
+         * Default constructor of ServerTCP
+         */
+        ServerTCP();
+
+        ServerTCP(const ServerTCP &) = delete;
+
+        ServerTCP &operator=(const ServerTCP &) = delete;
+
+        /**
+         * Destructor of ServerTCP
+         */
+        virtual ~ServerTCP();
+
+        /**
+         * test if sockets are writable or readable and call send or recv
+         */
+        virtual void update();
+
+        /**
+         * call the bind method of SocketTCP
+         * @param hostInfos SockAddr pass to bind method
+         */
+        virtual void bind(const SockAddr &hostInfos);
+
+        /**
+         * call the listen method of SocketTCP
+         */
+        void listen();
+
+        /**
+         * call the accept method of SocketTCP
+         */
+        void accept();
+
+        /**
+         *
+         * pop a message to the client read buffer
+         * @param client pointer to one clientTCP
+         *
+         * @return string that contains the first valid message on client read buffer
+         */
+        std::string getMessage(const std::shared_ptr<ClientTCP> client);
+
+        /**
+         * append a message to the client write buffer
+         *
+         * @param client pointer to one ClientTCP
+         * @param message string that will be add to the client write buffer
+         */
+        void add(const std::shared_ptr<ClientTCP> client, const std::string &message);
+
+        /**
+         * get the list of client connected
+         * @return const reference to the vector of pointer to ClientTCP
+         */
+        const std::vector<std::shared_ptr<ClientTCP> > &getConnections() const;
+
+    private:
+
+        /**
+         * Represent socket server
+         */
+        SocketTCP _socketServer;
+
+        /**
+         * contains all clients connected
+         */
+        std::vector<std::shared_ptr<ClientTCP> > _clients;
+    };
+
+}

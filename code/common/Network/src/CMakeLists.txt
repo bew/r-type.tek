@@ -1,4 +1,4 @@
-set(LIB_SOURCE ASocket.cpp NetworkBuffer.cpp NetworkSelect.cpp SocketException.cpp ASocketTCP.cpp ASocketUDP.cpp SockAddr.cpp ClientTCP.cpp)
+set(LIB_SOURCE ASocket.cpp NetworkBuffer.cpp NetworkSelect.cpp SocketException.cpp ASocketTCP.cpp ASocketUDP.cpp SockAddr.cpp ClientTCP.cpp ServerTCP.cpp ClientUDP.cpp ServerUDP.cpp AClient.cpp AServer.cpp)
 set(LIB_DEPEDENCIES)
 
 if(UNIX)

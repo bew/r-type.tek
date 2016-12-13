@@ -8,12 +8,14 @@
 
 namespace network
 {
-
-    ASocket::ASocket(unsigned short port)
-            : _port(port)
+    ASocket::ASocket(): _socket(-1)
     {
     }
 
+    ASocket::ASocket(Socket_t socket): _socket(socket)
+    {
+
+    }
 
     Socket_t ASocket::getSocket() const
     {

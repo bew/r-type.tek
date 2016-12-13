@@ -1,51 +1,35 @@
 /**
- * @file ClientTCP.cpp
+ * @file ClientUDP.cpp
  * @author Tookie
- * @brief implementation of Client TCP class
+ * @brief implementation of Client UDP
  */
 
 
 #include <iostream>
-#include "ClientTCP.hpp"
 #include "SocketException.hh"
+#include "ClientUDP.hpp"
 
 namespace network
 {
-
-    ClientTCP::ClientTCP() : _socket()
+    ClientUDP::ClientUDP(const std::string &serverAddr, unsigned short port) : _addr(port, serverAddr)
     {
+        _selector.monitor(_socket.getSocket(), NetworkSelect::READ);
     }
 
-    ClientTCP::ClientTCP(Socket_t socket) : _socket(socket)
+    ClientUDP::ClientUDP(const SockAddr &addr) : _addr(addr)
     {
-
+        _selector.monitor(_socket.getSocket(), NetworkSelect::READ);
     }
 
-    ClientTCP::~ClientTCP()
-    {
-        if (!isClose())
-            _selector.unmonitor(_socket.getSocket(), NetworkSelect::READ);
-
-        _socket.close();
-    }
-
-    void ClientTCP::close()
+    ClientUDP::~ClientUDP()
     {
         _selector.unmonitor(_socket.getSocket(), NetworkSelect::READ);
 
         _socket.close();
     }
 
-    void ClientTCP::connect(const SockAddr &hostInfos)
+    void ClientUDP::update()
     {
-        _socket.connect(hostInfos);
-        _selector.monitor(_socket.getSocket(), NetworkSelect::READ);
-    }
-
-    void ClientTCP::update()
-    {
-        if (isClose())
-            return;
         try
         {
             struct timeval timer;
@@ -54,10 +38,11 @@ namespace network
             _selector.select(&timer);
             if (_selector.isReadable(_socket.getSocket()))
             {
-                std::string msg = _socket.recv();
+                SockAddr from(0, "");
+                std::string msg = _socket.recv(from);
+                if (from != _addr)
+                    throw SocketException("Client read from unknown host");
                 _readBuffer.fill(msg);
-                if (isClose())
-                    return;
 
             }
             if (_selector.isWritable(_socket.getSocket()))
@@ -67,8 +52,8 @@ namespace network
                 {
                     msg += CR;
                     msg += LF;
-                    int nbBytesSend = _socket.send(msg);
-                    _writeBuffer.updatePosition(static_cast<size_t>(nbBytesSend));
+                    int nbBytesSend = _socket.send(_addr, msg);
+                    _writeBuffer.updatePosition(static_cast<size_t>(nbBytesSend ));
 
                     if (_writeBuffer.get() == "")
                         _selector.unmonitor(_socket.getSocket(), NetworkSelect::WRITE);
@@ -81,20 +66,15 @@ namespace network
         }
     }
 
-    void ClientTCP::addMessage(const std::string &msg)
+    void ClientUDP::addMessage(const std::string &msg)
     {
         _writeBuffer.fill(msg);
         if (*(--msg.end()) == CR || *(--msg.end()) == LF)
             _selector.monitor(_socket.getSocket(), NetworkSelect::WRITE);
     }
 
-    SocketTCP &ClientTCP::getSocket()
+    SockAddr &ClientUDP::getAddr()
     {
-        return _socket;
-    }
-
-    bool ClientTCP::isClose() const
-    {
-        return (_socket.getSocket() == -1);
+        return _addr;
     }
 }

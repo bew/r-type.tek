@@ -28,8 +28,13 @@ namespace network {
         return _addr;
     }
 
-    void SockAddr::setAddr(const std::string &addr) {
+    void SockAddr::setIPAddr(const std::string &addr) {
         _addr.sin_addr.s_addr = inet_addr(addr.c_str());
+    }
+
+    void SockAddr::setAddr(const sockaddr_in& addr)
+    {
+        _addr = addr;
     }
 
     bool SockAddr::operator<(const SockAddr& rhs) const
@@ -37,5 +42,15 @@ namespace network {
         std::string thisId(std::to_string(_addr.sin_addr.s_addr) + std::to_string(_addr.sin_port));
         std::string rhsId(std::to_string(rhs._addr.sin_addr.s_addr) + std::to_string(rhs._addr.sin_port));
         return thisId < rhsId;
+    }
+
+    bool SockAddr::operator==(const SockAddr& rhs) const
+    {
+        return (_addr.sin_addr.s_addr == rhs._addr.sin_addr.s_addr) &&  (_addr.sin_port == rhs._addr.sin_port);
+    }
+
+    bool SockAddr::operator!=(const SockAddr& rhs) const
+    {
+        return (_addr.sin_addr.s_addr != rhs._addr.sin_addr.s_addr) ||  (_addr.sin_port != rhs._addr.sin_port);
     }
 }

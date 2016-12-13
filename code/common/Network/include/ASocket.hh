@@ -8,10 +8,6 @@
 
 #include <string>
 
-namespace network {
-    class ASocket;
-}
-
 
 #ifdef __linux__
 #define Socket_t int
@@ -21,7 +17,7 @@ namespace network {
 
 #endif
 
-#include "NetworkSelect.hh"
+#include "SockAddr.hh"
 
 #define SERVER_ADDR "127.0.0.1"
 
@@ -37,15 +33,20 @@ namespace network {
     public:
 
         /**
-         * Constructor of ASocket
-         * @param port port use to socket connection
+         * default constructor of ASocket
          */
-        ASocket(unsigned short port);
+        ASocket();
 
         /**
-         *  bind socket
+         * Constructor of ASocketTCP
+         * @params socket fd of the socket already created
          */
-        virtual void bind() = 0;
+        ASocket(Socket_t socket);
+
+        /**
+         * bind socket
+         */
+        virtual void bind(const SockAddr& hostInfos) = 0;
 
         /**
          * close socket
@@ -53,26 +54,16 @@ namespace network {
         virtual void close() = 0;
 
         /**
-         * @return private socket variable
+         * @return the socket fd
          */
         Socket_t getSocket() const;
 
     protected:
 
         /**
-         * contain the socket
+         * represents the socket fd
          */
         Socket_t _socket;
-
-        /*
-         * contain select encapsulation
-         */
-        NetworkSelect _selector;
-
-        /*
-         * port use to socket connection
-         */
-        const unsigned short _port;
     };
 
 }

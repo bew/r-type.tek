@@ -14,6 +14,8 @@
 
 #endif
 
+#include "ASocket.hh"
+
 /**
  * namespace that contains all network abstraction
  */
