@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(graphic)
-set(LIB_NAME graphic)
+project(Graphic)
+set(LIB_NAME Graphic)
 set(LIB_TEST_NAME ${LIB_NAME}_test)
 set(TEST_EXE ${LIB_TEST_NAME}_exe)
 

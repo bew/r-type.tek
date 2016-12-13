@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0.0)
 
 # Google test
 add_subdirectory(googletest)
-#add_subdirectory(SFML)
+add_subdirectory(SFML)
 
 # !! IMPORTANT !!
 # Each project should have their own folder "test" which is added by the root cmake

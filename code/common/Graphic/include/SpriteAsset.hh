@@ -2,7 +2,7 @@
 #define _SPRIETASSET_HPP
 
 #include <string>
-#include <SFML/Graphics/Texture.hpp>
+#include "SFML/Graphics/Texture.hpp"
 
 #include "Window.hh"
 #include "AssetException.hh"
