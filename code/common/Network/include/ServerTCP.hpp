@@ -64,6 +64,8 @@ namespace network
 
         /**
          * call the accept method of SocketTCP
+         *
+         * @return new socket return by accept system call
          */
         void accept();
 

@@ -1,7 +1,7 @@
 /**
  * @file SocketLinuxTCP.cpp
  * @author Tookie
- * @brief TCP socket encapsulation for linux
+ * @brief implementation of TCP socket encapsulation for linux
  */
 
 #include <arpa/inet.h>

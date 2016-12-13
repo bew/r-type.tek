@@ -1,7 +1,7 @@
 /**
  * @file SockAddr.cpp
  * @author Tookie
- * @brief encapsulation of sockaddr_in type
+ * @brief implemation of  sockaddr_in encapsulation
  */
 
 #include "SockAddr.hh"
@@ -35,13 +35,6 @@ namespace network {
     void SockAddr::setAddr(const sockaddr_in& addr)
     {
         _addr = addr;
-    }
-
-    bool SockAddr::operator<(const SockAddr& rhs) const
-    {
-        std::string thisId(std::to_string(_addr.sin_addr.s_addr) + std::to_string(_addr.sin_port));
-        std::string rhsId(std::to_string(rhs._addr.sin_addr.s_addr) + std::to_string(rhs._addr.sin_port));
-        return thisId < rhsId;
     }
 
     bool SockAddr::operator==(const SockAddr& rhs) const

@@ -73,10 +73,24 @@ namespace network
          */
         std::string get(const std::shared_ptr<ClientUDP> client);
 
+        /**
+         * get the list of client connected
+         * @return const reference to the vector of pointer to ClientTCP
+         */
         std::vector<std::shared_ptr<ClientUDP> > getConnections() const;
 
+        /**
+         * Test if the addr is unknown or not
+         * @param addr of one client
+         * @return true if is a new client, else false
+         */
         bool isNewClient(const SockAddr &addr);
 
+        /**
+         * get Client who has the same addr than parameter
+         * @param addr client ip and port for retrieve client in vector
+         * @return pointer to the client who has this addr
+         */
         std::shared_ptr<ClientUDP> getClient(const SockAddr &addr);
 
     private:

@@ -1,7 +1,7 @@
 /**
  * @file SocketWindowsUDP.cpp
  * @author Tookie
- * @brief UDP socket encapsulation for windows
+ * @brief implementation of UDP socket encapsulation for windows
  */
 
 #include <cstring>

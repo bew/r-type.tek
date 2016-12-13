@@ -1,7 +1,7 @@
 /**
  * @file SocketLinuxUDP.cpp
  * @author Tookie
- * @brief UDP socket encapsulation for linux
+ * @brief implementation of UDP socket encapsulation for linux
  */
 
 #include <unistd.h>

@@ -59,6 +59,8 @@ namespace network
         /**
          * encapsulation of accept system call who extracts the first connection request
          *
+         * @return new socket return by accept system call
+         *
          * @throw SocketException if accept fail
          */
         virtual Socket_t accept();
@@ -80,6 +82,8 @@ namespace network
         /**
          * read in socket and add read message to the read buffer
          *
+         * @return string read on the socket
+         *
          * @throw SocketException if connect fail
          */
         virtual std::string recv();
@@ -89,11 +93,16 @@ namespace network
          *
          * @param msg message that will be sent
          *
-         *  @throw SocketException if send fail
+         * @return number of Bytes sent
+         *
+         * @throw SocketException if send fail
          */
         virtual int send(const std::string &msg) const;
 
     };
 
+    /**
+     * define type SocketTCP as SocketWindowsTCP
+     */
     typedef SocketWindowsTCP SocketTCP;
 }
