@@ -20,7 +20,10 @@ void graphic::AssetStore::loadMusic(const std::string &path) {
     _musics.emplace(path, _root + "/" + graphic::AssetStore::MUSIC_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::MUSIC_EXTENSION);
   }
   catch (const AssetException &e) {
+    if (_locale != graphic::AssetStore::DEFAULT_LOCALE)
     _musics.emplace(path, _root + "/" + graphic::AssetStore::MUSIC_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::MUSIC_EXTENSION);
+    else
+      throw e;
   }
 }
 
@@ -44,7 +47,10 @@ void graphic::AssetStore::loadSound(const std::string &path) {
     _sounds.emplace(path, _root + "/" + graphic::AssetStore::SOUND_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::SOUND_EXTENSION);
   }
   catch (const AssetException &e) {
-    _sounds.emplace(path, _root + "/" + graphic::AssetStore::SOUND_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::SOUND_EXTENSION);
+    if (_locale != graphic::AssetStore::DEFAULT_LOCALE)
+      _sounds.emplace(path, _root + "/" + graphic::AssetStore::SOUND_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::SOUND_EXTENSION);
+    else
+      throw e;
   }
 }
 
@@ -68,7 +74,10 @@ void graphic::AssetStore::loadSprite(const std::string &path) {
     _sprites.emplace(path, _root + "/" + graphic::AssetStore::SPRITE_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::SPRITE_EXTENSION);
   }
   catch (const AssetException &e) {
-    _sprites.emplace(path, _root + "/" + graphic::AssetStore::SPRITE_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::SPRITE_EXTENSION);
+    if (_locale != graphic::AssetStore::DEFAULT_LOCALE)
+      _sprites.emplace(path, _root + "/" + graphic::AssetStore::SPRITE_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::SPRITE_EXTENSION);
+    else
+      throw e;
   }
 }
 
@@ -97,12 +106,15 @@ void graphic::AssetStore::loadAnimatedSprite(const std::string &path) {
 			     );
   }
   catch (const AssetException &e) {
-    _animatedSprites.emplace(std::piecewise_construct,
-                             std::forward_as_tuple(path),
-                             std::forward_as_tuple(_root + "/" + graphic::AssetStore::SPRITE_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::SPRITE_EXTENSION,
-                                                   _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::ANIMATED_EXTENSION
-                                                   )
-                             );
+    if (_locale != graphic::AssetStore::DEFAULT_LOCALE)
+      _animatedSprites.emplace(std::piecewise_construct,
+			       std::forward_as_tuple(path),
+			       std::forward_as_tuple(_root + "/" + graphic::AssetStore::SPRITE_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::SPRITE_EXTENSION,
+						     _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::ANIMATED_EXTENSION
+						     )
+			       );
+    else
+      throw e;
   }
 }
 
@@ -126,7 +138,10 @@ void graphic::AssetStore::loadFont(const std::string &path) {
     _fonts.emplace(path, _root + "/" + graphic::AssetStore::FONT_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::FONT_EXTENSION);
   }
   catch (const AssetException &e) {
-    _fonts.emplace(path, _root + "/" + graphic::AssetStore::FONT_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::FONT_EXTENSION);
+    if (_locale != graphic::AssetStore::DEFAULT_LOCALE)
+      _fonts.emplace(path, _root + "/" + graphic::AssetStore::FONT_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::FONT_EXTENSION);
+    else
+      throw e;
   }
 }
 
@@ -150,7 +165,10 @@ void graphic::AssetStore::loadText(const std::string &path) {
     _texts.emplace(path, _root + "/" + graphic::AssetStore::TEXT_DIRECTORY + "/" + _locale + "/" + path + graphic::AssetStore::TEXT_EXTENSION);
   }
   catch (const AssetException &e) {
-    _texts.emplace(path, _root + "/" + graphic::AssetStore::TEXT_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::TEXT_EXTENSION);
+    if (_locale != graphic::AssetStore::DEFAULT_LOCALE)
+      _texts.emplace(path, _root + "/" + graphic::AssetStore::TEXT_DIRECTORY + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::TEXT_EXTENSION);
+    else
+      throw e;
   }
 }
 
@@ -183,13 +201,13 @@ const std::string graphic::AssetStore::TEXT_DIRECTORY = "texts";
 
 const std::string graphic::AssetStore::FONT_DIRECTORY = "fonts";
 
-const std::string graphic::AssetStore::MUSIC_EXTENSION = "mp3";
+const std::string graphic::AssetStore::MUSIC_EXTENSION = ".ogg";
 
-const std::string graphic::AssetStore::SOUND_EXTENSION = "mp3";
+const std::string graphic::AssetStore::SOUND_EXTENSION = ".ogg";
 
-const std::string graphic::AssetStore::SPRITE_EXTENSION = "bmp";
+const std::string graphic::AssetStore::SPRITE_EXTENSION = ".bmp";
 
-const std::string graphic::AssetStore::ANIMATED_EXTENSION = "anim.bson";
+const std::string graphic::AssetStore::ANIMATED_EXTENSION = ".anim.bson";
 
 const std::string graphic::AssetStore::TEXT_EXTENSION = ".txt";
 

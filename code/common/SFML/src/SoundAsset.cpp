@@ -1,7 +1,7 @@
 #include "SoundAsset.hh"
 
 graphic::SoundAsset::SoundAsset(const std::string &path) {
-  if (_sound.loadFromFile(path))
+  if (!_sound.loadFromFile(path))
       throw AssetException("Unable to load sound from '" + path + "'");
 }
 
