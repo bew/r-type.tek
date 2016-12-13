@@ -31,7 +31,7 @@ namespace network
             throw SocketException("WSA Socket failed with error: " + std::to_string(WSAGetLastError()));
     }
 
-    SocketWindowsTCP::SocketWindowsTCP(Socket_t socket): ASocket(socket)
+    SocketWindowsTCP::SocketWindowsTCP(Socket_t socket): ASocketTCP(socket)
     {}
 
     SocketWindowsTCP::~SocketWindowsTCP()
@@ -68,7 +68,7 @@ namespace network
     {
         sockaddr_in from = hostInfos.getAddr();
 
-        if (::WSAConnect(_socket, reinterpret_cast<SOCKADDR *>(&from), sizeof(_from.getAddr()), nullptr, nullptr, nullptr, nullptr) == SOCKET_ERROR)
+        if (::WSAConnect(_socket, reinterpret_cast<SOCKADDR *>(&from), sizeof(from), nullptr, nullptr, nullptr, nullptr) == SOCKET_ERROR)
             throw SocketException("Connect failed with error " + std::to_string(WSAGetLastError()));
     }
 
@@ -127,7 +127,7 @@ namespace network
         return std::string(buffer.buf, numberOfBytesRecv);
     }
 
-    int SocketWindowsTCP::send(const std::string &msg)
+    int SocketWindowsTCP::send(const std::string &msg) const
     {
         WSABUF buffer;
 
