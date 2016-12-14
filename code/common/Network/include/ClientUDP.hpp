@@ -52,7 +52,7 @@ namespace network
         /**
          * Destructor of ClientUDP
          */
-        ~ClientUDP();
+        virtual ~ClientUDP();
 
         /**
          * test if socket is writable or readable and call send or recv

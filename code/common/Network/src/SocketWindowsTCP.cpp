@@ -128,7 +128,7 @@ namespace network
         return std::string(buffer.buf, numberOfBytesRecv);
     }
 
-    size_t SocketWindowsTCP::send(const std::string &msg)
+    size_t SocketWindowsTCP::send(const std::string &msg) const
     {
         WSABUF buffer;
 

@@ -81,7 +81,7 @@ namespace network
         return client->getMessage();
     }
 
-    std::vector<std::shared_ptr<ClientUDP>> ServerUDP::getConnections() const
+    const std::vector<std::shared_ptr<ClientUDP>>& ServerUDP::getConnections() const
     {
         return _clients;
     }

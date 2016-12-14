@@ -79,7 +79,7 @@ namespace network
          * get the list of client connected
          * @return const reference to the vector of pointer to ClientTCP
          */
-        std::vector<std::shared_ptr<ClientUDP> > getConnections() const;
+        const std::vector<std::shared_ptr<ClientUDP> >& getConnections() const;
 
         /**
          * Test if the addr is unknown or not

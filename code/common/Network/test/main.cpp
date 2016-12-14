@@ -21,8 +21,6 @@
 #include "SocketLinuxUDP.h"
 
 #elif defined _WIN32
-#include <../test/mingw.thread.h>
-#include <../test/mingw.mutex.h>
 #include "SocketWindowsTCP.h"
 #include "SocketWindowsUDP.h"
 
@@ -608,7 +606,6 @@ TEST(Network, FourClientTcp)
 
 int main(int ac, char **av)
 {
-    std::cout << "testing .. " << std::endl;
     ::testing::InitGoogleTest(&ac, av);
     return RUN_ALL_TESTS();
 }
