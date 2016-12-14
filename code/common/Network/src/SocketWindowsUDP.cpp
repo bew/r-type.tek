@@ -7,6 +7,7 @@
 #include <cstring>
 #include "SocketWindowsUDP.h"
 #include "SocketException.hh"
+#include "NetworkBuffer.hh"
 
 namespace network
 {
@@ -34,14 +35,14 @@ namespace network
         WSACleanup();
     }
 
-    void SocketWindowsUDP::bind(const SockAddr &addr)
+    void SocketWindowsUDP::bind(const SockAddr &from)
     {
         sockaddr_in addr = from.getAddr();
         if (::bind(_socket, reinterpret_cast<SOCKADDR *>(&addr), sizeof(addr)) == SOCKET_ERROR)
             throw SocketException("bind failed with error: " + std::to_string(WSAGetLastError()));
     }
 
-    void SocketWindowsUDP::recv(const SockAddr &hostInfos)
+    std::string SocketWindowsUDP::recv(SockAddr &hostInfos)
     {
         char bufTmp[BUFFER_SIZE];
         DWORD flag = 0;
@@ -112,7 +113,7 @@ namespace network
             throw SocketException("WSACreateEvent failed: " + std::to_string(WSAGetLastError()));
         }
 
-        sockaddr_in addr = hostIp.getAddr();
+        sockaddr_in addr = hostInfos.getAddr();
         int ret = WSASendTo(_socket,
                             &buffer,
                             1,

@@ -608,6 +608,7 @@ TEST(Network, FourClientTcp)
 
 int main(int ac, char **av)
 {
+    std::cout << "testing .. " << std::endl;
     ::testing::InitGoogleTest(&ac, av);
     return RUN_ALL_TESTS();
 }
