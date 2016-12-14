@@ -19,7 +19,7 @@ namespace protocol {
             message << u8"username" << username;
             message << u8"password" << password;
 
-            document << u8"header" << protocol::createHeader("signUp");
+            document << u8"header" << protocol::createHeader("SignUp");
             document << u8"data" << message;
 
             return document;
