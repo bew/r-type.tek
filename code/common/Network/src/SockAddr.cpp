@@ -6,13 +6,14 @@
 
 #include "SockAddr.hh"
 
-namespace network {
+namespace network
+{
 
 
     SockAddr::SockAddr(unsigned short port, const std::string &addr)
     {
         _addr.sin_family = AF_INET;
-        _addr.sin_addr.s_addr = inet_addr(addr.c_str());
+        inet_pton(AF_INET, addr.c_str(), &(_addr.sin_addr));
         _addr.sin_port = htons(port);
     }
 
@@ -28,21 +29,22 @@ namespace network {
         return _addr;
     }
 
-    void SockAddr::setIPAddr(const std::string &addr) {
-        _addr.sin_addr.s_addr = inet_addr(addr.c_str());
+    void SockAddr::setIPAddr(const std::string &addr)
+    {
+        inet_pton(AF_INET, addr.c_str(), &(_addr.sin_addr));
     }
 
-    void SockAddr::setAddr(const sockaddr_in& addr)
+    void SockAddr::setAddr(const sockaddr_in &addr)
     {
         _addr = addr;
     }
 
-    bool SockAddr::operator==(const SockAddr& rhs) const
+    bool SockAddr::operator==(const SockAddr &rhs) const
     {
-        return (_addr.sin_addr.s_addr == rhs._addr.sin_addr.s_addr) &&  (_addr.sin_port == rhs._addr.sin_port);
+        return (_addr.sin_addr.s_addr == rhs._addr.sin_addr.s_addr) && (_addr.sin_port == rhs._addr.sin_port);
     }
 
-    bool SockAddr::operator!=(const SockAddr& rhs) const
+    bool SockAddr::operator!=(const SockAddr &rhs) const
     {
         return (!((*this) == rhs));
     }
