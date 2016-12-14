@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.0)
+
 set(LIB_SOURCE Protocol.cpp Answers.cpp Server.cpp)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
