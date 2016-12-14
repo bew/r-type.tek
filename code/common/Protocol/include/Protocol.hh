@@ -22,7 +22,7 @@ namespace protocol {
     /**
      * Get a valid header Document for the R-Type protocol
      *
-     * @param id the id of whom send the message
+     * @param id the id of who send the message
      * @param action the action that will be put into the header Document
      * @return the Document that represent a header for the R-Type protocol
      */

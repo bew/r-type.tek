@@ -12,12 +12,18 @@
 
 #include "Protocol.hh"
 
+/**
+ * Contain all functions to use for the R-Type protocol
+ */
 namespace protocol {
+    /**
+     * Contain all functions to use for answers in R-Type protocol
+     */
     namespace answers {
         /**
          * Mean that the request has been correctly handle and everything went right (200)
          *
-         * @param id the id of whom send the message
+         * @param id the id of who send the message
          * @param timestamp the timestamp of the answered command
          * @param message a message which will be included into the answer
          * @param data a bson Document which will be included into the answer
@@ -29,7 +35,7 @@ namespace protocol {
          * Mean that the request which has been received is a bad request (malformed request syntax)
          * The request will be ignored (400)
          *
-         * @param id the id of whom send the message
+         * @param id the id of who send the message
          * @param timestamp the timestamp of the answered command
          * @param message a message which will be included into the answer
          * @return the bson Document formatted for the following answer
@@ -40,7 +46,7 @@ namespace protocol {
          * Mean that the request is unauthorized, specifically for use when authentication is
          * required and has failed or has not yet been provided (401)
          *
-         * @param id the id of whom send the message
+         * @param id the id of who send the message
          * @param timestamp the timestamp of the answered command
          * @param message a message which will be included into the answer
          * @return the bson Document formatted for the following answer
@@ -51,7 +57,7 @@ namespace protocol {
          * Mean that the request was a valid request, but the server is refusing to respond to it
          * The user might be logged in but does not have the necessary permissions for the resource (403)
          *
-         * @param id the id of whom send the message
+         * @param id the id of who send the message
          * @param timestamp the timestamp of the answered command
          * @param message a message which will be included into the answer
          * @return the bson Document formatted for the following answer
@@ -61,7 +67,7 @@ namespace protocol {
         /**
          * Mean that the request has been ignored because the requested resource could not be found (404)
          *
-         * @param id the id of whom send the message
+         * @param id the id of who send the message
          * @param timestamp the timestamp of the answered command
          * @param message a message which will be included into the answer
          * @return the bson Document formatted for the following answer
@@ -72,7 +78,7 @@ namespace protocol {
          * Mean that the request has been ignored because the user has sent too many requests
          * in a given amount of time (429)
          *
-         * @param id the id of whom send the message
+         * @param id the id of who send the message
          * @param timestamp the timestamp of the answered command
          * @param message a message which will be included into the answer
          * @return the bson Document formatted for the following answer
@@ -91,7 +97,7 @@ namespace protocol {
         /**
          * Mean that the request action is either not recognize or the version are not compatible for the receiver (501)
          *
-         * @param id the id of whom send the message
+         * @param id the id of who send the message
          * @param timestamp the timestamp of the answered command
          * @param message a message which will be included into the answer
          * @return the bson Document formatted for the following answer
@@ -102,7 +108,7 @@ namespace protocol {
          * mean that the request has been ignored because the receiver is currently unavailable
          * (because it is overloaded or down for maintenance). Generally, this is a temporary state (503)
          *
-         * @param id the id of whom send the message
+         * @param id the id of who send the message
          * @param timestamp the timestamp of the answered command
          * @param message a message which will be included into the answer
          * @return the bson Document formatted for the following answer
