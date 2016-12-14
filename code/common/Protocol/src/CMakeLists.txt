@@ -1,4 +1,4 @@
-set(LIB_SOURCE Protocol.cpp Answers.cpp)
+set(LIB_SOURCE Protocol.cpp Answers.cpp Server.cpp)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
 add_library(${LIB_TEST_NAME} SHARED ${LIB_SOURCE})

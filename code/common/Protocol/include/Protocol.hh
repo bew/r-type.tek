@@ -26,7 +26,7 @@ namespace protocol {
      * @param action the action that will be put into the header Document
      * @return the Document that represent a header for the R-Type protocol
      */
-    bson::Document getHeader(const std::string &id, const std::string& action);
+    bson::Document createHeader(const std::string &id, const std::string &action);
 }
 
 #endif //PROTOCOL_PROTOCOL_HH

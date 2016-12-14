@@ -20,7 +20,7 @@ namespace protocol {
             answer << u8"timestamp" << timestamp;
             answer << u8"data" << data;
 
-            document << u8"header" << protocol::getHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader(id, "Answer");
             document << u8"data" << answer;
 
             return document;
@@ -34,7 +34,7 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::getHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader(id, "Answer");
             document << u8"data" << answer;
 
             return document;
@@ -48,7 +48,7 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::getHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader(id, "Answer");
             document << u8"data" << answer;
 
             return document;
@@ -62,7 +62,7 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::getHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader(id, "Answer");
             document << u8"data" << answer;
 
             return document;
@@ -76,7 +76,7 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::getHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader(id, "Answer");
             document << u8"data" << answer;
 
             return document;
@@ -90,7 +90,7 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::getHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader(id, "Answer");
             document << u8"data" << answer;
 
             return document;
@@ -104,7 +104,7 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::getHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader(id, "Answer");
             document << u8"data" << answer;
 
             return document;
@@ -118,7 +118,7 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::getHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader(id, "Answer");
             document << u8"data" << answer;
 
             return document;
@@ -132,7 +132,7 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::getHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader(id, "Answer");
             document << u8"data" << answer;
 
             return document;
