@@ -11,7 +11,7 @@
 #include "Protocol.hh"
 
 namespace protocol {
-    bson::Document getHeader(const std::string& id, const std::string& action) {
+    bson::Document createHeader(const std::string &id, const std::string &action) {
         bson::Document header;
 
         header << u8"id" << id;

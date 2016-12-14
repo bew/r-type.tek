@@ -16,7 +16,7 @@
 TEST(Protocol, basic) {
     std::string id("aComputer01");
 
-    bson::Document header = protocol::getHeader(id, "SomeAction");
+    bson::Document header = protocol::createHeader(id, "SomeAction");
 
     EXPECT_EQ(header["id"].getValueString(), id);
     EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
