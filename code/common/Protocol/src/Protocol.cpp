@@ -1,5 +1,5 @@
 /**
- * @file Protocol.hh
+ * @file Protocol.cpp
  * @brief serialize messages into BSON for R-Type protocol
  * @author Christopher Paccard
  *
