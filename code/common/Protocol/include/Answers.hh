@@ -23,7 +23,7 @@ namespace protocol {
          * @param data a bson Document which will be included into the answer
          * @return the bson Document formatted for the following answer
          */
-        bson::Document ok(const std::string& id, int64_t timestamp, const std::string& message = "Ok", const bson::Document& data = bson::Document());
+        bson::Document ok(const std::string& id, int64_t timestamp, const bson::Document& data = bson::Document(), const std::string& message = "Ok");
 
         /**
          * Mean that the request which has been received is a bad request (malformed request syntax)
@@ -77,7 +77,7 @@ namespace protocol {
          * @param message a message which will be included into the answer
          * @return the bson Document formatted for the following answer
          */
-        bson::Document tooManyRequests(const std::string& id, int64_t timestamp, const std::string& message = "Too many Requests");
+        bson::Document tooManyRequests(const std::string& id, int64_t timestamp, const std::string& message = "Too Many Requests");
 
         /**
          * Mean that the request has generate an internal error but without more precisions of the error's nature (500)

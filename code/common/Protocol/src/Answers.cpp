@@ -11,7 +11,7 @@
 
 namespace protocol {
     namespace answers {
-        bson::Document ok(const std::string& id, int64_t timestamp, const std::string& message, const bson::Document& data) {
+        bson::Document ok(const std::string& id, int64_t timestamp, const bson::Document& data, const std::string& message) {
             bson::Document document;
             bson::Document answer;
 
@@ -82,7 +82,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document toManyRequests(const std::string& id, int64_t timestamp, const std::string& message) {
+        bson::Document tooManyRequests(const std::string& id, int64_t timestamp, const std::string& message) {
             bson::Document document;
             bson::Document answer;
 
