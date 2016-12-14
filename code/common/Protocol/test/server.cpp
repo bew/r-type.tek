@@ -14,13 +14,11 @@
  * Check if the message RoomJoin build correctly
  */
 TEST(Server, RoomJoin) {
-    std::string id("aComputer01");
     std::string username("toto42sh");
 
-    bson::Document message = protocol::server::roomJoin(id, username);
+    bson::Document message = protocol::server::roomJoin(username);
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
     EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "RoomJoin");
@@ -35,13 +33,11 @@ TEST(Server, RoomJoin) {
  * Check if the message RoomLeave build correctly
  */
 TEST(Server, RoomLeave) {
-    std::string id("aComputer01");
     std::string username("toto42sh");
 
-    bson::Document message = protocol::server::roomLeave(id, username);
+    bson::Document message = protocol::server::roomLeave(username);
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
     EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "RoomLeave");
@@ -56,13 +52,11 @@ TEST(Server, RoomLeave) {
  * Check if the message RoomKick build correctly
  */
 TEST(Server, RoomKick) {
-    std::string id("aComputer01");
     std::string username("toto42sh");
 
-    bson::Document message = protocol::server::roomKick(id, username);
+    bson::Document message = protocol::server::roomKick(username);
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
     EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "RoomKick");
@@ -77,12 +71,9 @@ TEST(Server, RoomKick) {
  * Check if the message GameStart build correctly
  */
 TEST(Server, GameStart) {
-    std::string id("aComputer01");
-
-    bson::Document message = protocol::server::gameStart(id);
+    bson::Document message = protocol::server::gameStart();
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
     EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "GameStart");
@@ -93,13 +84,11 @@ TEST(Server, GameStart) {
  * Check if the message GameLeave build correctly
  */
 TEST(Server, GameLeave) {
-    std::string id("aComputer01");
     std::string username("toto42sh");
 
-    bson::Document message = protocol::server::gameLeave(id, username);
+    bson::Document message = protocol::server::gameLeave(username);
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
     EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "GameLeave");
@@ -114,17 +103,15 @@ TEST(Server, GameLeave) {
  * Check if the message RoomLeave build correctly
  */
 TEST(Server, EntityUpdate) {
-    std::string id("aComputer01");
     int64_t entity_id = 4242;
     std::string component("test");
     bson::Document messageData;
     messageData << "x" << 0;
     messageData << "y" << 10;
 
-    bson::Document message = protocol::server::entityUpdate(id, entity_id, component, messageData);
+    bson::Document message = protocol::server::entityUpdate(entity_id, component, messageData);
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
     EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "EntityUpdate");
