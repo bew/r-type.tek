@@ -9,7 +9,6 @@
 namespace network
 {
 
-
     SockAddr::SockAddr(unsigned short port, const std::string &addr)
     {
         _addr.sin_family = AF_INET;
