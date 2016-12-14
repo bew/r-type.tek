@@ -1,11 +1,19 @@
-//
-// Created by paccar_c on 12/14/16.
-//
+/**
+ * @file answers.cpp
+ * @brief answers test file
+ * @author Christopher Paccard
+ *
+ * Contain all the the test to check answers
+ *
+ */
 
 #include <gtest/gtest.h>
 #include <stdlib.h>
 #include "Answers.hh"
 
+/**
+ * Check answer ok (200)
+ */
 TEST(Answers, Ok) {
     std::string id("aComputer01");
     std::srand(std::time(0));
@@ -30,6 +38,9 @@ TEST(Answers, Ok) {
     EXPECT_EQ(data["data"].getValueDocument(), dataAnswer);
 }
 
+/**
+ * Check answer bad request (400)
+ */
 TEST(Answers, BadRequest) {
     std::string id("aComputer01");
     std::srand(std::time(0));
@@ -51,6 +62,9 @@ TEST(Answers, BadRequest) {
     EXPECT_EQ(data["message"].getValueString(), "Bad Request");
 }
 
+/**
+ * Check answer unauthorized (401)
+ */
 TEST(Answers, Unauthorized) {
     std::string id("aComputer01");
     std::srand(std::time(0));
@@ -72,6 +86,9 @@ TEST(Answers, Unauthorized) {
     EXPECT_EQ(data["message"].getValueString(), "Unauthorized");
 }
 
+/**
+ * Check answer forbidden (403)
+ */
 TEST(Answers, Forbidden) {
     std::string id("aComputer01");
     std::srand(std::time(0));
@@ -93,6 +110,9 @@ TEST(Answers, Forbidden) {
     EXPECT_EQ(data["message"].getValueString(), "Forbidden");
 }
 
+/**
+ * Check answer not found (404)
+ */
 TEST(Answers, NotFound) {
     std::string id("aComputer01");
     std::srand(std::time(0));
@@ -114,6 +134,9 @@ TEST(Answers, NotFound) {
     EXPECT_EQ(data["message"].getValueString(), "Not Found");
 }
 
+/**
+ * Check answer too many requests (429)
+ */
 TEST(Answers, TooManyRequests) {
     std::string id("aComputer01");
     std::srand(std::time(0));
@@ -135,6 +158,9 @@ TEST(Answers, TooManyRequests) {
     EXPECT_EQ(data["message"].getValueString(), "Too Many Requests");
 }
 
+/**
+ * Check answer internal server error (500)
+ */
 TEST(Answers, InternalServerError) {
     std::string id("aComputer01");
     std::srand(std::time(0));
@@ -156,6 +182,9 @@ TEST(Answers, InternalServerError) {
     EXPECT_EQ(data["message"].getValueString(), "Internal Server Error");
 }
 
+/**
+ * Check answer not implemented (501)
+ */
 TEST(Answers, NotImplemented) {
     std::string id("aComputer01");
     std::srand(std::time(0));
@@ -177,6 +206,9 @@ TEST(Answers, NotImplemented) {
     EXPECT_EQ(data["message"].getValueString(), "Not Implemented");
 }
 
+/**
+ * Check answer service unavailable (503)
+ */
 TEST(Answers, ServiceUnavailable) {
     std::string id("aComputer01");
     std::srand(std::time(0));
