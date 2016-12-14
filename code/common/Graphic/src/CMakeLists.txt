@@ -1,6 +1,6 @@
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSFML_STATIC")
 set(LIB_SOURCE AssetException.cpp SpriteAsset.cpp AnimatedSpriteAsset.cpp FontAsset.cpp TextAsset.cpp MusicAsset.cpp SoundAsset.cpp AssetStore.cpp)
-set(LIB_DEPENDENCIES BSON sfml-graphics sfml-window sfml-system sfml-audio)
+set(LIB_DEPENDENCIES sfml-graphics sfml-window sfml-system sfml-audio)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
 add_library(${LIB_TEST_NAME} SHARED ${LIB_SOURCE})
