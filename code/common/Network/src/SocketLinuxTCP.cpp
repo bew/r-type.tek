@@ -1,7 +1,7 @@
 /**
  * @file SocketLinuxTCP.cpp
  * @author Tookie
- * @brief TCP socket encapsulation for linux
+ * @brief implementation of TCP socket encapsulation for linux
  */
 
 #include <arpa/inet.h>
@@ -14,10 +14,15 @@
 namespace network
 {
 
-    SocketLinuxTCP::SocketLinuxTCP(unsigned short port) : ASocketTCP(port)
+    SocketLinuxTCP::SocketLinuxTCP() : ASocketTCP()
     {
         if ((_socket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1)
             throw ("Could not create socket: " + std::to_string(errno));
+    }
+
+    SocketLinuxTCP::SocketLinuxTCP(Socket_t socket) : ASocketTCP(socket)
+    {
+
     }
 
     SocketLinuxTCP::~SocketLinuxTCP()
@@ -25,12 +30,11 @@ namespace network
         close();
     }
 
-    void SocketLinuxTCP::bind()
+    void SocketLinuxTCP::bind(const SockAddr& hostInfos)
     {
-        sockaddr_in addr = _from.getAddr();
+        sockaddr_in addr = hostInfos.getAddr();
         if (::bind(_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) != 0)
             throw SocketException("could not bind TCP socket: " + std::to_string(errno));
-        _selector.monitor(this, NetworkSelect::READ);
     }
 
     void SocketLinuxTCP::listen()
@@ -39,43 +43,43 @@ namespace network
             throw SocketException("Listen failed: " + std::to_string(errno));
     }
 
-    void SocketLinuxTCP::accept()
+    Socket_t SocketLinuxTCP::accept()
     {
         sockaddr clientInfos;
-        socklen_t clientInfosSize = sizeof(sockaddr);
-        if ((_socket = ::accept(_socket, &clientInfos, &clientInfosSize)) == -1)
+        std::memset(&clientInfos, 0, sizeof(clientInfos));
+        socklen_t clientInfosSize = sizeof(struct sockaddr_in);
+        Socket_t newConnection;
+        if ((newConnection = ::accept(_socket, &clientInfos, &clientInfosSize)) == -1)
             throw SocketException("Accept failed: " + std::to_string(errno));
-        _selector.monitor(this, NetworkSelect::READ);
+        return newConnection;
     }
 
-    void SocketLinuxTCP::connect()
+    void SocketLinuxTCP::connect(const SockAddr& hostInfos)
     {
-        _from.setAddr(SERVER_ADDR);
-        sockaddr_in from = _from.getAddr();
+        sockaddr_in from = hostInfos.getAddr();
         if (::connect(_socket, reinterpret_cast<struct sockaddr *>(&from), sizeof(from)) < 0)
             throw SocketException("Connect failed: " + std::to_string(errno));
     }
 
-    void SocketLinuxTCP::recv()
+    std::string SocketLinuxTCP::recv()
     {
         char buffer[BUFFER_SIZE];
         std::memset(buffer, 0, BUFFER_SIZE);
-        socklen_t fromLen = sizeof(_from);
         ssize_t ret = ::recv(_socket, buffer, BUFFER_SIZE, 0);
         if (ret < 0)
-            throw SocketException("Read from failed: " + std::to_string(errno));
-
+            throw SocketException("Read failed: " + std::to_string(errno));
+        else if (ret == 0)
+            close();
         std::string msg(buffer, ret);
-        msg += CR;
-        _readBuffer.fill(msg);
+        return msg;
     }
 
-    void SocketLinuxTCP::send(const std::string &msg)
+    size_t SocketLinuxTCP::send(const std::string &msg) const
     {
         ssize_t ret = ::send(_socket, msg.c_str(), msg.length(), 0);
         if (ret < 0)
-            throw SocketException("Send to failed: " + std::to_string(errno));
-        _writeBuffer.updatePosition(static_cast<size_t>(ret));
+            throw SocketException("Send failed: " + std::to_string(errno));
+        return ret;
     }
 
     void SocketLinuxTCP::close()
@@ -86,5 +90,7 @@ namespace network
             _socket = -1;
         }
     }
+
+
 
 }

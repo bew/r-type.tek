@@ -13,7 +13,7 @@
 namespace network
 {
 
-    SocketWindowsTCP::SocketWindowsTCP(unsigned short port) : ASocketTCP(port)
+    SocketWindowsTCP::SocketWindowsTCP() : ASocketTCP()
     {
         WSADATA wsd;
 
@@ -31,15 +31,18 @@ namespace network
             throw SocketException("WSA Socket failed with error: " + std::to_string(WSAGetLastError()));
     }
 
+    SocketWindowsTCP::SocketWindowsTCP(Socket_t socket): ASocketTCP(socket)
+    {}
+
     SocketWindowsTCP::~SocketWindowsTCP()
     {
         close();
         WSACleanup();
     }
 
-    void SocketWindowsTCP::bind()
+    void SocketWindowsTCP::bind(const SockAddr& hostInfos)
     {
-        sockaddr_in addr = _from.getAddr();
+        sockaddr_in addr = hostInfos.getAddr();
         if (::bind(_socket, reinterpret_cast<SOCKADDR *>(&addr), sizeof(addr)) == SOCKET_ERROR)
             throw SocketException("bind failed with error: " + std::to_string(WSAGetLastError()));
 
@@ -51,43 +54,34 @@ namespace network
             throw SocketException("Listen failed with error: " + std::to_string(WSAGetLastError()));
     }
 
-    void SocketWindowsTCP::accept()
+    Socket_t SocketWindowsTCP::accept()
     {
         sockaddr clientInfos;
         int clientInfosSize = sizeof(sockaddr);
-        if ((_socket = WSAAccept(_socket, &clientInfos, &clientInfosSize, nullptr, 0)) == SOCKET_ERROR)
+        Socket_t newConnection;
+        if ((newConnection = WSAAccept(_socket, &clientInfos, &clientInfosSize, nullptr, 0)) == SOCKET_ERROR)
             throw SocketException("Accept failed with error " + std::to_string(WSAGetLastError()));
-        _selector.monitor(this, NetworkSelect::READ);
+        return newConnection;
     }
 
-    void SocketWindowsTCP::connect()
+    void SocketWindowsTCP::connect(const SockAddr& hostInfos)
     {
-        _from.setAddr(SERVER_ADDR);
-        sockaddr_in from = _from.getAddr();
+        sockaddr_in from = hostInfos.getAddr();
 
-        int ret = ::WSAConnect(_socket,
-                               reinterpret_cast<SOCKADDR *>(&from),
-                               sizeof(_from.getAddr()),
-                               nullptr,
-                               nullptr,
-                               nullptr,
-                               nullptr);
-
-        if (ret == SOCKET_ERROR)
+        if (::WSAConnect(_socket, reinterpret_cast<SOCKADDR *>(&from), sizeof(from), nullptr, nullptr, nullptr, nullptr) == SOCKET_ERROR)
             throw SocketException("Connect failed with error " + std::to_string(WSAGetLastError()));
     }
 
     void SocketWindowsTCP::close()
     {
-        if (_socket != INVALID_SOCKET)
+        if (_socket != -1)
         {
             closesocket(_socket);
-            _socket = INVALID_SOCKET;
+            _socket = -1;
         }
-
     }
 
-    void SocketWindowsTCP::recv()
+    std::string SocketWindowsTCP::recv()
     {
         char bufTmp[BUFFER_SIZE];
         DWORD flag;
@@ -129,14 +123,12 @@ namespace network
             WSAResetEvent(recvOverlapped.hEvent);
         }
         WSACloseEvent(recvOverlapped.hEvent);
-
-        std::string msg(buffer.buf, numberOfBytesRecv);
-
-        msg += CR;
-        _readBuffer.fill(msg);
+        if (numberOfBytesRecv == 0)
+            close();
+        return std::string(buffer.buf, numberOfBytesRecv);
     }
 
-    void SocketWindowsTCP::send(const std::string &msg)
+    size_t SocketWindowsTCP::send(const std::string &msg)
     {
         WSABUF buffer;
 
@@ -179,9 +171,9 @@ namespace network
             throw SocketException("WSAgetOverlappedResult failed with error: " + std::to_string(WSAGetLastError()));
         }
 
-        _writeBuffer.updatePosition(numberOfBytesSnd);
-
         WSACloseEvent(sndOverlapped.hEvent);
+
+        return numberOfBytesSnd;
     }
 
 }

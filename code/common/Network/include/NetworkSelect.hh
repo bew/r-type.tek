@@ -14,6 +14,8 @@
 
 #endif
 
+#include "ASocket.hh"
+
 /**
  * namespace that contains all network abstraction
  */
@@ -45,7 +47,7 @@ namespace network {
          *
          * @param socket represent the socket that will be tested
          */
-        bool isReadable(const ASocket *socket) const;
+        bool isReadable(Socket_t sockFd) const;
 
         /**
          * test if the writefd is monitored
@@ -54,7 +56,7 @@ namespace network {
          *
          * @params socket represent the socket that will be tested
          */
-        bool isWritable(const ASocket *) const;
+        bool isWritable(Socket_t sockFd) const;
 
         /**
          * monitor socket's fd in read or write mode according to the type
@@ -65,7 +67,7 @@ namespace network {
          *
          * @throw SocketException if socket is invalid
          */
-        void monitor(const ASocket *socket, SelectType type);
+        void monitor(Socket_t sockFd, SelectType type);
 
         /**
          * unmonitor socket's fd in read or write mode according to the type
@@ -76,7 +78,7 @@ namespace network {
          *
          * @throw SocketException if socket is invalid
          */
-        void unmonitor(const ASocket *socket, SelectType type);
+        void unmonitor(Socket_t sockFd, SelectType type);
 
         /**
          * call select system call

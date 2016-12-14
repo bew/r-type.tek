@@ -1,18 +1,19 @@
 /**
  * @file SockAddr.cpp
  * @author Tookie
- * @brief encapsulation of sockaddr_in type
+ * @brief implemation of  sockaddr_in encapsulation
  */
 
 #include "SockAddr.hh"
 
-namespace network {
+namespace network
+{
 
 
     SockAddr::SockAddr(unsigned short port, const std::string &addr)
     {
         _addr.sin_family = AF_INET;
-        _addr.sin_addr.s_addr = inet_addr(addr.c_str());
+        inet_pton(AF_INET, addr.c_str(), &(_addr.sin_addr));
         _addr.sin_port = htons(port);
     }
 
@@ -28,14 +29,23 @@ namespace network {
         return _addr;
     }
 
-    void SockAddr::setAddr(const std::string &addr) {
-        _addr.sin_addr.s_addr = inet_addr(addr.c_str());
+    void SockAddr::setIPAddr(const std::string &addr)
+    {
+        inet_pton(AF_INET, addr.c_str(), &(_addr.sin_addr));
     }
 
-    bool SockAddr::operator<(const SockAddr& rhs) const
+    void SockAddr::setAddr(const sockaddr_in &addr)
     {
-        std::string thisId(std::to_string(_addr.sin_addr.s_addr) + std::to_string(_addr.sin_port));
-        std::string rhsId(std::to_string(rhs._addr.sin_addr.s_addr) + std::to_string(rhs._addr.sin_port));
-        return thisId < rhsId;
+        _addr = addr;
+    }
+
+    bool SockAddr::operator==(const SockAddr &rhs) const
+    {
+        return (_addr.sin_addr.s_addr == rhs._addr.sin_addr.s_addr) && (_addr.sin_port == rhs._addr.sin_port);
+    }
+
+    bool SockAddr::operator!=(const SockAddr &rhs) const
+    {
+        return (!((*this) == rhs));
     }
 }

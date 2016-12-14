@@ -10,23 +10,29 @@
 #include "SockAddr.hh"
 #include "NetworkBuffer.hh"
 
-
 /**
  * namespace that contains all network abstraction
  */
-namespace network {
+namespace network
+{
 
     /**
      * Representation of TCP socket abstraction
      */
-    class ASocketTCP : public ASocket {
+    class ASocketTCP : public ASocket
+    {
 
     public:
         /**
-         *  Constructor of ASocketTCP
-         * @params port port use to socket connection
+         *  Default Constructor of ASocketTCP
          */
-        ASocketTCP(unsigned short);
+        ASocketTCP();
+
+        /**
+         * Constructor of ASocketTCP
+         * @params socket fd of the socket already created
+         */
+        ASocketTCP(Socket_t socket);
 
         /**
          * encapsulation of listen system call who marks socket as a passive socket
@@ -35,62 +41,34 @@ namespace network {
 
         /**
          * encapsulation of accept system call who extracts the first connection request
+         *
+         * @return new socket return by accept system call
          */
-        virtual void accept() = 0;
+        virtual Socket_t accept() = 0;
 
         /**
          * encapsulation of connect system call who connects the socket
-         */
-        virtual void connect() = 0;
-
-
-        /**
-         * test if socket is writable or readable and calls send or recv
-         */
-        virtual void update();
-
-        /**
-         * get message by read buffer
          *
-         * @return message or empty string if nothing was read
+         * @param hostInfos contains host ip address and port
          */
-        virtual std::string get();
+        virtual void connect(const SockAddr& hostInfos) = 0;
 
         /**
-         * add message to the write buffer
+         * read on socket
          *
-         * @param msg message that will be add to buffer
+         * @return string read on the socket
          */
-        virtual void add(const std::string &msg);
-
-    protected:
+        virtual std::string recv() = 0;
 
         /**
-         * read in socket and add read message to the read buffer
-         */
-        virtual void recv() = 0;
-
-        /**
-         * write message in socket and update position of write buffer
+         * write message in socket
          *
          * @param msg message that will be sent
+         *
+         * @return number of Bytes sent
          */
-        virtual void send(const std::string &msg) = 0;
+        virtual size_t send(const std::string &msg) const = 0;
 
-        /*
-         * class contain all information util for connection
-         */
-        SockAddr _from;
-
-        /**
-         * circular buffer that contains message to send
-         */
-        NetworkBuffer _writeBuffer;
-
-        /**
-         * circular buffer that contains read messages
-         */
-        NetworkBuffer _readBuffer;
     };
 
 }

@@ -1,35 +1,37 @@
 /**
- * @file SocketWindowsUDP.hh
+ * @file SocketLinuxUDP.hh
  * @author Tookie
- * @brief UDP socket encapsulation for windows
+ * @brief UDP socket encapsulation for linux
  */
 
 #pragma once
 
+#include "NetworkBuffer.hh"
 #include "ASocketUDP.h"
 
 /**
  * namespace that contains all network abstraction
  */
-namespace network {
+namespace network
+{
 
     /**
-     * Representation of UDP socket for windows
+     * Representation of UDP socket for linux
      */
-    class SocketWindowsUDP : public ASocketUDP {
+    class SocketLinuxUDP : public ASocketUDP
+    {
     public:
-
         /**
-         * Default constructor of SocketWindowsUDP
+         * Constructor of SocketLinuxUDP
          *
          * @throw SocketException if socket couldn't be created
          */
-        SocketWindowsUDP();
+        SocketLinuxUDP();
 
         /**
-         * Destructor of SocketWindowsUDP, call method close
+         * Destructor of SocketLinuxUDP, call method close
          */
-        ~SocketWindowsUDP();
+        ~SocketLinuxUDP();
 
         /**
          * bind socket
@@ -39,18 +41,11 @@ namespace network {
         virtual void bind(const SockAddr &from);
 
         /**
-         * close the socket
-         */
-        virtual void close();
-
-        /**
          * read in socket and add read message to the read buffer
-         *
-         * @param contains host ip address and port
          *
          * @return string read on the socket
          */
-        virtual std::string recv(SockAddr& hostInfos);
+        virtual std::string recv(SockAddr& from);
 
         /**
          * write message in socket and update position of write buffer
@@ -64,10 +59,15 @@ namespace network {
          */
         virtual size_t send(const SockAddr &hostInfos, const std::string &msg);
 
+        /**
+         * close the socket
+         */
+        virtual void close();
     };
+
     /**
-     *  define type SocketUDP as SocketWindwosUDP
+     *  define type SocketUDP as SocketLinuxUDP
      */
-    typedef SocketWindowsUDP SocketUDP;
+    typedef SocketLinuxUDP SocketUDP;
 
 }
