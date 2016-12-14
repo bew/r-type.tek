@@ -133,11 +133,11 @@ macro(sfml_add_library target)
     endif()
 
     # add the install rule
-    install(TARGETS ${target}
-            RUNTIME DESTINATION bin COMPONENT bin
-            LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT bin
-            ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT devel
-            FRAMEWORK DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX} COMPONENT bin)
+    #install(TARGETS ${target}
+    #        RUNTIME DESTINATION bin COMPONENT bin
+    #        LIBRARY DESTINATION lib${LIB_SUFFIX} COMPONENT bin
+    #        ARCHIVE DESTINATION lib${LIB_SUFFIX} COMPONENT devel
+    #        FRAMEWORK DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX} COMPONENT bin)
 endmacro()
 
 # add a new target which is a SFML example
@@ -181,21 +181,21 @@ macro(sfml_add_example target)
     endif()
 
     # add the install rule
-    install(TARGETS ${target}
-            RUNTIME DESTINATION ${INSTALL_MISC_DIR}/examples/${target} COMPONENT examples
-            BUNDLE DESTINATION ${INSTALL_MISC_DIR}/examples/${target} COMPONENT examples)
+    #install(TARGETS ${target}
+    #        RUNTIME DESTINATION ${INSTALL_MISC_DIR}/examples/${target} COMPONENT examples
+    #        BUNDLE DESTINATION ${INSTALL_MISC_DIR}/examples/${target} COMPONENT examples)
 
     # install the example's source code
-    install(FILES ${THIS_SOURCES}
-            DESTINATION ${INSTALL_MISC_DIR}/examples/${target}
-            COMPONENT examples)
+    #install(FILES ${THIS_SOURCES}
+    #        DESTINATION ${INSTALL_MISC_DIR}/examples/${target}
+    #        COMPONENT examples)
 
     # install the example's resources as well
     set(EXAMPLE_RESOURCES "${CMAKE_SOURCE_DIR}/examples/${target}/resources")
     if(EXISTS ${EXAMPLE_RESOURCES})
-        install(DIRECTORY ${EXAMPLE_RESOURCES}
-                DESTINATION ${INSTALL_MISC_DIR}/examples/${target}
-                COMPONENT examples)
+        #install(DIRECTORY ${EXAMPLE_RESOURCES}
+        #        DESTINATION ${INSTALL_MISC_DIR}/examples/${target}
+        #        COMPONENT examples)
     endif()
 
 endmacro()

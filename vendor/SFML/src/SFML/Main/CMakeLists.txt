@@ -15,7 +15,7 @@ endif()
 source_group("" FILES ${SRC})
 
 # define the sfml-main target
-add_library(sfml-main SHARED ${SRC})
+add_library(sfml-main STATIC ${SRC})
 target_include_directories(sfml-main PUBLIC ${SFML_INCLUDE_PATH})
 
 # set the debug suffix

@@ -198,7 +198,7 @@ if(SFML_OS_MACOSX)
         message(FATAL_ERROR "Only 64-bit architecture is supported")
         return()
     endif()
-        
+
     # configure Xcode templates
     set(XCODE_TEMPLATES_ARCH "\$(NATIVE_ARCH_ACTUAL)")
 endif()
@@ -242,10 +242,10 @@ endif()
 
 # setup the install rules
 if(NOT SFML_BUILD_FRAMEWORKS)
-    install(DIRECTORY include
-            DESTINATION .
-            COMPONENT devel
-            FILES_MATCHING PATTERN "*.hpp" PATTERN "*.inl")
+    #install(DIRECTORY include
+    #        DESTINATION .
+    #        COMPONENT devel
+    #        FILES_MATCHING PATTERN "*.hpp" PATTERN "*.inl")
 
     if(SFML_GENERATE_PDB)
         install(DIRECTORY ${PROJECT_BINARY_DIR}/lib
@@ -292,9 +292,9 @@ else()
                           INSTALL_NAME_DIR "@rpath")
 
     # install rule
-    install(TARGETS SFML
-            FRAMEWORK DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX}
-            COMPONENT devel)
+    #install(TARGETS SFML
+    #        FRAMEWORK DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX}
+    #        COMPONENT devel)
 endif()
 
 #install(FILES license.txt DESTINATION ${INSTALL_MISC_DIR})
@@ -309,22 +309,22 @@ if(SFML_OS_WINDOWS)
 
     # install the binaries of SFML dependencies
     if(ARCH_32BITS)
-        install(DIRECTORY extlibs/bin/x86/ DESTINATION bin)
+        #install(DIRECTORY extlibs/bin/x86/ DESTINATION bin)
         if(SFML_COMPILER_MSVC AND SFML_MSVC_VERSION LESS 14)
-            install(DIRECTORY extlibs/libs-msvc/x86/ DESTINATION lib)
+            #install(DIRECTORY extlibs/libs-msvc/x86/ DESTINATION lib)
         elseif(SFML_COMPILER_MSVC)
-            install(DIRECTORY extlibs/libs-msvc-universal/x86/ DESTINATION lib)
+            #install(DIRECTORY extlibs/libs-msvc-universal/x86/ DESTINATION lib)
         else()
-            install(DIRECTORY extlibs/libs-mingw/x86/ DESTINATION lib)
+            #install(DIRECTORY extlibs/libs-mingw/x86/ DESTINATION lib)
         endif()
     elseif(ARCH_64BITS)
-        install(DIRECTORY extlibs/bin/x64/ DESTINATION bin)
+        #install(DIRECTORY extlibs/bin/x64/ DESTINATION bin)
         if(SFML_COMPILER_MSVC AND SFML_MSVC_VERSION LESS 14)
-            install(DIRECTORY extlibs/libs-msvc/x64/ DESTINATION lib)
+            #install(DIRECTORY extlibs/libs-msvc/x64/ DESTINATION lib)
         elseif(SFML_COMPILER_MSVC)
-            install(DIRECTORY extlibs/libs-msvc-universal/x64/ DESTINATION lib)
+            #install(DIRECTORY extlibs/libs-msvc-universal/x64/ DESTINATION lib)
         else()
-            install(DIRECTORY extlibs/libs-mingw/x64/ DESTINATION lib)
+            #install(DIRECTORY extlibs/libs-mingw/x64/ DESTINATION lib)
         endif()
     endif()
 
@@ -332,31 +332,31 @@ elseif(SFML_OS_MACOSX)
 
     # install extlibs dependencies only when used
     if("${FLAC_LIBRARY}" STREQUAL "${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/FLAC.framework")
-        install(DIRECTORY extlibs/libs-osx/Frameworks/FLAC.framework DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX})
+        #install(DIRECTORY extlibs/libs-osx/Frameworks/FLAC.framework DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX})
     endif()
 
     if("${FREETYPE_LIBRARY}" STREQUAL "${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/freetype.framework")
-        install(DIRECTORY extlibs/libs-osx/Frameworks/freetype.framework DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX})
+        #install(DIRECTORY extlibs/libs-osx/Frameworks/freetype.framework DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX})
     endif()
 
     if("${OGG_LIBRARY}" STREQUAL "${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/ogg.framework")
-        install(DIRECTORY extlibs/libs-osx/Frameworks/ogg.framework DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX})
+        #install(DIRECTORY extlibs/libs-osx/Frameworks/ogg.framework DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX})
     endif()
 
     if("${VORBIS_LIBRARY}" STREQUAL "${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbis.framework")
-        install(DIRECTORY extlibs/libs-osx/Frameworks/vorbis.framework DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX})
+        #install(DIRECTORY extlibs/libs-osx/Frameworks/vorbis.framework DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX})
     endif()
 
     if("${VORBISENC_LIBRARY}" STREQUAL "${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbisenc.framework")
-        install(DIRECTORY extlibs/libs-osx/Frameworks/vorbisenc.framework DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX})
+        #install(DIRECTORY extlibs/libs-osx/Frameworks/vorbisenc.framework DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX})
     endif()
 
     if("${VORBISFILE_LIBRARY}" STREQUAL "${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbisfile.framework")
-        install(DIRECTORY extlibs/libs-osx/Frameworks/vorbisfile.framework DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX})
+        #install(DIRECTORY extlibs/libs-osx/Frameworks/vorbisfile.framework DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX})
     endif()
 
     if("${OPENAL_LIBRARY}" STREQUAL "${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/OpenAL.framework")
-        install(DIRECTORY "${OPENAL_LIBRARY}" DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX})
+        #install(DIRECTORY "${OPENAL_LIBRARY}" DESTINATION ${CMAKE_INSTALL_FRAMEWORK_PREFIX})
     endif()
 
     # install the Xcode templates if requested
@@ -368,30 +368,31 @@ elseif(SFML_OS_MACOSX)
                         "${CMAKE_CURRENT_BINARY_DIR}/tools/xcode/templates/SFML/${TEMPLATE}.xctemplate/TemplateInfo.plist"
                         @ONLY)
         endforeach()
-        install(DIRECTORY "tools/xcode/templates/SFML" "${CMAKE_CURRENT_BINARY_DIR}/tools/xcode/templates/SFML"
-                DESTINATION /Library/Developer/Xcode/Templates
-                PATTERN "*.in" EXCLUDE
-                PATTERN ".DS_Store" EXCLUDE)
+        #install(DIRECTORY "tools/xcode/templates/SFML" "${CMAKE_CURRENT_BINARY_DIR}/tools/xcode/templates/SFML"
+        #        DESTINATION /Library/Developer/Xcode/Templates
+        #        PATTERN "*.in" EXCLUDE
+        #        PATTERN ".DS_Store" EXCLUDE)
     endif()
 
 elseif(SFML_OS_IOS)
 
     # fix CMake install rules broken for iOS (see http://public.kitware.com/Bug/view.php?id=12506)
     if(SFML_OS_IOS)
-        install(DIRECTORY "${CMAKE_BINARY_DIR}/lib/\$ENV{CONFIGURATION}/" DESTINATION lib${LIB_SUFFIX})
+        #install(DIRECTORY "${CMAKE_BINARY_DIR}/lib/\$ENV{CONFIGURATION}/" DESTINATION lib${LIB_SUFFIX})
     endif()
 
     # since the iOS libraries are built as static, we must install the SFML dependencies
     # too so that the end user can easily link them to its final application
-    install(FILES extlibs/libs-ios/libfreetype.a extlibs/libs-ios/libjpeg.a DESTINATION lib)
+    #install(FILES extlibs/libs-ios/libfreetype.a extlibs/libs-ios/libjpeg.a DESTINATION lib)
 
 elseif(SFML_OS_ANDROID)
 
     # install extlibs
-    install(DIRECTORY extlibs/libs-android/${ANDROID_ABI} DESTINATION extlibs/lib)
-    install(FILES extlibs/Android.mk DESTINATION extlibs)
+    #install(DIRECTORY extlibs/libs-android/${ANDROID_ABI} DESTINATION extlibs/lib)
+    #install(FILES extlibs/Android.mk DESTINATION extlibs)
 
     # install Android.mk so the NDK knows how to set up SFML
-    install(FILES src/SFML/Android.mk DESTINATION .)
+    #install(FILES src/SFML/Android.mk DESTINATION .)
 
 endif()
+
