@@ -14,11 +14,11 @@ namespace protocol {
     bson::Document getHeader(const std::string& id, const std::string& action) {
         bson::Document header;
 
-        header << "id" << id;
-        header << "magic" << MAGIC;
-        header << "timestamp" << std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
-        header << "action" << action;
-        header << "version" << VERSION;
+        header << u8"id" << id;
+        header << u8"magic" << MAGIC;
+        header << u8"timestamp" << std::chrono::duration_cast<std::chrono::seconds>(std::chrono::high_resolution_clock::now().time_since_epoch()).count();
+        header << u8"action" << action;
+        header << u8"version" << VERSION;
 
         return header;
     }
