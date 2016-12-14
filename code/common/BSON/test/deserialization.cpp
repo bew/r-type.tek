@@ -28,6 +28,8 @@ TEST(Deserialization, Double) {
     double floating;
     element.getValue(floating);
     EXPECT_EQ(floating, expected);
+    document[key] >> floating;
+    EXPECT_EQ(floating, expected);
 }
 
 /**
@@ -47,6 +49,8 @@ TEST(Deserialization, String) {
     EXPECT_EQ(element.getValueString(), expected);
     std::string string;
     element.getValue(string);
+    EXPECT_EQ(string, expected);
+    document[key] >> string;
     EXPECT_EQ(string, expected);
 }
 
@@ -79,6 +83,8 @@ TEST(Deserialization, Document) {
     bson::Document documentDouble;
     elementDocumentDouble.getValue(documentDouble);
     EXPECT_EQ(documentDouble, expectedDocumentDouble);
+    document[key] >> documentDouble;
+    EXPECT_EQ(documentDouble, expectedDocumentDouble);
 
     // Double value
     bson::Document::Element elementDouble =  documentDouble[keyDouble];
@@ -87,6 +93,8 @@ TEST(Deserialization, Document) {
     EXPECT_EQ(elementDouble.getValueDouble(), expectedDouble);
     double floating;
     elementDouble.getValue(floating);
+    EXPECT_EQ(floating, expectedDouble);
+    document[key] >> floating;
     EXPECT_EQ(floating, expectedDouble);
 
     // Document String
@@ -97,6 +105,8 @@ TEST(Deserialization, Document) {
     bson::Document documentString;
     elementDocumentString.getValue(documentString);
     EXPECT_EQ(documentString, expectedDocumentString);
+    document[key] >> documentString;
+    EXPECT_EQ(documentString, expectedDocumentString);
 
     // String value
     bson::Document::Element elementString =  documentString[keyString];
@@ -105,6 +115,8 @@ TEST(Deserialization, Document) {
     EXPECT_EQ(elementString.getValueString(), expectedString);
     std::string string;
     elementString.getValue(string);
+    EXPECT_EQ(string, expectedString);
+    document[key] >> string;
     EXPECT_EQ(string, expectedString);
 }
 
@@ -125,6 +137,8 @@ TEST(Deserialization, Bool) {
     bool booleanTrue;
     elementTrue.getValue(booleanTrue);
     EXPECT_EQ(booleanTrue, expectedBoolTrue);
+    document[key] >> booleanTrue;
+    EXPECT_EQ(booleanTrue, expectedBoolTrue);
 
     
     bson::Document expectedDocumentFalse;
@@ -138,6 +152,8 @@ TEST(Deserialization, Bool) {
     EXPECT_EQ(elementFalse.getValueBool(), expectedBoolFalse);
     bool booleanFalse;
     elementFalse.getValue(booleanFalse);
+    EXPECT_EQ(booleanFalse, expectedBoolFalse);
+    document[key] >> booleanFalse;
     EXPECT_EQ(booleanFalse, expectedBoolFalse);
 }
 
@@ -159,6 +175,8 @@ TEST(Deserialization, NullValue) {
     std::nullptr_t ptr;
     element.getValue(ptr);
     EXPECT_EQ(ptr, expected);
+    document[key] >> ptr;
+    EXPECT_EQ(ptr, expected);
 }
 
 /**
@@ -179,6 +197,8 @@ TEST(Deserialization, Int32) {
     int32_t integer;
     element.getValue(integer);
     EXPECT_EQ(integer, expected);
+    document[key] >> integer;
+    EXPECT_EQ(integer, expected);
 }
 
 /**
@@ -198,5 +218,7 @@ TEST(Deserialization, Int64) {
     EXPECT_EQ(element.getValueInt64(), expected);
     int64_t integer;
     element.getValue(integer);
+    EXPECT_EQ(integer, expected);
+    document[key] >> integer;
     EXPECT_EQ(integer, expected);
 }
