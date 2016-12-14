@@ -75,7 +75,7 @@ namespace protocol {
 
             message << u8"entity_id" << entity_id;
             message << u8"component" << component;
-            message << u8"data" << component;
+            message << u8"data" << data;
 
             document << u8"header" << protocol::createHeader(id, "EntityUpdate");
             document << u8"data" << message;
