@@ -404,6 +404,29 @@ TEST(Sprite, FreeFallback) {
   ASSERT_NO_THROW(store.freeSprite("default"));
 }
 
+/**
+ * Test loadall
+ */
+TEST(Grouped, loadAll) {
+  graphic::GroupedAssetStore store(".", "asset", "fr");
+
+  ASSERT_NO_THROW(store.loadAll());
+  store.getSprite("default");
+  ASSERT_NO_THROW(store.getSound("default"));
+  ASSERT_NO_THROW(store.getMusic("default"));
+  ASSERT_NO_THROW(store.getText("default"));
+
+  ASSERT_NO_THROW(store.getSprite("test"));
+  ASSERT_NO_THROW(store.getSound("test"));
+  ASSERT_NO_THROW(store.getMusic("test"));
+  ASSERT_NO_THROW(store.getText("test"));
+  
+  ASSERT_THROW(store.getSprite("fake"), graphic::AssetException);
+  ASSERT_THROW(store.getSound("fake"), graphic::AssetException);
+  ASSERT_THROW(store.getMusic("fake"), graphic::AssetException);
+  ASSERT_THROW(store.getText("fake"), graphic::AssetException);
+}
+
 
 int main(int argc, char **argv) {
   ::testing::InitGoogleTest(&argc, argv);

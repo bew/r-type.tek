@@ -11,6 +11,7 @@
 #include "AnimatedSpriteAsset.hh"
 #include "MusicAsset.hh"
 #include "SoundAsset.hh"
+#include "FSWatcher/AFileSystemWatcher.hh"
 
 /**
  * contain graphic stuff
@@ -196,6 +197,8 @@ namespace graphic {
     static const std::string SPRITE_DIRECTORY;
     
     static const std::string ANIMATED_DIRECTORY;
+
+    static const std::string ANIMATEDSPRITE_DIRECTORY;
     
     static const std::string TEXT_DIRECTORY;
 
@@ -277,6 +280,44 @@ namespace graphic {
      * Load all the ressources found in root directory, according to local
      */
     void loadAll(void);
+  protected:
+
+    /**
+     * Check if file is read-accessible
+     *
+     * @param path Path of file to check for accessibility 
+     * @return True if file is accessible, else false
+     */
+    bool ressourceExist(const std::string &path);
+
+    /**
+     * Helper func to automatically load asset. You should not use this, it exist only for code factorisation.
+     *
+     * @tparam RESSOURCE The type of the store taken in parameter
+     * @param store The store to put load this ressource type into.
+     * @param directory The directory to search this ressource type from.
+     */
+    void loadRessource<typename RESSOURCE>(std::unordered_map<std::string, RESSOURCE> &store, const std::string &directory) {
+
+      FileSystemWatcher watcher(_root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE);
+      std::vector<std::pair<std::string, FileSystemWatcher::Event>> _ressources = watcher.processEvents();
+
+      for (auto i  = _ressources.begin(); i < _ressources.end(); i++) {
+	if ((*i).second == FileSystemWatcher::Add) {
+	  if (ressourceExist(_root + "/" + directory + "/" + this->_locale + "/" + (*i).first))
+	    this->_fonts.emplace((*i).first, _root + "/" + directory + "/" + this->_locale + "/" + (*i).first);
+	  else
+	    this->_fonts.emplace((*i).first, _root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + (*i).first);
+	}
+      }
+    }
+    
+    void loadAllMusic(void);
+    void loadAllSound(void);
+    void loadAllText(void);
+    void loadAllSprite(void);
+    void loadAllFont(void);
+    void loadAllAnimatedSprite(void);
   };
 }
   

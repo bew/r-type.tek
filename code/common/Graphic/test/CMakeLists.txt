@@ -1,7 +1,7 @@
 use_msvc_static_runtime()
 
 add_executable(${TEST_EXE} main.cpp)
-target_link_libraries(${TEST_EXE} ${LIB_TEST_NAME} BSON gtest)
+target_link_libraries(${TEST_EXE} ${LIB_TEST_NAME} BSON FSWatcher gtest)
 
 install(TARGETS ${TEST_EXE} DESTINATION bin/test)
 
