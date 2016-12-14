@@ -12,3 +12,4 @@ add_subdirectory(src)
 add_subdirectory(test)
 
 set(RT_COMMON_NAMES ${RT_COMMON_NAMES} PARENT_SCOPE)
+set(RT_COMMON_TESTS_NAMES ${RT_COMMON_TESTS_NAMES} PARENT_SCOPE)

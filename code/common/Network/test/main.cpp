@@ -15,17 +15,6 @@
 #include <ClientUDP.hpp>
 #include <ServerUDP.hpp>
 
-#ifdef __linux__
-
-#include "SocketLinuxTCP.h"
-#include "SocketLinuxUDP.h"
-
-#elif defined _WIN32
-#include "SocketWindowsTCP.h"
-#include "SocketWindowsUDP.h"
-
-#endif
-
 class ATask
 {
 protected:
@@ -400,7 +389,7 @@ TEST(Network, SingleClientTcp)
 
         std::string login = "";
 
-        while ((login = server.getMessage(server.getConnections().at(0))) == "")
+        while ((login = server.getMessage(server.getConnections().at(0))).empty())
             server.update();
 
         ASSERT_STREQ("login", login.c_str());
@@ -448,7 +437,7 @@ TEST(Network, TwoClientTcp)
 
         // Client 0
 
-        while ((login = server.getMessage(server.getConnections().at(0))) == "")
+        while ((login = server.getMessage(server.getConnections().at(0))).empty())
             server.update();
 
         ASSERT_STREQ("login", login.c_str());
@@ -468,9 +457,8 @@ TEST(Network, TwoClientTcp)
 
         //Client 1
         login = "";
-        while ((login = server.getMessage(server.getConnections().at(1))) == "") {
+        while ((login = server.getMessage(server.getConnections().at(1))).empty())
             server.update();
-        }
 
         ASSERT_STREQ("login", login.c_str());
 
@@ -518,7 +506,7 @@ TEST(Network, FourClientTcp)
         std::string login = "";
 
 
-        while ((login = server.getMessage(server.getConnections().at(0))) == "")
+        while ((login = server.getMessage(server.getConnections().at(0))).empty())
             server.update();
 
         ASSERT_STREQ("login", login.c_str());
@@ -539,9 +527,8 @@ TEST(Network, FourClientTcp)
             server.update();
 
         login = "";
-        while ((login = server.getMessage(server.getConnections().at(1))) == "") {
+        while ((login = server.getMessage(server.getConnections().at(1))).empty())
             server.update();
-        }
 
         ASSERT_STREQ("login", login.c_str());
 
@@ -561,9 +548,8 @@ TEST(Network, FourClientTcp)
             server.update();
 
         login = "";
-        while ((login = server.getMessage(server.getConnections().at(2))) == "") {
+        while ((login = server.getMessage(server.getConnections().at(2))).empty())
             server.update();
-        }
 
         ASSERT_STREQ("login", login.c_str());
 
@@ -583,9 +569,8 @@ TEST(Network, FourClientTcp)
             server.update();
 
         login = "";
-        while ((login = server.getMessage(server.getConnections().at(3))) == "") {
+        while ((login = server.getMessage(server.getConnections().at(3))).empty())
             server.update();
-        }
 
         ASSERT_STREQ("login", login.c_str());
 
