@@ -15,17 +15,6 @@
 #include <ClientUDP.hpp>
 #include <ServerUDP.hpp>
 
-#ifdef __linux__
-
-#include "SocketLinuxTCP.h"
-#include "SocketLinuxUDP.h"
-
-#elif defined _WIN32
-#include "SocketWindowsTCP.h"
-#include "SocketWindowsUDP.h"
-
-#endif
-
 class ATask
 {
 protected:
