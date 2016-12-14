@@ -1,15 +1,20 @@
 /**
  * @file ASocketTCP.cpp
  * @author Tookie
- * @brief abstraction of TCP socket
+ * @brief implementation of TCP socket abstraction
  */
 
-#include "../include/ASocketTCP.hh"
+#include "ASocketTCP.hh"
 
 namespace network
 {
 
-    ASocketTCP::ASocketTCP(unsigned short port) : ASocket(port)
+    ASocketTCP::ASocketTCP() : ASocket()
+    {
+
+    }
+
+    ASocketTCP::ASocketTCP(Socket_t socket): ASocket(socket)
     {
 
     }

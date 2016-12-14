@@ -8,69 +8,43 @@
 
 #include <string>
 
-namespace network
-{
-    class ASocket;
-}
-
-#include "NetworkBuffer.hh"
-#include "NetworkSelect.hh"
 
 #ifdef __linux__
 #define Socket_t int
 
-#include <netinet/in.h>
-
 #elif defined _WIN32
-#include<winsock2.h>
 #define Socket_t SOCKET
 
 #endif
 
-#define SERVER_ADDR "127.0.0.1"
+#include "SockAddr.hh"
 
 /**
  * namespace that contains all network abstraction
  */
-namespace network
-{
+namespace network {
 
     /**
      * Representation of socket abstraction
      */
-    class ASocket
-    {
+    class ASocket {
     public:
 
         /**
-         * Constructor of ASocket
-         * @param port port use to socket connection
+         * default constructor of ASocket
          */
-        ASocket(unsigned short port);
+        ASocket();
 
         /**
-         *  bind socket
+         * Constructor of ASocketTCP
+         * @params socket fd of the socket already created
          */
-        virtual void bind() = 0;
+        ASocket(Socket_t socket);
 
         /**
-         * test if socket is writable or readable and calls send or recv
+         * bind socket
          */
-        virtual void update();
-
-        /**
-         * get message by read buffer
-         *
-         * @return message or empty string if nothing was read
-         */
-        virtual std::string get();
-
-        /**
-         * add message to the write buffer
-         *
-         * @param msg message that will be add to buffer
-         */
-        virtual void add(const std::string &msg);
+        virtual void bind(const SockAddr& hostInfos) = 0;
 
         /**
          * close socket
@@ -78,53 +52,16 @@ namespace network
         virtual void close() = 0;
 
         /**
-         * @return private socket variable
+         * @return the socket fd
          */
         Socket_t getSocket() const;
 
     protected:
 
         /**
-         * read in socket and add read message to the read buffer
-         */
-        virtual void recv() = 0;
-
-        /**
-         * write message in socket and update position of write buffer
-         *
-         * @param msg message that will be sent
-         */
-        virtual void send(const std::string &msg) = 0;
-
-        /**
-         * contain the socket
+         * represents the socket fd
          */
         Socket_t _socket;
-
-        /**
-         * circular buffer that contains read messages
-         */
-        NetworkBuffer _readBuffer;
-
-        /**
-         * circular buffer that contains message to send
-         */
-        NetworkBuffer _writeBuffer;
-
-        /*
-         * contain select encapsulation
-         */
-        NetworkSelect _selector;
-
-        /*
-         * port use to socket connection
-         */
-        const unsigned short _port;
-
-        /*
-         * struct contain all information util for connection
-         */
-        sockaddr_in _from;
     };
 
 }
