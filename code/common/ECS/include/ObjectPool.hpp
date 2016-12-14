@@ -56,10 +56,10 @@ namespace ECS {
 	     * Constructor. Allocate the objects.
 	     * @param nbr The number of initially created objects.
 	     */
-	    ObjectPool(unsigned nbr, WorldPools &pools)
+	    ObjectPool(unsigned nbr)
 		: _elems(nbr),
 		  _offset(0),
-		  _factory(Factory(pools))
+		  _factory(Factory())
 		{    
 		    for (auto &e : _elems)
 			e = _factory();
@@ -81,7 +81,6 @@ namespace ECS {
 	    void	operator<<(ObjectType *&obj)
 		{
 		    if (obj && _offset != 0) {
-			obj->clean();
 			_offset--;
 			_elems[_offset] = obj;
 			obj = nullptr;

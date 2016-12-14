@@ -1,5 +1,4 @@
-set(LIB_SOURCE WorldPools.cpp)
-set(LIB_DEPEDENCIES)
+set(LIB_SOURCE AComponent.cpp ComponentTest.cpp WorldPools.cpp Entity.cpp SystemTest.cpp World.cpp)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
 add_library(${LIB_TEST_NAME} SHARED ${LIB_SOURCE})

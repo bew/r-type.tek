@@ -10,6 +10,14 @@
 
 namespace ECS {
     namespace Component {
+
+	AComponent::AComponent(ComponentType type)
+	    : _type(type)
+	{}
+
+	AComponent::~AComponent()
+	{}
+	
 	ComponentType	AComponent::getType() const
 	{
 	    return _type;

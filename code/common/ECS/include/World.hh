@@ -47,7 +47,7 @@ namespace ECS {
         /**
 	 * Game entities such as enemy, players, or bullets.
 	 */
-	std::vector<Entity::Entity>	_gameEntities;
+	std::vector<Entity::Entity *>	_gameEntities;
 
         /**
 	 * System entity managing network and graphics components.
@@ -78,7 +78,17 @@ namespace ECS {
 	 * Calculate one frame of the r-type game.
 	 */
 	void	update();
+	
+	/**
+	 * Initiate the systems of the world.
+	 */
+	void	initTestSystem();
 
+	/**
+	 * Add a test entity in the world.
+	 */
+	void	addTestEntity();
+	
     private:
 	/**
 	 * Systems.

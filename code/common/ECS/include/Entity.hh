@@ -7,11 +7,10 @@
 
 #pragma once
 
-#include "WorldPools.hh"
-#include "APoolable.hh"
 #include "AComponent.hh"
 
 #include <map>
+#include <vector>
 
 /**
  * Namespace of ECS.
@@ -26,13 +25,13 @@ namespace ECS {
 	/**
 	 * Class implementing an entity.
 	 */
-	class Entity : public Pools::APoolable
+	class Entity
 	{
 	public:
 	    /**
 	     * Constructor.
 	     */
-	    Entity(Pools::WorldPools &pools);
+	    Entity();
 	    /**
 	     * Destructor.
 	     */
@@ -46,7 +45,7 @@ namespace ECS {
 	     * @param type The type of component requested.
 	     * @return The component requested, or a nullptr if it doesn't exist.
 	     */
-	    Component::AComponent	&getComponent(Component::ComponentType type);
+	    Component::AComponent	*getComponent(Component::ComponentType type);
 
 	    /**
 	     * add a component.
@@ -56,20 +55,22 @@ namespace ECS {
 	    template<typename CompoType>
 	    void	addComponent(Component::ComponentType type, CompoType *comp)
 		{
-		    _component[type] = static_cast<Component::AComponent *>(comp);
+		    _components[type] = static_cast<Component::AComponent *>(comp);
 		}
 
 	    /**
-	     * Clean function from poolable, return all the components to the WorldPool.
+	     * Return the vector of components. Only to be used by the worldpool !
+	     * @param vector The vector that will receive every component of the entity.
 	     */
-	    void	clean() override;
+	    void	extractComponents(std::vector<Component::AComponent *> &vector);
 
 	private:
 	    /**
 	     * Map of components of the entity.
 	     */
-	    std::map<Component::ComponentType, Component::AComponent *>	_component;
+	    std::map<Component::ComponentType, Component::AComponent *>	_components;
 	};
 
     }
 }
+
