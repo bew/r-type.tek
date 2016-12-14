@@ -7,6 +7,6 @@ use_msvc_static_runtime()
 set(SOURCE_FILES main.cpp TestClientUDP.cpp TestServerUDP.cpp TestClientTCP.cpp TestServerTCP.cpp)
 add_executable(${TEST_EXE} ${SOURCE_FILES})
 
-target_link_libraries(${TEST_EXE} ${RT_COMMON_NAMES} gtest)
+target_link_libraries(${TEST_EXE} ${RT_COMMON_TESTS_NAMES} gtest)
 
 install(TARGETS ${TEST_EXE} DESTINATION bin/test)
