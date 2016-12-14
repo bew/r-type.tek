@@ -42,6 +42,57 @@ namespace graphic {
     ~AssetStore(void);
 
     /**
+     * Exist for factroization. You should not use this. Load a ressource from path, into store
+     *
+     * @tparam RESSOURCE The type of ressource to load
+     * @param store The store to load ressource in 
+     * @param path The path of the ressource to load
+     * @param directory The directrory to search this type of ressource in
+     * @param extension The extension of the file
+     */
+    template<typename RESSOURCE>
+    void loadSingleRessource(std::unordered_map<std::string, RESSOURCE> &store, const std::string &path, const std::string &directory, const std::string &extension) {
+      try {
+	store.emplace(path, _root + "/" + directory + "/" + _locale + "/" + path + extension);
+      }
+      catch (const AssetException &e) {
+	if (_locale != graphic::AssetStore::DEFAULT_LOCALE)
+	  store.emplace(path, _root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + extension);
+	else
+	  throw e;
+      }
+    }
+
+    /**
+     * Exist for factroization. You should not use this. Load a ressource from path, into store
+     *
+     * @tparam RESSOURCE The type of ressource to load
+     * @param store The store to load ressource in
+     * @param path The path of the ressource to load
+     */
+    template<typename RESSOURCE>
+    RESSOURCE &getRessource(std::unordered_map<std::string, RESSOURCE> &store, const std::string &path) {
+      try {
+	return store.at(path);
+      }
+      catch (const std::out_of_range &e) {
+	throw AssetException(std::string("Unable to find asset '") + path + "'");
+      }
+    }
+
+    /**
+     * Exist for factroization. You should not use this. Load a ressource from path, into store
+     *
+     * @tparam RESSOURCE The type of ressource to load
+     * @param store The store to load ressource in
+     * @param path The path of the ressource to load
+     */
+    template<typename RESSOURCE>
+    void freeRessource(std::unordered_map<std::string, RESSOURCE> &store, const std::string &path) {
+        store.erase(path);
+    }
+    
+    /**
      * Load a music with the given path
      *
      * @param path the path to the music
@@ -198,7 +249,7 @@ namespace graphic {
     
     static const std::string ANIMATED_DIRECTORY;
 
-    static const std::string ANIMATEDSPRITE_DIRECTORY;
+    static const std::string ANIMATED_SPRITE_DIRECTORY;
     
     static const std::string TEXT_DIRECTORY;
 
@@ -240,20 +291,45 @@ namespace graphic {
   };
 
 
+  /**
+   * Specialisation for AnimatedSprite
+   *
+   * And also
+   *
+   * HELICOUPTER HELICOUPTER HELICOUPTER
+   */
+  template<>
+  void AssetStore::loadSingleRessource<graphic::AnimatedSpriteAsset>(std::unordered_map<std::string, graphic::AnimatedSpriteAsset> &store,
+								     const std::string &path,
+								     const std::string &directory,
+								     const std::string &extension) {
+    try {
+      store.emplace(std::piecewise_construct,
+		    std::forward_as_tuple(path),
+		    std::forward_as_tuple(_root + "/" + directory + "/" + _locale + "/" + path + extension,
+					  _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
+					  _locale + "/" + path + graphic::AssetStore::SPRITE_EXTENSION + graphic::AssetStore::ANIMATED_EXTENSION
+					  )
+		    );
+    }
+    catch (const AssetException &e) {
+      if (_locale != graphic::AssetStore::DEFAULT_LOCALE)
+	_animatedSprites.emplace(std::piecewise_construct,
+				 std::forward_as_tuple(path),
+				 std::forward_as_tuple(_root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + extension,
+						       _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
+						       graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::ANIMATED_EXTENSION
+						       )
+				 );
+      else
+	throw e;
+    }
+  }
+  
+  
 
   /**
-   * Expected filesystem architecture:
-   * Root
-   *    |-text
-   *    |    |-en
-   *    |    |-fr
-   *    |-sprite
-   *    |-font
-   *    |-sound
-   *    |-music
-   *
-   * If lookup for a file with locale fail, it will try with default locale
-   * If it fail again, it will throw AssetException.
+   * Class for loading a group of asset easely
    */
   class GroupedAssetStore : public AssetStore {
 
@@ -291,34 +367,67 @@ namespace graphic {
     bool ressourceExist(const std::string &path);
 
     /**
+     * Extract the ressource name from file name (basically the file without the extensions)
+     *
+     * @param path to a file
+     * @return the ressource name
+     */
+    const std::string getRessourceName(const std::string &path);
+
+    /**
      * Helper func to automatically load asset. You should not use this, it exist only for code factorisation.
      *
      * @tparam RESSOURCE The type of the store taken in parameter
      * @param store The store to put load this ressource type into.
-     * @param directory The directory to search this ressource type from.
+     * @tparam directory The directory to search this ressource type from.
      */
-    void loadRessource<typename RESSOURCE>(std::unordered_map<std::string, RESSOURCE> &store, const std::string &directory) {
-
+    template<typename RESSOURCE>
+    void loadRessource(std::unordered_map<std::string, RESSOURCE> &store, const std::string &directory) {
       FileSystemWatcher watcher(_root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE);
       std::vector<std::pair<std::string, FileSystemWatcher::Event>> _ressources = watcher.processEvents();
 
       for (auto i  = _ressources.begin(); i < _ressources.end(); i++) {
+	std::cout << directory << " FOUND " << (*i).first << std::endl;
 	if ((*i).second == FileSystemWatcher::Add) {
 	  if (ressourceExist(_root + "/" + directory + "/" + this->_locale + "/" + (*i).first))
-	    this->_fonts.emplace((*i).first, _root + "/" + directory + "/" + this->_locale + "/" + (*i).first);
+	    store.emplace(getRessourceName((*i).first), _root + "/" + directory + "/" + this->_locale + "/" + (*i).first);
 	  else
-	    this->_fonts.emplace((*i).first, _root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + (*i).first);
+	    store.emplace(getRessourceName((*i).first), _root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + (*i).first);
 	}
       }
     }
-    
-    void loadAllMusic(void);
-    void loadAllSound(void);
-    void loadAllText(void);
-    void loadAllSprite(void);
-    void loadAllFont(void);
-    void loadAllAnimatedSprite(void);
   };
+
+  /**
+   * Specialisation for AnimatedSprite
+   */
+  template<>
+  void GroupedAssetStore::loadRessource<graphic::AnimatedSpriteAsset>(std::unordered_map<std::string, graphic::AnimatedSpriteAsset> &store, const std::string &directory) {
+    FileSystemWatcher watcher(_root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE);
+    std::vector<std::pair<std::string, FileSystemWatcher::Event>> _ressources = watcher.processEvents();
+      
+    for (auto i  = _ressources.begin(); i < _ressources.end(); i++) {
+      if ((*i).second == FileSystemWatcher::Add) {
+	if (ressourceExist(_root + "/" + directory + "/" + this->_locale + "/" + (*i).first) &&
+	    ressourceExist(_root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" + this->_locale + "/" + (*i).first))
+	  store.emplace(std::piecewise_construct,
+			std::forward_as_tuple(getRessourceName((*i).first)),
+			std::forward_as_tuple(_root + "/" + directory + "/" + this->_locale + "/" + (*i).first,
+					      _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
+					      this->_locale + "/" + (*i).first +  graphic::AssetStore::ANIMATED_EXTENSION
+					      )
+			);
+	else
+	  store.emplace(std::piecewise_construct,
+			std::forward_as_tuple(getRessourceName((*i).first)),
+			std::forward_as_tuple(_root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + (*i).first,
+					      _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
+					      graphic::AssetStore::DEFAULT_LOCALE + "/" + (*i).first +  graphic::AssetStore::ANIMATED_EXTENSION
+					      )
+			);
+      }
+    }
+  }
 }
-  
+
 #endif

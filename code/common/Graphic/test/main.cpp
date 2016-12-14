@@ -2,7 +2,7 @@
 // Created by Pierre Rousselle on 18/11/2016.
 //
 #include "gtest/gtest.h"
-#include "AssetStore.hh"
+#include "AssetStore.hpp"
 
 /**
  * Testc cas: Existing ressource, with default locale
@@ -411,7 +411,9 @@ TEST(Grouped, loadAll) {
   graphic::GroupedAssetStore store(".", "asset", "fr");
 
   ASSERT_NO_THROW(store.loadAll());
-  store.getSprite("default");
+
+
+  ASSERT_NO_THROW(store.getSprite("default"));
   ASSERT_NO_THROW(store.getSound("default"));
   ASSERT_NO_THROW(store.getMusic("default"));
   ASSERT_NO_THROW(store.getText("default"));
