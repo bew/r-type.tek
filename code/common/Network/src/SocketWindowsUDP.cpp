@@ -91,7 +91,7 @@ namespace network
         return (std::string(buffer.buf, numberOfBytesRecv));
     }
 
-    int SocketWindowsUDP::send(const SockAddr &hostInfos, const std::string &msg)
+    size_t SocketWindowsUDP::send(const SockAddr &hostInfos, const std::string &msg)
     {
         WSABUF buffer;
 

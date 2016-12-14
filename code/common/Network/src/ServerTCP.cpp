@@ -19,10 +19,9 @@ namespace network
 
     ServerTCP::~ServerTCP()
     {
-        _selector.unmonitor(_socketServer.getSocket(), NetworkSelect::READ);
-        _socketServer.close();
+        close();
         for (auto &client: _clients)
-            _selector.unmonitor(client->getSocket().getSocket(), NetworkSelect::READ);
+            client->close();
     }
 
     void ServerTCP::update()
@@ -52,14 +51,14 @@ namespace network
                 if (_selector.isWritable((*client)->getSocket().getSocket()))
                 {
                     std::string msg;
-                    if ((msg = (*client)->getWriteBuffer().get()) != "")
+                    if (!(msg = (*client)->getWriteBuffer().get()).empty())
                     {
                         msg += CR;
                         msg += LF;
-                        int nbBytesSend = (*client)->getSocket().send(msg);
-                        (*client)->getWriteBuffer().updatePosition(static_cast<size_t>(nbBytesSend ));
+                        size_t nbBytesSend = (*client)->getSocket().send(msg);
+                        (*client)->getWriteBuffer().updatePosition(nbBytesSend);
 
-                        if ((*client)->getWriteBuffer().get() == "")
+                        if ((*client)->getWriteBuffer().get().empty())
                             _selector.unmonitor((*client)->getSocket().getSocket(), NetworkSelect::WRITE);
                     }
                 }
@@ -67,7 +66,7 @@ namespace network
         }
         catch (SocketException &e)
         {
-            std::cerr << e.what() << std::endl;
+            throw e;
         }
     }
 
@@ -94,7 +93,7 @@ namespace network
         return client->getMessage();
     }
 
-    void ServerTCP::add(const std::shared_ptr<ClientTCP> client, const std::string &message)
+    void ServerTCP::addMessage(const std::shared_ptr<ClientTCP> client, const std::string &message)
     {
         client->addMessage(message);
         if (*(--message.end()) == CR || *(--message.end()) == LF)
@@ -106,4 +105,18 @@ namespace network
         return _clients;
     }
 
+    bool ServerTCP::isClose() const
+    {
+        return (_socketServer.getSocket() == -1);
+    }
+
+    void ServerTCP::close()
+    {
+        if (!isClose())
+        {
+            _selector.unmonitor(_socketServer.getSocket(), NetworkSelect::READ);
+            _selector.unmonitor(_socketServer.getSocket(), NetworkSelect::WRITE);
+            _socketServer.close();
+        }
+    }
 }

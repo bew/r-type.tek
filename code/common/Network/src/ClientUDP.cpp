@@ -23,9 +23,7 @@ namespace network
 
     ClientUDP::~ClientUDP()
     {
-        _selector.unmonitor(_socket.getSocket(), NetworkSelect::READ);
-
-        _socket.close();
+        close();
     }
 
     void ClientUDP::update()
@@ -48,21 +46,21 @@ namespace network
             if (_selector.isWritable(_socket.getSocket()))
             {
                 std::string msg;
-                if ((msg = _writeBuffer.get()) != "")
+                if (!(msg = _writeBuffer.get()).empty())
                 {
                     msg += CR;
                     msg += LF;
-                    int nbBytesSend = _socket.send(_addr, msg);
-                    _writeBuffer.updatePosition(static_cast<size_t>(nbBytesSend ));
+                    size_t nbBytesSend = _socket.send(_addr, msg);
+                    _writeBuffer.updatePosition(nbBytesSend);
 
-                    if (_writeBuffer.get() == "")
+                    if (_writeBuffer.get().empty())
                         _selector.unmonitor(_socket.getSocket(), NetworkSelect::WRITE);
                 }
             }
         }
         catch (SocketException &e)
         {
-            std::cerr << e.what() << std::endl;
+            throw e;
         }
     }
 
@@ -77,4 +75,20 @@ namespace network
     {
         return _addr;
     }
+
+    bool ClientUDP::isClose() const
+    {
+        return (_socket.getSocket() == -1);
+    }
+
+    void ClientUDP::close()
+    {
+        if (!isClose())
+        {
+            _selector.unmonitor(_socket.getSocket(), NetworkSelect::READ);
+            _selector.unmonitor(_socket.getSocket(), NetworkSelect::WRITE);
+            _socket.close();
+        }
+    }
+
 }

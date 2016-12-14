@@ -12,34 +12,38 @@
 namespace network
 {
 
-    ClientTCP::ClientTCP() : _socket()
+    ClientTCP::ClientTCP() : _socket(), _isConnected(false)
     {
     }
 
-    ClientTCP::ClientTCP(Socket_t socket) : _socket(socket)
+    ClientTCP::ClientTCP(Socket_t socket) : _socket(socket), _isConnected(true)
     {
 
     }
 
     ClientTCP::~ClientTCP()
     {
-        if (!isClose())
-            _selector.unmonitor(_socket.getSocket(), NetworkSelect::READ);
-
-        _socket.close();
+       close();
     }
 
     void ClientTCP::close()
     {
-        _selector.unmonitor(_socket.getSocket(), NetworkSelect::READ);
-
-        _socket.close();
+        if (!isClose())
+        {
+            _selector.unmonitor(_socket.getSocket(), NetworkSelect::READ);
+            _selector.unmonitor(_socket.getSocket(), NetworkSelect::WRITE);
+            _socket.close();
+        }
     }
 
     void ClientTCP::connect(const SockAddr &hostInfos)
     {
-        _socket.connect(hostInfos);
-        _selector.monitor(_socket.getSocket(), NetworkSelect::READ);
+        if (!_isConnected)
+        {
+            _socket.connect(hostInfos);
+            _selector.monitor(_socket.getSocket(), NetworkSelect::READ);
+            _isConnected = true;
+        }
     }
 
     void ClientTCP::update()
@@ -63,21 +67,21 @@ namespace network
             if (_selector.isWritable(_socket.getSocket()))
             {
                 std::string msg;
-                if ((msg = _writeBuffer.get()) != "")
+                if (!(msg = _writeBuffer.get()).empty())
                 {
                     msg += CR;
                     msg += LF;
-                    int nbBytesSend = _socket.send(msg);
-                    _writeBuffer.updatePosition(static_cast<size_t>(nbBytesSend));
+                    size_t nbBytesSend = _socket.send(msg);
+                    _writeBuffer.updatePosition(nbBytesSend);
 
-                    if (_writeBuffer.get() == "")
+                    if (_writeBuffer.get().empty())
                         _selector.unmonitor(_socket.getSocket(), NetworkSelect::WRITE);
                 }
             }
         }
         catch (SocketException &e)
         {
-            std::cerr << e.what() << std::endl;
+            throw e;
         }
     }
 
@@ -96,5 +100,10 @@ namespace network
     bool ClientTCP::isClose() const
     {
         return (_socket.getSocket() == -1);
+    }
+
+    bool ClientTCP::isConnected() const
+    {
+        return _isConnected;
     }
 }

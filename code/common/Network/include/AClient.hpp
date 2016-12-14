@@ -66,6 +66,16 @@ namespace network
          */
         NetworkBuffer& getWriteBuffer();
 
+        /**
+         * test if the socket is close or not
+         * @return true if the socket is close else false
+         */
+        virtual bool isClose() const = 0;
+
+        /**
+         * call close method of socket
+         */
+        virtual void close() = 0;
     protected:
         /**
          * Buffer use to store messages read in the socket

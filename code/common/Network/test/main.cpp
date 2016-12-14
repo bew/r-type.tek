@@ -175,7 +175,7 @@ TEST(Network, SingleClientUdp)
 
         network::SockAddr clienInfos(random_variable);
 
-        network::SockAddr serverInfos(random_variable, SERVER_ADDR);
+        network::SockAddr serverInfos(random_variable, "127.0.0.1");
 
         network::ServerUDP server;
         ClientUDP client(serverInfos);
@@ -189,7 +189,7 @@ TEST(Network, SingleClientUdp)
         while(server.getConnections().size() == 0)
             server.update();
 
-        login = server.get(server.getConnections().at(0));
+        login = server.getMessage(server.getConnections().at(0));
 
         ASSERT_STREQ("login", login.c_str());
 
@@ -197,7 +197,7 @@ TEST(Network, SingleClientUdp)
         ok += CR;
         ok += LF;
 
-        server.add(server.getConnections().at(0), ok);
+        server.addMessage(server.getConnections().at(0), ok);
         server.update();
 
         client.join();
@@ -217,7 +217,7 @@ TEST(Network, TwoClientUdp)
         unsigned short random_variable = std::rand() % 65000 + 2500;
 
         network::SockAddr clienInfos(random_variable);
-        network::SockAddr serverInfos(random_variable, SERVER_ADDR);
+        network::SockAddr serverInfos(random_variable, "127.0.0.1");
 
         network::ServerUDP server;
 
@@ -235,7 +235,7 @@ TEST(Network, TwoClientUdp)
 
         // Client 0
 
-        login = server.get(server.getConnections().at(0));
+        login = server.getMessage(server.getConnections().at(0));
 
         ASSERT_STREQ("login", login.c_str());
 
@@ -243,7 +243,7 @@ TEST(Network, TwoClientUdp)
         ok += CR;
         ok += LF;
 
-        server.add(server.getConnections().at(0), ok);
+        server.addMessage(server.getConnections().at(0), ok);
         server.update();
         client0.join();
 
@@ -254,7 +254,7 @@ TEST(Network, TwoClientUdp)
 
         //Client 1
         login = "";
-        login = server.get(server.getConnections().at(1));
+        login = server.getMessage(server.getConnections().at(1));
 
         ASSERT_STREQ("login", login.c_str());
 
@@ -262,7 +262,7 @@ TEST(Network, TwoClientUdp)
         ok += CR;
         ok += LF;
 
-        server.add(server.getConnections().at(1), ok);
+        server.addMessage(server.getConnections().at(1), ok);
         server.update();
         client1.join();
     }
@@ -280,7 +280,7 @@ TEST(Network, FourClientUdp)
         unsigned short random_variable = std::rand() % 65000 + 2500;
 
         network::SockAddr clienInfos(random_variable);
-        network::SockAddr serverInfos(random_variable, SERVER_ADDR);
+        network::SockAddr serverInfos(random_variable, "127.0.0.1");
 
         network::ServerUDP server;
 
@@ -300,7 +300,7 @@ TEST(Network, FourClientUdp)
         std::string login = "";
 
 
-        login = server.get(server.getConnections().at(0));
+        login = server.getMessage(server.getConnections().at(0));
 
         ASSERT_STREQ("login", login.c_str());
 
@@ -308,7 +308,7 @@ TEST(Network, FourClientUdp)
         ok += CR;
         ok += LF;
 
-        server.add(server.getConnections().at(0), ok);
+        server.addMessage(server.getConnections().at(0), ok);
         server.update();
         client0.join();
 
@@ -320,7 +320,7 @@ TEST(Network, FourClientUdp)
             server.update();
 
         login = "";
-        login = server.get(server.getConnections().at(1));
+        login = server.getMessage(server.getConnections().at(1));
 
         ASSERT_STREQ("login", login.c_str());
 
@@ -328,7 +328,7 @@ TEST(Network, FourClientUdp)
         ok += CR;
         ok += LF;
 
-        server.add(server.getConnections().at(1), ok);
+        server.addMessage(server.getConnections().at(1), ok);
         server.update();
         client1.join();
 
@@ -340,7 +340,7 @@ TEST(Network, FourClientUdp)
             server.update();
 
         login = "";
-        login = server.get(server.getConnections().at(2));
+        login = server.getMessage(server.getConnections().at(2));
 
         ASSERT_STREQ("login", login.c_str());
 
@@ -348,7 +348,7 @@ TEST(Network, FourClientUdp)
         ok += CR;
         ok += LF;
 
-        server.add(server.getConnections().at(2), ok);
+        server.addMessage(server.getConnections().at(2), ok);
         server.update();
         client2.join();
 
@@ -360,7 +360,7 @@ TEST(Network, FourClientUdp)
             server.update();
 
         login = "";
-        login = server.get(server.getConnections().at(3));
+        login = server.getMessage(server.getConnections().at(3));
 
         ASSERT_STREQ("login", login.c_str());
 
@@ -368,7 +368,7 @@ TEST(Network, FourClientUdp)
         ok += CR;
         ok += LF;
 
-        server.add(server.getConnections().at(3), ok);
+        server.addMessage(server.getConnections().at(3), ok);
         server.update();
         client3.join();
     }
@@ -386,7 +386,7 @@ TEST(Network, SingleClientTcp)
         std::srand(std::time(0)); // use current time as seed for random generator
         unsigned short random_variable = std::rand() % 65000 + 2500;
         network::SockAddr clienInfos(random_variable);
-        network::SockAddr serverInfos(random_variable, SERVER_ADDR);
+        network::SockAddr serverInfos(random_variable, "127.0.0.1");
 
         network::ServerTCP server;
         ClientTCP client(serverInfos);
@@ -411,7 +411,7 @@ TEST(Network, SingleClientTcp)
         ok += CR;
         ok += LF;
 
-        server.add(server.getConnections().at(0), ok);
+        server.addMessage(server.getConnections().at(0), ok);
         server.update();
 
         client.join();
@@ -430,7 +430,7 @@ TEST(Network, TwoClientTcp)
         unsigned short random_variable = std::rand() % 65000 + 2500;
 
         network::SockAddr clienInfos(random_variable);
-        network::SockAddr serverInfos(random_variable, SERVER_ADDR);
+        network::SockAddr serverInfos(random_variable, "127.0.0.1");
 
         network::ServerTCP server;
 
@@ -459,7 +459,7 @@ TEST(Network, TwoClientTcp)
         ok += CR;
         ok += LF;
 
-        server.add(server.getConnections().at(0), ok);
+        server.addMessage(server.getConnections().at(0), ok);
         server.update();
         client0.join();
 
@@ -480,7 +480,7 @@ TEST(Network, TwoClientTcp)
         ok += CR;
         ok += LF;
 
-        server.add(server.getConnections().at(1), ok);
+        server.addMessage(server.getConnections().at(1), ok);
         server.update();
         client1.join();
     }
@@ -498,7 +498,7 @@ TEST(Network, FourClientTcp)
         unsigned short random_variable = std::rand() % 65000 + 2500;
 
         network::SockAddr clienInfos(random_variable);
-        network::SockAddr serverInfos(random_variable, SERVER_ADDR);
+        network::SockAddr serverInfos(random_variable, "127.0.0.1");
 
         network::ServerTCP server;
 
@@ -529,7 +529,7 @@ TEST(Network, FourClientTcp)
         ok += CR;
         ok += LF;
 
-        server.add(server.getConnections().at(0), ok);
+        server.addMessage(server.getConnections().at(0), ok);
         server.update();
         client0.join();
 
@@ -551,7 +551,7 @@ TEST(Network, FourClientTcp)
         ok += CR;
         ok += LF;
 
-        server.add(server.getConnections().at(1), ok);
+        server.addMessage(server.getConnections().at(1), ok);
         server.update();
         client1.join();
 
@@ -573,7 +573,7 @@ TEST(Network, FourClientTcp)
         ok += CR;
         ok += LF;
 
-        server.add(server.getConnections().at(2), ok);
+        server.addMessage(server.getConnections().at(2), ok);
         server.update();
         client2.join();
 
@@ -595,7 +595,7 @@ TEST(Network, FourClientTcp)
         ok += CR;
         ok += LF;
 
-        server.add(server.getConnections().at(3), ok);
+        server.addMessage(server.getConnections().at(3), ok);
         server.update();
         client3.join();
     }

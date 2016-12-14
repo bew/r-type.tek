@@ -29,7 +29,7 @@ namespace network
         /**
          * Destructor of AClient
          */
-        ~AServer();
+        virtual ~AServer();
 
         /**
          * test if sockets are writable or readable and call send or recv
@@ -42,6 +42,10 @@ namespace network
          */
         virtual void bind(const SockAddr &hostInfos) = 0;
 
+        /**
+         * call close method of socket
+         */
+        virtual void close() = 0;
     protected:
         /**
          * contain select encapsulation

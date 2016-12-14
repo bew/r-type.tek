@@ -16,6 +16,9 @@ namespace network
 
     ServerUDP::~ServerUDP()
     {
+        close();
+        for (auto& client : _clients)
+            client->close();
     }
 
     void ServerUDP::bind(const SockAddr &hostInfos)
@@ -37,24 +40,24 @@ namespace network
                 SockAddr from(0, "");
                 std::string msg = _socket.recv(from);
 
-                if (isNewClient(from))
+                if (this->isNewClient(from))
                     _clients.push_back(std::shared_ptr<ClientUDP>(new ClientUDP(from)));
 
-                getClient(from)->getReadBuffer().fill(msg);
+                this->getClient(from)->getReadBuffer().fill(msg);
             }
             for (auto &client: _clients)
             {
                 if (_selector.isWritable(_socket.getSocket()))
                 {
                     std::string msg;
-                    if ((msg = client->getWriteBuffer().get()) != "")
+                    if (!(msg = client->getWriteBuffer().get()).empty())
                     {
                         msg += CR;
                         msg += LF;
-                        int nbBytesSend = _socket.send(client->getAddr(), msg);
-                        client->getWriteBuffer().updatePosition(static_cast<size_t>(nbBytesSend ));
+                        size_t nbBytesSend = _socket.send(client->getAddr(), msg);
+                        client->getWriteBuffer().updatePosition(nbBytesSend);
 
-                        if (client->getMessage() == "")
+                        if (client->getMessage().empty())
                             _selector.unmonitor(_socket.getSocket(), NetworkSelect::WRITE);
                     }
                 }
@@ -62,18 +65,18 @@ namespace network
         }
         catch (SocketException &e)
         {
-            std::cerr << e.what() << std::endl;
+            throw e;
         }
     }
 
-    void ServerUDP::add(const std::shared_ptr<ClientUDP> client, const std::string &msg)
+    void ServerUDP::addMessage(const std::shared_ptr<ClientUDP> client, const std::string &msg)
     {
         client->addMessage(msg);
         if (*(--msg.end()) == CR || *(--msg.end()) == LF)
             _selector.monitor(_socket.getSocket(), NetworkSelect::WRITE);
     }
 
-    std::string ServerUDP::get(const std::shared_ptr<ClientUDP> client)
+    std::string ServerUDP::getMessage(const std::shared_ptr<ClientUDP> client)
     {
         return client->getMessage();
     }
@@ -101,5 +104,20 @@ namespace network
                 return client;
         }
         return nullptr;
+    }
+
+    bool ServerUDP::isClose() const
+    {
+        return (_socket.getSocket() == -1);
+    }
+
+    void ServerUDP::close()
+    {
+        if (!isClose())
+        {
+            _selector.unmonitor(_socket.getSocket(), NetworkSelect::READ);
+            _selector.unmonitor(_socket.getSocket(), NetworkSelect::WRITE);
+            _socket.close();
+        }
     }
 }

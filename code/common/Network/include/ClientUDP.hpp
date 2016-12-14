@@ -56,6 +56,8 @@ namespace network
 
         /**
          * test if socket is writable or readable and call send or recv
+         *
+         * @throw SocketException if select, recv or send failed or if client receive a message by unexpected server
          */
         virtual void update();
 
@@ -72,6 +74,16 @@ namespace network
          */
         SockAddr &getAddr();
 
+        /**
+         * test if the socket is close or not
+         * @return true if the socket is close else false
+         */
+        bool isClose() const;
+
+        /**
+         * call close method of socket
+         */
+        virtual void close();
     private:
         /**
          * Represents host ip and port

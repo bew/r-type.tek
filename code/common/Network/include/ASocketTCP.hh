@@ -67,7 +67,7 @@ namespace network
          *
          * @return number of Bytes sent
          */
-        virtual int send(const std::string &msg) const = 0;
+        virtual size_t send(const std::string &msg) const = 0;
 
     };
 

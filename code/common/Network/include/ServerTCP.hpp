@@ -48,6 +48,8 @@ namespace network
 
         /**
          * test if sockets are writable or readable and call send or recv
+         *
+         * @throw SocketException if select, recv or send failed
          */
         virtual void update();
 
@@ -84,13 +86,24 @@ namespace network
          * @param client pointer to one ClientTCP
          * @param message string that will be add to the client write buffer
          */
-        void add(const std::shared_ptr<ClientTCP> client, const std::string &message);
+        void addMessage(const std::shared_ptr<ClientTCP> client, const std::string &message);
 
         /**
          * get the list of client connected
          * @return const reference to the vector of pointer to ClientTCP
          */
         const std::vector<std::shared_ptr<ClientTCP> > &getConnections() const;
+
+        /**
+         * call close method of socket
+         */
+        virtual void close();
+
+        /**
+         * test if the socket is close or not
+         * @return true if the socket is close else false
+         */
+        virtual bool isClose() const;
 
     private:
 

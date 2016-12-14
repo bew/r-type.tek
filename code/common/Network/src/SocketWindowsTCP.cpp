@@ -123,11 +123,12 @@ namespace network
             WSAResetEvent(recvOverlapped.hEvent);
         }
         WSACloseEvent(recvOverlapped.hEvent);
-
+        if (numberOfBytesRecv == 0)
+            close();
         return std::string(buffer.buf, numberOfBytesRecv);
     }
 
-    int SocketWindowsTCP::send(const std::string &msg)
+    size_t SocketWindowsTCP::send(const std::string &msg)
     {
         WSABUF buffer;
 

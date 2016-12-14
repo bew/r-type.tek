@@ -57,7 +57,7 @@ namespace network
          *
          * @throw SocketException if send fail or if the host address is unknown
          */
-        virtual int send(const SockAddr &hostInfos, const std::string &msg);
+        virtual size_t send(const SockAddr &hostInfos, const std::string &msg);
 
         /**
          * close the socket

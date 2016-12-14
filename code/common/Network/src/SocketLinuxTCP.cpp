@@ -74,7 +74,7 @@ namespace network
         return msg;
     }
 
-    int SocketLinuxTCP::send(const std::string &msg) const
+    size_t SocketLinuxTCP::send(const std::string &msg) const
     {
         ssize_t ret = ::send(_socket, msg.c_str(), msg.length(), 0);
         if (ret < 0)

@@ -51,7 +51,7 @@ namespace network
         return msg;
     }
 
-    int SocketLinuxUDP::send(const SockAddr &hostInfos, const std::string &msg)
+    size_t SocketLinuxUDP::send(const SockAddr &hostInfos, const std::string &msg)
     {
         sockaddr_in addr = hostInfos.getAddr();
 

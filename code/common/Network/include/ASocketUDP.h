@@ -49,7 +49,7 @@ namespace network
          *
          * @return number of Bytes wrote on the socket
          */
-        virtual int send(const SockAddr &hostInfos, const std::string &msg) = 0;
+        virtual size_t send(const SockAddr &hostInfos, const std::string &msg) = 0;
     };
 
 }

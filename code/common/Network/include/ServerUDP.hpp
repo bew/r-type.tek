@@ -53,6 +53,8 @@ namespace network
 
         /**
          * test if socket is writable or readable and calls send or recv
+         *
+         * @throw SocketException if select, recv or send failed
          */
         virtual void update();
 
@@ -62,7 +64,7 @@ namespace network
          * @param client pointer to one ClientTCP
          * @param message string that will be add to the client write buffer
          */
-        void add(const std::shared_ptr<ClientUDP> client, const std::string &msg);
+        void addMessage(const std::shared_ptr<ClientUDP> client, const std::string &msg);
 
         /**
          *
@@ -71,7 +73,7 @@ namespace network
          *
          * @return string that contains the first valid message on client read buffer
          */
-        std::string get(const std::shared_ptr<ClientUDP> client);
+        std::string getMessage(const std::shared_ptr<ClientUDP> client);
 
         /**
          * get the list of client connected
@@ -92,6 +94,17 @@ namespace network
          * @return pointer to the client who has this addr
          */
         std::shared_ptr<ClientUDP> getClient(const SockAddr &addr);
+
+        /**
+         * call close method of socket
+         */
+        virtual void close();
+
+        /**
+         * test if the socket is close or not
+         * @return true if the socket is close else false
+         */
+        virtual bool isClose() const;
 
     private:
         /**

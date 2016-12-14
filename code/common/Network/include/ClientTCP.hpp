@@ -36,7 +36,7 @@ namespace network
         ClientTCP();
 
         /**
-         * Constructof of ClientTCP
+         * Constructor of ClientTCP
          *
          * @param socket represent one socket already created
          */
@@ -54,7 +54,7 @@ namespace network
         /**
          * call close method of socket
          */
-        void close();
+        virtual void close();
 
         /**
          * Connect client's socket
@@ -65,6 +65,8 @@ namespace network
 
         /**
          * test if socket is writable or readable and calls send or recv
+         *
+         * @throw SocketException if select, recv or send failed
          */
         virtual void update();
 
@@ -85,13 +87,24 @@ namespace network
          * test if the socket is close or not
          * @return true if the socket is close else false
          */
-        bool isClose() const;
+        virtual bool isClose() const;
+
+        /**
+         * test if the socket is connected or not
+         * @return true if the socket is connected, else false
+         */
+        bool isConnected() const;
 
     private:
         /**
          * Represents one socket tcp
          */
         SocketTCP _socket;
+
+        /**
+         * indicates if client is connect or not
+         */
+        bool _isConnected;
     };
 
 }

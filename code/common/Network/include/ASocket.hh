@@ -19,8 +19,6 @@
 
 #include "SockAddr.hh"
 
-#define SERVER_ADDR "127.0.0.1"
-
 /**
  * namespace that contains all network abstraction
  */

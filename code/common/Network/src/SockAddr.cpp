@@ -44,6 +44,6 @@ namespace network {
 
     bool SockAddr::operator!=(const SockAddr& rhs) const
     {
-        return (_addr.sin_addr.s_addr != rhs._addr.sin_addr.s_addr) ||  (_addr.sin_port != rhs._addr.sin_port);
+        return (!((*this) == rhs));
     }
 }

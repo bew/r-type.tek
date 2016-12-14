@@ -97,7 +97,7 @@ namespace network
          *
          *  @throw SocketException if send fail
          */
-        virtual int send(const std::string &msg) const;
+        virtual size_t send(const std::string &msg) const;
 
     };
 
