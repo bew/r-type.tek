@@ -387,7 +387,6 @@ namespace graphic {
       std::vector<std::pair<std::string, FileSystemWatcher::Event>> _ressources = watcher.processEvents();
 
       for (auto i  = _ressources.begin(); i < _ressources.end(); i++) {
-	std::cout << directory << " FOUND " << (*i).first << std::endl;
 	if ((*i).second == FileSystemWatcher::Add) {
 	  if (ressourceExist(_root + "/" + directory + "/" + this->_locale + "/" + (*i).first))
 	    store.emplace(getRessourceName((*i).first), _root + "/" + directory + "/" + this->_locale + "/" + (*i).first);
