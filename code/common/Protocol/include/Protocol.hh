@@ -12,13 +12,21 @@
 
 #include "BSON/Document.hh"
 
-#define MAGIC 1918729278
-#define VERSION "0.1"
-
 /**
  * Contain all functions to use for the R-Type protocol
  */
 namespace protocol {
+
+    /**
+     * Magic number of protocol
+     */
+    const int32_t magic = 1918729278;
+
+    /**
+     * Version of the protocol
+     */
+    const std::string version = "0.1";
+
     /**
      * Get a valid header Document for the R-Type protocol
      *

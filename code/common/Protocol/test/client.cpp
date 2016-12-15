@@ -20,10 +20,10 @@ TEST(Client, SignUp) {
     bson::Document message = protocol::client::signUp(username, password);
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "SignUp");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = message["data"].getValueDocument();
@@ -41,10 +41,10 @@ TEST(Client, Login) {
     bson::Document message = protocol::client::login(username, password);
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Login");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = message["data"].getValueDocument();
@@ -62,10 +62,10 @@ TEST(Client, Logout) {
     bson::Document message = protocol::client::logout(username, password);
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Logout");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = message["data"].getValueDocument();
@@ -83,10 +83,10 @@ TEST(Client, RoomJoin) {
     bson::Document message = protocol::client::roomJoin(name, password);
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "RoomJoin");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = message["data"].getValueDocument();
@@ -101,10 +101,10 @@ TEST(Client, RoomLeave) {
     bson::Document message = protocol::client::roomLeave();
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "RoomLeave");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 }
 
 /**
@@ -116,10 +116,10 @@ TEST(Client, RoomKick) {
     bson::Document message = protocol::client::roomKick(username);
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "RoomKick");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = message["data"].getValueDocument();
@@ -133,10 +133,10 @@ TEST(Client, GameStart) {
     bson::Document message = protocol::client::gameStart();
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "GameStart");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 }
 
 /**
@@ -146,10 +146,10 @@ TEST(Client, GameLeave) {
     bson::Document message = protocol::client::gameLeave();
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "GameLeave");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = message["data"].getValueDocument();
@@ -168,10 +168,10 @@ TEST(Client, EntityUpdate) {
     bson::Document message = protocol::client::entityUpdate(entity_id, component, messageData);
 
     bson::Document header = message["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "EntityUpdate");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = message["data"].getValueDocument();

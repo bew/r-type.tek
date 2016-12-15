@@ -16,8 +16,8 @@
 TEST(Protocol, basic) {
     bson::Document header = protocol::createHeader("SomeAction");
 
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "SomeAction");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 }

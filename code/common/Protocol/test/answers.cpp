@@ -23,10 +23,10 @@ TEST(Answers, Ok) {
     bson::Document answerOk = protocol::answers::ok(timestamp, dataAnswer);
 
     bson::Document header = answerOk["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerOk["data"].getValueDocument();
@@ -46,10 +46,10 @@ TEST(Answers, BadRequest) {
     bson::Document answerBadRequest = protocol::answers::badRequest(timestamp);
 
     bson::Document header = answerBadRequest["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerBadRequest["data"].getValueDocument();
@@ -68,10 +68,10 @@ TEST(Answers, Unauthorized) {
     bson::Document answerUnauthorized = protocol::answers::unauthorized(timestamp);
 
     bson::Document header = answerUnauthorized["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerUnauthorized["data"].getValueDocument();
@@ -90,10 +90,10 @@ TEST(Answers, Forbidden) {
     bson::Document answerForbidden = protocol::answers::forbidden(timestamp);
 
     bson::Document header = answerForbidden["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerForbidden["data"].getValueDocument();
@@ -112,10 +112,10 @@ TEST(Answers, NotFound) {
     bson::Document answerNotFound = protocol::answers::notFound(timestamp);
 
     bson::Document header = answerNotFound["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerNotFound["data"].getValueDocument();
@@ -134,10 +134,10 @@ TEST(Answers, TooManyRequests) {
     bson::Document answerTooManyRequests = protocol::answers::tooManyRequests(timestamp);
 
     bson::Document header = answerTooManyRequests["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerTooManyRequests["data"].getValueDocument();
@@ -156,10 +156,10 @@ TEST(Answers, InternalServerError) {
     bson::Document answerInternalServerError = protocol::answers::internalServerError(timestamp);
 
     bson::Document header = answerInternalServerError["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerInternalServerError["data"].getValueDocument();
@@ -178,10 +178,10 @@ TEST(Answers, NotImplemented) {
     bson::Document answerNotImplemented = protocol::answers::notImplemented(timestamp);
 
     bson::Document header = answerNotImplemented["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerNotImplemented["data"].getValueDocument();
@@ -200,10 +200,10 @@ TEST(Answers, ServiceUnavailable) {
     bson::Document answerServiceUnavailable = protocol::answers::serviceUnavailable(timestamp);
 
     bson::Document header = answerServiceUnavailable["header"].getValueDocument();
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerServiceUnavailable["data"].getValueDocument();
