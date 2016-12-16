@@ -91,6 +91,13 @@ namespace bson {
             bson::type getValueType(void) const;
 
             /**
+             * Get the value buffer
+             *
+             * @return the value buffer
+             */
+            const std::vector<unsigned char>& getValueBuffer(void) const;
+
+            /**
              * Get the key of the value stored inside the Element
              *
              * @return the key of the value stored inside the Element
@@ -302,14 +309,9 @@ namespace bson {
         std::string _lastKey;
 
         /**
-         * Store the BSON representation of the Document composed of all the given inputs
-         */
-        std::vector<unsigned char> _buffer;
-
-        /**
          * Store the BSON representation of the Document composed of all the given inputs as Element usable
          */
-        std::map<const std::string, Document::Element> _elements;
+        std::vector<Document::Element> _elements;
 
     public:
         /**
@@ -352,13 +354,6 @@ namespace bson {
          * @throw BsonException if the waiting input is not a value
          */
         void isInputValue(void) const;
-
-        /**
-         * Write the given typeCode followed by the last key received into the Document
-         *
-         * @param typeCode the typeCode to write into the Document
-         */
-        void writeTypeCodeAndKey(unsigned char typeCode);
 
         /**
          * Insert an element inside the document with the given information
@@ -455,7 +450,7 @@ namespace bson {
          * Get the Element linked to the given key which is the representation of a value inside the BSON representation of the Document
          *
          * @param key the key of the Element to get
-         * @throw std::out_of_range if the key doesn't exist
+         * @throw BsonException if the key doesn't exist
          * @return the Element of the given key with the value stored in it
          */
         const Document::Element& operator[](const std::string &key) const;
@@ -510,7 +505,12 @@ namespace bson {
          *
          * @return the Elements inside the Document
          */
-        const std::map<const std::string, Document::Element>& getElements(void) const;
+        const std::vector<bson::Document::Element>& getElements(void) const;
+
+        /**
+         * Clear the Document (empty it)
+         */
+        void clear(void);
     };
 }
 

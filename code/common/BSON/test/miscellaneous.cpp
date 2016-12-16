@@ -8,6 +8,7 @@
  */
 
 #include <gtest/gtest.h>
+#include <fstream>
 #include "Document.hh"
 
 /**
@@ -50,7 +51,7 @@ TEST(Miscellaneous, Key_cant_be_empty) {
 TEST(Miscellaneous, Key_must_exist) {
     bson::Document document;
 
-    ASSERT_THROW(document["none"], std::out_of_range);
+    ASSERT_THROW(document["none"], bson::BsonException);
 }
 
 /**
@@ -172,7 +173,7 @@ TEST(Miscellaneous, getElements) {
     message << u8"key2" << 42;
     message << u8"key3" << 42;
 
-    const std::map<const std::string, bson::Document::Element> &elements = message.getElements();
+    const std::vector<bson::Document::Element> &elements = message.getElements();
     const std::map<std::string, bson::Document::Element> expected_elements = {
             {message["key1"].getKey(), message["key1"]},
             {message["key2"].getKey(), message["key2"]},
@@ -180,5 +181,16 @@ TEST(Miscellaneous, getElements) {
     };
 
     for (const auto& element : elements)
-        EXPECT_EQ(element.second, expected_elements.at(element.first));
+        EXPECT_EQ(element, expected_elements.at(element.getKey()));
+}
+
+TEST(Miscellaneous, clear) {
+    bson::Document message;
+
+    message << u8"key1" << 42;
+    message << u8"key2" << 42;
+    message << u8"key3" << 42;
+
+    message.clear();
+    ASSERT_EQ(message.isEmpty(), true);
 }
