@@ -480,4 +480,30 @@ namespace bson {
     bool Document::operator!=(const Document &document) const {
         return !this->operator==(document);
     }
+
+    bool Document::hasKey(const std::string &key) const {
+        return _elements.count(key) > 0;
+    }
+
+    std::vector<std::string> Document::getKeys() const {
+        std::vector<std::string> keys;
+        
+        for (const auto& element : _elements)
+            keys.push_back(element.first);
+        
+        return keys;
+    }
+    
+    size_t Document::elementsCount() const {
+        return _elements.size();
+    }
+    
+    bool Document::isEmpty() const {
+        return _elements.size() == 0;
+    }
+
+    const std::map<const std::string, Document::Element>& Document::getElements() const {
+        return _elements;
+    }
+
 }

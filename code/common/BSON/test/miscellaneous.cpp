@@ -89,6 +89,9 @@ TEST(Miscellaneous, Incomplete_Document) {
     ASSERT_THROW(document.getBuffer(), bson::BsonException);
 }
 
+/**
+ * A basic test of integration
+ */
 TEST(Miscellaneous, Integration1) {
     bson::Document message;
     bson::Document tomato;
@@ -115,4 +118,67 @@ TEST(Miscellaneous, Integration1) {
 
     const std::vector<unsigned char> &buffer = message.getBuffer();
     bson::Document copyMessage(buffer);
+}
+
+/**
+ * Check if a key is present into the Document
+ */
+TEST(Miscellaneous, hasKey) {
+    bson::Document message;
+
+    message << u8"key" << 42;
+
+    EXPECT_EQ(message.hasKey("key"), true);
+    EXPECT_EQ(message.hasKey("noKey"), false);
+}
+
+/**
+ * Get all the keys inside the document
+ */
+TEST(Miscellaneous, getKeys) {
+    bson::Document message;
+
+    message << u8"key1" << 42;
+    message << u8"key2" << 42;
+    message << u8"key3" << 42;
+
+    const std::vector<std::string> &keys = message.getKeys();
+    std::vector<std::string> expected_keys = {"key1", "key2", "key3"};
+
+    for (int i = 0; i < keys.size(); ++i)
+        EXPECT_EQ(keys.at(i), expected_keys.at(i));
+}
+
+/**
+ * Check if the number of Elements stored is right
+ */
+TEST(Miscellaneous, elementsCount) {
+    bson::Document message;
+
+    message << u8"key1" << 42;
+    message << u8"key2" << 42;
+    message << u8"key3" << 42;
+
+    ASSERT_EQ(message.elementsCount(), 3);
+}
+
+/**
+ * Check if getElements return the right Elements
+ */
+TEST(Miscellaneous, getElements) {
+    bson::Document message;
+
+    message << u8"key1" << 42;
+    message << u8"key2" << 42;
+    message << u8"key3" << 42;
+
+    const std::map<const std::string, bson::Document::Element> &elements = message.getElements();
+    const std::map<std::string, bson::Document::Element> expected_elements = {
+            {message["key1"].getKey(), message["key1"]},
+            {message["key2"].getKey(), message["key2"]},
+            {message["key3"].getKey(), message["key3"]},
+    };
+
+    for (const auto& element : elements)
+        EXPECT_EQ(element.second, expected_elements.at(element.first));
 }
