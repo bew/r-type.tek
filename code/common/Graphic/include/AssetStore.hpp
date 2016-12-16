@@ -308,7 +308,7 @@ namespace graphic {
 		    std::forward_as_tuple(path),
 		    std::forward_as_tuple(_root + "/" + directory + "/" + _locale + "/" + path + extension,
 					  _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
-					  _locale + "/" + path + graphic::AssetStore::SPRITE_EXTENSION + graphic::AssetStore::ANIMATED_EXTENSION
+					  _locale + "/" + path + graphic::AssetStore::ANIMATED_EXTENSION
 					  )
 		    );
     }

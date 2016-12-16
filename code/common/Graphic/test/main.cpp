@@ -4,6 +4,108 @@
 #include "gtest/gtest.h"
 #include "AssetStore.hpp"
 
+///////////////////////////////////////////////////
+
+/**
+ * Testc cas: Existing ressource, with default locale
+ */
+TEST(Font, LoadExistingDefault) {
+  graphic::AssetStore store("asset");
+
+  ASSERT_NO_THROW(store.loadFont("test"));
+}
+
+TEST(Font, GetExistingDefault) {
+  graphic::AssetStore store("asset");
+
+  ASSERT_NO_THROW(store.loadFont("test"));
+  ASSERT_NO_THROW(store.getFont("test"));
+}
+
+TEST(Font, FreeExistingDefault) {
+  graphic::AssetStore store("asset");
+
+  ASSERT_NO_THROW(store.loadFont("test"));
+  ASSERT_NO_THROW(store.getFont("test"));
+  ASSERT_NO_THROW(store.freeFont("test"));
+}
+
+/**
+ * Test case: Existing ressource in locale
+ */
+TEST(Font, LoadExistingLocale) {
+  graphic::AssetStore store("asset", "fr");
+
+  ASSERT_NO_THROW(store.loadFont("test"));
+}
+
+TEST(Font, GetExistingLocale) {
+  graphic::AssetStore store("asset", "fr");
+
+  ASSERT_NO_THROW(store.loadFont("test"));
+  ASSERT_NO_THROW(store.getFont("test"));
+}
+
+TEST(Font, FreeExistingLocale) {
+  graphic::AssetStore store("asset", "fr");
+
+  ASSERT_NO_THROW(store.loadFont("test"));
+  ASSERT_NO_THROW(store.getFont("test"));
+  ASSERT_NO_THROW(store.freeFont("test"));
+}
+
+/**
+ * Test case: Missing ressource 
+ */
+TEST(Font, LoadMissing) {
+
+  graphic::AssetStore store("asset");
+
+  ASSERT_THROW(store.loadFont("fake"), graphic::AssetException);
+}
+
+TEST(Font, GetMissing) {
+  graphic::AssetStore store("asset");
+
+  ASSERT_THROW(store.loadFont("fake"), graphic::AssetException);
+  ASSERT_THROW(store.getFont("fake"), graphic::AssetException);
+}
+
+TEST(Font, FreeMissing) {
+  graphic::AssetStore store("asset");
+
+  ASSERT_THROW(store.loadFont("fake"), graphic::AssetException);
+  ASSERT_THROW(store.getFont("fake"), graphic::AssetException);
+  store.freeFont("fake");
+}
+
+
+/**
+ * Test case: ressource existing in default local
+ */
+TEST(Font, LoadFallback) {
+  graphic::AssetStore store("asset", "fr");
+
+  ASSERT_NO_THROW(store.loadFont("default"));
+}
+
+TEST(Font, GetFallback) {
+  graphic::AssetStore store("asset", "fr");
+
+  ASSERT_NO_THROW(store.loadFont("default"));
+  ASSERT_NO_THROW(store.getFont("default"));
+}
+
+TEST(Font, FreeFallback) {
+  graphic::AssetStore store("asset", "fr");
+
+  ASSERT_NO_THROW(store.loadFont("default"));
+  ASSERT_NO_THROW(store.getFont("default"));
+  ASSERT_NO_THROW(store.freeFont("default"));
+}
+
+///////////////////////////////////////////////////////
+
 /**
  * Testc cas: Existing ressource, with default locale
  */
@@ -403,6 +505,107 @@ TEST(Sprite, FreeFallback) {
   ASSERT_NO_THROW(store.getSprite("default"));
   ASSERT_NO_THROW(store.freeSprite("default"));
 }
+
+////////////////////////////////////////////////////////
+
+/**
+ * Testc cas: Existing ressource, with default locale
+ */
+TEST(AnimatedSprite, LoadExistingDefault) {
+  graphic::AssetStore store("asset");
+
+  store.loadAnimatedSprite("test");
+}
+
+TEST(AnimatedSprite, GetExistingDefault) {
+  graphic::AssetStore store("asset");
+
+  ASSERT_NO_THROW(store.loadAnimatedSprite("test"));
+  ASSERT_NO_THROW(store.getAnimatedSprite("test"));
+}
+
+TEST(AnimatedSprite, FreeExistingDefault) {
+  graphic::AssetStore store("asset");
+
+  ASSERT_NO_THROW(store.loadAnimatedSprite("test"));
+  ASSERT_NO_THROW(store.getAnimatedSprite("test"));
+  ASSERT_NO_THROW(store.freeAnimatedSprite("test"));
+}
+
+/**
+ * Test case: Existing ressource in locale
+ */
+TEST(AnimatedSprite, LoadExistingLocale) {
+  graphic::AssetStore store("asset", "fr");
+
+  ASSERT_NO_THROW(store.loadAnimatedSprite("test"));
+}
+
+TEST(AnimatedSprite, GetExistingLocale) {
+  graphic::AssetStore store("asset", "fr");
+
+  ASSERT_NO_THROW(store.loadAnimatedSprite("test"));
+  ASSERT_NO_THROW(store.getAnimatedSprite("test"));
+}
+
+TEST(AnimatedSprite, FreeExistingLocale) {
+  graphic::AssetStore store("asset", "fr");
+
+  ASSERT_NO_THROW(store.loadAnimatedSprite("test"));
+  ASSERT_NO_THROW(store.getAnimatedSprite("test"));
+  ASSERT_NO_THROW(store.freeAnimatedSprite("test"));
+}
+
+/**
+ * Test case: Missing ressource 
+ */
+TEST(AnimatedSprite, LoadMissing) {
+
+  graphic::AssetStore store("asset");
+
+  ASSERT_THROW(store.loadAnimatedSprite("fake"), graphic::AssetException);
+}
+
+TEST(AnimatedSprite, GetMissing) {
+  graphic::AssetStore store("asset");
+
+  ASSERT_THROW(store.loadAnimatedSprite("fake"), graphic::AssetException);
+  ASSERT_THROW(store.getAnimatedSprite("fake"), graphic::AssetException);
+}
+
+TEST(AnimatedSprite, FreeMissing) {
+  graphic::AssetStore store("asset");
+
+  ASSERT_THROW(store.loadAnimatedSprite("fake"), graphic::AssetException);
+  ASSERT_THROW(store.getAnimatedSprite("fake"), graphic::AssetException);
+  store.freeAnimatedSprite("fake");
+}
+
+/**
+ * Test case: ressource existing in default local
+ */
+TEST(AnimatedSprite, LoadFallback) {
+  graphic::AssetStore store("asset", "fr");
+
+  ASSERT_NO_THROW(store.loadAnimatedSprite("default"));
+}
+
+TEST(AnimatedSprite, GetFallback) {
+  graphic::AssetStore store("asset", "fr");
+
+  ASSERT_NO_THROW(store.loadAnimatedSprite("default"));
+  ASSERT_NO_THROW(store.getAnimatedSprite("default"));
+}
+
+TEST(AnimatedSprite, FreeFallback) {
+  graphic::AssetStore store("asset", "fr");
+
+  ASSERT_NO_THROW(store.loadAnimatedSprite("default"));
+  ASSERT_NO_THROW(store.getAnimatedSprite("default"));
+  ASSERT_NO_THROW(store.freeAnimatedSprite("default"));
+}
+
+////////////////////////////////////////////////////////
 
 /**
  * Test loadall
