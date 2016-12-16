@@ -24,3 +24,5 @@ macro(use_msvc_static_runtime)
 endmacro(use_msvc_static_runtime)
 
 add_subdirectory(code)
+
+add_subdirectory(doc)
