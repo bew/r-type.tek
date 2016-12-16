@@ -182,3 +182,14 @@ TEST(Miscellaneous, getElements) {
     for (const auto& element : elements)
         EXPECT_EQ(element.second, expected_elements.at(element.first));
 }
+
+TEST(Miscellaneous, clear) {
+    bson::Document message;
+
+    message << u8"key1" << 42;
+    message << u8"key2" << 42;
+    message << u8"key3" << 42;
+
+    message.clear();
+    ASSERT_EQ(message.isEmpty(), true);
+}
