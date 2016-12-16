@@ -506,4 +506,10 @@ namespace bson {
         return _elements;
     }
 
+    void Document::clear() {
+        _nextInputType = Document::KEY;
+        _buffer.clear();
+        _elements.clear();
+    }
+
 }

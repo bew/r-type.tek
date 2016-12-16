@@ -511,6 +511,11 @@ namespace bson {
          * @return the Elements inside the Document
          */
         const std::map<const std::string, Document::Element>& getElements(void) const;
+
+        /**
+         * Clear the Document (empty it)
+         */
+        void clear(void);
     };
 }
 
