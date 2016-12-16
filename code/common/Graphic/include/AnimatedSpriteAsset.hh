@@ -2,7 +2,10 @@
 #define _ANIMATEDSPRIETASSET_HPP
 
 #include <string>
+#include <vector>
+#include <unordered_map>
 #include <SFML/Graphics/Texture.hpp>
+#include <SFML/Graphics/Rect.hpp>
 
 #include "BSON/Document.hh"
 #include "Window.hh"
@@ -16,6 +19,11 @@ namespace graphic {
    */
   class AnimatedSpriteAsset {
   public:
+
+    struct FrameDescriptions {
+      double frequency;
+      std::vector<sf::Rect<int> > frames;
+    };
     
     /**
      * Construct an AnimatedSpriteAsset
@@ -38,7 +46,7 @@ namespace graphic {
     /**
      * The bson document holding the animations specification. This will probably be replaced by a wrapper for quicker access to frame info.
      */
-    bson::Document _animations;
+    std::unordered_map<std::string, graphic::AnimatedSpriteAsset::FrameDescriptions> _animations;
   };
 }
 
