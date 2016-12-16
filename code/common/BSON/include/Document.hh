@@ -311,7 +311,7 @@ namespace bson {
         /**
          * Store the BSON representation of the Document composed of all the given inputs as Element usable
          */
-        std::map<const std::string, Document::Element> _elements;
+        std::vector<Document::Element> _elements;
 
     public:
         /**
@@ -450,7 +450,7 @@ namespace bson {
          * Get the Element linked to the given key which is the representation of a value inside the BSON representation of the Document
          *
          * @param key the key of the Element to get
-         * @throw std::out_of_range if the key doesn't exist
+         * @throw BsonException if the key doesn't exist
          * @return the Element of the given key with the value stored in it
          */
         const Document::Element& operator[](const std::string &key) const;
@@ -505,7 +505,7 @@ namespace bson {
          *
          * @return the Elements inside the Document
          */
-        const std::map<const std::string, Document::Element>& getElements(void) const;
+        const std::vector<bson::Document::Element>& getElements(void) const;
 
         /**
          * Clear the Document (empty it)
