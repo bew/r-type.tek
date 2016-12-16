@@ -1,21 +1,64 @@
 /**
- * @file Server.cpp
- * @brief serialize messages server into BSON for R-Type protocol
+ * @file Client.cpp
+ * @brief serialize messages client into BSON for R-Type protocol
  * @author Christopher Paccard
  *
- * Functions to serialize messages server into BSON for the R-Type protocol
+ * Functions to serialize messages client into BSON for the R-Type protocol
  *
  */
 
-#include "Server.hh"
+#include "Client.hh"
 
 namespace protocol {
-    namespace server {
-        bson::Document roomJoin(const std::string& username) {
+    namespace client {
+        bson::Document signUp(const std::string& username, const std::string& password) {
             bson::Document document;
+
             bson::Document message;
 
             message << u8"username" << username;
+            message << u8"password" << password;
+
+            document << u8"header" << protocol::createHeader("SignUp");
+            document << u8"data" << message;
+
+            return document;
+        }
+
+        bson::Document login(const std::string& username, const std::string& password) {
+            bson::Document document;
+
+            bson::Document message;
+
+            message << u8"username" << username;
+            message << u8"password" << password;
+
+            document << u8"header" << protocol::createHeader("Login");
+            document << u8"data" << message;
+
+            return document;
+        }
+
+        bson::Document logout(const std::string& username, const std::string& password) {
+            bson::Document document;
+
+            bson::Document message;
+
+            message << u8"username" << username;
+            message << u8"password" << password;
+
+            document << u8"header" << protocol::createHeader("Logout");
+            document << u8"data" << message;
+
+            return document;
+        }
+
+        bson::Document roomJoin(const std::string& name, const std::string& password) {
+            bson::Document document;
+            bson::Document message;
+
+            message << u8"name" << name;
+            message << u8"password" << password;
 
             document << u8"header" << protocol::createHeader("RoomJoin");
             document << u8"data" << message;
@@ -23,11 +66,9 @@ namespace protocol {
             return document;
         }
 
-        bson::Document roomLeave(const std::string& username) {
+        bson::Document roomLeave(void) {
             bson::Document document;
             bson::Document message;
-
-            message << u8"username" << username;
 
             document << u8"header" << protocol::createHeader("RoomLeave");
             document << u8"data" << message;
@@ -57,11 +98,9 @@ namespace protocol {
             return document;
         }
 
-        bson::Document gameLeave(const std::string& username) {
+        bson::Document gameLeave(void) {
             bson::Document document;
             bson::Document message;
-
-            message << u8"username" << username;
 
             document << u8"header" << protocol::createHeader("GameLeave");
             document << u8"data" << message;
