@@ -475,6 +475,42 @@ namespace bson {
          * @return true if the Documents aren't the same else false
          */
         bool operator!=(const Document &document) const;
+
+        /**
+         * Check if the Document contain the specified key
+         * 
+         * @param key the key to check 
+         * @return true if the Document contain the key else false
+         */
+        bool hasKey(const std::string& key) const;
+        
+        /**
+         * Get the list of keys inside the Document
+         * 
+         * @return a vector of strings which represent the keys 
+         */
+        std::vector<std::string> getKeys(void) const;
+        
+        /**
+         * Get the number of Elements inside the Document
+         * 
+         * @return the number of Elements inside the Document
+         */
+        size_t elementsCount(void) const;
+        
+        /**
+         * Check if the Document is empty
+         * 
+         * @return true if the Document is empty else false
+         */
+        bool isEmpty(void) const;
+
+        /**
+         * Get the Elements inside the Document
+         *
+         * @return the Elements inside the Document
+         */
+        const std::map<const std::string, Document::Element>& getElements(void) const;
     };
 }
 
