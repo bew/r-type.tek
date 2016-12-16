@@ -1,20 +1,20 @@
 /**
  * @file SocketLinuxUDP.cpp
  * @author Tookie
- * @brief UDP socket encapsulation for linux
+ * @brief implementation of UDP socket encapsulation for linux
  */
 
 #include <unistd.h>
 #include <netdb.h>
 #include <cstring>
 #include <iostream>
-#include "../include/SocketLunixUDP.h"
-#include "../include/SocketException.hh"
+#include "SocketLinuxUDP.h"
+#include "SocketException.hh"
 
 namespace network
 {
 
-    SocketLinuxUDP::SocketLinuxUDP(const unsigned short port) : ASocketUDP(port)
+    SocketLinuxUDP::SocketLinuxUDP() : ASocketUDP()
     {
         _socket = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
         if (_socket == -1)
@@ -26,34 +26,40 @@ namespace network
         close();
     }
 
-    void SocketLinuxUDP::bind()
+    void SocketLinuxUDP::bind(const SockAddr &hostInfos)
     {
-        if (::bind(_socket, reinterpret_cast<sockaddr *>(&_from), sizeof(_from)))
+        sockaddr_in addr = hostInfos.getAddr();
+        if (::bind(_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)))
             throw SocketException("could not bind UDP socket, error code: " + std::to_string(errno));
-        _selector.monitor(this, NetworkSelect::READ);
     }
 
-    void SocketLinuxUDP::recv()
+    std::string SocketLinuxUDP::recv(SockAddr& from)
     {
         char buffer[BUFFER_SIZE];
+        sockaddr_in fromStruct;
+
         std::memset(buffer, 0, BUFFER_SIZE);
-        socklen_t fromLen = sizeof(_from);
-        ssize_t ret = ::recvfrom(_socket, buffer, BUFFER_SIZE, 0, reinterpret_cast<sockaddr *>(&_from), &fromLen);
+        socklen_t fromLen = sizeof(fromStruct);
+        std::memset(&fromStruct, 0, fromLen);
+
+        ssize_t ret = ::recvfrom(_socket, buffer, BUFFER_SIZE, 0, reinterpret_cast<sockaddr *>(&fromStruct), &fromLen);
         if (ret < 0)
             throw SocketException("Read from failed with error: " + std::to_string(errno));
 
+        from.setAddr(fromStruct);
         std::string msg(buffer, ret);
-        msg += CR;
-        _readBuffer.fill(msg);
+        return msg;
     }
 
-    void SocketLinuxUDP::send(std::string &msg)
+    size_t SocketLinuxUDP::send(const SockAddr &hostInfos, const std::string &msg)
     {
-        ssize_t ret = sendto(_socket, msg.c_str(), msg.length(), 0, reinterpret_cast<sockaddr *>(&_from),
-                             sizeof(_from));
+        sockaddr_in addr = hostInfos.getAddr();
+
+        ssize_t ret = sendto(_socket, msg.c_str(), msg.length(), 0, reinterpret_cast<sockaddr *>(&addr),
+                             sizeof(addr));
         if (ret < 0)
             throw SocketException("Send to failed with error: " + std::to_string(errno));
-        _writeBuffer.updatePosition(static_cast<size_t>(ret));
+        return ret;
     }
 
     void SocketLinuxUDP::close()

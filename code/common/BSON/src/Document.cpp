@@ -64,6 +64,10 @@ namespace bson {
         floating = this->getValueDouble();
     }
 
+    void Document::Element::operator>>(double &floating) const {
+        floating = this->getValueDouble();
+    }
+
     std::string Document::Element::getValueString() const {
         this->isRightType(bson::STRING);
 
@@ -71,6 +75,10 @@ namespace bson {
     }
 
     void Document::Element::getValue(std::string &string) const {
+        string = this->getValueString();
+    }
+
+    void Document::Element::operator>>(std::string &string) const {
         string = this->getValueString();
     }
 
@@ -84,6 +92,10 @@ namespace bson {
         document = this->getValueDocument();
     }
 
+    void Document::Element::operator>>(Document &document) const {
+        document = this->getValueDocument();
+    }
+
     bool Document::Element::getValueBool() const {
         this->isRightType(bson::BOOL);
 
@@ -94,6 +106,10 @@ namespace bson {
         boolean = this->getValueBool();
     }
 
+    void Document::Element::operator>>(bool &boolean) const {
+        boolean = this->getValueBool();
+    }
+
     std::nullptr_t Document::Element::getValueNullValue() const {
         this->isRightType(bson::NULLVALUE);
 
@@ -101,6 +117,10 @@ namespace bson {
     }
 
     void Document::Element::getValue(std::nullptr_t &ptr) const {
+        ptr = nullptr;
+    }
+
+    void Document::Element::operator>>(std::nullptr_t &ptr) const {
         ptr = nullptr;
     }
 
@@ -122,6 +142,10 @@ namespace bson {
         integer = this->getValueInt32();
     }
 
+    void Document::Element::operator>>(int32_t &integer) const {
+        integer = this->getValueInt32();
+    }
+
     int64_t Document::Element::getValueInt64() const {
         this->isRightType(bson::INT64);
 
@@ -137,6 +161,10 @@ namespace bson {
     }
 
     void Document::Element::getValue(int64_t &integer) const {
+        integer = this->getValueInt64();
+    }
+
+    void Document::Element::operator>>(int64_t &integer) const {
         integer = this->getValueInt64();
     }
 
@@ -452,4 +480,30 @@ namespace bson {
     bool Document::operator!=(const Document &document) const {
         return !this->operator==(document);
     }
+
+    bool Document::hasKey(const std::string &key) const {
+        return _elements.count(key) > 0;
+    }
+
+    std::vector<std::string> Document::getKeys() const {
+        std::vector<std::string> keys;
+        
+        for (const auto& element : _elements)
+            keys.push_back(element.first);
+        
+        return keys;
+    }
+    
+    size_t Document::elementsCount() const {
+        return _elements.size();
+    }
+    
+    bool Document::isEmpty() const {
+        return _elements.size() == 0;
+    }
+
+    const std::map<const std::string, Document::Element>& Document::getElements() const {
+        return _elements;
+    }
+
 }

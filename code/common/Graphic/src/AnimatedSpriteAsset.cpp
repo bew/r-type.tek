@@ -1,3 +1,4 @@
+#include <fstream>
 #include "AnimatedSpriteAsset.hh"
 
 graphic::AnimatedSpriteAsset::AnimatedSpriteAsset(const std::string &path, const std::string &animSpecPath) {
@@ -11,19 +12,19 @@ graphic::AnimatedSpriteAsset::AnimatedSpriteAsset(const std::string &path, const
 				    std::istreambuf_iterator<unsigned char>());
 
   try {
-    const Document document(buffer);
+    const bson::Document document(buffer);
     for (auto animationKey = document.getKeys().begin();
 	 animationKey < document.getKeys().end();
 	 animationKey++) {
       
-      const Document &animationDocument = document[*animationKey].getValueDocument();
+      const bson::Document &animationDocument = document[*animationKey].getValueDocument();
       _animations[*animationKey].frequency = animationDocument["frequency"].getValueDouble();
-      const Document &framesDocument = animationDocument["frames"].getValueDocument();
-      for (auto frameKey = framesDocuemnt.getKeys().begin();
-	   frameKey < frameDocument.getKeys().end();
+      const bson::Document &framesDocument = animationDocument["frames"].getValueDocument();
+      for (auto frameKey = framesDocument.getKeys().begin();
+	   frameKey < framesDocument.getKeys().end();
 	   frameKey++) {
 	
-	const Document &singleFrameDocument = frameDocument[*frameKey].getValueDocument();
+	const bson::Document &singleFrameDocument = framesDocument[*frameKey].getValueDocument();
 	_animations[*animationKey]
 	  .frames.emplace_back(singleFrameDocument["x"].getValueInt32(),
 			       singleFrameDocument["y"].getValueInt32(),
@@ -31,7 +32,7 @@ graphic::AnimatedSpriteAsset::AnimatedSpriteAsset(const std::string &path, const
 			       singleFrameDocument["height"].getValueInt32());
       }
     }
-  } catch (const BSON::BsonException &e) {
+  } catch (const bson::BsonException &e) {
     throw graphic::AssetException(std::string("Unable to load asset '" + animSpecPath +"' : '" + e.what() + "'"));
   }
 }

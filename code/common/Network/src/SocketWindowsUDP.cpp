@@ -1,19 +1,18 @@
 /**
  * @file SocketWindowsUDP.cpp
  * @author Tookie
- * @brief UDP socket encapsulation for windows
+ * @brief implementation of UDP socket encapsulation for windows
  */
 
 #include <cstring>
-#include <stdio.h>
-#include <iostream>
-#include "../include/SocketWindowsUDP.h"
-#include "../include/SocketException.hh"
+#include "SocketWindowsUDP.h"
+#include "SocketException.hh"
+#include "NetworkBuffer.hh"
 
 namespace network
 {
 
-    SocketWindowsUDP::SocketWindowsUDP(unsigned short port) : ASocketUDP(port)
+    SocketWindowsUDP::SocketWindowsUDP() : ASocketUDP()
     {
         WSAData wsd;
         if (WSAStartup(MAKEWORD(2, 2), &wsd) != 0)
@@ -36,23 +35,25 @@ namespace network
         WSACleanup();
     }
 
-    void SocketWindowsUDP::bind()
+    void SocketWindowsUDP::bind(const SockAddr &from)
     {
-        int ret = ::bind(_socket, reinterpret_cast<SOCKADDR *>(&_from), sizeof(_from));
-        if (ret == SOCKET_ERROR)
+        sockaddr_in addr = from.getAddr();
+        if (::bind(_socket, reinterpret_cast<SOCKADDR *>(&addr), sizeof(addr)) == SOCKET_ERROR)
             throw SocketException("bind failed with error: " + std::to_string(WSAGetLastError()));
-        _selector.monitor(this, NetworkSelect::READ);
     }
 
-    void SocketWindowsUDP::recv()
+    std::string SocketWindowsUDP::recv(SockAddr &hostInfos)
     {
         char bufTmp[BUFFER_SIZE];
-        DWORD flag;
+        DWORD flag = 0;
         DWORD numberOfBytesRecv = 0;
         WSAOVERLAPPED recvOverlapped;
 
         WSABUF buffer;
 
+        sockaddr_in from;
+        int fromSize = sizeof(from);
+        std::memset(&from, 0, fromSize);
         std::memset(bufTmp, 0, BUFFER_SIZE);
         buffer.len = BUFFER_SIZE;
         buffer.buf = bufTmp;
@@ -60,46 +61,38 @@ namespace network
         recvOverlapped.hEvent = WSACreateEvent();
         if (recvOverlapped.hEvent == nullptr)
             throw SocketException("WSACreateEvent failed: " + std::to_string(WSAGetLastError()));
-        int fromSize = sizeof(_from);
-        while (buffer.buf[0] == 0)
+        int ret = WSARecvFrom(_socket, &buffer, 1, &numberOfBytesRecv, &flag, reinterpret_cast<sockaddr *>(&from),
+                              &fromSize,
+                              &recvOverlapped,
+                              nullptr);
+        if (((ret == SOCKET_ERROR) && (WSA_IO_PENDING != WSAGetLastError())))
         {
-            flag = 0;
-            int ret = WSARecvFrom(_socket, &buffer, 1, &numberOfBytesRecv, &flag, reinterpret_cast<sockaddr *>(&_from),
-                                  &fromSize,
-                                  &recvOverlapped,
-                                  nullptr);
-            if (((ret == SOCKET_ERROR) && (WSA_IO_PENDING != WSAGetLastError())))
-            {
-                WSACloseEvent(recvOverlapped.hEvent);
-                throw SocketException("recv from failed with error: " + std::to_string(WSAGetLastError()));
-            }
-            DWORD rc = WSAWaitForMultipleEvents(1, &recvOverlapped.hEvent, TRUE, INFINITE, TRUE);
-            if (rc == WSA_WAIT_FAILED)
-            {
-                WSACloseEvent(recvOverlapped.hEvent);
-                throw SocketException(
-                        "Wsa wait for multiple events failed with error: " + std::to_string(WSAGetLastError()));
-            }
-
-            ret = WSAGetOverlappedResult(_socket, &recvOverlapped, &numberOfBytesRecv, FALSE, &flag);
-            if (ret == FALSE)
-            {
-                WSACloseEvent(recvOverlapped.hEvent);
-                throw SocketException(
-                        "Wsa get overlapped result events failed with error: " + std::to_string(WSAGetLastError()));
-            }
-
-            WSAResetEvent(recvOverlapped.hEvent);
+            WSACloseEvent(recvOverlapped.hEvent);
+            throw SocketException("recv from failed with error: " + std::to_string(WSAGetLastError()));
         }
+        DWORD rc = WSAWaitForMultipleEvents(1, &recvOverlapped.hEvent, TRUE, INFINITE, TRUE);
+        if (rc == WSA_WAIT_FAILED)
+        {
+            WSACloseEvent(recvOverlapped.hEvent);
+            throw SocketException(
+                    "Wsa wait for multiple events failed with error: " + std::to_string(WSAGetLastError()));
+        }
+
+        ret = WSAGetOverlappedResult(_socket, &recvOverlapped, &numberOfBytesRecv, FALSE, &flag);
+        if (ret == FALSE)
+        {
+            WSACloseEvent(recvOverlapped.hEvent);
+            throw SocketException(
+                    "Wsa get overlapped result events failed with error: " + std::to_string(WSAGetLastError()));
+        }
+
         WSACloseEvent(recvOverlapped.hEvent);
 
-        std::string msg(buffer.buf, numberOfBytesRecv);
-
-        msg += CR;
-        _readBuffer.fill(msg);
+        hostInfos.setAddr(from);
+        return (std::string(buffer.buf, numberOfBytesRecv));
     }
 
-    void SocketWindowsUDP::send(const std::string &msg)
+    size_t SocketWindowsUDP::send(const SockAddr &hostInfos, const std::string &msg)
     {
         WSABUF buffer;
 
@@ -108,10 +101,11 @@ namespace network
 
         WSAOVERLAPPED sndOverlapped;
         DWORD flag;
-        int fromSize = sizeof(_from);
         DWORD numberOfBytesSnd = 0;
 
         flag = 0;
+
+        int fromSize = sizeof(hostInfos.getAddr());
 
         sndOverlapped.hEvent = WSACreateEvent();
         if (sndOverlapped.hEvent == nullptr)
@@ -119,12 +113,13 @@ namespace network
             throw SocketException("WSACreateEvent failed: " + std::to_string(WSAGetLastError()));
         }
 
+        sockaddr_in addr = hostInfos.getAddr();
         int ret = WSASendTo(_socket,
                             &buffer,
                             1,
                             &numberOfBytesSnd,
                             flag,
-                            reinterpret_cast<SOCKADDR *>(&_from),
+                            reinterpret_cast<SOCKADDR *>(&addr),
                             fromSize,
                             &sndOverlapped,
                             nullptr);
@@ -151,11 +146,9 @@ namespace network
             WSACloseEvent(sndOverlapped.hEvent);
             throw SocketException("WSAgetOverlappedResult failed with error: " + std::to_string(WSAGetLastError()));
         }
-
-        _writeBuffer.updatePosition(numberOfBytesSnd);
-
         WSACloseEvent(sndOverlapped.hEvent);
 
+        return numberOfBytesSnd;
     }
 
     void SocketWindowsUDP::close()

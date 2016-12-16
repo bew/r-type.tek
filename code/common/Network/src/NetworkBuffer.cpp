@@ -5,7 +5,7 @@
  */
 
 #include <iostream>
-#include "../include/NetworkBuffer.hh"
+#include "NetworkBuffer.hh"
 
 namespace network
 {

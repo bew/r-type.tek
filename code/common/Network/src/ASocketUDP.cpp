@@ -1,15 +1,17 @@
 /**
  * @file ASocketUDP.cpp
  * @author Tookie
- * @brief abstraction of UDP socket
+ * @brief implement of UDP socket abstraction
  */
 
-#include "../include/ASocketUDP.h"
+#include <string>
+#include "SocketException.hh"
+#include "ASocketUDP.h"
 
 namespace network
 {
 
-    ASocketUDP::ASocketUDP(unsigned short port) : ASocket(port)
+    ASocketUDP::ASocketUDP() : ASocket()
     {
 
     }

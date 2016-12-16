@@ -20,11 +20,11 @@ namespace network {
     public:
 
         /**
-         * Constructor of SocketWindowsUDP
+         * Default constructor of SocketWindowsUDP
          *
-         * @params port port use to socket connection
+         * @throw SocketException if socket couldn't be created
          */
-        SocketWindowsUDP(unsigned short port);
+        SocketWindowsUDP();
 
         /**
          * Destructor of SocketWindowsUDP, call method close
@@ -36,29 +36,38 @@ namespace network {
          *
          * @throw SocketException if bind fail
          */
-        virtual void bind();
+        virtual void bind(const SockAddr &from);
 
         /**
          * close the socket
          */
         virtual void close();
 
-    private:
         /**
          * read in socket and add read message to the read buffer
          *
-         * @throw SocketException if connect fail
+         * @param contains host ip address and port
+         *
+         * @return string read on the socket
          */
-        virtual void recv();
+        virtual std::string recv(SockAddr& hostInfos);
 
         /**
          * write message in socket and update position of write buffer
          *
+         * @param hostInfos represents the host IP address and port
          * @param msg message that will be sent
          *
-         *  @throw SocketException if send fail
+         * @return number of Bytes sent
+         *
+         * @throw SocketException if send fail or if the host address is unknown
          */
-        virtual void send(const std::string &msg);
+        virtual size_t send(const SockAddr &hostInfos, const std::string &msg);
+
     };
+    /**
+     *  define type SocketUDP as SocketWindwosUDP
+     */
+    typedef SocketWindowsUDP SocketUDP;
 
 }

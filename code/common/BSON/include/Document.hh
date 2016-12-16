@@ -114,6 +114,14 @@ namespace bson {
             void getValue(double &floating) const;
 
             /**
+             * Get the double representation from the value stored in it's BSON representation
+             *
+             * @throw BsonException if the asked type is not the one stored
+             * @param[out] floating the double representation from the value stored in it's BSON representation
+             */
+            void operator>>(double &floating) const;
+
+            /**
              * Get the string representation from the value stored in it's BSON representation
              *
              * @throw BsonException if the asked type is not the one stored
@@ -128,6 +136,14 @@ namespace bson {
              * @param[out] string the string representation from the value stored in it's BSON representation
              */
             void getValue(std::string &string) const;
+
+            /**
+             * Get the string representation from the value stored in it's BSON representation
+             *
+             * @throw BsonException if the asked type is not the one stored
+             * @param[out] string the string representation from the value stored in it's BSON representation
+             */
+            void operator>>(std::string &string) const;
 
             /**
              * Get the Document representation from the value stored in it's BSON representation
@@ -146,6 +162,14 @@ namespace bson {
             void getValue(Document &document) const;
 
             /**
+             * Get the Document representation from the value stored in it's BSON representation
+             *
+             * @throw BsonException if the asked type is not the one stored
+             * @param[out] document the Document representation from the value stored in it's BSON representation
+             */
+            void operator>>(Document &document) const;
+
+            /**
              * Get the bool representation from the value stored in it's BSON representation
              *
              * @throw BsonException if the asked type is not the one stored
@@ -160,6 +184,14 @@ namespace bson {
              * @param[out] boolean the bool representation from the value stored in it's BSON representation
              */
             void getValue(bool &boolean) const;
+
+            /**
+             * Get the bool representation from the value stored in it's BSON representation
+             *
+             * @throw BsonException if the asked type is not the one stored
+             * @param[out] boolean the bool representation from the value stored in it's BSON representation
+             */
+            void operator>>(bool &boolean) const;
 
             /**
              * Get the null value representation from the value stored in it's BSON representation
@@ -178,6 +210,14 @@ namespace bson {
             void getValue(std::nullptr_t &ptr) const;
 
             /**
+             * Get the null value representation from the value stored in it's BSON representation
+             *
+             * @throw BsonException if the asked type is not the one stored
+             * @param[out] ptr the null value representation from the value stored in it's BSON representation
+             */
+            void operator>>(std::nullptr_t &ptr) const;
+
+            /**
              * Get the int32 representation from the value stored in it's BSON representation
              *
              * @throw BsonException if the asked type is not the one stored
@@ -194,6 +234,14 @@ namespace bson {
             void getValue(int32_t &integer) const;
 
             /**
+             * Get the int32 representation from the value stored in it's BSON representation
+             *
+             * @throw BsonException if the asked type is not the one stored
+             * @param[out] integer the int32 representation from the value stored in it's BSON representation
+             */
+            void operator>>(int32_t &integer) const;
+
+            /**
              * Get the int64 representation from the value stored in it's BSON representation
              *
              * @throw BsonException if the asked type is not the one stored
@@ -208,6 +256,14 @@ namespace bson {
              * @param[out] integer the int64 representation from the value stored in it's BSON representation
              */
             void getValue(int64_t &integer) const;
+
+            /**
+             * Get the int64 representation from the value stored in it's BSON representation
+             *
+             * @throw BsonException if the asked type is not the one stored
+             * @param[out] integer the int64 representation from the value stored in it's BSON representation
+             */
+            void operator>>(int64_t &integer) const;
 
             /**
              * Compare if two Elements are the same
@@ -419,6 +475,42 @@ namespace bson {
          * @return true if the Documents aren't the same else false
          */
         bool operator!=(const Document &document) const;
+
+        /**
+         * Check if the Document contain the specified key
+         * 
+         * @param key the key to check 
+         * @return true if the Document contain the key else false
+         */
+        bool hasKey(const std::string& key) const;
+        
+        /**
+         * Get the list of keys inside the Document
+         * 
+         * @return a vector of strings which represent the keys 
+         */
+        std::vector<std::string> getKeys(void) const;
+        
+        /**
+         * Get the number of Elements inside the Document
+         * 
+         * @return the number of Elements inside the Document
+         */
+        size_t elementsCount(void) const;
+        
+        /**
+         * Check if the Document is empty
+         * 
+         * @return true if the Document is empty else false
+         */
+        bool isEmpty(void) const;
+
+        /**
+         * Get the Elements inside the Document
+         *
+         * @return the Elements inside the Document
+         */
+        const std::map<const std::string, Document::Element>& getElements(void) const;
     };
 }
 
