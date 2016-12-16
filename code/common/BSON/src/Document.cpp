@@ -42,6 +42,10 @@ namespace bson {
         return _valueType;
     }
 
+    const std::vector<unsigned char>& Document::Element::getValueBuffer() const {
+        return _value;
+    }
+
     const std::string& Document::Element::getKey() const {
         return _key;
     }
@@ -190,7 +194,6 @@ namespace bson {
         if (this != &document) {
             _nextInputType = document._nextInputType;
             _lastKey = document._lastKey;
-            _buffer = document._buffer;
             _elements = document._elements;
         }
         return *this;
@@ -216,26 +219,22 @@ namespace bson {
 
         size_t bufferIndex = 4;
         while (bufferIndex < (buffer.size() - 1)) {
-            _buffer.push_back(buffer.at(bufferIndex));
             bson::type valueType = codesTypes.at(buffer.at(bufferIndex));
             ++bufferIndex;
 
             std::string elementKey;
             while (buffer.at(bufferIndex)) {
-                _buffer.push_back(buffer.at(bufferIndex));
                 elementKey += buffer.at(bufferIndex);
                 ++bufferIndex;
             }
             _lastKey = elementKey;
 
-            _buffer.push_back(buffer.at(bufferIndex));
             ++bufferIndex;
 
             std::vector<unsigned char> elementBuffer;
             if (valueType == bson::STRING || valueType == bson::DOCUMENT) {
                 size_t j = 0;
                 for (size_t limitIndex = bufferIndex + 4; bufferIndex < limitIndex; ++bufferIndex) {
-                    _buffer.push_back(buffer.at(bufferIndex));
                     elementBuffer.push_back(buffer.at(bufferIndex));
                     size.bytes[j] = buffer.at(bufferIndex);
                     ++j;
@@ -244,16 +243,12 @@ namespace bson {
                     size.integer = swap_endian<int32_t >(size.integer);
                 if (valueType == bson::DOCUMENT)
                     size.integer -= 4;
-                for (size_t limitIndex = bufferIndex + (size.integer); bufferIndex < limitIndex; ++bufferIndex) {
-                    _buffer.push_back(buffer.at(bufferIndex));
+                for (size_t limitIndex = bufferIndex + (size.integer); bufferIndex < limitIndex; ++bufferIndex)
                     elementBuffer.push_back(buffer.at(bufferIndex));
-                }
             }
             else {
-                for (size_t j = bufferIndex + typesSizes.at(valueType); bufferIndex < j; ++bufferIndex) {
-                    _buffer.push_back(buffer.at(bufferIndex));
+                for (size_t j = bufferIndex + typesSizes.at(valueType); bufferIndex < j; ++bufferIndex)
                     elementBuffer.push_back(buffer.at(bufferIndex));
-                }
             }
             this->insertElement(valueType, elementBuffer);
         }
@@ -267,13 +262,6 @@ namespace bson {
             throw BsonException("Next input into the document should be a key as a string.");
     }
 
-    void Document::writeTypeCodeAndKey(unsigned char typeCode) {
-        _buffer.push_back(typeCode);
-        for (int i = 0; _lastKey[i]; ++i)
-            _buffer.push_back((unsigned char &&) static_cast<unsigned char>(_lastKey[i]));
-        _buffer.push_back('\x00');
-    }
-
     void Document::insertElement(bson::type valueType, const std::vector<unsigned char> &elementBuffer) {
         Document::Element element(valueType, _lastKey, elementBuffer);
         _elements.insert(std::pair<const std::string, Element>(_lastKey, element));
@@ -284,18 +272,27 @@ namespace bson {
             throw BsonException("Incomplete document");
 
         std::vector<unsigned char> entireBuffer;
+        std::vector<unsigned char> elementsBuffer;
+
+        for (const auto& element : _elements) {
+            elementsBuffer.push_back(typesCodes.at(element.second.getValueType()));
+            std::string key = element.second.getKey();
+            for (int i = 0; key[i]; ++i)
+                elementsBuffer.push_back(static_cast<unsigned char>(key[i]));
+            elementsBuffer.push_back('\x00');
+            elementsBuffer.insert(elementsBuffer.end(), element.second.getValueBuffer().begin(), element.second.getValueBuffer().end());
+        }
 
         union {
             int32_t integer;
             unsigned char bytes[4];
         } cutInteger;
-        int32_t size = static_cast<int32_t >(_buffer.size() + 5);
+        int32_t size = static_cast<int32_t >(elementsBuffer.size() + 5);
         cutInteger.integer = (IS_BIG_ENDIAN ? swap_endian<int32_t>(size) : size);
 
         for (const auto &byte : cutInteger.bytes)
             entireBuffer.push_back(byte);
-        for (const auto &byte : _buffer)
-            entireBuffer.push_back(byte);
+        entireBuffer.insert(entireBuffer.end(), elementsBuffer.begin(), elementsBuffer.end());
         entireBuffer.push_back('\x00');
 
         return entireBuffer;
@@ -324,12 +321,9 @@ namespace bson {
         cutFloating.floating = (IS_BIG_ENDIAN ? swap_endian<double>(floating) : floating);
         bson::type valueType = bson::DOUBLE;
 
-        this->writeTypeCodeAndKey(typesCodes.at(valueType));
         std::vector<unsigned char> elementBuffer;
-        for (const auto &byte : cutFloating.bytes) {
-            _buffer.push_back(byte);
+        for (const auto &byte : cutFloating.bytes)
             elementBuffer.push_back(byte);
-        }
 
         this->insertElement(valueType, elementBuffer);
 
@@ -350,17 +344,11 @@ namespace bson {
             cutInteger.integer = (IS_BIG_ENDIAN ? swap_endian<int32_t>(size) : size);
             bson::type valueType = bson::STRING;
 
-            this->writeTypeCodeAndKey(typesCodes.at(valueType));
             std::vector<unsigned char> elementBuffer;
-            for (const auto &byte : cutInteger.bytes) {
-                _buffer.push_back(byte);
+            for (const auto &byte : cutInteger.bytes)
                 elementBuffer.push_back(byte);
-            }
-            for (const auto &character : string) {
-                _buffer.push_back(static_cast<unsigned char>(character));
+            for (const auto &character : string)
                 elementBuffer.push_back(static_cast<unsigned char>(character));
-            }
-            _buffer.push_back('\x00');
             elementBuffer.push_back('\x00');
 
             this->insertElement(valueType, elementBuffer);
@@ -378,12 +366,9 @@ namespace bson {
 
         bson::type valueType = bson::DOCUMENT;
 
-        this->writeTypeCodeAndKey(typesCodes.at(valueType));
         std::vector<unsigned char> elementBuffer;
-        for (const auto &byte : buffer) {
-            _buffer.push_back(byte);
+        for (const auto &byte : buffer)
             elementBuffer.push_back(byte);
-        }
 
         this->insertElement(valueType, elementBuffer);
 
@@ -396,9 +381,7 @@ namespace bson {
 
         bson::type valueType = bson::BOOL;
 
-        this->writeTypeCodeAndKey(typesCodes.at(valueType));
         std::vector<unsigned char> elementBuffer;
-        _buffer.push_back(static_cast<unsigned char>(boolean));
         elementBuffer.push_back(static_cast<unsigned char>(boolean));
 
         this->insertElement(valueType, elementBuffer);
@@ -411,8 +394,6 @@ namespace bson {
         this->isInputValue();
 
         bson::type valueType = bson::NULLVALUE;
-
-        this->writeTypeCodeAndKey(typesCodes.at(valueType));
 
         this->insertElement(valueType, std::vector<unsigned char>());
 
@@ -430,12 +411,9 @@ namespace bson {
         cutInteger.integer = (IS_BIG_ENDIAN ? swap_endian<int32_t>(integer) : integer);
         bson::type valueType = bson::INT32;
 
-        this->writeTypeCodeAndKey(typesCodes.at(valueType));
         std::vector<unsigned char> elementBuffer;
-        for (const auto &byte : cutInteger.bytes) {
-            _buffer.push_back(byte);
+        for (const auto &byte : cutInteger.bytes)
             elementBuffer.push_back(byte);
-        }
 
         this->insertElement(valueType, elementBuffer);
 
@@ -453,12 +431,9 @@ namespace bson {
         cutInteger.integer = (IS_BIG_ENDIAN ? swap_endian<int64_t>(integer) : integer);
         bson::type valueType = bson::INT64;
 
-        this->writeTypeCodeAndKey(typesCodes.at(valueType));
         std::vector<unsigned char> elementBuffer;
-        for (const auto &byte : cutInteger.bytes) {
-            _buffer.push_back(byte);
+        for (const auto &byte : cutInteger.bytes)
             elementBuffer.push_back(byte);
-        }
 
         this->insertElement(valueType, elementBuffer);
 
@@ -508,7 +483,6 @@ namespace bson {
 
     void Document::clear() {
         _nextInputType = Document::KEY;
-        _buffer.clear();
         _elements.clear();
     }
 

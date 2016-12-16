@@ -91,6 +91,13 @@ namespace bson {
             bson::type getValueType(void) const;
 
             /**
+             * Get the value buffer
+             *
+             * @return the value buffer
+             */
+            const std::vector<unsigned char>& getValueBuffer(void) const;
+
+            /**
              * Get the key of the value stored inside the Element
              *
              * @return the key of the value stored inside the Element
@@ -302,11 +309,6 @@ namespace bson {
         std::string _lastKey;
 
         /**
-         * Store the BSON representation of the Document composed of all the given inputs
-         */
-        std::vector<unsigned char> _buffer;
-
-        /**
          * Store the BSON representation of the Document composed of all the given inputs as Element usable
          */
         std::map<const std::string, Document::Element> _elements;
@@ -352,13 +354,6 @@ namespace bson {
          * @throw BsonException if the waiting input is not a value
          */
         void isInputValue(void) const;
-
-        /**
-         * Write the given typeCode followed by the last key received into the Document
-         *
-         * @param typeCode the typeCode to write into the Document
-         */
-        void writeTypeCodeAndKey(unsigned char typeCode);
 
         /**
          * Insert an element inside the document with the given information
