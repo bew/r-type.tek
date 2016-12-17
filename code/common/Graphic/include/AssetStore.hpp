@@ -413,7 +413,7 @@ namespace graphic {
 			std::forward_as_tuple(getRessourceName((*i).first)),
 			std::forward_as_tuple(_root + "/" + directory + "/" + this->_locale + "/" + (*i).first,
 					      _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
-					      this->_locale + "/" + (*i).first +  graphic::AssetStore::ANIMATED_EXTENSION
+					      this->_locale + "/" + getRessourceName((*i).first) +  graphic::AssetStore::ANIMATED_EXTENSION
 					      )
 			);
 	else
@@ -421,7 +421,7 @@ namespace graphic {
 			std::forward_as_tuple(getRessourceName((*i).first)),
 			std::forward_as_tuple(_root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + (*i).first,
 					      _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
-					      graphic::AssetStore::DEFAULT_LOCALE + "/" + (*i).first +  graphic::AssetStore::ANIMATED_EXTENSION
+					      graphic::AssetStore::DEFAULT_LOCALE + "/" + getRessourceName((*i).first) +  graphic::AssetStore::ANIMATED_EXTENSION
 					      )
 			);
       }

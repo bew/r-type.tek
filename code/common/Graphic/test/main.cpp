@@ -514,7 +514,7 @@ TEST(Sprite, FreeFallback) {
 TEST(AnimatedSprite, LoadExistingDefault) {
   graphic::AssetStore store("asset");
 
-  store.loadAnimatedSprite("test");
+  ASSERT_NO_THROW(store.loadAnimatedSprite("test"));
 }
 
 TEST(AnimatedSprite, GetExistingDefault) {
