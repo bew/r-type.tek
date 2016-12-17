@@ -15,20 +15,18 @@
  * Check answer ok (200)
  */
 TEST(Answers, Ok) {
-    std::string id("aComputer01");
     std::srand(std::time(0));
     int64_t timestamp = std::rand();
     bson::Document dataAnswer;
-    dataAnswer << u8"login" << id;
+    dataAnswer << u8"login" << std::string("toto42sh");
 
-    bson::Document answerOk = protocol::answers::ok(id, timestamp, dataAnswer);
+    bson::Document answerOk = protocol::answers::ok(timestamp, dataAnswer);
 
     bson::Document header = answerOk["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerOk["data"].getValueDocument();
@@ -42,18 +40,16 @@ TEST(Answers, Ok) {
  * Check answer bad request (400)
  */
 TEST(Answers, BadRequest) {
-    std::string id("aComputer01");
     std::srand(std::time(0));
     int64_t timestamp = std::rand();
 
-    bson::Document answerBadRequest = protocol::answers::badRequest(id, timestamp);
+    bson::Document answerBadRequest = protocol::answers::badRequest(timestamp);
 
     bson::Document header = answerBadRequest["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerBadRequest["data"].getValueDocument();
@@ -66,18 +62,16 @@ TEST(Answers, BadRequest) {
  * Check answer unauthorized (401)
  */
 TEST(Answers, Unauthorized) {
-    std::string id("aComputer01");
     std::srand(std::time(0));
     int64_t timestamp = std::rand();
 
-    bson::Document answerUnauthorized = protocol::answers::unauthorized(id, timestamp);
+    bson::Document answerUnauthorized = protocol::answers::unauthorized(timestamp);
 
     bson::Document header = answerUnauthorized["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerUnauthorized["data"].getValueDocument();
@@ -90,18 +84,16 @@ TEST(Answers, Unauthorized) {
  * Check answer forbidden (403)
  */
 TEST(Answers, Forbidden) {
-    std::string id("aComputer01");
     std::srand(std::time(0));
     int64_t timestamp = std::rand();
 
-    bson::Document answerForbidden = protocol::answers::forbidden(id, timestamp);
+    bson::Document answerForbidden = protocol::answers::forbidden(timestamp);
 
     bson::Document header = answerForbidden["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerForbidden["data"].getValueDocument();
@@ -114,18 +106,16 @@ TEST(Answers, Forbidden) {
  * Check answer not found (404)
  */
 TEST(Answers, NotFound) {
-    std::string id("aComputer01");
     std::srand(std::time(0));
     int64_t timestamp = std::rand();
 
-    bson::Document answerNotFound = protocol::answers::notFound(id, timestamp);
+    bson::Document answerNotFound = protocol::answers::notFound(timestamp);
 
     bson::Document header = answerNotFound["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerNotFound["data"].getValueDocument();
@@ -138,18 +128,16 @@ TEST(Answers, NotFound) {
  * Check answer too many requests (429)
  */
 TEST(Answers, TooManyRequests) {
-    std::string id("aComputer01");
     std::srand(std::time(0));
     int64_t timestamp = std::rand();
 
-    bson::Document answerTooManyRequests = protocol::answers::tooManyRequests(id, timestamp);
+    bson::Document answerTooManyRequests = protocol::answers::tooManyRequests(timestamp);
 
     bson::Document header = answerTooManyRequests["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerTooManyRequests["data"].getValueDocument();
@@ -162,18 +150,16 @@ TEST(Answers, TooManyRequests) {
  * Check answer internal server error (500)
  */
 TEST(Answers, InternalServerError) {
-    std::string id("aComputer01");
     std::srand(std::time(0));
     int64_t timestamp = std::rand();
 
-    bson::Document answerInternalServerError = protocol::answers::internalServerError(id, timestamp);
+    bson::Document answerInternalServerError = protocol::answers::internalServerError(timestamp);
 
     bson::Document header = answerInternalServerError["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerInternalServerError["data"].getValueDocument();
@@ -186,18 +172,16 @@ TEST(Answers, InternalServerError) {
  * Check answer not implemented (501)
  */
 TEST(Answers, NotImplemented) {
-    std::string id("aComputer01");
     std::srand(std::time(0));
     int64_t timestamp = std::rand();
 
-    bson::Document answerNotImplemented = protocol::answers::notImplemented(id, timestamp);
+    bson::Document answerNotImplemented = protocol::answers::notImplemented(timestamp);
 
     bson::Document header = answerNotImplemented["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerNotImplemented["data"].getValueDocument();
@@ -210,18 +194,16 @@ TEST(Answers, NotImplemented) {
  * Check answer service unavailable (503)
  */
 TEST(Answers, ServiceUnavailable) {
-    std::string id("aComputer01");
     std::srand(std::time(0));
     int64_t timestamp = std::rand();
 
-    bson::Document answerServiceUnavailable = protocol::answers::serviceUnavailable(id, timestamp);
+    bson::Document answerServiceUnavailable = protocol::answers::serviceUnavailable(timestamp);
 
     bson::Document header = answerServiceUnavailable["header"].getValueDocument();
-    EXPECT_EQ(header["id"].getValueString(), id);
-    EXPECT_EQ(header["magic"].getValueInt32(), MAGIC);
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "Answer");
-    EXPECT_EQ(header["version"].getValueString(), VERSION);
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
 
     bson::Document data = answerServiceUnavailable["data"].getValueDocument();

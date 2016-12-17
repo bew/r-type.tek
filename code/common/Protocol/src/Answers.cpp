@@ -11,7 +11,7 @@
 
 namespace protocol {
     namespace answers {
-        bson::Document ok(const std::string& id, int64_t timestamp, const bson::Document& data, const std::string& message) {
+        bson::Document ok(int64_t timestamp, const bson::Document& data, const std::string& message) {
             bson::Document document;
             bson::Document answer;
 
@@ -20,13 +20,13 @@ namespace protocol {
             answer << u8"timestamp" << timestamp;
             answer << u8"data" << data;
 
-            document << u8"header" << protocol::createHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader("Answer");
             document << u8"data" << answer;
 
             return document;
         }
 
-        bson::Document badRequest(const std::string& id, int64_t timestamp, const std::string& message) {
+        bson::Document badRequest(int64_t timestamp, const std::string& message) {
             bson::Document document;
             bson::Document answer;
 
@@ -34,13 +34,13 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::createHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader("Answer");
             document << u8"data" << answer;
 
             return document;
         }
 
-        bson::Document unauthorized(const std::string& id, int64_t timestamp, const std::string& message) {
+        bson::Document unauthorized(int64_t timestamp, const std::string& message) {
             bson::Document document;
             bson::Document answer;
 
@@ -48,13 +48,13 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::createHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader("Answer");
             document << u8"data" << answer;
 
             return document;
         }
 
-        bson::Document forbidden(const std::string& id, int64_t timestamp, const std::string& message) {
+        bson::Document forbidden(int64_t timestamp, const std::string& message) {
             bson::Document document;
             bson::Document answer;
 
@@ -62,13 +62,13 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::createHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader("Answer");
             document << u8"data" << answer;
 
             return document;
         }
 
-        bson::Document notFound(const std::string& id, int64_t timestamp, const std::string& message) {
+        bson::Document notFound(int64_t timestamp, const std::string& message) {
             bson::Document document;
             bson::Document answer;
 
@@ -76,13 +76,13 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::createHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader("Answer");
             document << u8"data" << answer;
 
             return document;
         }
 
-        bson::Document tooManyRequests(const std::string& id, int64_t timestamp, const std::string& message) {
+        bson::Document tooManyRequests(int64_t timestamp, const std::string& message) {
             bson::Document document;
             bson::Document answer;
 
@@ -90,13 +90,13 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::createHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader("Answer");
             document << u8"data" << answer;
 
             return document;
         }
 
-        bson::Document internalServerError(const std::string& id, int64_t timestamp, const std::string& message) {
+        bson::Document internalServerError(int64_t timestamp, const std::string& message) {
             bson::Document document;
             bson::Document answer;
 
@@ -104,13 +104,13 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::createHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader("Answer");
             document << u8"data" << answer;
 
             return document;
         }
 
-        bson::Document notImplemented(const std::string& id, int64_t timestamp, const std::string& message) {
+        bson::Document notImplemented(int64_t timestamp, const std::string& message) {
             bson::Document document;
             bson::Document answer;
 
@@ -118,13 +118,13 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::createHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader("Answer");
             document << u8"data" << answer;
 
             return document;
         }
 
-        bson::Document serviceUnavailable(const std::string& id, int64_t timestamp, const std::string& message) {
+        bson::Document serviceUnavailable(int64_t timestamp, const std::string& message) {
             bson::Document document;
             bson::Document answer;
 
@@ -132,7 +132,7 @@ namespace protocol {
             answer << u8"message" << message;
             answer << u8"timestamp" << timestamp;
 
-            document << u8"header" << protocol::createHeader(id, "Answer");
+            document << u8"header" << protocol::createHeader("Answer");
             document << u8"data" << answer;
 
             return document;
