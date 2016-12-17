@@ -264,7 +264,7 @@ namespace bson {
 
     void Document::insertElement(bson::type valueType, const std::vector<unsigned char> &elementBuffer) {
         Document::Element element(valueType, _lastKey, elementBuffer);
-        _elements.insert(std::pair<const std::string, Element>(_lastKey, element));
+        _elements.push_back(element);
     }
 
     std::vector<unsigned char> Document::getBuffer() const {
@@ -275,12 +275,12 @@ namespace bson {
         std::vector<unsigned char> elementsBuffer;
 
         for (const auto& element : _elements) {
-            elementsBuffer.push_back(typesCodes.at(element.second.getValueType()));
-            std::string key = element.second.getKey();
+            elementsBuffer.push_back(typesCodes.at(element.getValueType()));
+            std::string key = element.getKey();
             for (int i = 0; key[i]; ++i)
                 elementsBuffer.push_back(static_cast<unsigned char>(key[i]));
             elementsBuffer.push_back('\x00');
-            elementsBuffer.insert(elementsBuffer.end(), element.second.getValueBuffer().begin(), element.second.getValueBuffer().end());
+            elementsBuffer.insert(elementsBuffer.end(), element.getValueBuffer().begin(), element.getValueBuffer().end());
         }
 
         union {
@@ -442,7 +442,11 @@ namespace bson {
     }
 
     const Document::Element& Document::operator[](const std::string &key) const {
-        return _elements.at(key);
+        for (const auto &element : _elements) {
+            if (element.getKey() == key)
+                return element;
+        }
+        throw BsonException("No such key inside the Document");
     }
 
     bool Document::operator==(const Document &document) const {
@@ -457,14 +461,18 @@ namespace bson {
     }
 
     bool Document::hasKey(const std::string &key) const {
-        return _elements.count(key) > 0;
+        for (const auto &element : _elements) {
+            if (element.getKey() == key)
+                return true;
+        }
+        return false;
     }
 
     std::vector<std::string> Document::getKeys() const {
         std::vector<std::string> keys;
         
         for (const auto& element : _elements)
-            keys.push_back(element.first);
+            keys.push_back(element.getKey());
         
         return keys;
     }
@@ -477,7 +485,7 @@ namespace bson {
         return _elements.size() == 0;
     }
 
-    const std::map<const std::string, Document::Element>& Document::getElements() const {
+    const std::vector<bson::Document::Element>& Document::getElements() const {
         return _elements;
     }
 
