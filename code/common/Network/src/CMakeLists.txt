@@ -1,4 +1,4 @@
-set(LIB_SOURCE ASocket.cpp NetworkBuffer.cpp NetworkSelect.cpp SocketException.cpp ASocketTCP.cpp ASocketUDP.cpp)
+set(LIB_SOURCE ASocket.cpp NetworkBuffer.cpp NetworkSelect.cpp SocketException.cpp ASocketTCP.cpp ASocketUDP.cpp SockAddr.cpp ClientTCP.cpp ServerTCP.cpp ClientUDP.cpp ServerUDP.cpp AClient.cpp AServer.cpp)
 set(LIB_DEPEDENCIES)
 
 if(UNIX)
@@ -22,3 +22,4 @@ install(TARGETS ${LIB_TEST_NAME} DESTINATION bin/test/lib)
 target_include_directories(${LIB_NAME} PUBLIC ${LIB_INCLUDE})
 target_include_directories(${LIB_TEST_NAME} PUBLIC ${LIB_INCLUDE})
 set(RT_COMMON_NAMES ${RT_COMMON_NAMES} ${LIB_NAME} PARENT_SCOPE)
+set(RT_COMMON_TESTS_NAMES ${RT_COMMON_TESTS_NAMES} ${LIB_TEST_NAME} PARENT_SCOPE)
