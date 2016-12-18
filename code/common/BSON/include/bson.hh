@@ -11,6 +11,7 @@
 #define BSON_HH
 
 #include <map>
+#include <stdexcept>
 
 /**
  * Namespace that contain all the BSON stuff
