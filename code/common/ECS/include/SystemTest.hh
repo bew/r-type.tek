@@ -36,7 +36,6 @@ namespace ECS {
 	    /**
 	     * update function. Will increment all ComponentTest count by one.
 	     * @param data The persistent information of the ECS.
-	     * @param pools The pools for getting/freeing objects.
 	     */
 	    void	update(WorldData &data) override;
 	};
