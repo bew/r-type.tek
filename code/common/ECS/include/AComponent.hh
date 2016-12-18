@@ -20,29 +20,17 @@ namespace ECS {
      */
     namespace Component {
 
-	/**
-	 * Component types.
-	 */
-	enum ComponentType : unsigned char
-	{
-	    NONE = 0,
-	    TEST,
-	    TYPE,
-	    SPRITE,
-	    LIFE,
-	    MOVEMENT,
-	    SHOOT,
-	    NETWORK,
-	    GRAPHX,
-	};
-
         /**
 	 * Abstract class for components.
 	 */
 	class AComponent
 	{
 	public:
-	    AComponent(ComponentType type);
+	    /**
+	     * Constructor
+	     * @param type The type of the component.
+	     */
+	    AComponent(const std::string &type);
 
 	    /**
 	     * Virtual destructor.
@@ -53,13 +41,13 @@ namespace ECS {
 	     * Getter for the component type.
 	     * @return the component type.
 	     */
-	    ComponentType	getType() const;
+	    const std::string	&getType() const;
 
 	protected:
 	    /**
 	     * Type of the component.
 	     */
-	    const ComponentType	_type;
+	    const std::string	_type;
 	};
 
     }

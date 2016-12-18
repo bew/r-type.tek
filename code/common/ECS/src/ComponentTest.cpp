@@ -14,13 +14,12 @@ namespace ECS {
     namespace Component {
 
 	ComponentTest::ComponentTest()
-	    : AComponent(ComponentType::TEST), _count(0)
-	//   : AComponent(ComponentType::TEST), APoolable(pools), _count(0)
+	    : AComponent(Component::TEST), _count(0)
 	{}
 
 	ComponentTest::~ComponentTest()
 	{}
-	
+
 	void		ComponentTest::increment()
 	{
 	    _count++;
@@ -31,6 +30,5 @@ namespace ECS {
 	{
 	    return _count;
 	}
-
     }
 }

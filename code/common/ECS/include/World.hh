@@ -9,7 +9,6 @@
 
 #include "ISystem.hh"
 #include "Entity.hh"
-#include "WorldPools.hh"
 
 #include <vector>
 
@@ -27,22 +26,12 @@ namespace ECS {
 	/**
 	 * Constructor.
 	 */
-	WorldData(Pools::WorldPools &pools);
+	WorldData();
 	
 	/**
 	 * Destructor.
 	 */
 	~WorldData();
-	
-	/**
-	 * packets read on the network, waiting to be consumed.
-	 */
-	std::vector<std::string>	_packetsRead;
-
-	/**
-	 * packets to write on the network.
-	 */
-	std::vector<std::string>	_packetsToWrite;
 
         /**
 	 * Game entities such as enemy, players, or bullets.
@@ -88,17 +77,18 @@ namespace ECS {
 	 * Add a test entity in the world.
 	 */
 	void	addTestEntity();
-	
+
+	/**
+	 * Add a system in the world.
+	 * @param system The system to be added.
+	 */
+	void	World::addSystem(System::ISystem *system)
+
     private:
 	/**
 	 * Systems.
 	 */
 	std::vector<System::ISystem *>	_systems;
-
-	/**
-	 * Pools of objects used by the ECS.
-	 */
-	Pools::WorldPools		_pools;
 
         /**
 	 * Data of the ecs. The systems will read and update these datas.
