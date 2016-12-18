@@ -2,10 +2,10 @@
 
 graphic::AnimatedSpriteAsset::AnimatedSpriteAsset(const std::string &path, const std::string &animSpecPath) {
   if (!_texture.loadFromFile(path))
-    throw AssetException("Unable to load asset : '" + path + "'");
+    throw AssetException("Unable to load animated sprite asset : '" + path + "'");
   std::ifstream file(animSpecPath, std::ios::binary);
   if (!file.is_open())
-     throw AssetException("Unable to load asset : '" + animSpecPath + "'");
+     throw AssetException("Unable to load animation description asset : '" + animSpecPath + "'");
   file.unsetf(std::ios::skipws);
   std::streampos fileSize;
   file.seekg(0, std::ios::end);

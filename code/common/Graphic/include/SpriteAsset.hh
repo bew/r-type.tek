@@ -18,14 +18,14 @@ namespace graphic {
      * Construct an SpriteAsset
      *
      * @param path: the path of the texturefile to open 
-     * @throw AssetException: if the sprite asset at path cannot be openned, or loaded
+     * @throw AssetException: if the sprite asset at path cannot be opened, or loaded
      */
     SpriteAsset(const std::string &path);
 
     /**
      * Return the wrapped texture
      *
-     * @reetur the texture
+     * @return the texture
      */
     const sf::Texture &getLowLevelTexture(void) const;
     
