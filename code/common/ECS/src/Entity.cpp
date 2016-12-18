@@ -6,7 +6,6 @@
  */
 
 #include "Entity.hh"
-#include "WorldPools.hh"
 
 namespace ECS {
     namespace Entity {
@@ -17,10 +16,10 @@ namespace ECS {
 	Entity::~Entity()
 	{}
 	
-	Component::AComponent	*Entity::getComponent(Component::ComponentType type)
+	Component::AComponent	*Entity::getComponent(const std::string &type)
 	{
 	    Component::AComponent *component;
-	    std::map<Component::ComponentType, Component::AComponent *>::iterator it;
+	    std::map<const std::string, Component::AComponent *>::iterator it;
 
 	    it = _components.find(type);
 	    if (it == _components.end())
@@ -30,14 +29,5 @@ namespace ECS {
 
 	    return component;
 	}
-
-	void	Entity::extractComponents(std::vector<Component::AComponent *> &vector)
-	{
-	    for (auto &kv : _components) {
-		vector.push_back(kv.second);
-	    }
-	    _components.clear();
-	}
-
     }
 }

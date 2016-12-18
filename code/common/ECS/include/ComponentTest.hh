@@ -14,11 +14,13 @@
  * Namespace of ECS.
  */
 namespace ECS {
-
+    
     /**
      * Namespace of components.
      */
     namespace Component {
+
+	static const std::string TEST = "test";
 
 	/**
 	 * Dummy component for testing purpose.
@@ -45,8 +47,7 @@ namespace ECS {
 	     */
 	    unsigned	getCount() const;
 
-	private:
-	    
+	private:	    
 	    /**
 	     * A dummy data for testing purpose.
 	     */

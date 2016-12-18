@@ -45,7 +45,7 @@ namespace ECS {
 	     * @param type The type of component requested.
 	     * @return The component requested, or a nullptr if it doesn't exist.
 	     */
-	    Component::AComponent	*getComponent(Component::ComponentType type);
+	    Component::AComponent	*getComponent(const std::string &type);
 
 	    /**
 	     * add a component.
@@ -53,22 +53,16 @@ namespace ECS {
 	     * @param comp the component.
 	     */
 	    template<typename CompoType>
-	    void	addComponent(Component::ComponentType type, CompoType *comp)
+	    void	addComponent(const std::string &type, CompoType *comp)
 		{
 		    _components[type] = static_cast<Component::AComponent *>(comp);
 		}
-
-	    /**
-	     * Return the vector of components. Only to be used by the worldpool !
-	     * @param vector The vector that will receive every component of the entity.
-	     */
-	    void	extractComponents(std::vector<Component::AComponent *> &vector);
 
 	private:
 	    /**
 	     * Map of components of the entity.
 	     */
-	    std::map<Component::ComponentType, Component::AComponent *>	_components;
+	    std::map<const std::string, Component::AComponent *>	_components;
 	};
 
     }

@@ -6,13 +6,12 @@
  */
 
 #include "World.hh"
-#include "WorldPools.hh"
 #include "SystemTest.hh"
 #include "ComponentTest.hh"
 
 namespace ECS {
 
-    WorldData::WorldData(Pools::WorldPools &pools)
+    WorldData::WorldData()
     	: _packetsRead(), _packetsToWrite(), _gameEntities(), _systemEntity()
     {}
 
@@ -20,7 +19,7 @@ namespace ECS {
     {}
 
     World::World()
-	: _systems(), _pools(), _world(_pools)
+	: _systems(), _world()
     {
     }
 
@@ -37,19 +36,17 @@ namespace ECS {
     
     void	World::addTestEntity()
     {
-	Entity::Entity	*testEntity;
-	Component::ComponentTest *testComponent;
-	
-	_pools >> testEntity;
-	_pools >> testComponent;
-	testEntity->addComponent<Component::ComponentTest>(Component::ComponentType::TEST, testComponent);
+	Entity::Entity	*testEntity = new Entity::Entity();
+	Component::ComponentTest *testComponent = new Component::ComponentTest();
+
+	testEntity->addComponent<Component::ComponentTest>(Component::TEST, testComponent);
 	_world._gameEntities.push_back(testEntity);
     }
 
     void	World::update()
     {
 	for (auto &e : _systems)
-	    e->update(_world, _pools);
+	    e->update(_world);
     }
 
 }

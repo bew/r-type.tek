@@ -6,7 +6,6 @@
  *
  */
 
-#include "WorldPools.hh"
 #include "ISystem.hh"
 
 /**
@@ -39,7 +38,7 @@ namespace ECS {
 	     * @param data The persistent information of the ECS.
 	     * @param pools The pools for getting/freeing objects.
 	     */
-	    void	update(WorldData &data, Pools::WorldPools &pools) override;
+	    void	update(WorldData &data) override;
 	};
     }
 }

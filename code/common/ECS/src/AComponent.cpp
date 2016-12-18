@@ -11,14 +11,14 @@
 namespace ECS {
     namespace Component {
 
-	AComponent::AComponent(ComponentType type)
+	AComponent::AComponent(const std::string &type)
 	    : _type(type)
 	{}
 
 	AComponent::~AComponent()
 	{}
 	
-	ComponentType	AComponent::getType() const
+        const std::string	&AComponent::getType() const
 	{
 	    return _type;
 	}

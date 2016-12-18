@@ -20,12 +20,12 @@ namespace ECS {
 	SystemTest::~SystemTest()
 	{}
 
-	void	SystemTest::update(WorldData &data, Pools::WorldPools &)
+	void	SystemTest::update(WorldData &data)
 	{
 	    for (auto &entity : data._gameEntities)
 	    {
 		Component::ComponentTest *comp = static_cast<Component::ComponentTest *>(
-		    entity->getComponent(Component::ComponentType::TEST));
+		    entity->getComponent(Component::TEST));
 
 		if (comp != nullptr)
 		    comp->increment();
