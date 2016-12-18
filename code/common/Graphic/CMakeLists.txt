@@ -9,6 +9,12 @@ set(LIB_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include ${RT_COMMON_INCLUDES})
 include_directories(${LIB_INCLUDE})
 
 add_subdirectory(src)
+
+#definitely unable to link under msvc, it just don't work at all
+if(UNIX)
 add_subdirectory(test)
+endif()
 
 set(RT_COMMON_NAMES ${RT_COMMON_NAMES} PARENT_SCOPE)
+set(RT_COMMON_TESTS_NAMES ${RT_COMMON_TESTS_NAMES} PARENT_SCOPE)
+
