@@ -42,7 +42,7 @@ namespace graphic {
     ~AssetStore(void);
 
     /**
-     * Exist for factroization. You should not use this. Load a ressource from path, into store
+     * Exist for factorization. You should not use this. Load a ressource from path, into store
      *
      * @tparam RESSOURCE The type of ressource to load
      * @param store The store to load ressource in 
@@ -64,7 +64,7 @@ namespace graphic {
     }
 
     /**
-     * Exist for factroization. You should not use this. Load a ressource from path, into store
+     * Exist for factorization. You should not use this. Load a ressource from path, into store
      *
      * @tparam RESSOURCE The type of ressource to load
      * @param store The store to load ressource in
@@ -241,30 +241,74 @@ namespace graphic {
      */
     static const std::string DEFAULT_LOCALE;
 
+    /**
+     * Directory to search music in
+     */
     static const std::string MUSIC_DIRECTORY;
-    
+
+    /**
+     * Directory to search sound in
+     */ 
     static const std::string SOUND_DIRECTORY;
-    
+
+    /**
+     * Directory to search sprite in
+     */
     static const std::string SPRITE_DIRECTORY;
-    
+
+    /**
+     * Directory to search animation description  in
+     */
     static const std::string ANIMATED_DIRECTORY;
 
+    /**
+     * Directory to search animated sprite in
+     */
     static const std::string ANIMATED_SPRITE_DIRECTORY;
-    
-    static const std::string TEXT_DIRECTORY;
 
+    /**
+     * Directory to search text in
+     */
+    static const std::string TEXT_DIRECTORY;
+    
+    /**
+     * Directory to search font in
+     */
     static const std::string FONT_DIRECTORY;
-    
+
+    /**
+     * Extension for music file
+     */
     static const std::string MUSIC_EXTENSION;
+
     
+    /**
+     * Extension for sound file
+     */
     static const std::string SOUND_EXTENSION;
+
     
+    /**
+     * Extension for sprite file
+     */
     static const std::string SPRITE_EXTENSION;
+
     
+    /**
+     * Extension for animation description file
+     */
     static const std::string ANIMATED_EXTENSION;
+
     
+    /**
+     * Extension for text file
+     */
     static const std::string TEXT_EXTENSION;
+
     
+    /**
+     * Extension for font file
+     */
     static const std::string FONT_EXTENSION;
 
   protected:

@@ -8,6 +8,9 @@
 
 namespace graphic {
 
+  /**
+   * Wrapper for font
+   */
   class FontAsset {
   public:
     /**
@@ -25,6 +28,9 @@ namespace graphic {
      */
     const sf::Font &getLowLevelFont(void) const;
   protected:
+    /**
+     * Underlying font object
+     */
     sf::Font _font;
   };
 }

@@ -13,6 +13,9 @@
 
 namespace graphic {
 
+  /**
+   * Contain all public information about to draw a piece of text
+   */
   class TextStyle {
   public:
     TextStyle(void);
@@ -36,16 +39,48 @@ namespace graphic {
      */
     void setOut(unsigned char r, unsigned char g, unsigned char b, unsigned char a);
 
+    /**
+     * Text thickness
+     */
     float thickness;
+    /**
+     * Text size
+     */
     unsigned int size;
+
+    /**
+     * Color of the text filling
+     */
     sf::Color fill;
+    /**
+     * Color of the text outline
+     */
     sf::Color out;
+
+    /**
+     * Default color for filling
+     */
     static const sf::Color DEFAULT_FILL;
+
+    /**
+     * Default colro fot outline
+     */
     static const sf::Color DEFAULT_OUT;
+
+    /**
+     * Default color for text size
+     */
     static const unsigned int DEFAULT_SIZE;
+
+    /**
+     * Default color for text thickness
+     */
     static const float DEFAULT_THICKNESS;
   };
-  
+
+  /**
+   * Contain a text asset
+   */
   class TextAsset {
   public:
     /**
@@ -69,6 +104,9 @@ namespace graphic {
     const std::string &getText(void) const;
 
   protected:
+    /**
+     * The text itself
+     */
     std::string *_text;
   };
 }

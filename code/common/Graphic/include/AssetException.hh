@@ -5,9 +5,17 @@
 #include <stdexcept>
 
 namespace graphic {
+  /**
+   * Exception throw in case of error loading or using asset 
+   */
   class AssetException : public std::runtime_error {
   public:
-    AssetException(const std::string &);
+    /**
+     * Constructor with a message
+     *
+     * @param e: the error and why it happen
+     */
+    AssetException(const std::string &e);
   };
 }
 

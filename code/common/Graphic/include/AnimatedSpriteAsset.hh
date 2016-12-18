@@ -20,8 +20,17 @@ namespace graphic {
   class AnimatedSpriteAsset {
   public:
 
+    /**
+     * Contain public information about a single animations
+     */
     struct FrameDescriptions {
+      /**
+       * The animation frequency
+       */
       double frequency;
+      /**
+       * The reactangles of each frame if the animation
+       */
       std::vector<sf::Rect<int>> frames;
     };
     

@@ -7,6 +7,10 @@
 #include "AssetException.hh"
 
 namespace graphic {
+
+  /**
+   * Wrapper for music
+   */
   class MusicAsset {
   public:
     /**
@@ -24,6 +28,9 @@ namespace graphic {
      */
     const sf::Music &getLowLevelMusic(void) const;
   protected:
+    /**
+     * Undelying music object
+     */
     sf::Music _music;
   };
 }

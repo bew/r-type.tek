@@ -7,6 +7,10 @@
 #include "AssetException.hh"
 
 namespace graphic {
+
+  /**
+   * Wrapper for sound
+   */
   class SoundAsset {
   public:
     /**
@@ -24,6 +28,9 @@ namespace graphic {
      */
     const sf::SoundBuffer &getLowLevelSound(void) const;
   protected:
+    /**
+     * Underlying sound object
+     */
     sf::SoundBuffer _sound;
   };
 }
