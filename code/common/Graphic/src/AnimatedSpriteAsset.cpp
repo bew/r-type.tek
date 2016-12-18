@@ -1,4 +1,3 @@
-#include <fstream>
 #include "AnimatedSpriteAsset.hh"
 
 graphic::AnimatedSpriteAsset::AnimatedSpriteAsset(const std::string &path, const std::string &animSpecPath) {
@@ -37,7 +36,7 @@ graphic::AnimatedSpriteAsset::AnimatedSpriteAsset(const std::string &path, const
   }
 };
 
-const sf::Font &graphic::AnimatedSpriteAsset::getLowLevelTexture(void) const {
+const sf::Texture &graphic::AnimatedSpriteAsset::getLowLevelTexture(void) const {
   return _texture;
 };
 

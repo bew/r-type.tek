@@ -3,12 +3,13 @@
 
 #include <string>
 #include <vector>
+#include <iterator>
+#include <fstream>
 #include <unordered_map>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
 #include "BSON/Document.hh"
-#include "Window.hh"
 #include "Animation.hh"
 #include "AssetException.hh"
 
@@ -48,7 +49,7 @@ namespace graphic {
      *
      * @return : the wrapped texture
      */
-    const sf::Font &getLowLevelTexture(void) const;
+    const sf::Texture &getLowLevelTexture(void) const;
 
     /**
      * Get the animations specifications

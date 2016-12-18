@@ -8,7 +8,6 @@
 #include <SFML/Graphics/Color.hpp>
 
 #include "AssetException.hh"
-#include "Window.hh"
 #include "FontAsset.hh"
 
 namespace graphic {

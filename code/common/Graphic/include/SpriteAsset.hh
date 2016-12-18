@@ -4,7 +4,6 @@
 #include <string>
 #include "SFML/Graphics/Texture.hpp"
 
-#include "Window.hh"
 #include "AssetException.hh"
 
 namespace graphic {
