@@ -12,7 +12,7 @@
 namespace ECS {
 
     WorldData::WorldData()
-    	: _packetsRead(), _packetsToWrite(), _gameEntities(), _systemEntity()
+    	: _gameEntities(), _systemEntity()
     {}
 
     WorldData::~WorldData()

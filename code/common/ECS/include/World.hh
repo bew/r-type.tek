@@ -32,16 +32,6 @@ namespace ECS {
 	 * Destructor.
 	 */
 	~WorldData();
-	
-	/**
-	 * packets read on the network, waiting to be consumed.
-	 */
-	std::vector<std::string>	_packetsRead;
-
-	/**
-	 * packets to write on the network.
-	 */
-	std::vector<std::string>	_packetsToWrite;
 
         /**
 	 * Game entities such as enemy, players, or bullets.
