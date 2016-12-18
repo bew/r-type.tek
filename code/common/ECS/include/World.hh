@@ -82,7 +82,7 @@ namespace ECS {
 	 * Add a system in the world.
 	 * @param system The system to be added.
 	 */
-	void	World::addSystem(System::ISystem *system)
+	void	addSystem(System::ISystem *system);
 
     private:
 	/**
