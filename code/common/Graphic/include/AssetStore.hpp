@@ -92,7 +92,8 @@ namespace graphic {
     void freeRessource(std::unordered_map<std::string, RESSOURCE> &store, const std::string &path) {
         store.erase(path);
     }
-    
+
+  public:
     /**
      * Load a music with the given path
      *
@@ -100,7 +101,6 @@ namespace graphic {
      */
     void loadMusic(const std::string &path);
 
-  public:
     /**
      * Get the music of the given path which has been previously loaded
      * 
