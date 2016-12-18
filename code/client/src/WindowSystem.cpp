@@ -1,12 +1,16 @@
+#include <iostream>
 #include "WindowSystem.hh"
 
 void WindowSystem::process(Entity &entity) {
+  Component *raw = nullptr;
   try {
-    WindowComponent &wc = dynamic_cast<WindowComponent*>(entity.getComponent("window"));
+    std::cout << "PROCESSING WINDOW" << std::endl; 
+    raw = entity.getComponent("window");
+    WindowComponent &wc = *dynamic_cast<WindowComponent*>(raw);
     if (!wc.window) {
       sf::VideoMode mode(wc.width, wc.height, wc.bpp);
       unsigned int style;
-      if (fullscreen)
+      if (wc.fullscreen)
 	style = sf::Style::Fullscreen;
       else
 	style = sf::Style::Default;
@@ -16,5 +20,6 @@ void WindowSystem::process(Entity &entity) {
       wc.window = new sf::RenderWindow(mode, wc.title, style, ctx);
     }
   } catch(const ECSException &e) {
+    std::cout << "WINDOW COMPONENT NOT FOUND" << std::endl;
   }
 }

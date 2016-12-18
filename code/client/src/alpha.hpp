@@ -1,7 +1,11 @@
 #pragma once
+#include <iostream>
 #include <vector>
 #include <string>
 #include <stdexcept>
+#include "AssetStore.hpp"
+
+// Garbage for testing
 
 typedef std::runtime_error ECSException;
 
@@ -9,6 +13,7 @@ class Component {
   public:
   Component(const std::string &pname) : name(pname) {};
   std::string name;
+  virtual ~Component(void) {};
 };
 
 class Entity {
@@ -33,7 +38,9 @@ public:
   std::vector<System*> _systems;
   void process(std::vector<Entity> &entities) {
     for (auto entity: entities) {
+      std::cout << "FOR ENTITY" << std::endl;
       for (auto system : _systems) {
+	std::cout << "FOR SYSTEM" << std::endl;
 	system->process(entity);
       }
     }

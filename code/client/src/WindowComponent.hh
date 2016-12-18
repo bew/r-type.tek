@@ -1,7 +1,7 @@
 #pragma once
 
-#include <SFML/Window/RenderWindow.hpp>
-#include <SFML/Window/VideoMode.hpp>
+#include "SFML/Graphics/RenderWindow.hpp"
+#include "SFML/Window/VideoMode.hpp"
 
 #include "alpha.hpp"
 

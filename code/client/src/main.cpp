@@ -1,3 +1,4 @@
+#include <iostream>
 #include "WindowSystem.hh"
 
 int main(void) {
@@ -5,11 +6,14 @@ int main(void) {
   Entity world;
   ECS loop;
   std::vector<Entity> container;
-  
-  wolrd._components.push_back(new WindowComponent());
+  graphic::GroupedAssetStore test("asset", "test");
+
+  loop._systems.push_back(new WindowSystem());
+  world._components.push_back(new WindowComponent());
   container.push_back(world);
   while(true) {
-    loop->process(container);
+    std::cout << "TICK" << std::endl;
+    loop.process(container);
   }
   return 0;
 };
