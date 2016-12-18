@@ -293,10 +293,6 @@ namespace graphic {
 
   /**
    * Specialisation for AnimatedSprite
-   *
-   * And also
-   *
-   * HELICOUPTER HELICOUPTER HELICOUPTER
    */
   template<>
   void AssetStore::loadSingleRessource<graphic::AnimatedSpriteAsset>(std::unordered_map<std::string, graphic::AnimatedSpriteAsset> &store,

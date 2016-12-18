@@ -22,7 +22,7 @@ namespace graphic {
 
     struct FrameDescriptions {
       double frequency;
-      std::vector<sf::Rect<int> > frames;
+      std::vector<sf::Rect<int>> frames;
     };
     
     /**
@@ -34,7 +34,19 @@ namespace graphic {
      */
     AnimatedSpriteAsset(const std::string &path, const std::string &animSpecPath);
 
-    //get Frame Return a SPRITE BY COPY with rect done right, depending of Animation and tick
+    /**
+     * Get the wrapped sf::texture
+     *
+     * @return : the wrapped texture
+     */
+    const sf::Font &getLowLevelTexture(void) const;
+
+    /**
+     * Get the animations specifications
+     *
+     * @return : the animations specification
+     */
+    const std::unordered_map<std::string, graphic::AnimatedSpriteAsset::FrameDescriptions> &getAnimations(void) const;
     
   protected:
 

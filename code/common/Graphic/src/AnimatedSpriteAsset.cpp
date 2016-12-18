@@ -35,4 +35,12 @@ graphic::AnimatedSpriteAsset::AnimatedSpriteAsset(const std::string &path, const
   } catch (const bson::BsonException &e) {
     throw graphic::AssetException(std::string("Unable to load asset '" + animSpecPath +"' : '" + e.what() + "'"));
   }
-}
+};
+
+const sf::Font &graphic::AnimatedSpriteAsset::getLowLevelTexture(void) const {
+  return _texture;
+};
+
+const std::unordered_map<std::string, graphic::AnimatedSpriteAsset::FrameDescriptions> &graphic::AnimatedSpriteAsset::getAnimations(void) const {
+  return _animations;
+};
