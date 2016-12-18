@@ -5,7 +5,6 @@ set(LIB_NAME Protocol)
 set(LIB_TEST_NAME ${LIB_NAME}_test)
 set(TEST_EXE ${LIB_TEST_NAME}_exe)
 
-message(WARNING ${RT_COMMON_INCLUDES})
 set(LIB_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include ${RT_COMMON_INCLUDES})
 include_directories(${LIB_INCLUDE})
 		 
