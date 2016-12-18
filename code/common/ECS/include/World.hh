@@ -77,7 +77,13 @@ namespace ECS {
 	 * Add a test entity in the world.
 	 */
 	void	addTestEntity();
-	
+
+	/**
+	 * Add a system in the world.
+	 * @param system The system to be added.
+	 */
+	void	World::addSystem(System::ISystem *system)
+
     private:
 	/**
 	 * Systems.

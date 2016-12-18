@@ -43,6 +43,11 @@ namespace ECS {
 	_world._gameEntities.push_back(testEntity);
     }
 
+    void	World::addSystem(System::ISystem *system)
+    {
+	_systems.push_back(system);
+    }
+
     void	World::update()
     {
 	for (auto &e : _systems)
