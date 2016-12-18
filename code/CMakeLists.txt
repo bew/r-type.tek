@@ -42,4 +42,5 @@ add_subdirectory("generators")
 # Integration tests
 #------------------------------------
 
-add_subdirectory("test")
+#add_subdirectory("test")
+add_subdirectory("tool")
