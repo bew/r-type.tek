@@ -24,7 +24,7 @@ namespace graphic {
   public:
 
     /**
-     * @param root: the roort directory to use
+     * @param root: the root directory to use
      * @param local : string to use for locale dependent asset
      */
     AssetStore(const std::string &root, const std::string &local);
@@ -32,7 +32,7 @@ namespace graphic {
     /**
      * Constructor with default locale
      *
-     * @param root: the roort directory to use
+     * @param root: the root directory to use
      */
     AssetStore(const std::string &root);
 
@@ -42,7 +42,7 @@ namespace graphic {
     ~AssetStore(void);
 
     /**
-     * Exist for factorization. You should not use this. Load a ressource from path, into store
+     * Exist for factorisation. You should not use this. Load a ressource from path, into store
      *
      * @tparam RESSOURCE The type of ressource to load
      * @param store The store to load ressource in 
@@ -64,7 +64,7 @@ namespace graphic {
     }
 
     /**
-     * Exist for factorization. You should not use this. Load a ressource from path, into store
+     * Exist for factorisation. You should not use this. Load a ressource from path, into store
      *
      * @tparam RESSOURCE The type of ressource to load
      * @param store The store to load ressource in
@@ -81,7 +81,7 @@ namespace graphic {
     }
 
     /**
-     * Exist for factroization. You should not use this. Load a ressource from path, into store
+     * Exist for factorisation. You should not use this. Load a ressource from path, into store
      *
      * @tparam RESSOURCE The type of ressource to load
      * @param store The store to load ressource in
