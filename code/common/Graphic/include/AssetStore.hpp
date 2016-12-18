@@ -41,6 +41,7 @@ namespace graphic {
      */
     ~AssetStore(void);
 
+  protected:
     /**
      * Exist for factorisation. You should not use this. Load a ressource from path, into store
      *
@@ -99,6 +100,7 @@ namespace graphic {
      */
     void loadMusic(const std::string &path);
 
+  public:
     /**
      * Get the music of the given path which has been previously loaded
      * 
