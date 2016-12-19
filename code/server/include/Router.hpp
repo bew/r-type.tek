@@ -53,6 +53,16 @@ protected:
    * Store a reference to the packet
    */
   bson::Document const & _packet;
+
+  /**
+   * Store a reference to the packet header
+   */
+  bson::Document const & _header;
+
+  /**
+   * Store a reference to the packet data
+   */
+  bson::Document const & _data;
 };
 
 /**

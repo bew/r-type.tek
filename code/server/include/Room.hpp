@@ -46,6 +46,7 @@ private:
   Room(Room const & other);
   Room & operator=(Room const & other);
 
+public:
   /**
    * Add a given player to the room
    *

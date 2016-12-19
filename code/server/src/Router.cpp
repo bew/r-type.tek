@@ -6,6 +6,29 @@
 
 #include "Router.hpp"
 
+//== Request implementation =================================================
+
+Request::Request(bson::Document const & packet) :
+  _packet(packet),
+  _header(packet["header"].getValueDocument()),
+  _data(packet["data"].getValueDocument())
+{}
+
+Request::~Request()
+{}
+
+bson::Document const & Request::getHeader() const
+{
+  return _header;
+}
+
+bson::Document const & Request::getData() const
+{
+  return _data;
+}
+
+//== Router implementation ==================================================
+
 Router::Router() :
   _handlers(),
   _fallbackHandler()

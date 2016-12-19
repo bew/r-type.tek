@@ -10,6 +10,9 @@ Room::Room(unsigned int nbSlots) :
   _nbSlots(nbSlots)
 {}
 
+Room::~Room()
+{}
+
 bool Room::addPlayer(std::shared_ptr<Player> const & player)
 {
   if (_players.size() >= _nbSlots)
@@ -17,9 +20,4 @@ bool Room::addPlayer(std::shared_ptr<Player> const & player)
 
   _players.push_back(player);
   return true;
-}
-
-void Room::setActivatedPlugins(std::vector<std::string> const & plugins)
-{
-  _activatedPlugins = plugins;
 }
