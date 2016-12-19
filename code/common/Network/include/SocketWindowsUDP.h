@@ -36,7 +36,7 @@ namespace network {
          *
          * @throw SocketException if bind fail
          */
-        virtual void bind(const SockAddr &from);
+        virtual void bind(SockAddr &from);
 
         /**
          * close the socket

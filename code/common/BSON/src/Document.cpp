@@ -103,7 +103,7 @@ namespace bson {
     bool Document::Element::getValueBool() const {
         this->isRightType(bson::BOOL);
 
-        return _value.at(0);
+        return _value.at(0) == 1;
     }
 
     void Document::Element::getValue(bool &boolean) const {

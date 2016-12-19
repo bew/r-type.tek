@@ -40,7 +40,7 @@ namespace network
         WSACleanup();
     }
 
-    void SocketWindowsTCP::bind(const SockAddr& hostInfos)
+    void SocketWindowsTCP::bind(SockAddr& hostInfos)
     {
         sockaddr_in addr = hostInfos.getAddr();
         if (::bind(_socket, reinterpret_cast<SOCKADDR *>(&addr), sizeof(addr)) == SOCKET_ERROR)
@@ -64,7 +64,7 @@ namespace network
         return newConnection;
     }
 
-    void SocketWindowsTCP::connect(const SockAddr& hostInfos)
+    void SocketWindowsTCP::connect(SockAddr& hostInfos)
     {
         sockaddr_in from = hostInfos.getAddr();
 
@@ -83,15 +83,15 @@ namespace network
 
     std::string SocketWindowsTCP::recv()
     {
-        char bufTmp[BUFFER_SIZE];
+        char bufTmp[network::BUFFER_SIZE];
         DWORD flag;
         DWORD numberOfBytesRecv = 0;
         WSAOVERLAPPED recvOverlapped;
 
         WSABUF buffer;
 
-        std::memset(bufTmp, 0, BUFFER_SIZE);
-        buffer.len = BUFFER_SIZE;
+        std::memset(bufTmp, 0, network::BUFFER_SIZE);
+        buffer.len = network::BUFFER_SIZE;
         buffer.buf = bufTmp;
         recvOverlapped.hEvent = WSACreateEvent();
         if (recvOverlapped.hEvent == nullptr)

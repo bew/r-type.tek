@@ -29,5 +29,11 @@ namespace ECS {
 
 	    return component;
 	}
+
+      void  Entity::addComponent(ECS::Component::AComponent *comp)
+      {
+	_components[comp->getType()] = comp;
+      }
+
     }
 }

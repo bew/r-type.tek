@@ -38,7 +38,7 @@ namespace network
          *
          * @throw SocketException if bind fail
          */
-        virtual void bind(const SockAddr &from);
+        virtual void bind(SockAddr &from);
 
         /**
          * read in socket and add read message to the read buffer

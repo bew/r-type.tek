@@ -97,8 +97,8 @@ public:
         _client.connect(_serverInfos);
 
         std::string login("login");
-        login += CR;
-        login += LF;
+        login += network::CR;
+        login += network::LF;
 
         _client.addMessage(login);
 
@@ -133,8 +133,8 @@ public:
     {
 
         std::string login("login");
-        login += CR;
-        login += LF;
+        login += network::CR;
+        login += network::LF;
 
         _client.addMessage(login);
 
@@ -157,7 +157,7 @@ TEST(Network, SingleClientUdp)
 
     try
     {
-        std::srand(std::time(0)); // use current time as seed for random generator
+        std::srand(static_cast<unsigned int>(std::time(0))); // use current time as seed for random generator
         unsigned short random_variable = std::rand() % 65000 + 2500;
 
         network::SockAddr clienInfos(random_variable);
@@ -181,8 +181,8 @@ TEST(Network, SingleClientUdp)
         ASSERT_STREQ("login", login.c_str());
 
         std::string ok("OK");
-        ok += CR;
-        ok += LF;
+        ok += network::CR;
+        ok += network::LF;
 
         server.addMessage(server.getConnections().at(0), ok);
         server.update();
@@ -200,7 +200,7 @@ TEST(Network, TwoClientUdp)
 {
     try
     {
-        std::srand(std::time(0)); // use current time as seed for random generator
+        std::srand(static_cast<unsigned int>(std::time(0))); // use current time as seed for random generator
         unsigned short random_variable = std::rand() % 65000 + 2500;
 
         network::SockAddr clienInfos(random_variable);
@@ -227,8 +227,8 @@ TEST(Network, TwoClientUdp)
         ASSERT_STREQ("login", login.c_str());
 
         std::string ok("OK");
-        ok += CR;
-        ok += LF;
+        ok += network::CR;
+        ok += network::LF;
 
         server.addMessage(server.getConnections().at(0), ok);
         server.update();
@@ -246,8 +246,8 @@ TEST(Network, TwoClientUdp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += CR;
-        ok += LF;
+        ok += network::CR;
+        ok += network::LF;
 
         server.addMessage(server.getConnections().at(1), ok);
         server.update();
@@ -263,7 +263,7 @@ TEST(Network, FourClientUdp)
 {
     try
     {
-        std::srand(std::time(0)); // use current time as seed for random generator
+        std::srand(static_cast<unsigned int>(std::time(0))); // use current time as seed for random generator
         unsigned short random_variable = std::rand() % 65000 + 2500;
 
         network::SockAddr clienInfos(random_variable);
@@ -292,8 +292,8 @@ TEST(Network, FourClientUdp)
         ASSERT_STREQ("login", login.c_str());
 
         std::string ok("OK");
-        ok += CR;
-        ok += LF;
+        ok += network::CR;
+        ok += network::LF;
 
         server.addMessage(server.getConnections().at(0), ok);
         server.update();
@@ -312,8 +312,8 @@ TEST(Network, FourClientUdp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += CR;
-        ok += LF;
+        ok += network::CR;
+        ok += network::LF;
 
         server.addMessage(server.getConnections().at(1), ok);
         server.update();
@@ -332,8 +332,8 @@ TEST(Network, FourClientUdp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += CR;
-        ok += LF;
+        ok += network::CR;
+        ok += network::LF;
 
         server.addMessage(server.getConnections().at(2), ok);
         server.update();
@@ -352,8 +352,8 @@ TEST(Network, FourClientUdp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += CR;
-        ok += LF;
+        ok += network::CR;
+        ok += network::LF;
 
         server.addMessage(server.getConnections().at(3), ok);
         server.update();
@@ -370,7 +370,7 @@ TEST(Network, SingleClientTcp)
 
     try
     {
-        std::srand(std::time(0)); // use current time as seed for random generator
+        std::srand(static_cast<unsigned int>(std::time(0))); // use current time as seed for random generator
         unsigned short random_variable = std::rand() % 65000 + 2500;
         network::SockAddr clienInfos(random_variable);
         network::SockAddr serverInfos(random_variable, "127.0.0.1");
@@ -395,8 +395,8 @@ TEST(Network, SingleClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         std::string ok("OK");
-        ok += CR;
-        ok += LF;
+        ok += network::CR;
+        ok += network::LF;
 
         server.addMessage(server.getConnections().at(0), ok);
         server.update();
@@ -413,7 +413,7 @@ TEST(Network, TwoClientTcp)
 {
     try
     {
-        std::srand(std::time(0)); // use current time as seed for random generator
+        std::srand(static_cast<unsigned int>(std::time(0))); // use current time as seed for random generator
         unsigned short random_variable = std::rand() % 65000 + 2500;
 
         network::SockAddr clienInfos(random_variable);
@@ -443,8 +443,8 @@ TEST(Network, TwoClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         std::string ok("OK");
-        ok += CR;
-        ok += LF;
+        ok += network::CR;
+        ok += network::LF;
 
         server.addMessage(server.getConnections().at(0), ok);
         server.update();
@@ -463,8 +463,8 @@ TEST(Network, TwoClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += CR;
-        ok += LF;
+        ok += network::CR;
+        ok += network::LF;
 
         server.addMessage(server.getConnections().at(1), ok);
         server.update();
@@ -480,7 +480,7 @@ TEST(Network, FourClientTcp)
 {
     try
     {
-        std::srand(std::time(0)); // use current time as seed for random generator
+        std::srand(static_cast<unsigned int>(std::time(0))); // use current time as seed for random generator
         unsigned short random_variable = std::rand() % 65000 + 2500;
 
         network::SockAddr clienInfos(random_variable);
@@ -512,8 +512,8 @@ TEST(Network, FourClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         std::string ok("OK");
-        ok += CR;
-        ok += LF;
+        ok += network::CR;
+        ok += network::LF;
 
         server.addMessage(server.getConnections().at(0), ok);
         server.update();
@@ -533,8 +533,8 @@ TEST(Network, FourClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += CR;
-        ok += LF;
+        ok += network::CR;
+        ok += network::LF;
 
         server.addMessage(server.getConnections().at(1), ok);
         server.update();
@@ -554,8 +554,8 @@ TEST(Network, FourClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += CR;
-        ok += LF;
+        ok += network::CR;
+        ok += network::LF;
 
         server.addMessage(server.getConnections().at(2), ok);
         server.update();
@@ -575,8 +575,8 @@ TEST(Network, FourClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += CR;
-        ok += LF;
+        ok += network::CR;
+        ok += network::LF;
 
         server.addMessage(server.getConnections().at(3), ok);
         server.update();

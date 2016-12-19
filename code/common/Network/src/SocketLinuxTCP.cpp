@@ -30,7 +30,7 @@ namespace network
         close();
     }
 
-    void SocketLinuxTCP::bind(const SockAddr& hostInfos)
+    void SocketLinuxTCP::bind(SockAddr& hostInfos)
     {
         sockaddr_in addr = hostInfos.getAddr();
         if (::bind(_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) != 0)
@@ -54,7 +54,7 @@ namespace network
         return newConnection;
     }
 
-    void SocketLinuxTCP::connect(const SockAddr& hostInfos)
+    void SocketLinuxTCP::connect(SockAddr& hostInfos)
     {
         sockaddr_in from = hostInfos.getAddr();
         if (::connect(_socket, reinterpret_cast<struct sockaddr *>(&from), sizeof(from)) < 0)
@@ -63,9 +63,9 @@ namespace network
 
     std::string SocketLinuxTCP::recv()
     {
-        char buffer[BUFFER_SIZE];
-        std::memset(buffer, 0, BUFFER_SIZE);
-        ssize_t ret = ::recv(_socket, buffer, BUFFER_SIZE, 0);
+        char buffer[network::BUFFER_SIZE];
+        std::memset(buffer, 0, network::BUFFER_SIZE);
+        ssize_t ret = ::recv(_socket, buffer, network::BUFFER_SIZE, 0);
         if (ret < 0)
             throw SocketException("Read failed: " + std::to_string(errno));
         else if (ret == 0)
