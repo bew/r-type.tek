@@ -35,14 +35,14 @@ namespace network
 
     std::string SocketLinuxUDP::recv(SockAddr& from)
     {
-        char buffer[BUFFER_SIZE];
+        char buffer[network::BUFFER_SIZE];
         sockaddr_in fromStruct;
 
-        std::memset(buffer, 0, BUFFER_SIZE);
+        std::memset(buffer, 0, network::BUFFER_SIZE);
         socklen_t fromLen = sizeof(fromStruct);
         std::memset(&fromStruct, 0, fromLen);
 
-        ssize_t ret = ::recvfrom(_socket, buffer, BUFFER_SIZE, 0, reinterpret_cast<sockaddr *>(&fromStruct), &fromLen);
+        ssize_t ret = ::recvfrom(_socket, buffer, network::BUFFER_SIZE, 0, reinterpret_cast<sockaddr *>(&fromStruct), &fromLen);
         if (ret < 0)
             throw SocketException("Read from failed with error: " + std::to_string(errno));
 

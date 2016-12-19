@@ -53,8 +53,8 @@ namespace network
                     std::string msg;
                     if (!(msg = (*client)->getWriteBuffer().get()).empty())
                     {
-                        msg += CR;
-                        msg += LF;
+                        msg += network::CR;
+                        msg += network::LF;
                         size_t nbBytesSend = (*client)->getSocket().send(msg);
                         (*client)->getWriteBuffer().updatePosition(nbBytesSend);
 
@@ -96,7 +96,7 @@ namespace network
     void ServerTCP::addMessage(const std::shared_ptr<ClientTCP> client, const std::string &message)
     {
         client->addMessage(message);
-        if (*(--message.end()) == CR || *(--message.end()) == LF)
+        if (*(--message.end()) == network::CR || *(--message.end()) == network::LF)
             _selector.monitor(client->getSocket().getSocket(), NetworkSelect::WRITE);
     }
 

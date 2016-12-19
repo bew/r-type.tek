@@ -63,9 +63,9 @@ namespace network
 
     std::string SocketLinuxTCP::recv()
     {
-        char buffer[BUFFER_SIZE];
-        std::memset(buffer, 0, BUFFER_SIZE);
-        ssize_t ret = ::recv(_socket, buffer, BUFFER_SIZE, 0);
+        char buffer[network::BUFFER_SIZE];
+        std::memset(buffer, 0, network::BUFFER_SIZE);
+        ssize_t ret = ::recv(_socket, buffer, network::BUFFER_SIZE, 0);
         if (ret < 0)
             throw SocketException("Read failed: " + std::to_string(errno));
         else if (ret == 0)

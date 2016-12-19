@@ -27,7 +27,7 @@ namespace network
         {
             _buffer[_writePosition] = c;
             ++_writePosition;
-            if (_writePosition == BUFFER_SIZE)
+            if (_writePosition == network::BUFFER_SIZE)
                 _writePosition = 0;
         }
     }
@@ -39,11 +39,11 @@ namespace network
         while (i < length)
         {
             ++_readPosition;
-            if (_readPosition == BUFFER_SIZE)
+            if (_readPosition == network::BUFFER_SIZE)
                 _readPosition = 0;
             ++i;
         }
-        if (_buffer[_readPosition] == CR || _buffer[_readPosition] == LF || _buffer[_readPosition] == 0)
+        if (_buffer[_readPosition] == network::CR || _buffer[_readPosition] == network::LF || _buffer[_readPosition] == 0)
         {
             _buffer[_readPosition] = -1;
             updatePosition(1);
@@ -55,9 +55,9 @@ namespace network
         int i = 0;
 
         size_t readPosition = _readPosition;
-        while (i < BUFFER_SIZE)
+        while (i < network::BUFFER_SIZE)
         {
-            if (_buffer[readPosition] == CR || _buffer[readPosition] == LF)
+            if (_buffer[readPosition] == network::CR || _buffer[readPosition] == network::LF)
             {
                 std::string msg;
                 size_t beg = _readPosition;
@@ -65,13 +65,13 @@ namespace network
                 {
                     msg += _buffer[beg];
                     ++beg;
-                    if (beg == BUFFER_SIZE)
+                    if (beg == network::BUFFER_SIZE)
                         beg = 0;
                 }
                 return msg;
             }
             ++readPosition;
-            if (readPosition == BUFFER_SIZE)
+            if (readPosition == network::BUFFER_SIZE)
                 readPosition = 0;
             ++i;
         }
@@ -80,7 +80,7 @@ namespace network
 
     void NetworkBuffer::initBuffer()
     {
-        for (int i = 0; i < BUFFER_SIZE; ++i)
+        for (int i = 0; i < network::BUFFER_SIZE; ++i)
             _buffer[i] = -1;
     }
 

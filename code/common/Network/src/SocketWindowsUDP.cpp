@@ -44,7 +44,7 @@ namespace network
 
     std::string SocketWindowsUDP::recv(SockAddr &hostInfos)
     {
-        char bufTmp[BUFFER_SIZE];
+        char bufTmp[network::BUFFER_SIZE];
         DWORD flag = 0;
         DWORD numberOfBytesRecv = 0;
         WSAOVERLAPPED recvOverlapped;
@@ -54,8 +54,8 @@ namespace network
         sockaddr_in from;
         int fromSize = sizeof(from);
         std::memset(&from, 0, fromSize);
-        std::memset(bufTmp, 0, BUFFER_SIZE);
-        buffer.len = BUFFER_SIZE;
+        std::memset(bufTmp, 0, network::BUFFER_SIZE);
+        buffer.len = network::BUFFER_SIZE;
         buffer.buf = bufTmp;
 
         recvOverlapped.hEvent = WSACreateEvent();

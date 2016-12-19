@@ -57,8 +57,8 @@ void ClientUDP::execLoop()
     const std::vector<unsigned char>& bufferToSend = messageToSend.getBuffer();
     std::string messageSerialized(bufferToSend.begin(), bufferToSend.end());
 
-    messageSerialized += CR;
-    messageSerialized += LF;
+    messageSerialized += network::CR;
+    messageSerialized += network::LF;
     _client.addMessage(messageSerialized);
 
     _client.update();

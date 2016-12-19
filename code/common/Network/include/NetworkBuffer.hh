@@ -8,14 +8,25 @@
 
 #include <string>
 
-#define BUFFER_SIZE (4096)
-# define CR ('\r')
-# define LF ('\n')
-
 /**
  * namespace that contains all network abstraction
  */
 namespace network {
+
+    /**
+     * Carriage return
+     */
+    static const char CR = '\r';
+
+    /**
+     * Line feed
+     */
+    static const char LF = '\n';
+
+    /**
+     * Buffer size of the buffers
+     */
+    static const size_t BUFFER_SIZE = 4096;
 
     /**
      * Representation of socket abstraction
@@ -40,7 +51,7 @@ namespace network {
         void fill(const std::string &msg);
 
         /**
-         * increment read index position of length and call recursivly if read position pointed to CR or LF
+         * increment read index position of length and call recursivly if read position pointed to network::CR or network::LF
          *
          * @param length the number of bytes wrote in socket, for increment read index position
          */
@@ -62,7 +73,7 @@ namespace network {
         /**
          * buffer used to add and get messages
          */
-        char _buffer[BUFFER_SIZE];
+        char _buffer[network::BUFFER_SIZE];
 
         /**
          * index of read position, used to get message in the buffer
