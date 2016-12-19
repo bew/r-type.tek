@@ -44,7 +44,7 @@ namespace ECS {
 	/**
 	 * The hooks, functor to call when an event with the key as a name is emitted
 	 */
-	std::unordered_multimap<std::string, std::function<void(IEvent *)>> _hooks;
+	std::unordered_multimap<std::string, std::function<bool(IEvent *)>> _hooks;
 	
 	/**
 	 * The event that have been emitted, and that need to be consummed
