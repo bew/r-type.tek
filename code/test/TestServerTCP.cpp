@@ -29,8 +29,8 @@ TEST(Network, SingleClientTcp)
         const std::vector<unsigned char> &bufferToSend = messageToSend.getBuffer();
         std::string messageSerialized(bufferToSend.begin(), bufferToSend.end());
 
-        messageSerialized += CR;
-        messageSerialized += LF;
+        messageSerialized += network::CR;
+        messageSerialized += network::LF;
 
         network::ServerTCP server;
         ClientTCP client(serverInfos);
@@ -91,8 +91,8 @@ TEST(Network, TwoClientTcp)
         const std::vector<unsigned char> &bufferToSend = messageToSend.getBuffer();
         std::string messageSerialized(bufferToSend.begin(), bufferToSend.end());
 
-        messageSerialized += CR;
-        messageSerialized += LF;
+        messageSerialized += network::CR;
+        messageSerialized += network::LF;
 
         network::ServerTCP server;
 
@@ -177,8 +177,8 @@ TEST(Network, FourClientTcp)
         const std::vector<unsigned char> &bufferToSend = messageToSend.getBuffer();
         std::string messageSerialized(bufferToSend.begin(), bufferToSend.end());
 
-        messageSerialized += CR;
-        messageSerialized += LF;
+        messageSerialized += network::CR;
+        messageSerialized += network::LF;
 
         network::ServerTCP server;
 
