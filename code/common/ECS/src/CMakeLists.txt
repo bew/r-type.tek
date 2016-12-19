@@ -1,4 +1,4 @@
-set(LIB_SOURCE AComponent.cpp ComponentTest.cpp Entity.cpp SystemTest.cpp World.cpp CompEvent.cpp SysEvent.cpp CompHitbox.cpp)
+set(LIB_SOURCE AComponent.cpp ComponentTest.cpp Entity.cpp SystemTest.cpp World.cpp CompEvent.cpp SysEvent.cpp CompHitbox.cpp CompMovement.cpp SysMovement.cpp)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
 add_library(${LIB_TEST_NAME} SHARED ${LIB_SOURCE})
