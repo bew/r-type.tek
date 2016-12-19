@@ -1,3 +1,9 @@
+/**
+ * @file MusicAsset.cpp
+ * @brief Implementation for music store
+ * @author Nekhot
+ */
+
 #include "MusicAsset.hh"
 
 graphic::MusicAsset::MusicAsset(const std::string &path) {

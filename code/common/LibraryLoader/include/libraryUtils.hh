@@ -1,13 +1,12 @@
-//
-// Created by Pierre Rousselle on 17/11/2016.
-//
+/**
+ * @file libraryUtils.hh
+ * @brief Utils macro for easy writin generator, and Header for said Generator 
+ * @author Nekhot
+ */
 
-#ifndef CONCEPTION_RTYPE_LIB_H
-#define CONCEPTION_RTYPE_LIB_H
+#pragma once
 
 #include <type_traits>
-#include <memory>
-#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -17,6 +16,7 @@
  * Placeholder class for entity
  */
 class Entity {};
+
 /**
  * Placeholder class for storing game status
  */
@@ -37,7 +37,7 @@ class IGenerator {
 public:
   IGenerator(void) {};
   virtual ~IGenerator(void) {};
-
+  
   /**
    * Method to access the name of the generator.
    *
@@ -103,6 +103,4 @@ extern "C" {                                                                    
       "Exported type must have a public default constructor");				    \
     return new TARGET();  								    \
   }                                                                                         \
-}                                                                                           \
-
-#endif //CONCEPTION_RTYPE_LIB_H
+}

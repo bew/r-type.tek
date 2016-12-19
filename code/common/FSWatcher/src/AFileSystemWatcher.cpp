@@ -1,3 +1,9 @@
+/**
+ * @file AFileSystemWatcher.cpp
+ * @brief Implementation for abstract file system watcher class
+ * @author Nekhot
+ */
+
 #include "AFileSystemWatcher.hh"
 
 AFileSystemWatcher::AFileSystemWatcher(const std::string &directoryName) :

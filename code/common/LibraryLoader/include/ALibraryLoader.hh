@@ -1,11 +1,12 @@
-//
-// Created by Pierre Rousselle on 18/11/2016.
-//
+/**
+ * @file ALibraryLoader.hh
+ * @brief Header for abstract dynamic library loading
+ * @author Nekhot
+ */
 
-#ifndef CONCEPTION_RTYPE_ALIBRARYLOADER_HPP
-#define CONCEPTION_RTYPE_ALIBRARYLOADER_HPP
+#pragma once
 
-#include <memory>
+#include <stdexcept>
 class IGenerator;
 
 /**
@@ -19,7 +20,7 @@ public:
    * @return A new instance of the IGenerator based class exported into the loaded library
    */
   virtual IGenerator *newInstance(void) const = 0;
-
+  
   /**
    * Virtual dtor
    */
@@ -36,10 +37,10 @@ public:
  *  Be carefull to compile only the target system corresponding implementation
  */
 #ifdef __linux__
-#include "linuxLibraryLoader.hh"
+    #include "linuxLibraryLoader.hh"
     typedef LinuxLibraryLoader LibraryLoader;
 #elif defined _WIN32
-#include "windowsLibraryLoader.hh"
+    #include "windowsLibraryLoader.hh"
     typedef WindowsLibraryLoader LibraryLoader;
 #endif
 
@@ -58,5 +59,3 @@ public:
 };
 
 #include "libraryUtils.hh"
-
-#endif //CONCEPTION_RTYPE_ALIBRARYLOADER_HPP

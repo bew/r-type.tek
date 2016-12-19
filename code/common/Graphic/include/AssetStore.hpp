@@ -1,5 +1,10 @@
-#ifndef _ASSETSTORE_HPP
-#define _ASSETSTORE_HPP
+/**
+ * @file AssetStore.hh
+ * @brief Header for asset store
+ * @author Nekhot
+ */
+
+#pragma once
 
 #include <string>
 #include <unordered_map>
@@ -421,7 +426,4 @@ namespace graphic {
    */
   template<>
   void graphic::GroupedAssetStore::loadRessource<graphic::AnimatedSpriteAsset>(std::unordered_map<std::string, graphic::AnimatedSpriteAsset> &store, const std::string &directory);
-
 }
-
-#endif

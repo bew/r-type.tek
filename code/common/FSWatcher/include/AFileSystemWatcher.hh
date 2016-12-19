@@ -1,9 +1,10 @@
-//
-// Created by Pierre Rousselle on 18/11/2016.
-//
+/**
+ * @file AFileSystemWatcher.hh
+ * @brief Header for abstract file system watcher class
+ * @author Nekhot
+ */
 
-#ifndef CONCEPTION_RTYPE_FILESYSTEMWATCHER_HPP
-#define CONCEPTION_RTYPE_FILESYSTEMWATCHER_HPP
+#pragma once
 
 #include <string>
 #include <stdexcept>
@@ -18,7 +19,7 @@ class AFileSystemWatcher {
 public:
 
   /**
-   * Type of event
+   * Type of an event (what happend to a file)
    */
   enum Event {
     Add,
@@ -29,20 +30,20 @@ public:
   /**
    * Construct a filesystemwatcher for specific directory
    *
-   * @param directoryName: name of directory to watch
+   * @param directoryName Name of directory to watch
    */
   AFileSystemWatcher(const std::string &directoryName);
 
   /**
-   * Default dtor
+   * Virtual default destructor
    */
   virtual ~AFileSystemWatcher(void);
 
   /**
    * synchronously process list of event that happend to 
    *
-   * @return: a vector of event, each event being a pair of filename and event
-   * @throw: FileSystemWAtcherException
+   * @return A vector of event, each event being a pair of filename and event
+   * @throw FileSystemWAtcherException
    */
   virtual std::vector<std::pair<std::string, Event>> processEvents(void) = 0;
 
@@ -62,7 +63,7 @@ public:
   /**
    * Exception thrown in case of file system error 
    *
-   * @param error: string descibing what cause the exception
+   * @param error String descibing what cause the exception
    */
   FileSystemWatcherException(const std::string &error);
 };
@@ -83,5 +84,3 @@ public:
     #include "windowsFileSystemWatcher.hh"
     typedef  WindowsFileSystemWatcher FileSystemWatcher;
 #endif
-
-#endif //CONCEPTION_RTYPE_FILESYSTEMWATCHER_HPP

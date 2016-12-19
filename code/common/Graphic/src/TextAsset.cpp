@@ -1,3 +1,9 @@
+/**
+ * @file TextAsset.cpp
+ * @brief Implementation for text asset
+ * @author Nekhot
+ */
+
 #include "TextAsset.hh"
 
 const unsigned int graphic::TextStyle::DEFAULT_SIZE = 30;

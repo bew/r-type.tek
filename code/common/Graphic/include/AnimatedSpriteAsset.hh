@@ -1,5 +1,10 @@
-#ifndef _ANIMATEDSPRITEASSET_HPP
-#define _ANIMATEDSPRIETASSET_HPP
+/**
+ * @file AnimatedSpriteAsset.hh
+ * @brief Header for animated sprite asset
+ * @author Nekhot
+ */
+
+#pragma once
 
 #include <string>
 #include <vector>
@@ -70,5 +75,3 @@ namespace graphic {
     std::unordered_map<std::string, graphic::AnimatedSpriteAsset::FrameDescriptions> _animations;
   };
 }
-
-#endif

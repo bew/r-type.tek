@@ -1,5 +1,10 @@
-#ifndef _MUSICASSET_HPP
-#define _MUSICASSET_HPP
+/**
+ * @file MusicAsset.hh
+ * @brief Header for music asset
+ * @author Nekhot
+ */
+
+#pragma once
 
 #include <string>
 #include <SFML/Audio/Music.hpp>
@@ -34,5 +39,3 @@ namespace graphic {
     sf::Music _music;
   };
 }
-
-#endif

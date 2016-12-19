@@ -1,3 +1,9 @@
+/**
+ * @file FontAsset.cpp
+ * @brief Implementation for font asset
+ * @author Nekhot
+ */
+
 #include "FontAsset.hh"
 
 graphic::FontAsset::FontAsset(const std::string &path) {
