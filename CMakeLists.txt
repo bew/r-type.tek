@@ -4,12 +4,6 @@ set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_subdirectory(vendor)
 
-##
-#  This  force MSVC to use static runtime lib.
-#  This is required by googletest framework.
-#  This should be used before add_executable(..) when building test.
-#  And nowhere else.
-##
 macro(use_msvc_static_runtime)
   if(WIN32)
     foreach(flag_var
@@ -24,3 +18,5 @@ macro(use_msvc_static_runtime)
 endmacro(use_msvc_static_runtime)
 
 add_subdirectory(code)
+
+add_subdirectory(doc)

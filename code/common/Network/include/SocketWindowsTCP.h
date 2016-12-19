@@ -11,22 +11,29 @@
 /**
  * namespace that contains all network abstraction
  */
-namespace network {
+namespace network
+{
 
     /**
      * Representation of TCP socket for windows
      */
-    class SocketWindowsTCP : public ASocketTCP {
+    class SocketWindowsTCP : public ASocketTCP
+    {
     public:
 
         /**
-         * Constructor of SocketWindowsTCP
-         *
-         * @params port port use to socket connection
+         * Default constructor of SocketWindowsTCP
          *
          * @throw SocketException if socket couldn't be created
          */
-        SocketWindowsTCP(unsigned short port);
+        SocketWindowsTCP();
+
+        /**
+         * Constructor of SocketLinuxTCP
+         *
+         * @params socket fd of the socket already created
+         */
+        SocketWindowsTCP(Socket_t socket);
 
         /**
          * Destructor of SocketWindowsTCP, call method close
@@ -36,9 +43,11 @@ namespace network {
         /**
          * bind socket
          *
+         * @param hostInfos contains host ip and port
+         *
          * @throw SocketException if bind fail
          */
-        virtual void bind();
+        virtual void bind(const SockAddr &hostInfos);
 
         /**
          * encapsulation of listen system call who marks socket as a passive socket
@@ -50,38 +59,50 @@ namespace network {
         /**
          * encapsulation of accept system call who extracts the first connection request
          *
+         * @return new socket return by accept system call
+         *
          * @throw SocketException if accept fail
          */
-        virtual void accept();
+        virtual Socket_t accept();
 
         /**
          * encapsulation of connect system call who connects the socket
          *
+         * @param hostInfos contains host ip and port
+         *
          * @throw SocketException if connect fail
          */
-        virtual void connect();
+        virtual void connect(const SockAddr &hostInfos);
 
         /**
          * close the socket
          */
         virtual void close();
 
-    private:
         /**
          * read in socket and add read message to the read buffer
          *
+         * @return string read on the socket
+         *
          * @throw SocketException if connect fail
          */
-        virtual void recv();
+        virtual std::string recv();
 
         /**
          * write message in socket and update position of write buffer
          *
          * @param msg message that will be sent
          *
-         *  @throw SocketException if send fail
+         * @return number of Bytes sent
+         *
+         * @throw SocketException if send fail
          */
-        virtual void send(const std::string &msg);
+        virtual size_t send(const std::string &msg) const;
+
     };
 
+    /**
+     * define type SocketTCP as SocketWindowsTCP
+     */
+    typedef SocketWindowsTCP SocketTCP;
 }

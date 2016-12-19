@@ -20,6 +20,14 @@ function(add var_name)
 	set(${var_name} ${${var_name}} ${ARGN} PARENT_SCOPE)
 endfunction(add)
 
+macro(suffix_list var suffix)
+	SET(listVar "")
+	FOREACH(f ${ARGN})
+		LIST(APPEND listVar "${f}${suffix}")
+	ENDFOREACH(f)
+	SET(${var} "${listVar}" PARENT_SCOPE)
+endmacro(suffix_list)
+
 # MAIN COMMON LIB
 #------------------------------------
 set(RT_COMMON_NAMES)
@@ -38,3 +46,9 @@ add_subdirectory("server")
 add_subdirectory("generators")
 
 #add_subdirectory("doc")
+
+# Integration tests
+#------------------------------------
+
+#add_subdirectory("test")
+add_subdirectory("tool")

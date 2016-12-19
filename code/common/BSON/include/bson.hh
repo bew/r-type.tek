@@ -11,6 +11,7 @@
 #define BSON_HH
 
 #include <map>
+#include <stdexcept>
 
 /**
  * Namespace that contain all the BSON stuff
@@ -55,8 +56,27 @@ namespace bson {
             {'\x12', bson::INT64},
     };
 
+    /**
+     * A map where the types are the keys and the type's size are the values
+     */
+    static const std::map<bson::type, size_t> typesSizes = {
+            {bson::DOUBLE, 8},
+            {bson::BOOL, 1},
+            {bson::NULLVALUE, 0},
+            {bson::INT32, 4},
+            {bson::INT64, 8},
+    };
+
+    /**
+     * The generic exception for BSON
+     */
     class BsonException : public std::runtime_error {
     public:
+        /**
+         * Create a BsonException with the given string for detail
+         *
+         * @param e the detail string
+         */
         BsonException(const std::string &e) : std::runtime_error(e) {}
     };
 }
