@@ -43,27 +43,15 @@ namespace ECS {
 	     * Destructor
 	     */
 	    ~CompHitbox();
-
-	    /**
-	     * Return half the width of the hitbox.
-	     * @return half the width of the hitbox.
-	     */
-	    unsigned	getMidWidth() const;
-	    /**
-	     * Return half the height of the hitbox.
-	     * @return half the height of the hitbox.
-	     */
-	    unsigned	getMidHeight() const;
 	    
-	protected:
 	    /**
 	     * Half the width of the hitbox.
 	     */
-	    unsigned	_midWidth;
+	    const unsigned	_midWidth;
 	    /**
 	     * Half the height of the hitbox.
 	     */
-	    unsigned	_midHeight;
+	    const unsigned	_midHeight;
 	};
 
     }
