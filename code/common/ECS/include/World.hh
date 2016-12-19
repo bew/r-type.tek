@@ -17,7 +17,7 @@
  * Namespace of ECS.
  */
 namespace ECS {
-
+  
     /**
      * Data of the ecs. The systems will read and update these datas.
      */
@@ -69,11 +69,15 @@ namespace ECS {
 	void	update();
 	
 	/**
+	 * For Testing purpose
+	 *
 	 * Initiate the systems of the world.
 	 */
 	void	initTestSystem();
 
 	/**
+	 * For Testing purpose
+	 *
 	 * Add a test entity in the world.
 	 */
 	void	addTestEntity();
@@ -83,6 +87,13 @@ namespace ECS {
 	 * @param system The system to be added.
 	 */
 	void	addSystem(System::ISystem *system);
+
+      /**
+       * Add a component to the systemEntity
+       *
+       * @param comp The component to add
+       */
+      void addSystemEntityComponent(Component::AComponent *);
 
     private:
 	/**
@@ -95,5 +106,4 @@ namespace ECS {
 	 */
 	WorldData			_world;
     };
-
 }

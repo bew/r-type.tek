@@ -49,15 +49,9 @@ namespace ECS {
 
 	    /**
 	     * add a component.
-	     * @param type the type of the component.
 	     * @param comp the component.
 	     */
-	    template<typename CompoType>
-	    void	addComponent(const std::string &type, CompoType *comp)
-		{
-		    _components[type] = static_cast<Component::AComponent *>(comp);
-		}
-
+	  void	addComponent(ECS::Component::AComponent *comp);
 	private:
 	    /**
 	     * Map of components of the entity.
