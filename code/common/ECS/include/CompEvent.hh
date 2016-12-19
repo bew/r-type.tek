@@ -36,6 +36,11 @@ namespace ECS {
       };
 
       /**
+       * An event handler.
+       */
+      typedef std::function<bool(IEvent *)> EventHandler;
+      
+      /**
        * Default constructor
        */
       CompEvent(void);
@@ -43,7 +48,7 @@ namespace ECS {
       /**
        * The hooks, functor to call when an event with the key as a name is emitted.
        */
-      std::unordered_multimap<std::string, std::function<bool(IEvent *)> > _hooks;
+      std::unordered_multimap<std::string, EventHandler> _hooks;
 
       /**
        * The event that have been emitted, and that need to be consummed.
@@ -83,7 +88,7 @@ namespace ECS {
        * @param hook The function to be called. The function will be passed a MAYBE NULL pointer to IEvent.
        *             If this function return false, the hook will be removed from the map.
        */
-      void addHook(const std::string &eventName, std::function<bool(IEvent *)> hook);
+      void addHook(const std::string &eventName, EventHandler hook);
 
       /**
        * Add a hook for eventName.
