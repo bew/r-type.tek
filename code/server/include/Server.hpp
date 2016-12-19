@@ -12,6 +12,7 @@
 # include <memory>
 # include "Player.hpp"
 # include "Room.hpp"
+# include "Network/ServerTCP.hpp"
 
 /**
  * Represent the server
@@ -38,9 +39,18 @@ private:
 
 public:
   /**
+   * Initialize the server's network
+   *
+   * @param port The port on which to bind the server. If not given, the first
+   * available port will be taken.
+   * @return The used port, 0 if there where an error.
+   */
+  unsigned initNetwork(unsigned port = 0);
+
+  /**
    * Run the main server logic
    */
-  void run(unsigned int port);
+  void run();
 
 protected:
 
@@ -59,7 +69,7 @@ protected:
 
   std::string _serverName;
 
-  // socket for server
+  network::ServerTCP _serverSock;
 };
 
 #endif /* !SERVER_HPP_ */
