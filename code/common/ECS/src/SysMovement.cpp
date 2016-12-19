@@ -42,15 +42,15 @@ namespace ECS {
             comp->_advance._x -= static_cast<int>(comp->_advance._x);
         }
 
-        void	SysMovement::update(WorldData &data)
+        void    SysMovement::update(WorldData &data)
         {
             for (auto &entity : data._gameEntities)
-	    {
-		Component::CompMovement *comp = static_cast<Component::CompMovement *>(
-		    entity->getComponent(Component::MOVEMENT));
+            {
+                Component::CompMovement *comp = static_cast<Component::CompMovement *>(
+                    entity->getComponent(Component::MOVEMENT));
 
-		if (comp != nullptr)
-		    computeNextCoordinates(comp);
+                if (comp != nullptr)
+                    this->computeNextCoordinates(comp);
             }
         }
 

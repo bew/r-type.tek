@@ -41,6 +41,11 @@ namespace ECS {
              */
             ~CompMovement();
 
+            /**
+             * Description of the way the sprite should face during
+             * graphic rendering depending to the deplacement vector
+             * of the entity.
+             */
             enum FacingDirection
             {
                 BACKWARD,

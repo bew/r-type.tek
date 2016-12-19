@@ -20,31 +20,31 @@ namespace ECS {
      */
     namespace System {
 
-	/**
-	 * System updating the movement of entities.
-	 */
-	class SysMovement : public ISystem
-	{
-	public:
-	    /**
-	     * Constructor.
-	     */
-	    SysMovement();
-	    /**
-	     * Destructor.
-	     */
-	    virtual ~SysMovement();
-
-	    /**
-	     * update function. Will update all CompMovement.
-	     * @param data The persistent information of the ECS.
-	     */
-	    void	update(WorldData &data) override;
+        /**
+         * System updating the movement of entities.
+         */
+        class SysMovement : public ISystem
+        {
+        public:
+            /**
+             * Constructor.
+             */
+            SysMovement();
+            /**
+             * Destructor.
+             */
+            virtual ~SysMovement();
 
             /**
-	     * Update a single CompMovement.
-	     * @param component The movement component.
-	     */
+             * update function. Will update all CompMovement.
+             * @param data The persistent information of the ECS.
+             */
+            void        update(WorldData &data) override;
+
+            /**
+             * Update a single CompMovement.
+             * @param component The movement component.
+             */
             static void computeNextCoordinates(Component::CompMovement *component);
         };
     }
