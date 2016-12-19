@@ -76,7 +76,7 @@ namespace graphic {
       try {
 	return store.at(path);
       }
-      catch (const std::out_of_range &e) {
+      catch (const std::out_of_range &) {
 	throw AssetException(std::string("Unable to find asset '") + path + "'");
       }
     }

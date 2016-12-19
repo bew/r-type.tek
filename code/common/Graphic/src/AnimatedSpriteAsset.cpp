@@ -12,7 +12,7 @@ graphic::AnimatedSpriteAsset::AnimatedSpriteAsset(const std::string &path, const
   fileSize = file.tellg();
   file.seekg(0, std::ios::beg);
   std::vector<unsigned char> buffer;
-  buffer.reserve(fileSize);
+  buffer.reserve(static_cast<unsigned int>(fileSize));
   buffer.insert(buffer.begin(),
 		std::istream_iterator<unsigned char>(file),
 		std::istream_iterator<unsigned char>());

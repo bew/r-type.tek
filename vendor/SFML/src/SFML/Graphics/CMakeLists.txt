@@ -151,8 +151,10 @@ add_definitions(-DSTBI_FAILURE_USERMSG)
 # when gcc is used; otherwise saving PNGs may crash in stb_image_write
 if(SFML_COMPILER_GCC)
     set_source_files_properties(${SRCROOT}/ImageLoader.cpp PROPERTIES COMPILE_FLAGS -fno-strict-aliasing)
-  endif()
+endif()
+if(UNIX)
   list(APPEND GRAPHICS_EXT_LIBS "-lgcc_s -lgcc")
+endif()
 
 # define the sfml-graphics target
 sfml_add_library(sfml-graphics

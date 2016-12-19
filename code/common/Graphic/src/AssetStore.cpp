@@ -221,36 +221,36 @@ void graphic::GroupedAssetStore::loadAll(void) {
   try {
     this->loadRessource<graphic::MusicAsset>(this->_musics, graphic::AssetStore::MUSIC_DIRECTORY);
   }
-  catch (const FileSystemWatcherException &e) {
+  catch (const FileSystemWatcherException &) {
   }
 
   try {
     this->loadRessource<graphic::FontAsset>(this->_fonts, graphic::AssetStore::FONT_DIRECTORY);
   }
-  catch (const FileSystemWatcherException &e) {
+  catch (const FileSystemWatcherException &) {
   }
 
   try {
     this->loadRessource<graphic::TextAsset>(this->_texts, graphic::AssetStore::TEXT_DIRECTORY);
   }
-  catch (const FileSystemWatcherException &e) {
+  catch (const FileSystemWatcherException &) {
   }
 
   try {
     this->loadRessource<graphic::SoundAsset>(this->_sounds, graphic::AssetStore::SOUND_DIRECTORY);
   }
-  catch (const FileSystemWatcherException &e) {
+  catch (const FileSystemWatcherException &) {
   }
 
   try {
     this->loadRessource<graphic::SpriteAsset>(this->_sprites, graphic::AssetStore::SPRITE_DIRECTORY);
   }
-  catch (const FileSystemWatcherException &e) {
+  catch (const FileSystemWatcherException &) {
   }
 
   try {
     this->loadRessource<graphic::AnimatedSpriteAsset>(this->_animatedSprites, graphic::AssetStore::ANIMATED_SPRITE_DIRECTORY);
   }
-  catch (const FileSystemWatcherException &e) {
+  catch (const FileSystemWatcherException &) {
   }
 }
