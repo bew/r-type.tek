@@ -30,7 +30,7 @@ namespace network
         close();
     }
 
-    void SocketLinuxTCP::bind(const SockAddr& hostInfos)
+    void SocketLinuxTCP::bind(SockAddr& hostInfos)
     {
         sockaddr_in addr = hostInfos.getAddr();
         if (::bind(_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) != 0)
@@ -54,7 +54,7 @@ namespace network
         return newConnection;
     }
 
-    void SocketLinuxTCP::connect(const SockAddr& hostInfos)
+    void SocketLinuxTCP::connect(SockAddr& hostInfos)
     {
         sockaddr_in from = hostInfos.getAddr();
         if (::connect(_socket, reinterpret_cast<struct sockaddr *>(&from), sizeof(from)) < 0)

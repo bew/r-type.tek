@@ -40,7 +40,7 @@ namespace network
         WSACleanup();
     }
 
-    void SocketWindowsTCP::bind(const SockAddr& hostInfos)
+    void SocketWindowsTCP::bind(SockAddr& hostInfos)
     {
         sockaddr_in addr = hostInfos.getAddr();
         if (::bind(_socket, reinterpret_cast<SOCKADDR *>(&addr), sizeof(addr)) == SOCKET_ERROR)
@@ -64,7 +64,7 @@ namespace network
         return newConnection;
     }
 
-    void SocketWindowsTCP::connect(const SockAddr& hostInfos)
+    void SocketWindowsTCP::connect(SockAddr& hostInfos)
     {
         sockaddr_in from = hostInfos.getAddr();
 

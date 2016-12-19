@@ -44,7 +44,7 @@ namespace network {
         /**
          * bind socket
          */
-        virtual void bind(const SockAddr& hostInfos) = 0;
+        virtual void bind(SockAddr &hostInfos) = 0;
 
         /**
          * close socket

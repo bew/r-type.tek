@@ -26,7 +26,7 @@ namespace network
         close();
     }
 
-    void SocketLinuxUDP::bind(const SockAddr &hostInfos)
+    void SocketLinuxUDP::bind(SockAddr &hostInfos)
     {
         sockaddr_in addr = hostInfos.getAddr();
         if (::bind(_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)))

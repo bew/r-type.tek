@@ -35,7 +35,7 @@ namespace network
         WSACleanup();
     }
 
-    void SocketWindowsUDP::bind(const SockAddr &from)
+    void SocketWindowsUDP::bind(SockAddr &from)
     {
         sockaddr_in addr = from.getAddr();
         if (::bind(_socket, reinterpret_cast<SOCKADDR *>(&addr), sizeof(addr)) == SOCKET_ERROR)

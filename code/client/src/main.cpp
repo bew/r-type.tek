@@ -41,7 +41,7 @@ int main(void) {
   events->addHook("TEST_EVENT_THAT_REPEAT_ITSELF_THREE_TIME", [&events](ECS::Component::CompEvent::IEvent *e) {
       std::cout << "Salut, je suis une evenement. Je vais me repeter trois fois." << std::endl;
       THREE_TIME_EVENT *te = dynamic_cast<THREE_TIME_EVENT *>(e);
-      if (te->count < 3) {
+      if (te->count < 2) {
 	++te->count;
 	events->addEvent("TEST_EVENT_THAT_REPEAT_ITSELF_THREE_TIME", te);
 	return true;

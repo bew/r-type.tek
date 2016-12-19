@@ -36,7 +36,7 @@ namespace network
         }
     }
 
-    void ClientTCP::connect(const SockAddr &hostInfos)
+    void ClientTCP::connect(SockAddr &hostInfos)
     {
         if (!_isConnected)
         {
