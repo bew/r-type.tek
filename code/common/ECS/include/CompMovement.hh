@@ -42,6 +42,17 @@ namespace ECS {
             ~CompMovement();
 
             /**
+             * Description of the way the sprite should face during
+             * graphic rendering depending to the deplacement vector
+             * of the entity.
+             */
+            enum FacingDirection
+            {
+                BACKWARD,
+                FORWARD
+            };
+
+            /**
              * Coordinates of the entity.
              */
             coordinates<int>    _coo;
@@ -57,6 +68,10 @@ namespace ECS {
              * Current advance of the entity for <1 pixel movement.
              */
             coordinates<float>  _advance;
+            /**
+             * Direction faced by the entiy;
+             */
+            FacingDirection     _facingDir;
         };
 
     }

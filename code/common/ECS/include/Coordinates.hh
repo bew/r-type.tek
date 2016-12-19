@@ -15,6 +15,7 @@ namespace ECS {
 
     /**
      * Type for coordinates. Can be int or float.
+     * @tparam T The type to be used for the coordinates.
      */
     template<typename T>
     struct coordinates
