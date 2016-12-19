@@ -19,15 +19,5 @@ namespace ECS {
 	CompHitbox::~CompHitbox()
 	{    
 	}
-
-	unsigned	CompHitbox::getMidWidth() const
-	{
-	    return _midWidth;
-	}
-
-	unsigned	CompHitbox::getMidHeight() const
-	{
-	    return _midHeight;
-	}
     }
 }
