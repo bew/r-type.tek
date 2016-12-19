@@ -146,7 +146,7 @@ TEST(Miscellaneous, getKeys) {
     const std::vector<std::string> &keys = message.getKeys();
     std::vector<std::string> expected_keys = {"key1", "key2", "key3"};
 
-    for (int i = 0; i < keys.size(); ++i)
+    for (size_t i = 0; i < keys.size(); ++i)
         EXPECT_EQ(keys.at(i), expected_keys.at(i));
 }
 
