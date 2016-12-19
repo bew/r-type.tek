@@ -1,19 +1,18 @@
 #include <iostream>
-#include "WindowSystem.hh"
+
+#include "SysWindow.hh"
+#include "CompWindow.hh"
+#include "Graphic/AssetStore.hpp"
 
 int main(void) {
 
-  Entity world;
-  ECS loop;
-  std::vector<Entity> container;
+  ECS::World world;
   graphic::GroupedAssetStore test("asset", "test");
-
-  loop._systems.push_back(new WindowSystem());
-  world._components.push_back(new WindowComponent());
-  container.push_back(world);
+  world.addSystem(new ECS::System::SysWindow());
+  world.addSystemEntityComponent(new ECS::Component::CompWindow());
   while(true) {
     std::cout << "TICK" << std::endl;
-    loop.process(container);
+    world.update();
   }
   return 0;
 };

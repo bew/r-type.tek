@@ -1,5 +1,5 @@
 set(CL_SOURCE)
-add(CL_SOURCE WindowComponent.cpp WindowSystem.cpp main.cpp)
+add(CL_SOURCE CompWindow.cpp SysWindow.cpp main.cpp)
 set(CL_EXEC client)
 
 add_executable(${CL_EXEC} ${CL_SOURCE})

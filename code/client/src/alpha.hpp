@@ -3,7 +3,8 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
-#include "AssetStore.hpp"
+
+#include "Graphic/AssetStore.hpp"
 
 // Garbage for testing
 
