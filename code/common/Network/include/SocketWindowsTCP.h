@@ -47,7 +47,7 @@ namespace network
          *
          * @throw SocketException if bind fail
          */
-        virtual void bind(const SockAddr &hostInfos);
+        virtual void bind(SockAddr &hostInfos);
 
         /**
          * encapsulation of listen system call who marks socket as a passive socket
@@ -72,7 +72,7 @@ namespace network
          *
          * @throw SocketException if connect fail
          */
-        virtual void connect(const SockAddr &hostInfos);
+        virtual void connect(SockAddr &hostInfos);
 
         /**
          * close the socket

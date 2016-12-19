@@ -70,7 +70,7 @@ namespace network
         }
     }
 
-    void ServerTCP::bind(const SockAddr& hostInfos)
+    void ServerTCP::bind(SockAddr& hostInfos)
     {
         _socketServer.bind(hostInfos);
         _selector.monitor(_socketServer.getSocket(), NetworkSelect::READ);

@@ -55,7 +55,13 @@ namespace network {
          * getter the sockaddr_in structure
          * @return the sockaddr_in structure
          */
-        sockaddr_in getAddr() const;
+        sockaddr_in& getAddr();
+
+        /**
+         * getter the sockaddr_in structure
+         * @return the sockaddr_in structure
+         */
+        const sockaddr_in& getAddr() const;
 
         /**
          * set ip of host
@@ -82,6 +88,8 @@ namespace network {
          * @param addr use to set our field
          */
         void setAddr(const sockaddr_in& addr);
+
+        unsigned short getPort() const;
 
     private:
 

@@ -61,7 +61,7 @@ namespace network
          *
          * @param hostInfos contains host ip address and port
          */
-        void connect(const SockAddr &hostInfos);
+        void connect(SockAddr &hostInfos);
 
         /**
          * test if socket is writable or readable and calls send or recv
