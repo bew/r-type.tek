@@ -10,7 +10,6 @@
 #include <SFML/Graphics/Rect.hpp>
 
 #include "BSON/Document.hh"
-#include "Animation.hh"
 #include "AssetException.hh"
 
 namespace graphic {

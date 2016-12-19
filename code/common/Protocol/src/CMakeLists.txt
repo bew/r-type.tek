@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.0)
 
 set(LIB_SOURCE Protocol.cpp Answers.cpp Server.cpp Client.cpp)
+set(LIB_DEPENDENCIES BSON)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
 add_library(${LIB_TEST_NAME} SHARED ${LIB_SOURCE})
 
+target_link_libraries(${LIB_NAME} ${LIB_DEPENDENCIES})
+target_link_libraries(${LIB_TEST_NAME} BSON_test)
 install(TARGETS ${LIB_TEST_NAME} DESTINATION bin/test/lib)
 
 target_include_directories(${LIB_NAME} PUBLIC ${LIB_INCLUDE})
