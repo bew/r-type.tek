@@ -6,8 +6,6 @@
  *
  */
 
-#pragma once
-
 #include "CompHitbox.hh"
 
 namespace ECS {
