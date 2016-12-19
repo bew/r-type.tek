@@ -11,7 +11,6 @@ int main(void) {
   world.addSystem(new ECS::System::SysWindow());
   world.addSystemEntityComponent(new ECS::Component::CompWindow());
   while(true) {
-    std::cout << "TICK" << std::endl;
     world.update();
   }
   return 0;

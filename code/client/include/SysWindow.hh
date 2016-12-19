@@ -7,9 +7,26 @@
 
 namespace ECS {
   namespace System {
+
+    /**
+     * System for window
+     */
     class SysWindow : public ISystem {
-      virtual void update(ECS::WorldData &);
-      void update(ECS::Entity::Entity &);
+    public:
+      /**
+       * Update method
+       *
+       * @param world All the data about the world
+       */
+      virtual void update(ECS::WorldData &world);
+    protected:
+
+      /**
+       * Helper method to update a single entity
+       *
+       * @param entity The entity that will get updated
+       */
+      void update(ECS::Entity::Entity &entity);
     };
   }
 }

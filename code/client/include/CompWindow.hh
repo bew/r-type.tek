@@ -6,6 +6,10 @@
 
 namespace ECS {
   namespace Component {
+
+    /**
+     * Component for window
+     */
     class CompWindow : public AComponent {
     public:
       /**
@@ -14,7 +18,7 @@ namespace ECS {
       bool fullscreen;
   
       /**
-       * Window width in pc
+       * Window width in px
        */
       unsigned int width;
   
@@ -68,8 +72,14 @@ namespace ECS {
        */
       static const bool DEFAULT_FULLSCREEN;
 
+      /**
+       * Underlying sfml window
+       */
       sf::RenderWindow *window;
 
+      /**
+       * Default construtor
+       */
       CompWindow(void);
     };
   }
