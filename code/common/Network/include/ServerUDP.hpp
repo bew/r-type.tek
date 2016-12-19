@@ -49,7 +49,7 @@ namespace network
          * call the bind method of SocketUDP
          * @param hostInfos SockAddr pass to bind method
          */
-        virtual void bind(const SockAddr &hostInfos);
+        virtual void bind(SockAddr &hostInfos);
 
         /**
          * test if socket is writable or readable and calls send or recv

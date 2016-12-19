@@ -21,7 +21,7 @@ namespace network
             client->close();
     }
 
-    void ServerUDP::bind(const SockAddr &hostInfos)
+    void ServerUDP::bind(SockAddr &hostInfos)
     {
         _socket.bind(hostInfos);
         _selector.monitor(_socket.getSocket(), NetworkSelect::READ);

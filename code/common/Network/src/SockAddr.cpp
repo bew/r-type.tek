@@ -13,7 +13,10 @@ namespace network
     {
         _addr.sin_family = AF_INET;
         inet_pton(AF_INET, addr.c_str(), &(_addr.sin_addr));
-        _addr.sin_port = htons(port);
+        if (port > 0)
+            _addr.sin_port = htons(port);
+        else
+            _addr.sin_port = port;
     }
 
     SockAddr::SockAddr(unsigned short port)
@@ -23,7 +26,12 @@ namespace network
         _addr.sin_port = htons(port);
     }
 
-    sockaddr_in SockAddr::getAddr() const
+    sockaddr_in& SockAddr::getAddr()
+    {
+        return _addr;
+    }
+
+    const sockaddr_in& SockAddr::getAddr() const
     {
         return _addr;
     }
@@ -47,4 +55,10 @@ namespace network
     {
         return (!((*this) == rhs));
     }
+
+    unsigned short SockAddr::getPort() const
+    {
+        return ntohs(_addr.sin_port);
+    }
+
 }

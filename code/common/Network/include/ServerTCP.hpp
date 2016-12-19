@@ -57,7 +57,7 @@ namespace network
          * call the bind method of SocketTCP
          * @param hostInfos SockAddr pass to bind method
          */
-        virtual void bind(const SockAddr &hostInfos);
+        virtual void bind(SockAddr &hostInfos);
 
         /**
          * call the listen method of SocketTCP

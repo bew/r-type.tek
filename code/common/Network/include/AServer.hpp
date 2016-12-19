@@ -40,7 +40,7 @@ namespace network
          * call the bind method of TCP or UDP Socket
          * @param hostInfos SockAddr pass to bind method
          */
-        virtual void bind(const SockAddr &hostInfos) = 0;
+        virtual void bind(SockAddr &hostInfos) = 0;
 
         /**
          * call close method of socket

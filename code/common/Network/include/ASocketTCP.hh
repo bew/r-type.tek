@@ -51,7 +51,7 @@ namespace network
          *
          * @param hostInfos contains host ip address and port
          */
-        virtual void connect(const SockAddr& hostInfos) = 0;
+        virtual void connect(SockAddr& hostInfos) = 0;
 
         /**
          * read on socket
