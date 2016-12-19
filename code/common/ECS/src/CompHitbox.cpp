@@ -22,12 +22,12 @@ namespace ECS {
 
 	unsigned	CompHitbox::getMidWidth() const
 	{
-	    return _midHeight;
+	    return _midWidth;
 	}
 
 	unsigned	CompHitbox::getMidHeight() const
 	{
-	    return _midWidth;
+	    return _midHeight;
 	}
     }
 }
