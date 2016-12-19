@@ -88,27 +88,25 @@ namespace ECS {
       /**
        * Add a hook for eventName.
        * There may be multiple event for the same eventName
-       *
-       * @param eventName The name of the event that will fire the function
-       * @param event The event passed to hooks for eventName, if there are some
-       *
        * This event will always be processed in the NEXT event processing loop.
        *  This mean that if used before event processing loop, the event will be processed in current tick.
        *                 else it will be processed in NEXT tick.
+       *
+       * @param eventName The name of the event that will fire the function
+       * @param event The event passed to hooks for eventName, if there are some
        */
       void addEvent(const std::string &eventName, IEvent *event);
 
       /**
        * Add a hook for eventName.
        * There may be multiple event for the same eventName
-       *
-       * @param eventName The name of the event that will fire the function
-       * @param event The event passed to hooks for eventName, if there are some
-       *
        * This event will always be processed in the SAME tick.
        * This should not be used out of event handler.
        * This should NEVER be called "recusively", and actually should be used if you don't knwo
        *    exactly what you are doing. See _sameTickevents
+       *
+       * @param eventName The name of the event that will fire the function
+       * @param event The event passed to hooks for eventName, if there are some
        */
       void addSameTickEvent(const std::string &eventName, IEvent *event);
     };

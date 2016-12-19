@@ -41,12 +41,9 @@ namespace ECS {
       if (eventc) {
 
         for (auto ievent = eventc->_events.begin(); ievent != eventc->_events.end(); ievent++) {
-	  std::cout << "Processing event: " << (*ievent).first << std::endl;
 	  auto range = eventc->_hooks.equal_range((*ievent).first);
 	  for (auto ihook = range.first; ihook != range.second;) {
-	    std::cout << "Found HOOK !" << std::endl;
 	    if (!(*ihook).second((*ievent).second)) {
-	      std::cout << "Deleted last hook" << std::endl;
 	      eventc->_hooks.erase(ihook++);
 	    }
 	    else
@@ -67,7 +64,7 @@ namespace ECS {
 	    }
 	  }
 	}
-
+	
         eventc->_events = eventc->_nextTickEvents;
 	eventc->_nextTickEvents.clear();
       }
