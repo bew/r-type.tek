@@ -1,5 +1,11 @@
 #pragma once
 
+/**
+ * @file CompWindow.hh
+ * @author Nekhot.
+ * @brief Component for entity that need there own windows.
+ */
+
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window/VideoMode.hpp"
 #include "ECS/AComponent.hh"

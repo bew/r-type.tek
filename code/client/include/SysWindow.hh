@@ -1,5 +1,11 @@
 #pragma once
 
+/**
+ * @file SysWindow.hh
+ * @author Nekhot.
+ * @brief System for processing windows.
+ */
+
 #include "ECS/World.hh"
 #include "ECS/Entity.hh"
 #include "ECS/ISystem.hh"
