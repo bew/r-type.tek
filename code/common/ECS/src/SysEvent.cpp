@@ -3,6 +3,7 @@
  * @author Nekhot.
  * @brief Impelmentation of system procesing windows.
  */
+
 #include <iostream>
 #include "SysEvent.hh"
 
@@ -12,9 +13,9 @@ namespace ECS {
     void SysEvent::update(WorldData &world) {
       Component::CompEvent *eventc;
       eventc = dynamic_cast<Component::CompEvent*>(world._systemEntity.getComponent("event"));
-        if (eventc)
-          eventc->locked = true;
-	
+      if (eventc)
+	eventc->locked = true;
+
       for (Entity::Entity *entity : world._gameEntities) {
 	Component::CompEvent *eventc;
 	eventc = dynamic_cast<Component::CompEvent*>(entity->getComponent("event"));
@@ -22,12 +23,12 @@ namespace ECS {
 	  eventc->locked = true;
       }
       update(world._systemEntity);
-      for (Entity::Entity *entity : world._gameEntities) {	
+      for (Entity::Entity *entity : world._gameEntities) {
 	update(*entity);
       }
       eventc = dynamic_cast<Component::CompEvent*>(world._systemEntity.getComponent("event"));
-        if (eventc)
-          eventc->locked = false;
+      if (eventc)
+	eventc->locked = false;
       for (Entity::Entity *entity : world._gameEntities) {
 	Component::CompEvent *eventc = dynamic_cast<Component::CompEvent*>(entity->getComponent("event"));
 	if(eventc)
@@ -39,8 +40,7 @@ namespace ECS {
       Component::CompEvent *eventc = dynamic_cast<Component::CompEvent*>(entity.getComponent("event"));
       if (eventc) {
 
-	//consommer les events classiques
-	for (auto ievent = eventc->_events.begin(); ievent != eventc->_events.end(); ievent++) {
+        for (auto ievent = eventc->_events.begin(); ievent != eventc->_events.end(); ievent++) {
 	  std::cout << "Processing event: " << (*ievent).first << std::endl;
 	  auto range = eventc->_hooks.equal_range((*ievent).first);
 	  for (auto ihook = range.first; ihook != range.second;) {
@@ -53,29 +53,22 @@ namespace ECS {
 	      ++ihook;
 	  }
         }
-	
-	// Vider les events orphelins
 	eventc->_events.clear();
 
-	//boucler jusqu'a vider les sameFrameEvents
 	while (eventc->_sameTickEvents.size()) {
 	  for (auto ievent = eventc->_sameTickEvents.begin(); ievent != eventc->_sameTickEvents.end(); ievent++) {
-	    std::cout << "Processing SAME TICK EVENT event: " << (*ievent).first << std::endl;
 	    auto range = eventc->_hooks.equal_range((*ievent).first);
 	    for (auto ihook = range.first; ihook != range.second;) {
-	      std::cout << "Found HOOK !" << std::endl;
 	      if (!(*ihook).second((*ievent).second)) {
-		std::cout << "Deleted last hook" << std::endl;
 		eventc->_hooks.erase(ihook++);
 	      }
 	      else
 		++ihook;
-	    }   
+	    }
 	  }
 	}
-	
-	//Puis mettre les nextFrameEvents dans events, swap ?
-	eventc->_events = eventc->_nextTickEvents;
+
+        eventc->_events = eventc->_nextTickEvents;
 	eventc->_nextTickEvents.clear();
       }
     }

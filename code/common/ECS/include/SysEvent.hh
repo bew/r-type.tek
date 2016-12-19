@@ -1,4 +1,3 @@
-
 /**
  * @file SysEvent.hh
  * @author Nekhot.
@@ -37,5 +36,3 @@ namespace ECS {
     };
   }
 }
-
-
