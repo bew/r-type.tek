@@ -17,8 +17,6 @@ Server::~Server()
 
 unsigned Server::initNetwork(unsigned port)
 {
-  _serverSock.close();
-
   network::SockAddr addr(port);
   try
     {
@@ -29,7 +27,7 @@ unsigned Server::initNetwork(unsigned port)
       std::cerr << "server:init: " << e.what() << std::endl;
       return 0;
     }
-  return port; // TODO: use addr.getPort() to resolve port when port == 0
+  return addr.getPort();
 }
 
 void Server::run()
