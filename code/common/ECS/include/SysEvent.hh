@@ -7,9 +7,9 @@
 
 #pragma once
 
-#include "ECS/World.hh"
-#include "ECS/Entity.hh"
-#include "ECS/ISystem.hh"
+#include "World.hh"
+#include "Entity.hh"
+#include "ISystem.hh"
 #include "CompEvent.hh"
 
 namespace ECS {

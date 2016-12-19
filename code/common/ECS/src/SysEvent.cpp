@@ -3,28 +3,80 @@
  * @author Nekhot.
  * @brief Impelmentation of system procesing windows.
  */
-
+#include <iostream>
 #include "SysEvent.hh"
 
 namespace ECS {
   namespace System {
 
-    void SysWindow::update(WorldData &world) {
+    void SysEvent::update(WorldData &world) {
+      Component::CompEvent *eventc;
+      eventc = dynamic_cast<Component::CompEvent*>(world._systemEntity.getComponent("event"));
+        if (eventc)
+          eventc->locked = true;
+	
+      for (Entity::Entity *entity : world._gameEntities) {
+	Component::CompEvent *eventc;
+	eventc = dynamic_cast<Component::CompEvent*>(entity->getComponent("event"));
+	if (eventc)
+	  eventc->locked = true;
+      }
       update(world._systemEntity);
-      for (Entity &entity : world._gameEntities)
+      for (Entity::Entity *entity : world._gameEntities) {	
 	update(*entity);
+      }
+      eventc = dynamic_cast<Component::CompEvent*>(world._systemEntity.getComponent("event"));
+        if (eventc)
+          eventc->locked = false;
+      for (Entity::Entity *entity : world._gameEntities) {
+	Component::CompEvent *eventc = dynamic_cast<Component::CompEvent*>(entity->getComponent("event"));
+	if(eventc)
+	  eventc->locked = false;
+      }
     }
 
-    void SysWindow::update(Entity::Entity &entity) {
+    void SysEvent::update(Entity::Entity &entity) {
       Component::CompEvent *eventc = dynamic_cast<Component::CompEvent*>(entity.getComponent("event"));
       if (eventc) {
-	for (std::pair<std::string, IEvent *> event : eventc->_events) {
-	  auto range = eventc->_hooks.equal_range(event.first);
-	  for (std::pair<std::string, std::function<bool(IEvent*)>> ihook = range.first; ihook < range.second; ihook++)
-	    if (!(*ihook).second(event.second))
-	      eventc->_hooks.erase(ihook);
-	}
+
+	//consommer les events classiques
+	for (auto ievent = eventc->_events.begin(); ievent != eventc->_events.end(); ievent++) {
+	  std::cout << "Processing event: " << (*ievent).first << std::endl;
+	  auto range = eventc->_hooks.equal_range((*ievent).first);
+	  for (auto ihook = range.first; ihook != range.second;) {
+	    std::cout << "Found HOOK !" << std::endl;
+	    if (!(*ihook).second((*ievent).second)) {
+	      std::cout << "Deleted last hook" << std::endl;
+	      eventc->_hooks.erase(ihook++);
+	    }
+	    else
+	      ++ihook;
+	  }
+        }
+	
+	// Vider les events orphelins
 	eventc->_events.clear();
+
+	//boucler jusqu'a vider les sameFrameEvents
+	while (eventc->_sameTickEvents.size()) {
+	  for (auto ievent = eventc->_sameTickEvents.begin(); ievent != eventc->_sameTickEvents.end(); ievent++) {
+	    std::cout << "Processing SAME TICK EVENT event: " << (*ievent).first << std::endl;
+	    auto range = eventc->_hooks.equal_range((*ievent).first);
+	    for (auto ihook = range.first; ihook != range.second;) {
+	      std::cout << "Found HOOK !" << std::endl;
+	      if (!(*ihook).second((*ievent).second)) {
+		std::cout << "Deleted last hook" << std::endl;
+		eventc->_hooks.erase(ihook++);
+	      }
+	      else
+		++ihook;
+	    }   
+	  }
+	}
+	
+	//Puis mettre les nextFrameEvents dans events, swap ?
+	eventc->_events = eventc->_nextTickEvents;
+	eventc->_nextTickEvents.clear();
       }
     }
   }
