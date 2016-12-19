@@ -41,6 +41,12 @@ namespace ECS {
              */
             ~CompMovement();
 
+            enum FacingDirection
+            {
+                BACKWARD,
+                FORWARD
+            };
+
             /**
              * Coordinates of the entity.
              */
@@ -57,6 +63,10 @@ namespace ECS {
              * Current advance of the entity for <1 pixel movement.
              */
             coordinates<float>  _advance;
+            /**
+             * Direction faced by the entiy;
+             */
+            FacingDirection     _facingDir;
         };
 
     }
