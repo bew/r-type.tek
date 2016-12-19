@@ -1,10 +1,10 @@
-#pragma once
-
 /**
  * @file SysWindow.hh
  * @author Nekhot.
  * @brief System for processing windows.
  */
+
+#pragma once
 
 #include "ECS/World.hh"
 #include "ECS/Entity.hh"

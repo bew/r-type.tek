@@ -1,4 +1,8 @@
-#include <iostream>
+/**
+ * @file main.cpp
+ * @author Nekhot.
+ * @brief Dummy main for client. Create an ecs loop with a windowComponent
+ */
 
 #include "SysWindow.hh"
 #include "CompWindow.hh"

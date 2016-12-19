@@ -1,4 +1,9 @@
-#include <iostream>
+/**
+ * @file SysWindow.cpp
+ * @author Nekhot.
+ * @brief Impelmentation of system procesing windows.
+ */
+
 #include "SysWindow.hh"
 
 namespace ECS {

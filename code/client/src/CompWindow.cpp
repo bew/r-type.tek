@@ -1,3 +1,9 @@
+/**
+ * @file CompWindow.cpp
+ * @author Nekhot.
+ * @brief Implementation of Component for entity that need there own windows.
+ */
+
 #include "CompWindow.hh"
 
 namespace ECS {
