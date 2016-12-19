@@ -1,5 +1,67 @@
 #include "AssetStore.hpp"
 
+/**
+ * Specialisation for AnimatedSprite
+ */
+template<>
+void graphic::AssetStore::loadSingleRessource<graphic::AnimatedSpriteAsset>(std::unordered_map<std::string, graphic::AnimatedSpriteAsset> &store,
+									    const std::string &path,
+									    const std::string &directory,
+									    const std::string &extension) {
+  try {
+    store.emplace(std::piecewise_construct,
+		  std::forward_as_tuple(path),
+		  std::forward_as_tuple(_root + "/" + directory + "/" + _locale + "/" + path + extension,
+					_root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
+					_locale + "/" + path + graphic::AssetStore::ANIMATED_EXTENSION
+					)
+		  );
+  }
+  catch (const AssetException &e) {
+    if (_locale != graphic::AssetStore::DEFAULT_LOCALE)
+      _animatedSprites.emplace(std::piecewise_construct,
+			       std::forward_as_tuple(path),
+			       std::forward_as_tuple(_root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + path + extension,
+						     _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
+						     graphic::AssetStore::DEFAULT_LOCALE + "/" + path + graphic::AssetStore::ANIMATED_EXTENSION
+						     )
+			       );
+    else
+      throw e;
+  }
+}
+
+/**                                                                                                                                                                                          
+ * Specialisation for AnimatedSprite                                                                                                                                                         
+ */
+template<>
+void graphic::GroupedAssetStore::loadRessource<graphic::AnimatedSpriteAsset>(std::unordered_map<std::string, graphic::AnimatedSpriteAsset> &store, const std::string &directory) {
+  FileSystemWatcher watcher(_root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE);
+  std::vector<std::pair<std::string, FileSystemWatcher::Event>> _ressources = watcher.processEvents();
+  
+  for (auto i  = _ressources.begin(); i < _ressources.end(); i++) {
+    if ((*i).second == FileSystemWatcher::Add) {
+      if (ressourceExist(_root + "/" + directory + "/" + this->_locale + "/" + (*i).first) &&
+	  ressourceExist(_root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" + this->_locale + "/" + (*i).first))
+	store.emplace(std::piecewise_construct,
+		      std::forward_as_tuple(getRessourceName((*i).first)),
+		      std::forward_as_tuple(_root + "/" + directory + "/" + this->_locale + "/" + (*i).first,
+					    _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
+					    this->_locale + "/" + getRessourceName((*i).first) +  graphic::AssetStore::ANIMATED_EXTENSION
+					    )
+		      );
+      else
+	store.emplace(std::piecewise_construct,
+		      std::forward_as_tuple(getRessourceName((*i).first)),
+		      std::forward_as_tuple(_root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + (*i).first,
+					    _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
+					    graphic::AssetStore::DEFAULT_LOCALE + "/" + getRessourceName((*i).first) +  graphic::AssetStore::ANIMATED_EXTENSION
+					    )
+		      );
+    }
+  }
+}
+
 graphic::AssetStore::AssetStore(const std::string &root, const std::string &locale):
   _root(root),
   _locale(locale)
@@ -191,4 +253,4 @@ void graphic::GroupedAssetStore::loadAll(void) {
   }
   catch (const FileSystemWatcherException &e) {
   }
-};
+}

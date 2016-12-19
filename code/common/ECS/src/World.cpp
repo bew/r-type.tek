@@ -39,7 +39,7 @@ namespace ECS {
 	Entity::Entity	*testEntity = new Entity::Entity();
 	Component::ComponentTest *testComponent = new Component::ComponentTest();
 
-	testEntity->addComponent<Component::ComponentTest>(Component::TEST, testComponent);
+	testEntity->addComponent(testComponent);
 	_world._gameEntities.push_back(testEntity);
     }
 
@@ -53,5 +53,10 @@ namespace ECS {
 	for (auto &e : _systems)
 	    e->update(_world);
     }
+  
+  void World::addSystemEntityComponent(Component::AComponent *comp) {
+    _world._systemEntity.addComponent(comp);
+  }
+  
 
 }
