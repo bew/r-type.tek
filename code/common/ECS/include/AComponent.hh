@@ -31,7 +31,6 @@ namespace ECS
         public:
             /**
              * Constructor
-             * @param type The type of the component.
              */
             AComponent();
 
