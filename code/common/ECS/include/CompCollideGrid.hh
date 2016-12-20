@@ -59,11 +59,11 @@ namespace ECS {
 
             /**
              * Add an entity in a grid cell.
-             * @param y The column of the cell.
              * @param x The row of the cell.
+             * @param y The column of the cell.
              * @param entity The entity to be added.
              */
-            void        addInGrid(unsigned y, unsigned x, Entity::Entity *entity);
+            void        addInGrid(unsigned x, unsigned y, Entity::Entity *entity);
 
             /**
              * Empty the grid.
