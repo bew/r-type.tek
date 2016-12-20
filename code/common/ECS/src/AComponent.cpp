@@ -8,19 +8,15 @@
 
 #include "AComponent.hh"
 
-namespace ECS {
-    namespace Component {
+namespace ECS
+{
+    namespace Component
+    {
 
-	AComponent::AComponent(const std::string &type)
-	    : _type(type)
-	{}
+        AComponent::AComponent()
+        {}
 
-	AComponent::~AComponent()
-	{}
-	
-        const std::string	&AComponent::getType() const
-	{
-	    return _type;
-	}
+        AComponent::~AComponent()
+        {}
     }
 }
