@@ -10,6 +10,7 @@
 
 #include <string>
 #include <map>
+#include "BSON/Document.hh"
 
 /**
  * Namespace of ECS.
@@ -36,7 +37,7 @@ namespace ECS
         public:
             /**
              * Constructor
-             * @param type The type of the component.
+             * @param flags The flags of the component.
              */
             AComponent(short flags = 0);
 
@@ -70,6 +71,17 @@ namespace ECS
              */
             void unFlag(short flag);
 
+            /**
+             * serialize the component
+             * @return document contains component's attributes
+             */
+            virtual bson::Document serialize() const;
+
+            /**
+             * desialize a component by the document
+             * @param document that contains all attributes of the component
+             */
+            virtual void deserialize(const bson::Document& document);
             /**
              * flags of the component
              */

@@ -6,6 +6,7 @@
  */
 
 #include "AComponent.hh"
+#include "ComponentFlagException.hh"
 
 namespace ECS
 {
@@ -30,7 +31,23 @@ namespace ECS
 
         void AComponent::unFlag(short flag)
         {
-            _flags &= flag;
+            _flags &= ~flag;
+        }
+
+        bson::Document AComponent::serialize() const
+        {
+            if (this->isFlagged(SERIALIZABLE_MASK))
+                throw ComponentFlagException("Component does not override this method");
+            else
+                throw ComponentFlagException("Component is not serializable");
+        }
+
+        void AComponent::deserialize(const bson::Document& document)
+        {
+            if (this->isFlagged(SERIALIZABLE_MASK))
+                throw ComponentFlagException("Component does not override this method");
+            else
+                throw ComponentFlagException("Component is not serializable");
         }
     }
 }

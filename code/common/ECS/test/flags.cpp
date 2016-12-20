@@ -39,7 +39,7 @@ TEST(Flags, DeleteFlag)
 
     ASSERT_TRUE(isSerializable);
 
-    life->unFlag(~ECS::Component::SERIALIZABLE_MASK);
+    life->unFlag(ECS::Component::SERIALIZABLE_MASK);
 
     isSerializable = life->isFlagged(ECS::Component::SERIALIZABLE_MASK);
 
