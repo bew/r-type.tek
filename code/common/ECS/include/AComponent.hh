@@ -21,7 +21,7 @@ namespace ECS {
      */
     namespace Component {
 
-        /**
+	/**
 	 * Abstract class for components.
 	 */
 	class AComponent
