@@ -63,11 +63,10 @@ namespace protocol {
          * Create a message to update an entity to a client
          *
          * @param entity_id the id of the entity to update
-         * @param component the component to update
-         * @param data the data to update
+         * @param components a Document of components to update
          * @return the bson Document formatted for the following action
          */
-        bson::Document entityUpdate(int64_t entity_id, const std::string& component, const bson::Document& data);
+        bson::Document entityUpdate(int64_t entity_id, const bson::Document& components);
     }
 }
 

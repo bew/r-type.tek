@@ -7,12 +7,12 @@
 
 #pragma once
 
-#include "AClient.hpp"
+#include "AClient.hh"
 #include "SockAddr.hh"
 
 #ifdef __linux__
 
-#include "SocketLinuxUDP.h"
+#include "SocketLinuxUDP.hh"
 
 #elif defined _WIN32
 #include "SocketWindowsUDP.h"

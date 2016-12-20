@@ -1,20 +1,28 @@
-//
-// Created by Pierre Rousselle on 17/11/2016.
-//
+/**
+ * @file linuxLibraryLoader.hh
+ * @brief Header for linux dynamic library loading
+ * @author Nekhot
+ */
 
-#ifndef CONCEPTION_RTYPE_LINUXLIBRARYLOADER_HPP
-#define CONCEPTION_RTYPE_LINUXLIBRARYLOADER_HPP
+#pragma once
 
 #include <string>
 #include <dlfcn.h>
 #include <stdexcept>
 
+/**
+ * Forward declaration
+ */
 class LinuxLibraryLoader;
 
 #include "ALibraryLoader.hh"
 
+/**
+ * Class for loading dynamic library
+ */
 class LinuxLibraryLoader : public ALibraryLoader {
 public:
+  
   /**
    * Open the library and load symbols 
    *
@@ -34,6 +42,7 @@ public:
    * Close the library
    */
   ~LinuxLibraryLoader(void);
+
 private:
   /**
    * Name of the file of library to load
@@ -50,5 +59,3 @@ private:
    */
   IGenerator *(*_factory)(void);
 };
-
-#endif //CONCEPTION_RTYPE_LINUXLIBRARYLOADER_HPP

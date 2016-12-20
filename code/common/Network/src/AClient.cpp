@@ -1,10 +1,10 @@
 /**
- * @file AClient.hpp
+ * @file AClient.cpp
  * @author Tookie
  * @brief implementation of client abstraction
  */
 
-#include "AClient.hpp"
+#include "AClient.hh"
 
 namespace network
 {

@@ -57,6 +57,4 @@ namespace ECS {
   void World::addSystemEntityComponent(Component::AComponent *comp) {
     _world._systemEntity.addComponent(comp);
   }
-  
-
 }

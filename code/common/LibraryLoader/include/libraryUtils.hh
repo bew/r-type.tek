@@ -1,13 +1,12 @@
-//
-// Created by Pierre Rousselle on 17/11/2016.
-//
+/**
+ * @file libraryUtils.hh
+ * @brief Utils macro for easy writin generator, and Header for said Generator 
+ * @author Nekhot
+ */
 
-#ifndef CONCEPTION_RTYPE_LIB_H
-#define CONCEPTION_RTYPE_LIB_H
+#pragma once
 
 #include <type_traits>
-#include <memory>
-#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -17,6 +16,7 @@
  * Placeholder class for entity
  */
 class Entity {};
+
 /**
  * Placeholder class for storing game status
  */
@@ -32,12 +32,14 @@ class EngineStatus {
 
 /**
  * Base interface from which every dynamically loaded class must inherit
+ *
+ * THS NEED TO BE REFACTORED, DO NOT USE YET
  */
 class IGenerator {
 public:
   IGenerator(void) {};
   virtual ~IGenerator(void) {};
-
+  
   /**
    * Method to access the name of the generator.
    *
@@ -51,22 +53,22 @@ public:
    * It should not add or edit player entity.
    *
    * @return Vector of new entity to add
-   * @param Vector of current entity
+   * @param entities Vector of current entiter
    */
-  virtual std::vector<Entity>process(std::vector<Entity> &, EngineStatus &) = 0;
+  virtual std::vector<Entity>process(std::vector<Entity> &entities, EngineStatus &) = 0;
 };
 
 /**
  * What does it do:
  * STRING(test) => "test"
- * #define ANOTHER_MACRO test
+ * define ANOTHER_MACRO test
  * STRING(ANOTHER_MACRO) => "ANOTHER_MACRO"
  */
 #define STRING(s) #s
 
 /**
  * What does it do:
- * #define ANOTHER_MACRO test
+ * define ANOTHER_MACRO test
  * EXPAND_STRING(ANOTHER_MACRO) => "test"
  */
 #define EXPAND_STRING(s) STRING(s)
@@ -103,6 +105,4 @@ extern "C" {                                                                    
       "Exported type must have a public default constructor");				    \
     return new TARGET();  								    \
   }                                                                                         \
-}                                                                                           \
-
-#endif //CONCEPTION_RTYPE_LIB_H
+}

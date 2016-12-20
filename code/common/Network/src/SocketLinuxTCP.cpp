@@ -8,7 +8,7 @@
 #include <unistd.h>
 #include <cstring>
 #include <iostream>
-#include "SocketLinuxTCP.h"
+#include "SocketLinuxTCP.hh"
 #include "SocketException.hh"
 
 namespace network

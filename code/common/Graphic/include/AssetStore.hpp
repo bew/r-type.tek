@@ -1,5 +1,10 @@
-#ifndef _ASSETSTORE_HPP
-#define _ASSETSTORE_HPP
+/**
+ * @file AssetStore.hh
+ * @brief Header for asset store
+ * @author Nekhot
+ */
+
+#pragma once
 
 #include <string>
 #include <unordered_map>
@@ -362,7 +367,7 @@ namespace graphic {
     /**
      * @param root Root directory for asset
      * @param assetStore Subdirectory to load
-     * @param lcoale The locale to transmit to AssetStore
+     * @param locale The locale to transmit to AssetStore
      */
     GroupedAssetStore(const std::string &root, const std::string &assetStore, const std::string &locale);
 
@@ -398,7 +403,7 @@ namespace graphic {
      *
      * @tparam RESSOURCE The type of the store taken in parameter
      * @param store The store to put load this ressource type into.
-     * @tparam directory The directory to search this ressource type from.
+     * @param directory The directory to search this ressource type from.
      */
     template<typename RESSOURCE>
     void loadRessource(std::unordered_map<std::string, RESSOURCE> &store, const std::string &directory) {
@@ -421,7 +426,4 @@ namespace graphic {
    */
   template<>
   void graphic::GroupedAssetStore::loadRessource<graphic::AnimatedSpriteAsset>(std::unordered_map<std::string, graphic::AnimatedSpriteAsset> &store, const std::string &directory);
-
 }
-
-#endif

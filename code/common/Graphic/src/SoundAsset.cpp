@@ -1,3 +1,9 @@
+/**
+ * @file SoundAsset.cpp
+ * @brief Implementation for sound asset
+ * @author Nekhot
+ */
+
 #include "SoundAsset.hh"
 
 graphic::SoundAsset::SoundAsset(const std::string &path) {

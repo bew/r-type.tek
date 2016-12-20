@@ -1,5 +1,10 @@
-#ifndef _TEXTASSET_HPP
-#define _TEXTASSET_HPP
+/**
+ * @file TextAsset.hh
+ * @brief Header for text asset
+ * @author Nekhot
+ */
+
+#pragma once
 
 #include <string>
 #include <iostream>
@@ -109,5 +114,3 @@ namespace graphic {
     std::string *_text;
   };
 }
-
-#endif

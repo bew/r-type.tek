@@ -1,5 +1,10 @@
-#ifndef _ASSETEXCEPTION_HPP
-#define _ASSETEXCEPTION_HPP
+/**
+ * @file AssetException.hh
+ * @brief Header for asset exception
+ * @author Nekhot
+ */
+
+#pragma once
 
 #include <string>
 #include <stdexcept>
@@ -18,5 +23,3 @@ namespace graphic {
     AssetException(const std::string &e);
   };
 }
-
-#endif

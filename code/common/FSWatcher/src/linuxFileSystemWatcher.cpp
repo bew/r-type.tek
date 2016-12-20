@@ -1,6 +1,9 @@
-//
-// Created by Pierre Rousselle on 18/11/2016.
-//
+/**
+ * @file linuxFileSystemWatcher.cpp
+ * @brief Implementation for linux file system watcher class
+ * @author Nekhot
+ */
+
 #include "linuxFileSystemWatcher.hh"
 
 LinuxFileSystemWatcher::LinuxFileSystemWatcher(const std::string &dirName) :
