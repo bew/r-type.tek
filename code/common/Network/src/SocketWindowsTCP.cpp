@@ -7,7 +7,7 @@
 #include <iostream>
 #include <cstring>
 #include <winsock2.h>
-#include "SocketWindowsTCP.h"
+#include "SocketWindowsTCP.hh"
 #include "SocketException.hh"
 
 namespace network

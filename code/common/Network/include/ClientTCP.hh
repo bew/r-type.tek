@@ -7,11 +7,11 @@
 
 #pragma once
 
-#include "AClient.hpp"
+#include "AClient.hh"
 
 #ifdef __linux__
 
-#include "SocketLinuxTCP.h"
+#include "SocketLinuxTCP.hh"
 
 #elif defined _WIN32
 #include "SocketWindowsTCP.h"

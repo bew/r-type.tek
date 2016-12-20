@@ -1,5 +1,5 @@
 /**
- * @file ServerTCP.hpp
+ * @file ServerTCP.hh
  * @author Tookie
  * @brief representation of server tcp
  */
@@ -8,7 +8,7 @@
 
 #ifdef __linux__
 
-#include "SocketLinuxTCP.h"
+#include "SocketLinuxTCP.hh"
 
 #elif defined _WIN32
 #include "SocketWindowsTCP.h"
@@ -16,8 +16,8 @@
 
 #include <vector>
 #include <memory>
-#include "AServer.hpp"
-#include "ClientTCP.hpp"
+#include "AServer.hh"
+#include "ClientTCP.hh"
 
 /**
  * namespace that contains all network abstraction

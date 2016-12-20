@@ -194,3 +194,27 @@ TEST(Miscellaneous, clear) {
     message.clear();
     ASSERT_EQ(message.isEmpty(), true);
 }
+
+TEST(Miscellaneous, InnerDocument) {
+    bson::Document expectedDocumentDouble;
+    std::string keyDouble = u8"doubleKey";
+    double expectedDouble = 42.42;
+    expectedDocumentDouble << keyDouble << expectedDouble;
+
+    bson::Document document;
+    std::string keyDocumentDouble = u8"documentDouble";
+    document << keyDocumentDouble << expectedDocumentDouble;
+
+    ASSERT_EQ(document[keyDocumentDouble][keyDouble].getValueDouble(), expectedDouble);
+}
+
+TEST(Miscellaneous, ReplaceElement) {
+    bson::Document expectedDocumentDouble;
+    std::string keyDouble = u8"doubleKey";
+    double aDouble = 42.42;
+    double expectedDouble = 42.43;
+    expectedDocumentDouble << keyDouble << aDouble;
+    expectedDocumentDouble << keyDouble << expectedDouble;
+
+    ASSERT_EQ(expectedDocumentDouble[keyDouble].getValueDouble(), expectedDouble);
+}

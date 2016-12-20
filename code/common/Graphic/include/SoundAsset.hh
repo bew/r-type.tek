@@ -1,5 +1,10 @@
-#ifndef _SOUNDASSET_HPP
-#define _SOUNDASSET_HPP
+/**
+ * @file SoundAsset.hh
+ * @brief Header for sound asset
+ * @author Nekhot
+ */
+
+#pragma once
 
 #include <string>
 #include <SFML/Audio/SoundBuffer.hpp>
@@ -34,5 +39,3 @@ namespace graphic {
     sf::SoundBuffer _sound;
   };
 }
-
-#endif

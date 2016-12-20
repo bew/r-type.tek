@@ -1,3 +1,9 @@
+/**
+ * @file SpriteAsset.cpp
+ * @brief Implementation for sprite store
+ * @author Nekhot
+ */
+
 #include "SpriteAsset.hh"
 
 graphic::SpriteAsset::SpriteAsset(const std::string &path)

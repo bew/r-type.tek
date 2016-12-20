@@ -1,7 +1,9 @@
-//
-// Created by Pierre Rousselle on 18/11/2016.
-//
-#include <iostream>
+/**
+ * @file windowsLibraryLoader.cpp
+ * @brief Implementation for windows dynamic library loading
+ * @author Nekhot
+ */
+
 #include "windowsLibraryLoader.hh"
 
 WindowsLibraryLoader::WindowsLibraryLoader(const std::string &libName) : _libName(libName) {

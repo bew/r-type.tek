@@ -1,6 +1,9 @@
-//
-// Created by Pierre Rousselle on 18/11/2016.
-//
+/**
+ * @file windowsFileSystemWatcher.cpp
+ * @brief Implementation for windows file system watcher class
+ * @author Nekhot
+ */
+
 #include "windowsFileSystemWatcher.hh"
 
 WindowsFileSystemWatcher::WindowsFileSystemWatcher(const std::string &dirName) :

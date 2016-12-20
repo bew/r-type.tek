@@ -1,3 +1,9 @@
+/**
+ * @file AssetStore.cpp
+ * @brief Implementation for asset store
+ * @author Nekhot
+ */
+
 #include "AssetStore.hpp"
 
 /**

@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <SocketException.hh>
-#include "ServerUDP.hpp"
+#include "ServerUDP.hh"
 
 namespace network
 {
