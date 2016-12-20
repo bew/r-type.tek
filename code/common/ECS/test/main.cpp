@@ -1,12 +1,12 @@
 
 #include "gtest/gtest.h"
 #include "AComponent.hh"
-#include "ComponentTest.hh"
+#include "CompMovement.hh"
 #include "Entity.hh"
 
 TEST(ComponentType, CheckType) {
-    ECS::Component::ComponentTest test_comp;
-    ASSERT_EQ(test_comp.getType(), ECS::Component::TEST);
+    ECS::Component::CompMovement test_comp;
+    ASSERT_EQ(test_comp.getType(), ECS::Component::MOVEMENT);
 }
 
 int main(int argc, char **argv) {
