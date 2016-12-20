@@ -27,7 +27,7 @@ namespace ECS {
 	static const std::string MOVEMENT = "movement";
 
         /**
-         * Abstract class for components.
+         * class that represents entites movements.
          */
         class CompMovement : public AComponent
         {
