@@ -1,7 +1,7 @@
 /**
  * @file SysTick.hh
  * @author Nekhot.
- * @brief System for processing tick.
+ * @brief System for processing tick. Increment tick and block the thread to prevent ecs to run too fast.
  */
 
 #pragma once
