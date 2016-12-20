@@ -11,7 +11,7 @@
 #include "SocketLinuxTCP.hh"
 
 #elif defined _WIN32
-#include "SocketWindowsTCP.h"
+#include "SocketWindowsTCP.hh"
 #endif
 
 #include <vector>
