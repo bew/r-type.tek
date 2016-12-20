@@ -33,9 +33,8 @@ public:
    */
   ~Server();
 
-private:
-  Server(Server const & other);
-  Server & operator=(Server const & other);
+  Server(Server const & other) = delete;
+  Server & operator=(Server const & other) = delete;
 
 public:
   /**

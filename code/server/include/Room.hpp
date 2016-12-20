@@ -42,9 +42,8 @@ public:
    */
   ~Room();
 
-private:
-  Room(Room const & other);
-  Room & operator=(Room const & other);
+  Room(Room const & other) = delete;
+  Room & operator=(Room const & other) = delete;
 
 public:
   /**

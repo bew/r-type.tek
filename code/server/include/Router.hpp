@@ -29,9 +29,8 @@ public:
    */
   ~Request();
 
-private:
-  Request(Request const & other);
-  Request & operator=(Request const & other);
+  Request(Request const & other) = delete;
+  Request & operator=(Request const & other) = delete;
 
 public:
   /**

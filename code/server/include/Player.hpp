@@ -25,9 +25,8 @@ public:
    */
   ~Player();
 
-private:
-  Player(Player const & other);
-  Player & operator=(Player const & other);
+  Player(Player const & other) = delete;
+  Player & operator=(Player const & other) = delete;
 
 public:
   /**
