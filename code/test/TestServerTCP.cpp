@@ -5,7 +5,7 @@
 
 #include <iostream>
 #include "TestClientTCP.hpp"
-#include "ServerTCP.hpp"
+#include "ServerTCP.hh"
 #include "SocketException.hh"
 #include "gtest/gtest.h"
 #include "Document.hh"
