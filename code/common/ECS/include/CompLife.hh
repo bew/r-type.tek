@@ -28,9 +28,9 @@ namespace ECS
         static const std::string LIFE = "life";
 
         /**
-         * class that represents entites life.
+         * class that represents entities life.
          */
-        class CompLife: public AComponent
+        class CompLife : public AComponent
         {
         public:
             /**
@@ -40,7 +40,6 @@ namespace ECS
             CompLife(unsigned int maxLife);
 
             /**
-             *
              * Constructor of component life
              * @param maxLife max life of the entity
              * @param currentLife current life of the entity
@@ -53,19 +52,7 @@ namespace ECS
              */
             ~CompLife();
 
-            /**
-             * getter for current life
-             * @return the current life of the entity
-             */
-            unsigned int getCurrentLife() const;
-
-            /**
-             * setter for current life
-             * @param life is the new value of current life
-             */
-            void setCurrentLife(unsigned int life);
-
-        private:
+        public:
             /**
              * Current life of the entity
              */
@@ -74,7 +61,7 @@ namespace ECS
             /**
              * max life of the entity
              */
-            const unsigned int MAX_LIFE;
+            const unsigned int _maxLife;
         };
 
     }

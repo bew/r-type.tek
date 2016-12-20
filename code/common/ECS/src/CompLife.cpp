@@ -13,13 +13,13 @@ namespace ECS
     {
 
         CompLife::CompLife(unsigned int maxLife) : AComponent(LIFE),
-                                                   MAX_LIFE(maxLife), _currentLife(MAX_LIFE)
+                                                   _maxLife(maxLife), _currentLife(_maxLife)
         {
 
         }
 
         CompLife::CompLife(unsigned int maxLife, unsigned int currentLife) : AComponent(LIFE),
-                                                                             MAX_LIFE(maxLife),
+                                                                             _maxLife(maxLife),
                                                                              _currentLife(currentLife)
         {
 
@@ -28,16 +28,6 @@ namespace ECS
         CompLife::~CompLife()
         {
 
-        }
-
-        unsigned int CompLife::getCurrentLife() const
-        {
-            return _currentLife;
-        }
-
-        void CompLife::setCurrentLife(unsigned int life)
-        {
-            _currentLife = life;
         }
 
     }
