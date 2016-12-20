@@ -14,42 +14,38 @@
 /**
  * Namespace of ECS.
  */
-namespace ECS {
+namespace ECS
+{
 
     /**
      * Namespace of components.
      */
-    namespace Component {
+    namespace Component
+    {
 
-	/**
-	 * Abstract class for components.
-	 */
-	class AComponent
-	{
-	public:
-	    /**
-	     * Constructor
-	     * @param type The type of the component.
-	     */
-	    AComponent(const std::string &type);
+        /**
+         * Abstract class for components.
+         */
+        class AComponent
+        {
+        public:
+            /**
+             * Constructor
+             * @param type The type of the component.
+             */
+            AComponent();
 
-	    /**
-	     * Virtual destructor.
-	     */
-	    virtual ~AComponent();
+            /**
+             * Virtual destructor.
+             */
+            virtual ~AComponent();
 
-	    /**
-	     * Getter for the component type.
-	     * @return the component type.
-	     */
-	    const std::string	&getType() const;
-
-	protected:
-	    /**
-	     * Type of the component.
-	     */
-	    const std::string	_type;
-	};
+            /**
+             * Getter for the component type.
+             * @return the component type.
+             */
+            virtual const std::string &getType() const = 0;
+        };
 
     }
 }

@@ -52,6 +52,12 @@ namespace ECS
              */
             ~CompLife();
 
+            /**
+             * get the type of component
+             * @return string that reprents his type
+             */
+            virtual const std::string	&getType() const;
+
         public:
             /**
              * Current life of the entity
