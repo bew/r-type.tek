@@ -15,12 +15,13 @@ Server::Server(std::string const & name) :
 Server::~Server()
 {}
 
-unsigned Server::initNetwork(unsigned port)
+unsigned Server::initNetwork(unsigned port, unsigned nb_client_max)
 {
   network::SockAddr addr(port);
   try
     {
       _serverSock.bind(addr);
+      _serverSock.listen(nb_client_max);
     }
   catch (network::SocketException const & e)
     {

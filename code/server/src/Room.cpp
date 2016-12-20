@@ -13,11 +13,10 @@ Room::Room(unsigned int nbSlots) :
 Room::~Room()
 {}
 
-bool Room::addPlayer(std::shared_ptr<Player> const & player)
+void Room::addPlayer(std::shared_ptr<Player> const & player)
 {
   if (_players.size() >= _nbSlots)
-    return false;
+    throw FullRoom();
 
   _players.push_back(player);
-  return true;
 }

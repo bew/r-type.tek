@@ -42,9 +42,10 @@ public:
    *
    * @param port The port on which to bind the server. If not given, the first
    * available port will be taken.
+   * @param nb_client_max The maximum number of client to handle.
    * @return The used port, 0 if there where an error.
    */
-  unsigned initNetwork(unsigned port = 0);
+  unsigned initNetwork(unsigned port = 0, unsigned nb_client_max = 255);
 
   /**
    * Run the main server logic

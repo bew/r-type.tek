@@ -62,14 +62,15 @@ void Router::routePacket(bson::Document const & packet) const
 {
   Request req(packet);
 
-  auto header = req.getHeader();
+  auto & header = req.getHeader();
   std::string action;
 
   header["action"] >> action;
 
-  if (!_handlers.count(action) && _fallbackHandler)
+  if (!_handlers.count(action))
     {
-      _fallbackHandler(req);
+      if (_fallbackHandler)
+	_fallbackHandler(req);
       return;
     }
 
