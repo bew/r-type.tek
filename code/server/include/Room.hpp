@@ -52,7 +52,7 @@ public:
    * @param player The player to add to the room
    * @return false if there is no more slot available
    */
-  bool addPlayer(std::shared_ptr<Player> const & player);
+  void addPlayer(std::shared_ptr<Player> const & player);
 
 protected:
   /**

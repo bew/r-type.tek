@@ -12,7 +12,7 @@
 # include <memory>
 # include "Player.hpp"
 # include "Room.hpp"
-# include "Network/ServerTCP.hpp"
+# include "Network/ServerTCP.hh"
 
 /**
  * Represent the server
@@ -45,7 +45,7 @@ public:
    * @param nb_client_max The maximum number of client to handle.
    * @return The used port, 0 if there where an error.
    */
-  unsigned initNetwork(unsigned port = 0, unsigned nb_client_max = 255);
+  unsigned initNetwork(unsigned port = 0);
 
   /**
    * Run the main server logic
