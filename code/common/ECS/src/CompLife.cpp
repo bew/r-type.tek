@@ -12,13 +12,13 @@ namespace ECS
     namespace Component
     {
 
-        CompLife::CompLife(unsigned int maxLife) : AComponent(LIFE),
+        CompLife::CompLife(unsigned int maxLife) : AComponent(),
                                                    _maxLife(maxLife), _currentLife(_maxLife)
         {
 
         }
 
-        CompLife::CompLife(unsigned int maxLife, unsigned int currentLife) : AComponent(LIFE),
+        CompLife::CompLife(unsigned int maxLife, unsigned int currentLife) : AComponent(),
                                                                              _maxLife(maxLife),
                                                                              _currentLife(currentLife)
         {
@@ -28,6 +28,11 @@ namespace ECS
         CompLife::~CompLife()
         {
 
+        }
+
+        const std::string	&CompLife::getType() const
+        {
+            return Component::LIFE;
         }
 
     }

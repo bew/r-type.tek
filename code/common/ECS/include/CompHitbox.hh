@@ -27,7 +27,7 @@ namespace ECS {
 	 */
 	static const std::string HITBOX = "hitbox";
 	
-        /**
+    /**
 	 * Hitboxes of game entites.
 	 */
 	class CompHitbox : public AComponent
@@ -43,7 +43,13 @@ namespace ECS {
 	     * Destructor
 	     */
 	    ~CompHitbox();
-	    
+
+		/**
+         * get the type of component
+         * @return string that reprents his type
+         */
+		virtual const std::string	&getType() const;
+
 	    /**
 	     * Half the width of the hitbox.
 	     */
