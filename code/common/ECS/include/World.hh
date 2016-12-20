@@ -67,20 +67,6 @@ namespace ECS {
 	 * Calculate one frame of the r-type game.
 	 */
 	void	update();
-	
-	/**
-	 * For Testing purpose
-	 *
-	 * Initiate the systems of the world.
-	 */
-	void	initTestSystem();
-
-	/**
-	 * For Testing purpose
-	 *
-	 * Add a test entity in the world.
-	 */
-	void	addTestEntity();
 
 	/**
 	 * Add a system in the world.

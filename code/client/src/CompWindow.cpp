@@ -10,7 +10,6 @@ namespace ECS {
   namespace Component {
 
     CompWindow::CompWindow(void) :
-      AComponent("window"),
       fullscreen(DEFAULT_FULLSCREEN),
       width(DEFAULT_WIDTH),
       height(DEFAULT_HEIGHT),
@@ -26,5 +25,10 @@ namespace ECS {
     const unsigned int CompWindow::DEFAULT_HEIGHT = 600;
     const unsigned int CompWindow::DEFAULT_AA = 0;
     const bool CompWindow::DEFAULT_FULLSCREEN = false;
-  }
+
+    const std::string &CompWindow::getType() const
+    {
+      return Component::WINDOW;
+    }
+  }  
 }

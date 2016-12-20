@@ -1,7 +1,7 @@
 /**
- * @file SysWindow.cpp
+ * @file SysEvent.cpp
  * @author Nekhot.
- * @brief Impelmentation of system procesing windows.
+ * @brief Impelmentation of system procesing events.
  */
 
 #include <iostream>
