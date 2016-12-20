@@ -208,7 +208,7 @@ TEST(Miscellaneous, InnerDocument) {
     ASSERT_EQ(document[keyDocumentDouble][keyDouble].getValueDouble(), expectedDouble);
 }
 
-TEST(Miscellaneousm, ReplaceElement) {
+TEST(Miscellaneous, ReplaceElement) {
     bson::Document expectedDocumentDouble;
     std::string keyDouble = u8"doubleKey";
     double aDouble = 42.42;

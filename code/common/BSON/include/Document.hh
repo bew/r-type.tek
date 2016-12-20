@@ -181,7 +181,7 @@ namespace bson {
              *
              * @param key the key of the Element to get innerly
              * @throw BsonException if the stored type is not a Document or if the key inner the Document doesn't exist
-             * @return  the Element inside the inner Document
+             * @return the Element inside the inner Document
              */
             Document::Element operator[](const std::string &key) const;
 
