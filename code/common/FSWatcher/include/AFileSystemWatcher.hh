@@ -26,7 +26,7 @@ public:
     Change,
     Remove
   };
-  
+
   /**
    * Construct a filesystemwatcher for specific directory
    *
@@ -40,7 +40,7 @@ public:
   virtual ~AFileSystemWatcher(void);
 
   /**
-   * synchronously process list of event that happend to 
+   * synchronously process list of event that happend to
    *
    * @return A vector of event, each event being a pair of filename and event
    * @throw FileSystemWAtcherException
@@ -61,7 +61,7 @@ protected:
 class FileSystemWatcherException : public std::runtime_error {
 public:
   /**
-   * Exception thrown in case of file system error 
+   * Exception thrown in case of file system error
    *
    * @param error String descibing what cause the exception
    */

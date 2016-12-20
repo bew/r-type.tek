@@ -31,7 +31,7 @@ public:
  * Allow user to write plateform independent code.
  *
  * Exemple:
- *  #include "ALibraryLoader.hpp"
+ *  include "ALibraryLoader.hpp"
  *  LibraryLoader exemple("some library");
  *
  *  Be carefull to compile only the target system corresponding implementation

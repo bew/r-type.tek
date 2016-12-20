@@ -28,7 +28,7 @@ public:
    * Construct and begin th process of reading filesystem event
    * 
    * @throw FileSystemWatcherEcception
-   * @param diName The name of the directory to watch change from
+   * @param dirName The name of the directory to watch change from
    * @return
    */
   WindowsFileSystemWatcher(const std::string &dirName);
