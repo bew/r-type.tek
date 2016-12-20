@@ -100,6 +100,11 @@ namespace bson {
         document = this->getValueDocument();
     }
 
+    Document::Element Document::Element::operator[](const std::string &key) const {
+        Document document = this->getValueDocument();
+        return document[key];
+    }
+
     bool Document::Element::getValueBool() const {
         this->isRightType(bson::BOOL);
 
@@ -263,8 +268,18 @@ namespace bson {
     }
 
     void Document::insertElement(bson::type valueType, const std::vector<unsigned char> &elementBuffer) {
-        Document::Element element(valueType, _lastKey, elementBuffer);
-        _elements.push_back(element);
+        Document::Element newElement(valueType, _lastKey, elementBuffer);
+
+        size_t i = 0;
+        for (const auto &element : _elements) {
+            if (element.getKey() == _lastKey) {
+                _elements[i] = newElement;
+                return ;
+            }
+            ++i;
+        }
+
+        _elements.push_back(newElement);
     }
 
     std::vector<unsigned char> Document::getBuffer() const {
