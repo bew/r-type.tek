@@ -31,7 +31,7 @@ endmacro(suffix_list)
 # MAIN COMMON LIB
 #------------------------------------
 set(RT_COMMON_NAMES)
-set(RT_COMMON_INCLUDE)
+set(RT_COMMON_INCLUDES)
 add_subdirectory("common")
 
 # CLIENT/SERVER PROJECTS
