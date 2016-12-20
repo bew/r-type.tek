@@ -49,6 +49,11 @@ namespace ECS {
        * Default name for the windows
        */
       std::string title;
+
+      /**
+       * Has the configuratio changed (should be set in getter but i'm lazy)
+       */
+      bool changed;
   
       /**
        * Default title
@@ -90,7 +95,15 @@ namespace ECS {
        */
       CompWindow(void);
 
+      /**
+       * @return ECS::Cmponent::WINDOW
+       */
       virtual const std::string &getType() const;
+
+      /**
+       * Default Dtor
+       */
+      ~CompWindow(void)
     };
   }
 }

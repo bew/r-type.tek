@@ -16,6 +16,7 @@ namespace ECS {
       bpp(DEFAULT_BPP),
       aaliasing(DEFAULT_AA),
       title(DEFAULT_TITLE),
+      changed(false),
       window(nullptr)
     {};
 
@@ -26,9 +27,12 @@ namespace ECS {
     const unsigned int CompWindow::DEFAULT_AA = 0;
     const bool CompWindow::DEFAULT_FULLSCREEN = false;
 
-    const std::string &CompWindow::getType() const
-    {
+    const std::string &CompWindow::getType() const {
       return Component::WINDOW;
+    }
+
+    CompWindow::~CompWindow(void) {
+      delete window;
     }
   }  
 }

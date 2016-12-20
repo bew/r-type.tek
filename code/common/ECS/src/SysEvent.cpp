@@ -48,6 +48,7 @@ namespace ECS {
 	    }
 	    else
 	      ++ihook;
+	    delete (*ievent).second;
 	  }
         }
 	eventc->_events.clear();
