@@ -14,7 +14,7 @@ TEST(Network, SingleClientTcp)
 {
     try
     {
-        std::srand(std::time(0)); // use current time as seed for random generator
+        std::srand(static_cast<unsigned int>(std::time(0))); // use current time as seed for random generator
         unsigned short random_variable = std::rand() % 65000 + 2500;
         network::SockAddr clienInfos(random_variable);
         network::SockAddr serverInfos(random_variable, "127.0.0.1");
@@ -75,7 +75,7 @@ TEST(Network, TwoClientTcp)
 {
     try
     {
-        std::srand(std::time(0)); // use current time as seed for random generator
+        std::srand(static_cast<unsigned int>(std::time(0))); // use current time as seed for random generator
         unsigned short random_variable = std::rand() % 65000 + 2500;
 
         network::SockAddr clienInfos(random_variable);
@@ -161,7 +161,7 @@ TEST(Network, FourClientTcp)
 {
     try
     {
-        std::srand(std::time(0)); // use current time as seed for random generator
+        std::srand(static_cast<unsigned int>(std::time(0))); // use current time as seed for random generator
         unsigned short random_variable = std::rand() % 65000 + 2500;
 
         network::SockAddr clienInfos(random_variable);
