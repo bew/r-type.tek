@@ -100,16 +100,20 @@ TEST(Server, GameLeave) {
 }
 
 /**
- * Check if the message RoomLeave build correctly
+ * Check if the message EntityUpdate build correctly
  */
 TEST(Server, EntityUpdate) {
     int64_t entity_id = 4242;
-    std::string component("test");
-    bson::Document messageData;
-    messageData << "x" << 0;
-    messageData << "y" << 10;
+    bson::Document componentTest;
+    bson::Document componentData;
+    componentData << "x" << 0;
+    componentData << "y" << 10;
+    componentTest << "data" << componentData;
 
-    bson::Document message = protocol::server::entityUpdate(entity_id, component, messageData);
+    bson::Document components;
+    components << "test" << componentTest;
+
+    bson::Document message = protocol::server::entityUpdate(entity_id, components);
 
     bson::Document header = message["header"].getValueDocument();
     EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
@@ -120,6 +124,5 @@ TEST(Server, EntityUpdate) {
 
     bson::Document data = message["data"].getValueDocument();
     EXPECT_EQ(data["entity_id"].getValueInt64(), entity_id);
-    EXPECT_EQ(data["component"].getValueString(), component);
-    EXPECT_EQ(data["data"].getValueDocument(), messageData);
+    EXPECT_EQ(data["components"]["test"].getValueDocument(), componentTest);
 }
