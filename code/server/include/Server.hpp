@@ -24,7 +24,6 @@ public:
    * Construct a server instance, with a name on a specified port
    *
    * @param name The name of the server used for server identification on the network
-   * @param port The port on which to start the server
    */
   Server(std::string const & name);
 
