@@ -1,5 +1,10 @@
-#ifndef _ANIMATEDSPRITEASSET_HPP
-#define _ANIMATEDSPRIETASSET_HPP
+/**
+ * @file AnimatedSpriteAsset.hh
+ * @brief Header for animated sprite asset
+ * @author Nekhot
+ */
+
+#pragma once
 
 #include <string>
 #include <vector>
@@ -37,23 +42,23 @@ namespace graphic {
     /**
      * Construct an AnimatedSpriteAsset
      *
-     * @param path: the path of the texturefile to open
-     * @param animspecPath: the path of the BSON file holding information about the animations and frames 
-     * @throw AssetException: if the sprite asset at path cannot be openned, or loaded
+     * @param path The path of the texturefile to open
+     * @param animSpecPath The path of the BSON file holding information about the animations and frames 
+     * @throw AssetException If the sprite asset at path cannot be openned, or loaded
      */
     AnimatedSpriteAsset(const std::string &path, const std::string &animSpecPath);
 
     /**
      * Get the wrapped sf::texture
      *
-     * @return : the wrapped texture
+     * @return The wrapped texture
      */
     const sf::Texture &getLowLevelTexture(void) const;
 
     /**
      * Get the animations specifications
      *
-     * @return : the animations specification
+     * @return The animations specification
      */
     const std::unordered_map<std::string, graphic::AnimatedSpriteAsset::FrameDescriptions> &getAnimations(void) const;
     
@@ -70,5 +75,3 @@ namespace graphic {
     std::unordered_map<std::string, graphic::AnimatedSpriteAsset::FrameDescriptions> _animations;
   };
 }
-
-#endif

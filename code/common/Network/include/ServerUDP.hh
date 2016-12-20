@@ -1,5 +1,5 @@
 /**
- * @file ServerUDP.hpp
+ * @file ServerUDP.hh
  * @author Tookie
  * @brief representation of server udp
  */
@@ -8,12 +8,12 @@
 
 #include <vector>
 #include <memory>
-#include "AServer.hpp"
-#include "ClientUDP.hpp"
+#include "AServer.hh"
+#include "ClientUDP.hh"
 
 #ifdef __linux__
 
-#include "SocketLinuxUDP.h"
+#include "SocketLinuxUDP.hh"
 
 #elif defined _WIN32
 #include "SocketWindowsUDP.h"
@@ -62,7 +62,7 @@ namespace network
          * append a message to the client write buffer
          *
          * @param client pointer to one ClientTCP
-         * @param message string that will be add to the client write buffer
+         * @param msg string that will be add to the client write buffer
          */
         void addMessage(const std::shared_ptr<ClientUDP> client, const std::string &msg);
 

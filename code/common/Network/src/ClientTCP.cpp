@@ -6,7 +6,7 @@
 
 
 #include <iostream>
-#include "ClientTCP.hpp"
+#include "ClientTCP.hh"
 #include "SocketException.hh"
 
 namespace network

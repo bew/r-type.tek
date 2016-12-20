@@ -1,5 +1,10 @@
-#ifndef _SPRITEASSET_HPP
-#define _SPRIETASSET_HPP
+/**
+ * @file SpriteAsset.hh
+ * @brief Header sprite text asset
+ * @author Nekhot
+ */
+
+#pragma once
 
 #include <string>
 #include "SFML/Graphics/Texture.hpp"
@@ -36,5 +41,3 @@ namespace graphic {
     sf::Texture _texture;
   };
 }
-
-#endif

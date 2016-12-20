@@ -1,8 +1,9 @@
-//
-// Created by Pierre Rousselle on 18/11/2016.
-//
+/**
+ * @file linuxLibraryLoader.cpp
+ * @brief Implementation for linux dynamic library loading
+ * @author Nekhot
+ */
 
-#include <iostream>
 #include "linuxLibraryLoader.hh"
 
 LinuxLibraryLoader::LinuxLibraryLoader(const std::string &libName) : _libName(libName) {

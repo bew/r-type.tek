@@ -9,11 +9,11 @@
 #include <mutex>
 #include <queue>
 #include <atomic>
-#include <ClientTCP.hpp>
-#include <ServerTCP.hpp>
+#include <ClientTCP.hh>
+#include <ServerTCP.hh>
 #include <cstdlib>
-#include <ClientUDP.hpp>
-#include <ServerUDP.hpp>
+#include <ClientUDP.hh>
+#include <ServerUDP.hh>
 
 class ATask
 {

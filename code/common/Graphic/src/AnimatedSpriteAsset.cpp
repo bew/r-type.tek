@@ -1,3 +1,9 @@
+/**
+ * @file AnimatedSpriteAsset.cpp
+ * @brief Implementation for animated sprite asset
+ * @author Nekhot
+ */
+
 #include "AnimatedSpriteAsset.hh"
 
 graphic::AnimatedSpriteAsset::AnimatedSpriteAsset(const std::string &path, const std::string &animSpecPath) {
