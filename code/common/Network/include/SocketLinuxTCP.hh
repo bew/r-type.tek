@@ -31,7 +31,7 @@ namespace network
         /**
          * Constructor of SocketLinuxTCP
          *
-         * @params socket fd of the socket already created
+         * @param socket fd of the socket already created
          */
         SocketLinuxTCP(Socket_t socket);
 

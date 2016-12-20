@@ -37,7 +37,7 @@ namespace network {
 
         /**
          * Constructor of ASocketTCP
-         * @params socket fd of the socket already created
+         * @param socket fd of the socket already created
          */
         ASocket(Socket_t socket);
 
