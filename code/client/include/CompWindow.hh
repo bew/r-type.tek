@@ -13,6 +13,8 @@
 namespace ECS {
   namespace Component {
 
+    static const std::string WINDOW = "window";
+
     /**
      * Component for window
      */
@@ -87,6 +89,8 @@ namespace ECS {
        * Default construtor
        */
       CompWindow(void);
+
+      virtual const std::string &getType() const;
     };
   }
 }

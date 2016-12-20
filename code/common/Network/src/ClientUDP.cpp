@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include "SocketException.hh"
-#include "ClientUDP.hpp"
+#include "ClientUDP.hh"
 
 namespace network
 {

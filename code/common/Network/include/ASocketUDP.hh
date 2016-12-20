@@ -35,8 +35,7 @@ namespace network
         /**
          * read on socket
          *
-         * @param contains host ip address and port
-         *
+         * @param hostInfos contains host ip address and port
          * @return the string read on the socket
          */
         virtual std::string recv(SockAddr &hostInfos) = 0;

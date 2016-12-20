@@ -177,6 +177,15 @@ namespace bson {
             void operator>>(Document &document) const;
 
             /**
+             * Get the Element for inner Document
+             *
+             * @param key the key of the Element to get innerly
+             * @throw BsonException if the stored type is not a Document or if the key inner the Document doesn't exist
+             * @return the Element inside the inner Document
+             */
+            Document::Element operator[](const std::string &key) const;
+
+            /**
              * Get the bool representation from the value stored in it's BSON representation
              *
              * @throw BsonException if the asked type is not the one stored

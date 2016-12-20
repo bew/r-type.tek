@@ -45,7 +45,7 @@ namespace network {
          *
          * @return true if it's readable else false
          *
-         * @param socket represent the socket that will be tested
+         * @param sockFd represent the socket that will be tested
          */
         bool isReadable(Socket_t sockFd) const;
 
@@ -54,14 +54,14 @@ namespace network {
          *
          * @return true if it's readable else false
          *
-         * @params socket represent the socket that will be tested
+         * @param sockFd represent the socket that will be tested
          */
         bool isWritable(Socket_t sockFd) const;
 
         /**
          * monitor socket's fd in read or write mode according to the type
          *
-         * @param socket socket that will be monitor
+         * @param sockFd socket that will be monitor
          *
          * @param type READ or WRITE
          *
@@ -72,7 +72,7 @@ namespace network {
         /**
          * unmonitor socket's fd in read or write mode according to the type
          *
-         * @param socket socket that will be unmonitor
+         * @param sockFd socket that will be unmonitor
          *
          * @param type READ or WRITE
          *

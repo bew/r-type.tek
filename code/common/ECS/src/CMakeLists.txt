@@ -2,6 +2,7 @@ set(LIB_SOURCE AComponent.cpp ComponentTest.cpp Entity.cpp SystemTest.cpp World.
 set(LIB_SOURCE ${LIB_SOURCE} CompEvent.cpp SysEvent.cpp)
 set(LIB_SOURCE ${LIB_SOURCE} CompHitbox.cpp CompMovement.cpp)
 set(LIB_SOURCE ${LIB_SOURCE} CompLife.cpp)
+set(LIB_SOURCE ${LIB_SOURCE} CompTick.cpp SysTick.cpp)
 
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})

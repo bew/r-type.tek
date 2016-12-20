@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "ASocketUDP.h"
+#include "ASocketUDP.hh"
 
 /**
  * namespace that contains all network abstraction
@@ -46,7 +46,7 @@ namespace network {
         /**
          * read in socket and add read message to the read buffer
          *
-         * @param contains host ip address and port
+         * @param hostInfos contains host ip address and port
          *
          * @return string read on the socket
          */

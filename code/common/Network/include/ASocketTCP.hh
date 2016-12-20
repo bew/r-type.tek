@@ -30,7 +30,7 @@ namespace network
 
         /**
          * Constructor of ASocketTCP
-         * @params socket fd of the socket already created
+         * @param socket fd of the socket already created
          */
         ASocketTCP(Socket_t socket);
 
@@ -51,7 +51,7 @@ namespace network
          *
          * @param hostInfos contains host ip address and port
          */
-        virtual void connect(SockAddr& hostInfos) = 0;
+        virtual void connect(SockAddr &hostInfos) = 0;
 
         /**
          * read on socket
