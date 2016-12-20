@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "TestClientUDP.hpp"
-#include "ServerUDP.hpp"
+#include "ServerUDP.hh"
 #include "SocketException.hh"
 #include "gtest/gtest.h"
 #include "Document.hh"

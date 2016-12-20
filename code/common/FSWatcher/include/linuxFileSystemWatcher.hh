@@ -1,13 +1,17 @@
-//
-// Created by Pierre Rousselle on 18/11/2016.
-//
+/**
+ * @file linuxFileSystemWatcher.hh
+ * @brief Header for linux file system watcher class
+ * @author Nekhot
+ */
 
-#ifndef CONCEPTION_RTYPE_LINUXFILESYSTEMWATCHER_HPP
-#define CONCEPTION_RTYPE_LINUXFILESYSTEMWATCHER_HPP
+#pragma once
 
 #include <sys/types.h>
 #include <dirent.h>
 
+/**
+ * Forward declaration
+ */
 class LinuxFileSystemWatcher;
 
 #include "AFileSystemWatcher.hh"
@@ -38,5 +42,3 @@ private:
    */
   std::vector<std::string> _files;
 };
-
-#endif //CONCEPTION_RTYPE_LINUXFILESYSTEMWATCHER_HPP_

@@ -1,5 +1,10 @@
-#ifndef _MAKE_DEPENDENT_HPP
-#define _MAKE_DEPENDENT_HPP
+/**
+ * @file Dependent_ptr.hh
+ * @brief Header for dependent_ptr
+ * @author Nekhot
+ */
+
+#pragma once
 
 #include <memory>
 
@@ -7,15 +12,11 @@
  * This class allow for safe use of object that depend on another, whose lifecycle is not fully controlled.
  * The responsability of deleting taregt goes to Dependent_ptr
  * Also, the responsability of deleting dependence goes to the shared_ptr wrapping it passed at ctor.
- *
  * Exmple:
- *
  * std::shared_ptr<Loader> dep(new Loader());
  * Dependent_ptr<Loader, Loaded> ptr(dep->getNewInstance(), dep);
  * ptr->doSomething();
- *
  * Here you can safely use ptr, even in outer scope, without caring about the Loader.
- *
  */
 template<class Target, class Dependence>
 class Dependent_ptr {
@@ -78,8 +79,13 @@ public:
   };
   
 public:
+  /**
+   * The wrapped object
+   */
   std::shared_ptr<Target> *_target;
+
+  /**
+   * The dependence of the target object
+   */
   const std::shared_ptr<Dependence> *_dependence;
 };
-
-#endif

@@ -9,7 +9,7 @@
 #include <atomic>
 #include "TestClientUDP.hpp"
 #include "SockAddr.hh"
-#include "ClientTCP.hpp"
+#include "ClientTCP.hh"
 
 class ClientTCP : public ATask
 {

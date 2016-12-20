@@ -1,20 +1,28 @@
-//
-// Created by Pierre Rousselle on 18/11/2016.
-//
+/**
+ * @file windowsLibraryLoader.hh
+ * @brief Header for windows dynamic library loading
+ * @author Nekhot
+ */
 
-#ifndef CONCEPTION_RTYPE_WINDOWSLIBRARYLOADER_HPP
-#define CONCEPTION_RTYPE_WINDOWSLIBRARYLOADER_HPP
+#pragma once
 
 #include <string>
 #include <windows.h>
 #include <stdexcept>
 
+/**
+ * Forward declaration
+ */
 class WindowsLibraryLoader;
 
 #include "ALibraryLoader.hh"
 
+/**
+ * Class for loading dynamic library
+ */
 class WindowsLibraryLoader : public ALibraryLoader {
 public:
+
   /**
    * Open the library
    *
@@ -34,7 +42,9 @@ public:
    * Close the library
    */
   ~WindowsLibraryLoader(void);
+
 private:
+
   /**
    * File name of the dll to load
    */
@@ -50,5 +60,3 @@ private:
    */
   IGenerator *(*_factory)(void);
 };
-
-#endif //CONCEPTION_RTYPE_WINDOWSLIBRARYLOADER_HPP

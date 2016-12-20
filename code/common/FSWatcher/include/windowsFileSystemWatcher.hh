@@ -1,9 +1,10 @@
-//
-// Created by Pierre Rousselle on 18/11/2016.
-//
+/**
+ * @file windowFileSystemWatcher.hh
+ * @brief Header for window file system watcher class
+ * @author Nekhot
+ */
 
-#ifndef CONCEPTION_RTYPE_WINDOWSFILESYSTEMWATCHER_HPP
-#define CONCEPTION_RTYPE_WINDOWSFILESYSTEMWATCHER_HPP
+#pragma once
 
 #include <windows.h>
 #include <winbase.h>
@@ -11,6 +12,9 @@
 #include <vector>
 #include <algorithm>
 
+/**
+ * Forward Declaration
+ */
 class WindowsFileSystemWatcher;
 
 #include "AFileSystemWatcher.hh"
@@ -24,7 +28,7 @@ public:
    * Construct and begin th process of reading filesystem event
    * 
    * @throw FileSystemWatcherEcception
-   * @param diName The name of the directory to watch change from
+   * @param dirName The name of the directory to watch change from
    * @return
    */
   WindowsFileSystemWatcher(const std::string &dirName);
@@ -36,10 +40,8 @@ public:
 
 private:
   
-   /**
+  /**
    * list the current files in the watcher directory
    */
-    std::vector<std::string> _files;
+  std::vector<std::string> _files;
 };
-
-#endif //CONCEPTION_RTYPE_WINDOWSFILESYSTEMWATCHER_HPP

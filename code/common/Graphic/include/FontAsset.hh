@@ -1,5 +1,10 @@
-#ifndef _FONTASSET_HPP
-#define _FONTASSET_HPP
+/**
+ * @file FontAsset.hh
+ * @brief Header for font asset
+ * @author Nekhot
+ */
+
+#pragma once
 
 #include <string>
 #include <SFML/Graphics/Font.hpp>
@@ -34,5 +39,3 @@ namespace graphic {
     sf::Font _font;
   };
 }
-
-#endif

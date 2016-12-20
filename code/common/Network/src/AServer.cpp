@@ -4,7 +4,7 @@
  * @brief implementation of server abstraction
  */
 
-#include "AServer.hpp"
+#include "AServer.hh"
 
 namespace network
 {
