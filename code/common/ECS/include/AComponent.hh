@@ -24,6 +24,11 @@ namespace ECS
     {
 
         /**
+         * Mask for test if a componenet is serializable
+         */
+        static const short SERIALIZABLE_MASK = 1;
+
+        /**
          * Abstract class for components.
          */
         class AComponent
@@ -33,7 +38,7 @@ namespace ECS
              * Constructor
              * @param type The type of the component.
              */
-            AComponent();
+            AComponent(short flags = 0);
 
             /**
              * Virtual destructor.
@@ -45,6 +50,30 @@ namespace ECS
              * @return the component type.
              */
             virtual const std::string &getType() const = 0;
+
+            /**
+             * Test if a component has a flag or not
+             * @param mask the mask for test the flag
+             * @return true if the component has this flag else false
+             */
+            bool isFlagged(short mask) const;
+
+            /**
+             * add flag to a component
+             * @param flag flag to add
+             */
+            void addFlag(short flag);
+
+            /**
+             * delete flag to a component
+             * @param flag flag to delete
+             */
+            void unFlag(short flag);
+
+            /**
+             * flags of the component
+             */
+            short _flags;
         };
 
     }
