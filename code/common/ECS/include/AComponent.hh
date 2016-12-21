@@ -31,7 +31,7 @@ namespace ECS
         /**
          * Mask for test if a componenet is serializable
          */
-        static const short SERIALIZABLE_MASK = 1;
+        static const short SERIALIZABLE_MASK = 0b0000000000000001;
 
         /**
          * Abstract class for components.
@@ -78,12 +78,14 @@ namespace ECS
             /**
              * serialize the component
              * @return document contains component's attributes
+             * @throw ComponentFlagException if the component is not serialisable or if the component does not override this method
              */
             virtual bson::Document serialize() const;
 
             /**
              * desialize a component by the document
              * @param document that contains all attributes of the component
+             * @throw ComponentFlagException if the component is not serialisable or if the component does not override this method
              */
             virtual void deserialize(const bson::Document& document);
             /**
@@ -93,4 +95,5 @@ namespace ECS
         };
 
     }
+
 }
