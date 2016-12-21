@@ -46,6 +46,11 @@ namespace graphic {
      */
     ~AssetStore(void);
 
+    /**
+     * @return The current locale
+     */
+    const std::string &getLocale(void) const;
+
   protected:
     /**
      * Exist for factorisation. You should not use this. Load a ressource from path, into store

@@ -31,8 +31,9 @@ namespace ECS {
        * Helper method to update a single entity
        *
        * @param entity The entity that will get updated
+       * @param world All the data about the world
        */
-      void update(ECS::Entity::Entity &entity);
+      void update(ECS::Entity::Entity &entity, ECS::WorldData &world);
     };
   }
 }

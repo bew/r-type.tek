@@ -81,6 +81,11 @@ graphic::AssetStore::AssetStore(const std::string &root):
 graphic::AssetStore::~AssetStore(void)
 {}
 
+const std::string &graphic::AssetStore::getLocale(void) const {
+  return _locale;
+};
+
+
 // MUSIC ////////////////
 
 void graphic::AssetStore::loadMusic(const std::string &path) {

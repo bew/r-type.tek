@@ -11,6 +11,6 @@ graphic::MusicAsset::MusicAsset(const std::string &path) {
       throw AssetException("Unable to load music from '" + path + "'");
 }
 
-const sf::Music &graphic::MusicAsset::getLowLevelMusic(void) const {
+sf::Music &graphic::MusicAsset::getLowLevelMusic(void) {
   return _music;
 } 

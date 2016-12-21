@@ -31,7 +31,7 @@ namespace graphic {
      *
      * @return the undeerlying music asset
      */
-    const sf::Music &getLowLevelMusic(void) const;
+    sf::Music &getLowLevelMusic(void);
   protected:
     /**
      * Undelying music object
