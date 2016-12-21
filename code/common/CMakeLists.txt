@@ -16,6 +16,7 @@ add_subdirectory(FSWatcher)     #No dependencies
 add_subdirectory(Graphic)       #Depend On BSON, FSWatcher
 add_subdirectory(Protocol)      #Depend On Network
 add_subdirectory(ECS)		    #Depend on  a lot of things
+add_subdirectory(StateMachine)		    #No dependencies
 
 set(RT_COMMON_INCLUDES ${RT_COMMON_INCLUDES} PARENT_SCOPE)
 set(RT_COMMON_NAMES ${RT_COMMON_NAMES} PARENT_SCOPE)
