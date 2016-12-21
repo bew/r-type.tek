@@ -1,7 +1,11 @@
-//
-// Created by tookie on 12/21/16.
-//
-
+/**
+ * @file ServerLogLevel.cpp
+ * @brief Server log level class
+ * @author Tookie
+ *
+ * Server log level class for Logger
+ *
+ */
 #include "ServerLogLevel.hh"
 
 namespace logs
@@ -11,7 +15,6 @@ namespace logs
         _file.open("server.log", std::ofstream::out | std::ofstream::app);
         if (!_file.is_open())
             throw ServerLogException("Could not open file server.log.");
-  //      logger.registerLogLevel(this);
     }
 
     ServerLogLevel::~ServerLogLevel()
