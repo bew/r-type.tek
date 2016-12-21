@@ -15,12 +15,12 @@ namespace ECS {
       Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
       
       if (assetc && optionsc) {
-        if (assetc->store && assetc->store->getLocale() != optionsc->locale) {
+        if (assetc->store && assetc->store->getLocale() != optionsc->getLocale()) {
 	  delete assetc->store;
 	  assetc->store = nullptr;
 	}
 	if (!assetc->store) {
-	  assetc->store = new graphic::GroupedAssetStore("asset", "standard", optionsc->locale);
+	  assetc->store = new graphic::GroupedAssetStore("asset", "standard", optionsc->getLocale());
 	  assetc->store->loadAll();
 	}
       }

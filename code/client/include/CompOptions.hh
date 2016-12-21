@@ -23,21 +23,40 @@ namespace ECS {
 
       CompOptions(void);
 
+      const std::string &getLocale(void) const;
+      float getMusicVolume(void) const;
+      float getSoundEffectVolume(void) const;
+      bool getEffectChanged(void) const;
+      bool getVolumeChanged(void) const;
+      bool getLocaleChanged(void) const;
+      
+      void setLocale(const std::string &);
+      void setMusicVolume(float);
+      void setSoundEffectVolume(float);
+      void setLocaleChanged(bool);
+      void setMusicChanged(bool);
+      void setEffectChanged(bool);
+      
+    protected:
       /**
        * The locale to use for assets
        */
-      std::string locale;
+      std::string _locale;
+      bool _localeChanged;
 
       /**
        * The music volume
        */
-      float musicVolume;
+      float _musicVolume;
+      bool _musicVolumeChanged;
 
       /**
        * Sound effect volume
        */
-      float effectVolume;
+      float _effectVolume;
+      bool _effectVolumeChanged;
 
+    public:
       /**
        * @return ECS::Cmponent::OPTION
        */
