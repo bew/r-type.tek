@@ -85,6 +85,19 @@ const std::string &graphic::AssetStore::getLocale(void) const {
   return _locale;
 };
 
+void graphic::AssetStore::setLocale(const std::string &locale) {
+  _locale = locale;
+};
+
+void graphic::AssetStore::empty(void) {
+  _musics.clear();
+  _sounds.clear();
+  _sprites.clear();
+  _animatedSprites.clear();
+  _fonts.clear();
+  _texts.clear();
+};
+
 
 // MUSIC ////////////////
 

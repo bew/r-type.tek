@@ -10,16 +10,11 @@ namespace ECS {
   namespace Component {
 
     CompAsset::CompAsset(void) :
-      store(nullptr)
+      store("asset", "standard")
     {};
 
-    const std::string &CompAsset::getType() const
-    {
+    const std::string &CompAsset::getType() const {
       return Component::STANDARD_ASSET;
-    }
-
-    CompAsset::~CompAsset(void) {
-      delete store;
     }
   }
 }

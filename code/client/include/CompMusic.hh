@@ -6,7 +6,6 @@
 
 #pragma once
 
-#include "Graphic/MusicAsset.hh"
 #include "ECS/AComponent.hh"
 
 namespace ECS {

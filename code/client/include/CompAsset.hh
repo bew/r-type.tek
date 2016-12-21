@@ -31,17 +31,12 @@ namespace ECS {
       /**
        * ptr to the underlying store for always loaded asset
        */
-      graphic::GroupedAssetStore *store;
+      graphic::GroupedAssetStore store;
 
       /**
        * @return the type of asset
        */
       virtual const std::string &getType() const;
-
-      /**
-       * Default destructor
-       */
-      ~CompAsset(void);
     };
   }
 }

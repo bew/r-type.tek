@@ -1,7 +1,7 @@
 /**
- * @file CompWindow.cpp
+ * @file CompMusic.cpp
  * @author Nekhot.
- * @brief Implementation of Component for entity that need there own windows.
+ * @brief Implementation of Component for musics. May diesapear.
  */
 
 #include "CompMusic.hh"

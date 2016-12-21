@@ -32,16 +32,16 @@ namespace ECS {
 	 * Destructor.
 	 */
 	~WorldData();
-
+      
         /**
 	 * Game entities such as enemy, players, or bullets.
 	 */
 	std::vector<Entity::Entity *>	_gameEntities;
 
-        /**
-	 * System entity managing network and graphics components.
-	 */
-	Entity::Entity			_systemEntity;
+      /**
+       * System entity managing network and graphics components.
+       */
+      Entity::Entity			_systemEntity;
     };
     
     /**
@@ -87,6 +87,8 @@ namespace ECS {
 	 */
 	std::vector<System::ISystem *>	_systems;
 
+      // TESTING ONLY, SHOULD NOT PASS REVIEW
+    public:
         /**
 	 * Data of the ecs. The systems will read and update these datas.
 	 */

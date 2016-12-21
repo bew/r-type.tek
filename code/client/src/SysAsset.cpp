@@ -1,7 +1,7 @@
 /**
- * @file SysWindow.cpp
- * @author Nekhot.
- * @brief Impelmentation of system procesing windows.
+ * @file SysAsset.cpp
+ * @author Nekhot
+ * @brief Impelmentation of system procesing asset.
  */
 
 #include "SysAsset.hh"
@@ -14,15 +14,10 @@ namespace ECS {
       Component::CompAsset *assetc = dynamic_cast<Component::CompAsset*>(world._systemEntity.getComponent(ECS::Component::STANDARD_ASSET));
       Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
       
-      if (assetc && optionsc) {
-        if (assetc->store && assetc->store->getLocale() != optionsc->getLocale()) {
-	  delete assetc->store;
-	  assetc->store = nullptr;
-	}
-	if (!assetc->store) {
-	  assetc->store = new graphic::GroupedAssetStore("asset", "standard", optionsc->getLocale());
-	  assetc->store->loadAll();
-	}
+      if (assetc && optionsc && assetc->store.getLocale() != optionsc->getLocale()) {
+        assetc->store.empty();
+	assetc->store.setLocale(optionsc->getLocale());
+	assetc->store.loadAll();
       }
     }
   }
