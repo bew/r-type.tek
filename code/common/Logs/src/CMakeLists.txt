@@ -1,12 +1,8 @@
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DSFML_STATIC")
-set(LIB_SOURCE AssetException.cpp SpriteAsset.cpp AnimatedSpriteAsset.cpp FontAsset.cpp TextAsset.cpp MusicAsset.cpp SoundAsset.cpp AssetStore.cpp)
-set(LIB_DEPENDENCIES sfml-graphics sfml-window sfml-system sfml-audio BSON FSWatcher)
+set(LIB_SOURCE Logger.cpp InfoLogLevel.cpp ErrorLogLevel.cpp DebugLogLevel.cpp)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
 add_library(${LIB_TEST_NAME} SHARED ${LIB_SOURCE})
 
-target_link_libraries(${LIB_NAME} ${LIB_DEPENDENCIES})
-target_link_libraries(${LIB_TEST_NAME} sfml-graphics sfml-window sfml-system sfml-audio BSON_test FSWatcher_test)
 install(TARGETS ${LIB_TEST_NAME} DESTINATION bin/test/lib)
 
 target_include_directories(${LIB_NAME} PUBLIC ${LIB_INCLUDE})
