@@ -48,7 +48,7 @@ namespace ECS {
              * @param entity given entity.
              * @param sys_entity system entity of the world.
              */
-            void        putCoordinatesInGrid(Component::CompMovement *mov_comp,
+            void        putEntityInGrid(Component::CompMovement *mov_comp,
                                              Entity::Entity *entity,
                                              Entity::Entity &sys_entity);
             /**

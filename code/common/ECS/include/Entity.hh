@@ -22,6 +22,11 @@ namespace ECS {
      */
     namespace Entity {
 
+        /**
+         * The next allocated Entity will have this id.
+         */
+        static unsigned long   EntityNextId = 0;
+
 	/**
 	 * Class implementing an entity.
 	 */
@@ -47,13 +52,24 @@ namespace ECS {
 	     */
 	    Component::AComponent	*getComponent(const std::string &type);
 
-	    /**
+            /**
+             * Get the id of the entity.
+             * @return the id of the entity.
+             */
+            unsigned long       getId() const;
+
+            /**
 	     * add a component.
 	     * @param comp the component.
 	     */
-	  void	addComponent(ECS::Component::AComponent *comp);
+            void	addComponent(ECS::Component::AComponent *comp);
 	private:
-	    /**
+            /**
+             * Id of the entity.
+             */
+            const unsigned long       _id;
+
+            /**
 	     * Map of components of the entity.
 	     */
 	    std::map<const std::string, Component::AComponent *>	_components;

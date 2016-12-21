@@ -1,5 +1,5 @@
 /**
- * @file CompCollideGrid.hh
+ * @file CompCollision.hh
  * @author Alexis.
  * @brief A collide grid in the system entity, used to check the collisions
  * only between near components.
@@ -26,7 +26,7 @@ namespace ECS {
         /**
          * Component type id.
          */
-        static const std::string COLLIDEGRID = "collidegrid";
+        static const std::string COLLISION = "collision";
 
         /**
          * Standard width of the window.
@@ -40,7 +40,7 @@ namespace ECS {
         /**
          * Component to optimize collision calculation.
          */
-        class CompCollideGrid : public AComponent {
+        class CompCollision : public AComponent {
         public:
 
             /**
@@ -55,11 +55,11 @@ namespace ECS {
             /**
              * Constructor
              */
-            CompCollideGrid();
+            CompCollision();
             /**
              * Destructor
              */
-            ~CompCollideGrid();
+            ~CompCollision();
 
             typedef std::array<std::array<std::vector<Entity::Entity *>, GRID_NB_CASES>, GRID_NB_CASES> Grid;
 

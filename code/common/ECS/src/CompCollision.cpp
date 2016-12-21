@@ -1,32 +1,32 @@
 /**
- * @file CompCollideGrid.cpp
+ * @file CompCollision.cpp
  * @author Alexis.
  * @brief A collide grid in the system entity, used to check the collisions
  * only between near components.
  */
 
-#include "CompCollideGrid.hh"
+#include "CompCollision.hh"
 
 namespace ECS {
     namespace Component {
 
-        CompCollideGrid::CompCollideGrid()
+        CompCollision::CompCollision()
         {}
 
-        CompCollideGrid::~CompCollideGrid()
+        CompCollision::~CompCollision()
         {}
         
-        const std::string &CompCollideGrid::getType() const
+        const std::string &CompCollision::getType() const
         {
-            return COLLIDEGRID;
+            return COLLISION;
         }
 
-        void        CompCollideGrid::addInGrid(unsigned x, unsigned y, Entity::Entity *entity)
+        void        CompCollision::addInGrid(unsigned x, unsigned y, Entity::Entity *entity)
         {
             _grid[y][x].push_back(entity);
         }
 
-        void        CompCollideGrid::flushGrid()
+        void        CompCollision::flushGrid()
         {
             for (auto &row : _grid)
                 for (auto &column : row)
