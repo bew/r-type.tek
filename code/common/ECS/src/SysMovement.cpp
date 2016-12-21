@@ -6,6 +6,7 @@
  *
  */
 
+#include <iostream>
 #include "SysMovement.hh"
 #include "CompMovement.hh"
 #include "World.hh"
@@ -39,8 +40,8 @@ namespace ECS {
                 comp->_facingDir = Component::CompMovement::FacingDirection::FORWARD;
             
             comp->_advance._y -= static_cast<int>(comp->_advance._y);
-            comp->_advance._x -= static_cast<int>(comp->_advance._x);
-        }
+            comp->_advance._x -= static_cast<int>(comp->_advance._x);		      
+	}
 
         void    SysMovement::update(WorldData &data)
         {

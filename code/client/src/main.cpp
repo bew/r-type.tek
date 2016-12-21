@@ -15,11 +15,13 @@
 #include "SysSprite.hh"
 #include "CompSprite.hh"
 #include "SysController.hh"
+#include "SysOptions.hh"
 #include "ECS/CompEvent.hh"
 #include "ECS/SysEvent.hh"
 #include "ECS/CompTick.hh"
 #include "ECS/SysTick.hh"
 #include "ECS/CompMovement.hh"
+#include "ECS/SysMovement.hh"
 #include "Graphic/AssetStore.hpp"
 
 int main(void) {
@@ -44,6 +46,7 @@ int main(void) {
   event->addHook("initialization", [&](ECS::Component::CompEvent::IEvent *, ECS::WorldData &data) {
 	world.addSystem(new ECS::System::SysMusic());
 	world.addSystem(new ECS::System::SysSprite());
+	world.addSystem(new ECS::System::SysOptions());
 	return false;
     });
   
@@ -55,7 +58,9 @@ int main(void) {
   world.addSystem(new ECS::System::SysWindow());
   world.addSystem(new ECS::System::SysController());
   world.addSystem(new ECS::System::SysAsset());
+  world.addSystem(new ECS::System::SysMovement());
   world.addSystem(new ECS::System::SysEvent());
+  
   
   world.addSystemEntityComponent(new ECS::Component::CompTick());
   world.addSystemEntityComponent(new ECS::Component::CompWindow());

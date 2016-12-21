@@ -71,8 +71,8 @@ namespace ECS {
     
     const std::string CompWindow::DEFAULT_TITLE = "Āru Taipu";
     const unsigned int CompWindow::DEFAULT_BPP = 32;
-    const unsigned int CompWindow::DEFAULT_WIDTH = 800;
-    const unsigned int CompWindow::DEFAULT_HEIGHT = 600;
+    const unsigned int CompWindow::DEFAULT_WIDTH = 1280;
+    const unsigned int CompWindow::DEFAULT_HEIGHT = 720;
     const unsigned int CompWindow::DEFAULT_AA = 0;
     const bool CompWindow::DEFAULT_FULLSCREEN = false;
 

@@ -28,6 +28,7 @@ namespace ECS {
 	wc->window = new sf::RenderWindow(mode, wc->getTitle(), style, ctx);
       } else if (wc) {
 	wc->window->display();
+	wc->window->clear(sf::Color::Black);
       }
       if (wc->_changed) {
 	Component::CompEvent *eventc = dynamic_cast<Component::CompEvent*>(entity.getComponent(ECS::Component::EVENT));
