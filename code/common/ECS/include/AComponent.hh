@@ -31,7 +31,7 @@ namespace ECS
         /**
          * Mask for test if a componenet is serializable
          */
-        static const short SERIALIZABLE_MASK = 0b0000000000000001;
+        static const short SERIALIZABLE_MASK = 1 << 0;
 
         /**
          * Abstract class for components.
