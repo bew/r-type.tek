@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.0.0)
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR})
+set(ASSET_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/asset)
 
 add_subdirectory(vendor)
 
@@ -20,3 +21,7 @@ endmacro(use_msvc_static_runtime)
 add_subdirectory(code)
 
 add_subdirectory(doc)
+
+install(DIRECTORY ${ASSET_DIRECTORY}
+  DESTINATION bin
+  )

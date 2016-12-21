@@ -32,16 +32,16 @@ namespace ECS {
 	 * Destructor.
 	 */
 	~WorldData();
-
+      
         /**
 	 * Game entities such as enemy, players, or bullets.
 	 */
 	std::vector<Entity::Entity *>	_gameEntities;
 
-        /**
-	 * System entity managing network and graphics components.
-	 */
-	Entity::Entity			_systemEntity;
+      /**
+       * System entity managing network and graphics components.
+       */
+      Entity::Entity			_systemEntity;
     };
     
     /**
@@ -67,20 +67,6 @@ namespace ECS {
 	 * Calculate one frame of the r-type game.
 	 */
 	void	update();
-	
-	/**
-	 * For Testing purpose
-	 *
-	 * Initiate the systems of the world.
-	 */
-	void	initTestSystem();
-
-	/**
-	 * For Testing purpose
-	 *
-	 * Add a test entity in the world.
-	 */
-	void	addTestEntity();
 
 	/**
 	 * Add a system in the world.

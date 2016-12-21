@@ -50,3 +50,7 @@ add_subdirectory("generators")
 
 add_subdirectory("test")
 add_subdirectory("tool")
+
+# CREATE FOLDER LOGS FOR LIB LOGS
+#------------------------------------
+install(DIRECTORY DESTINATION bin/logs)

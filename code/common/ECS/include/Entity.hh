@@ -28,11 +28,16 @@ namespace ECS {
 	class Entity
 	{
 	public:
+
+	  Entity(void) = delete;
+	  
 	    /**
 	     * Constructor.
+             * @param id The id of the entity.
 	     */
-	    Entity();
-	    /**
+	    Entity(unsigned long id);
+
+	  /**
 	     * Destructor.
 	     */
 	    ~Entity();
@@ -47,13 +52,24 @@ namespace ECS {
 	     */
 	    Component::AComponent	*getComponent(const std::string &type);
 
-	    /**
+            /**
+             * Get the id of the entity.
+             * @return the id of the entity.
+             */
+            unsigned long       getId() const;
+
+            /**
 	     * add a component.
 	     * @param comp the component.
 	     */
-	  void	addComponent(ECS::Component::AComponent *comp);
+            void	addComponent(ECS::Component::AComponent *comp);
 	private:
-	    /**
+            /**
+             * Id of the entity.
+             */
+            const unsigned long       _id;
+
+            /**
 	     * Map of components of the entity.
 	     */
 	    std::map<const std::string, Component::AComponent *>	_components;
