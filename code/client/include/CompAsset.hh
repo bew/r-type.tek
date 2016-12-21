@@ -12,20 +12,35 @@
 namespace ECS {
   namespace Component {
 
+    /**
+     * type the asset component
+     */
     static const std::string STANDARD_ASSET = "standard_asset";
 
     /**
-     * Component for music
+     * Component for asset
      */
     class CompAsset : public AComponent {
     public:
 
+      /**
+       * Default constructor
+       */
       CompAsset(void);
-      
+
+      /**
+       * ptr to the underlying store for always loaded asset
+       */
       graphic::GroupedAssetStore *store;
-      
+
+      /**
+       * @return the type of asset
+       */
       virtual const std::string &getType() const;
 
+      /**
+       * Default destructor
+       */
       ~CompAsset(void);
     };
   }
