@@ -119,6 +119,15 @@ namespace logs {
         Logger &logLevel(const std::string &logLevelName);
 
         /**
+         * Create a new entry inside the logger and change the log level if required
+         *
+         * @param logLevelName the name of the log level to use for the new entry
+         * @throw std::out_of_range if the logLevelName doesn't match any log level info register previously
+         * @return the Logger in order to chain call for logging
+         */
+        Logger& operator[](const std::string &logLevelName);
+
+        /**
          * Allow to log everything that has an operator << with ostream
          *
          * @tparam T the type of the value logged
