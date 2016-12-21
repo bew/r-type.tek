@@ -7,8 +7,8 @@
  *
  */
 
-#ifndef LOGGER_LOGGER_HH
-#define LOGGER_LOGGER_HH
+#ifndef LOGS_LOGGER_HH
+#define LOGS_LOGGER_HH
 
 #include <iostream>
 #include <fstream>
@@ -16,9 +16,9 @@
 #include <map>
 
 /**
- * Contain log stuff
+ * Contain logs stuff
  */
-namespace log {
+namespace logs {
 
     /**
      * Abstract class for a log level
@@ -146,4 +146,4 @@ namespace log {
     extern Logger logger;
 };
 
-#endif //LOGGER_LOGGER_HH
+#endif //LOGS_LOGGER_HH

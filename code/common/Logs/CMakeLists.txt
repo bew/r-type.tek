@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(Log)
-set(LIB_NAME Log)
+project(Logs)
+set(LIB_NAME Logs)
 set(LIB_TEST_NAME ${LIB_NAME}_test)
 set(TEST_EXE ${LIB_TEST_NAME}_exe)
 

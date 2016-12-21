@@ -10,10 +10,11 @@
 #include <gtest/gtest.h>
 #include "Logger.hh"
 #include "InfoLogLevel.hh"
+#include "ErrorLogLevel.hh"
 
 TEST(Logger, a) {
-    log::logger.logLevel(log::INFO) << "Yo" << std::endl;
-    log::logger.logLevel(log::INFO) << "Yo" << std::endl;
+    logs::logger.logLevel(logs::INFO) << "Yo" << std::endl;
+    logs::logger.logLevel(logs::ERROR) << "Yo" << std::endl;
 }
 
 int main(int argc, char **argv) {

@@ -12,7 +12,7 @@
 #include <iomanip>
 #include "Logger.hh"
 
-namespace log {
+namespace logs {
 
     Logger::Logger() : _logNumber(0) {
         auto now = std::chrono::system_clock::now();
@@ -21,11 +21,11 @@ namespace log {
         std::stringstream filenameDate;
         filenameDate << std::put_time(std::localtime(&in_time_t), "%d-%m-%Y_%H-%M-%S");
 
-        std::string fileName = std::string("logs/r-type_") + filenameDate.str() + std::string(".log");
+        std::string fileName = std::string("logs/r-type_") + filenameDate.str() + std::string(".logs");
         _globalLogFile.open(fileName, std::ofstream::out | std::ofstream::app);
 
         if (!_globalLogFile.is_open()) {
-            std::cerr << "Impossible to write into global log file: " << fileName << std::endl;
+            std::cerr << "Impossible to write into global logs file: " << fileName << std::endl;
             std::cerr << "Please create the folder if it doesn't exist or check the rights of it" << std::endl;
         }
     }

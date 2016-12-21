@@ -1,4 +1,4 @@
-set(LIB_SOURCE Logger.cpp InfoLogLevel.cpp)
+set(LIB_SOURCE Logger.cpp InfoLogLevel.cpp ErrorLogLevel.cpp)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
 add_library(${LIB_TEST_NAME} SHARED ${LIB_SOURCE})

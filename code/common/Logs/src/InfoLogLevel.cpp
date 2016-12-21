@@ -9,7 +9,7 @@
 
 #include "InfoLogLevel.hh"
 
-namespace log {
+namespace logs {
     InfoLogLevel::InfoLogLevel() {
         logger.registerLog(this);
     }
@@ -18,12 +18,12 @@ namespace log {
     }
 
     std::string InfoLogLevel::getLogLevelName() const {
-        return log::INFO;
+        return logs::INFO;
     }
 
     std::ostream &InfoLogLevel::getLogLevelStream() const {
         return std::cout;
     }
 
-    InfoLogLevel infoLogLevel;
+    static InfoLogLevel infoLogLevel;
 }

@@ -1,44 +1,44 @@
 /**
- * @file InfoLogLevel.hh
- * @brief Info log level class
+ * @file ErrorLogLevel.hh
+ * @brief Error log level class
  * @author Christopher Paccard
  *
- * Info log level class for Logger
+ * Error log level class for Logger
  *
  */
 
-#ifndef LOGGER_INFOLOGLEVEL_HH
-#define LOGGER_INFOLOGLEVEL_HH
+#ifndef LOGS_ERRORLOGLEVEL_HH
+#define LOGS_ERRORLOGLEVEL_HH
 
 #include "Logger.hh"
 
 /**
- * Contain log stuff
+ * Contain logs stuff
  */
-namespace log {
+namespace logs {
     /**
-     * Represent the name of the info log level
+     * Represent the name of the error log level
      */
-    static const std::string INFO = "Info";
+    static const std::string ERROR = "Error";
 
     /**
-     * Info log level class for Logger
+     * Error log level class for Logger
      */
-    class InfoLogLevel : public ALogLevel {
+    class ErrorLogLevel : public ALogLevel {
     public:
         /**
          * Ctor
          */
-        InfoLogLevel(void);
+        ErrorLogLevel(void);
 
-        InfoLogLevel(const InfoLogLevel &infoLogLevel) = delete;
+        ErrorLogLevel(const ErrorLogLevel &errorLogLevel) = delete;
 
-        InfoLogLevel &operator=(const InfoLogLevel &infoLogLevel) = delete;
+        ErrorLogLevel &operator=(const ErrorLogLevel &errorLogLevel) = delete;
 
         /**
          * Dtor
          */
-        virtual ~InfoLogLevel();
+        virtual ~ErrorLogLevel();
 
         /**
          * Get the name of the log level
@@ -56,4 +56,4 @@ namespace log {
     };
 }
 
-#endif //LOGGER_INFOLOGLEVEL_HH
+#endif //LOGS_ERRORLOGLEVEL_HH
