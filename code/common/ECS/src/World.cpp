@@ -10,7 +10,7 @@
 namespace ECS {
 
     WorldData::WorldData()
-    	: _gameEntities(), _systemEntity()
+    	: _gameEntities(), _systemEntity(0)
     {}
 
     WorldData::~WorldData()
