@@ -1,7 +1,7 @@
 /**
- * @file CompWindow.cpp
- * @author Nekhot.
- * @brief Implementation of Component for entity that need there own windows.
+ * @file CompAsset.cpp
+ * @author Nekhot
+ * @brief Component for holding system entity standard asset.
  */
 
 #include "CompAsset.hh"
@@ -10,16 +10,11 @@ namespace ECS {
   namespace Component {
 
     CompAsset::CompAsset(void) :
-      store(nullptr)
+      store("asset", "standard")
     {};
 
-    const std::string &CompAsset::getType() const
-    {
+    const std::string &CompAsset::getType() const {
       return Component::STANDARD_ASSET;
-    }
-
-    CompAsset::~CompAsset(void) {
-      delete store;
     }
   }
 }

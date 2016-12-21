@@ -15,7 +15,7 @@ namespace ECS {
     
     void SysWindow::update(Entity::Entity &entity) {
       Component::CompWindow *wc = dynamic_cast<Component::CompWindow*>(entity.getComponent(ECS::Component::WINDOW));
-      if (wc && (!wc->window || wc->getChanged())) {
+      if (wc && (!wc->window)) {
 	sf::VideoMode mode(wc->getWidth(), wc->getHeight(), ECS::Component::CompWindow::DEFAULT_BPP);
 	unsigned int style;
 	if (wc->getFullscreen())
@@ -26,7 +26,15 @@ namespace ECS {
 	ctx.antialiasingLevel = wc->getAAliasing();
 	delete wc->window;
 	wc->window = new sf::RenderWindow(mode, wc->getTitle(), style, ctx);
-	wc->setChanged(false);
+      } else if (wc) {
+	wc->window->display();
+	wc->window->clear(sf::Color::Black);
+      }
+      if (wc->_changed) {
+	Component::CompEvent *eventc = dynamic_cast<Component::CompEvent*>(entity.getComponent(ECS::Component::EVENT));
+	if (eventc)
+	  eventc->addEvent("window_update", nullptr);
+	wc->_changed = false;
       }
     }
   }

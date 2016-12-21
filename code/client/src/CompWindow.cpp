@@ -38,10 +38,6 @@ namespace ECS {
     const std::string &CompWindow::getTitle(void) const {
       return _title;
     };
-
-    bool CompWindow::getChanged(void) const {
-      return _changed;
-    };
     
     void CompWindow::setFullscreen(bool fullscreen) {
       if (_fullscreen != fullscreen)
@@ -73,14 +69,10 @@ namespace ECS {
       _title = title;
     };
     
-    void CompWindow::setChanged(bool changed) {
-      _changed = changed;
-    };
-
     const std::string CompWindow::DEFAULT_TITLE = "Āru Taipu";
     const unsigned int CompWindow::DEFAULT_BPP = 32;
-    const unsigned int CompWindow::DEFAULT_WIDTH = 800;
-    const unsigned int CompWindow::DEFAULT_HEIGHT = 600;
+    const unsigned int CompWindow::DEFAULT_WIDTH = 1280;
+    const unsigned int CompWindow::DEFAULT_HEIGHT = 720;
     const unsigned int CompWindow::DEFAULT_AA = 0;
     const bool CompWindow::DEFAULT_FULLSCREEN = false;
 

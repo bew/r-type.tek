@@ -30,19 +30,7 @@ namespace ECS {
     float CompOptions::getSoundEffectVolume(void) const {
       return _effectVolume;
     };
-    
-    bool CompOptions::getEffectVolumeChanged(void) const {
-      return _effectVolumeChanged;
-    };
-    
-    bool CompOptions::getMusicVolumeChanged(void) const {
-      return _effectVolumeChanged;
-    };
-    
-    bool CompOptions::getLocaleChanged(void) const {
-      return _musicVolumeChanged;
-    };
-    
+        
     void CompOptions::setLocale(const std::string &locale) {
       if (_locale != locale)
 	_localeChanged = true;
@@ -60,16 +48,5 @@ namespace ECS {
 	_musicVolumeChanged = true;
       _musicVolume = volume;
     };
-    
-    void CompOptions::setLocaleChanged(bool changed) {
-      _localeChanged = changed;
-    };
-    void CompOptions::setMusicVolumeChanged(bool changed) {
-      _effectVolumeChanged = changed;
-    };
-    void CompOptions::setEffectVolumeChanged(bool changed) {
-      _musicVolumeChanged = changed;
-    };
-
   }  
 }
