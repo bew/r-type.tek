@@ -23,6 +23,10 @@ namespace ECS
      */
     namespace Component
     {
+        /**
+         * represents a component flag exception, he's throw when flag error occured
+         */
+        using ComponentFlagException = std::runtime_error;
 
         /**
          * Mask for test if a componenet is serializable
@@ -57,7 +61,7 @@ namespace ECS
              * @param mask the mask for test the flag
              * @return true if the component has this flag else false
              */
-            bool isFlagged(short mask) const;
+            bool hasFlag(short mask) const;
 
             /**
              * add flag to a component

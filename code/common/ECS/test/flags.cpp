@@ -9,7 +9,7 @@ TEST(Flags, DefaultFlags)
 {
     ECS::Component::AComponent* life = new ECS::Component::CompLife(100);
 
-    bool isSerializable = life->isFlagged(ECS::Component::SERIALIZABLE_MASK);
+    bool isSerializable = life->hasFlag(ECS::Component::SERIALIZABLE_MASK);
 
     delete(life);
 
@@ -22,7 +22,7 @@ TEST(Flags, addFlag)
 
     life->addFlag(1);
 
-    bool isSerializable = life->isFlagged(ECS::Component::SERIALIZABLE_MASK);
+    bool isSerializable = life->hasFlag(ECS::Component::SERIALIZABLE_MASK);
 
     delete(life);
 
@@ -35,13 +35,13 @@ TEST(Flags, DeleteFlag)
 
     life->addFlag(1);
 
-    bool isSerializable = life->isFlagged(ECS::Component::SERIALIZABLE_MASK);
+    bool isSerializable = life->hasFlag(ECS::Component::SERIALIZABLE_MASK);
 
     ASSERT_TRUE(isSerializable);
 
     life->unFlag(ECS::Component::SERIALIZABLE_MASK);
 
-    isSerializable = life->isFlagged(ECS::Component::SERIALIZABLE_MASK);
+    isSerializable = life->hasFlag(ECS::Component::SERIALIZABLE_MASK);
 
     delete(life);
 
