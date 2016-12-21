@@ -62,7 +62,7 @@ namespace network {
          *
          * @return message or empty string
          */
-        std::string get();
+        std::string get() const;
 
     private:
         /**

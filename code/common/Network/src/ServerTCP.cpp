@@ -24,6 +24,16 @@ namespace network
             client->close();
     }
 
+    std::shared_ptr<ClientTCP> ServerTCP::getFirstClientWithMessage() const
+    {
+        for (auto& client : _clients)
+        {
+            if (client->hasMessage())
+                return client;
+        }
+        return nullptr;
+    }
+
     void ServerTCP::update()
     {
         try
@@ -119,4 +129,10 @@ namespace network
             _socketServer.close();
         }
     }
+
+    bool ServerTCP::hasMessage(std::shared_ptr<ClientTCP> client) const
+    {
+        return client->hasMessage();
+    }
+
 }
