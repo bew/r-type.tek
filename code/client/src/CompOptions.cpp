@@ -10,7 +10,7 @@ namespace ECS {
   namespace Component {
 
     CompOptions::CompOptions(void) :
-      locale(Graphic::AssetStore::DEFAULT_LOCALE)
+      locale(graphic::AssetStore::DEFAULT_LOCALE)
     {};
 
     const std::string &CompOptions::getType() const {

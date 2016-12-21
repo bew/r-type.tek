@@ -1,4 +1,4 @@
-set(LIB_SOURCE AComponent.cpp ComponentTest.cpp Entity.cpp SystemTest.cpp World.cpp CompEvent.cpp SysEvent.cpp CompHitbox.cpp CompMovement.cpp SysMovement.cpp)
+set(LIB_SOURCE AComponent.cpp Entity.cpp World.cpp CompEvent.cpp SysEvent.cpp CompHitbox.cpp CompMovement.cpp SysMovement.cpp CompCollideGrid.cpp)
 set(LIB_SOURCE ${LIB_SOURCE} CompEvent.cpp SysEvent.cpp)
 set(LIB_SOURCE ${LIB_SOURCE} CompHitbox.cpp CompMovement.cpp)
 set(LIB_SOURCE ${LIB_SOURCE} CompLife.cpp)

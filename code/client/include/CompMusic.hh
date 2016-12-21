@@ -20,6 +20,8 @@ namespace ECS {
     class CompMusic : public AComponent {
     public:
 
+      CompMusic(void);
+
       /**
        * Is looping
        */

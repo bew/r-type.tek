@@ -21,11 +21,12 @@
 int main(void) {
 
   ECS::World world;
-  ECS::Component::Music *music = new ECS::Component::CompMusic();
-  ECS::Component::Music *event = new ECS::Component::CompEvent();
+  ECS::Component::CompMusic *music = new ECS::Component::CompMusic();
+  ECS::Component::CompEvent *event = new ECS::Component::CompEvent();
 
+  music->name = "MilkyWay";
   //THATS DANGEROUS, JUST FOR TESTING (ref or ptr catpure are not safe, (with the exception of the even component that is garantee to be existing at event execution time)
-  event.addHook("initialized", [=music](IEvent *event) {
+  event->addHook("initialized", [=](ECS::Component::CompEvent::IEvent *event) {
       music->playing = true;
       return false;
     });
@@ -46,7 +47,7 @@ int main(void) {
   int i = 0;
   while(true) {
     world.update();
-    std::cout << "Tick : " << i++ << std::endl;
+    //std::cout << "Tick : " << i++ << std::endl;
   }
   return 0;
 };

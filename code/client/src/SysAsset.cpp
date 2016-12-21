@@ -15,7 +15,7 @@ namespace ECS {
       Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
       
       if (assetc && optionsc) {
-        if (assetc->store && assetc->store->getLocale != optionsc->locale) {
+        if (assetc->store && assetc->store->getLocale() != optionsc->locale) {
 	  delete assetc->store;
 	  assetc->store = nullptr;
 	}

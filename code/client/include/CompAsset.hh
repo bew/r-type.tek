@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Graphic/AssetStore.hh"
+#include "Graphic/AssetStore.hpp"
 #include "ECS/AComponent.hh"
 
 namespace ECS {
@@ -19,6 +19,8 @@ namespace ECS {
      */
     class CompAsset : public AComponent {
     public:
+
+      CompAsset(void);
       
       graphic::GroupedAssetStore *store;
       

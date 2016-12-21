@@ -15,7 +15,7 @@ namespace ECS {
       name("")
     {};
 
-    const std::string &CompWindow::getType() const
+    const std::string &CompMusic::getType() const
     {
       return Component::MUSIC;
     }

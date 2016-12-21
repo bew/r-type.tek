@@ -7,7 +7,7 @@
 #pragma once
 
 #include <string>
-#include "Graphic/AssetStore.hh"
+#include "Graphic/AssetStore.hpp"
 #include "ECS/AComponent.hh"
 
 namespace ECS {
@@ -21,10 +21,18 @@ namespace ECS {
     class CompOptions : public AComponent {
     public:
 
+      CompOptions(void);
+
       /**
        * The locale to use for assets
        */
       std::string locale;
+
+      /**
+       * @return ECS::Cmponent::OPTION
+       */
+      virtual const std::string &getType() const;
+
     };
   }
 }

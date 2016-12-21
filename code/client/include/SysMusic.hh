@@ -26,5 +26,6 @@ namespace ECS {
        * @param world All the data about the world
        */
       virtual void update(ECS::WorldData &world);
+    };
   }
 }

@@ -15,7 +15,7 @@ namespace ECS {
 
     const std::string &CompAsset::getType() const
     {
-      return Component::MUSIC;
+      return Component::STANDARD_ASSET;
     }
 
     CompAsset::~CompAsset(void) {

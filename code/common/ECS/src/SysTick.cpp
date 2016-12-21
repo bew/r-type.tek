@@ -17,7 +17,7 @@ namespace ECS {
 	  tickc->previous = tickc->start;
 	  tickc->current = tickc->start;
 	} else {
-	  if (tickc->tick = =1) {
+	  if (tickc->tick == 1) {
 	    Component::CompEvent *eventc = dynamic_cast<Component::CompEvent*>(world._systemEntity.getComponent(Component::EVENT));
 	    if (eventc)
 	      eventc->addEvent("initialized", nullptr);

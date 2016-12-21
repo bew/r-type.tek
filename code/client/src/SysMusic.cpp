@@ -10,15 +10,15 @@ namespace ECS {
   namespace System {
 
     void SysMusic::update(WorldData &world) {
-      Component::CompMusic *musicc = dynamic_cast<Component::CompMusic*>(entity.getComponent(ECS::Component::MUSIC));
-      Component::CompAsset *assetc = dynamic_cast<Component::CompAsset*>(entity.getComponent(ECS::Component::STANDARD_ASSET));
+      Component::CompMusic *musicc = dynamic_cast<Component::CompMusic*>(world._systemEntity.getComponent(ECS::Component::MUSIC));
+      Component::CompAsset *assetc = dynamic_cast<Component::CompAsset*>(world._systemEntity.getComponent(ECS::Component::STANDARD_ASSET));
       if (musicc && musicc->name != "" && assetc && assetc->store) {
 	try {
-	  sf::Asset &music = assetc->store->getMusic(musicc->name);
-	  if (music.getStatus == sf::SoundSource::Playing && !music->playing) {
+	  sf::Music &music = assetc->store->getMusic(musicc->name).getLowLevelMusic();
+	  if (music.getStatus() == sf::SoundSource::Playing && !musicc->playing) {
 	    music.stop();
 	  }
-	  if (!music.getStatus == sf::SoundSource::Playing && music->playing) {
+	  if (music.getStatus() != sf::SoundSource::Playing && musicc->playing) {
 	    music.play();
 	  }
 	}
