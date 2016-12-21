@@ -1,5 +1,5 @@
 /**
- * @file CompCollideGrid.hh
+ * @file CompCollision.hh
  * @author Alexis.
  * @brief A collide grid in the system entity, used to check the collisions
  * only between near components.
@@ -10,6 +10,8 @@
 #include <vector>
 #include "AComponent.hh"
 #include "Entity.hh"
+
+# define GRID_NB_CASES  (16)
 
 /**
  * Namespace of ECS.
@@ -24,7 +26,7 @@ namespace ECS {
         /**
          * Component type id.
          */
-        static const std::string COLLIDEGRID = "collidegrid";
+        static const std::string COLLISION = "collision";
 
         /**
          * Standard width of the window.
@@ -38,18 +40,28 @@ namespace ECS {
         /**
          * Component to optimize collision calculation.
          */
-        class CompCollideGrid : public AComponent {
+        class CompCollision : public AComponent {
         public:
+
+            /**
+             * structure indicating a collision between two entities.
+             */
+            struct Collision
+            {
+                Entity::Entity  *entity_a;
+                Entity::Entity  *entity_b;
+            };
+
             /**
              * Constructor
              */
-            CompCollideGrid();
+            CompCollision();
             /**
              * Destructor
              */
-            ~CompCollideGrid();
+            ~CompCollision();
 
-            typedef std::array<std::array<std::vector<Entity::Entity *>, 16>, 16> Grid;
+            typedef std::array<std::array<std::vector<Entity::Entity *>, GRID_NB_CASES>, GRID_NB_CASES> Grid;
 
             /**
              * Getter for the component type.
@@ -74,6 +86,13 @@ namespace ECS {
              * Grid to optimize collision calculation.
              */
             Grid        _grid;
+
+            /**
+             * To be checked after the application of the collision system, this
+             * data structure contains all the collisions that happened in the frame.
+             * To be flushed in the beginning of the collision system.
+             */
+            std::vector<Collision>   _collisions;
         };
 
   }
