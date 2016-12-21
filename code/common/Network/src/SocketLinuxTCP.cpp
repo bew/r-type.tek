@@ -32,9 +32,12 @@ namespace network
 
     void SocketLinuxTCP::bind(SockAddr& hostInfos)
     {
-        sockaddr_in addr = hostInfos.getAddr();
+        sockaddr_in & addr = hostInfos.getAddr();
         if (::bind(_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) != 0)
             throw SocketException("could not bind TCP socket: " + std::to_string(errno));
+
+	socklen_t len = sizeof(addr);
+	::getsockname(_socket, reinterpret_cast<sockaddr *>(&addr), &len);
     }
 
     void SocketLinuxTCP::listen()
