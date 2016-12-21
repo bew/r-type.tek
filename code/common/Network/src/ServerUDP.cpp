@@ -120,4 +120,20 @@ namespace network
             _socket.close();
         }
     }
+
+    std::shared_ptr<ClientUDP> ServerUDP::getFirstClientWithMessage() const
+    {
+        for (auto& client : _clients)
+        {
+            if (client->hasMessage())
+                return client;
+        }
+        return nullptr;
+    }
+
+    bool ServerUDP::hasMessage(std::shared_ptr<ClientUDP> client) const
+    {
+        return client->hasMessage();
+    }
+
 }

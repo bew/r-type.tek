@@ -50,7 +50,7 @@ namespace network
         }
     }
 
-    std::string NetworkBuffer::get()
+    std::string NetworkBuffer::get() const
     {
         int i = 0;
 

@@ -21,6 +21,11 @@ namespace network
         return msg;
     }
 
+    bool AClient::hasMessage() const
+    {
+        return (!_readBuffer.get().empty());
+    }
+
     NetworkBuffer &AClient::getReadBuffer()
     {
         return _readBuffer;
