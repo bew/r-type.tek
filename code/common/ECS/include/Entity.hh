@@ -22,11 +22,6 @@ namespace ECS {
      */
     namespace Entity {
 
-        /**
-         * The next allocated Entity will have this id.
-         */
-        static unsigned long   EntityNextId = 0;
-
 	/**
 	 * Class implementing an entity.
 	 */
@@ -35,8 +30,9 @@ namespace ECS {
 	public:
 	    /**
 	     * Constructor.
+             * @param id The id of the entity.
 	     */
-	    Entity();
+	    Entity(unsigned long id);
 	    /**
 	     * Destructor.
 	     */

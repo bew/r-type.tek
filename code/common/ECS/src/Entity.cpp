@@ -10,10 +10,9 @@
 namespace ECS {
     namespace Entity {
     
-	Entity::Entity()
-            : _id(EntityNextId), _components()
+	Entity::Entity(unsigned long id)
+            : _id(id), _components()
         {
-            EntityNextId++;
         }
 
 	Entity::~Entity()
