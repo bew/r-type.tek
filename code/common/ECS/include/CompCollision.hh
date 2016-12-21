@@ -8,6 +8,7 @@
 #pragma once
 
 #include <vector>
+#include <array>
 #include "AComponent.hh"
 #include "Entity.hh"
 
