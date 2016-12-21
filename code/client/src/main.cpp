@@ -26,6 +26,8 @@
 
 int main(void) {
 
+  logs::logger.registerLogLevel(&logs::assetLogLevel);
+  
   ECS::World world;
   ECS::Component::CompMusic *music = new ECS::Component::CompMusic();
   ECS::Component::CompEvent *event = new ECS::Component::CompEvent();

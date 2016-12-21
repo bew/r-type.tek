@@ -12,6 +12,8 @@
 #include "CompAsset.hh"
 #include "CompMusic.hh"
 #include "CompOptions.hh"
+#include "Logs/Logger.hh"
+#include "AssetLogLevel.hh"
 
 namespace ECS {
   namespace System {

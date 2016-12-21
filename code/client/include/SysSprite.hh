@@ -14,6 +14,8 @@
 #include "CompWindow.hh"
 #include "CompSprite.hh"
 #include "ECS/CompMovement.hh"
+#include "Logs/Logger.hh"
+#include "AssetLogLevel.hh"
 #include "SFML/Graphics/Sprite.hpp"
 
 namespace ECS {
