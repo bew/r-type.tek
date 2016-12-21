@@ -1,0 +1,65 @@
+/**
+ * @file Logger.cc
+ * @brief Class for Logger
+ * @author Christopher Paccard
+ *
+ * Allow to log a lot of things
+ *
+ */
+
+#include <sstream>
+#include <chrono>
+#include <iomanip>
+#include "Logger.hh"
+
+namespace log {
+
+    Logger::Logger() : _logNumber(0) {
+        auto now = std::chrono::system_clock::now();
+        auto in_time_t = std::chrono::system_clock::to_time_t(now);
+
+        std::stringstream filenameDate;
+        filenameDate << std::put_time(std::localtime(&in_time_t), "%d-%m-%Y_%H-%M-%S");
+
+        std::string fileName = std::string("logs/r-type_") + filenameDate.str() + std::string(".log");
+        _globalLogFile.open(fileName, std::ofstream::out | std::ofstream::app);
+
+        if (!_globalLogFile.is_open()) {
+            std::cerr << "Impossible to write into global log file: " << fileName << std::endl;
+            std::cerr << "Please create the folder if it doesn't exist or check the rights of it" << std::endl;
+        }
+    }
+
+    Logger::~Logger() {
+        if (_globalLogFile.is_open())
+            _globalLogFile.close();
+    }
+
+    void Logger::registerLog(ALogLevel *logLevel) {
+        _logsLevel[logLevel->getLogLevelName()] = logLevel;
+    }
+
+    Logger &Logger::logLevel(const std::string &logLevelName) {
+        ALogLevel *logLevel = _logsLevel.at(logLevelName);
+
+        auto now = std::chrono::system_clock::now();
+        auto in_time_t = std::chrono::system_clock::to_time_t(now);
+
+        std::stringstream date;
+        date << std::put_time(std::localtime(&in_time_t), "%c");
+
+        std::string header = std::to_string(_logNumber) + std::string(" <") + date.str() +
+                             std::string("> ~ [") + logLevel->getLogLevelName() + std::string("] : ");
+
+        if (_globalLogFile.is_open())
+            _globalLogFile << header;
+        logLevel->getLogLevelStream() << header;
+
+        ++_logNumber;
+
+        _lastLogLevel = logLevel;
+        return *this;
+    }
+
+    Logger logger;
+}
