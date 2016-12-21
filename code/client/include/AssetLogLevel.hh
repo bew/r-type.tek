@@ -48,7 +48,7 @@ namespace logs {
          *
          * @return the stream of the log level to know where to write
          */
-        virtual std::ostream &getLogLevelStream(void) const;
+        virtual std::ostream &getLogLevelStream(void);
     };
 
   extern AssetLogLevel assetLogLevel;
