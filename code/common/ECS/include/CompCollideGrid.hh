@@ -11,6 +11,8 @@
 #include "AComponent.hh"
 #include "Entity.hh"
 
+# define GRID_NB_CASES  (16)
+
 /**
  * Namespace of ECS.
  */
@@ -40,6 +42,16 @@ namespace ECS {
          */
         class CompCollideGrid : public AComponent {
         public:
+
+            /**
+             * structure indicating a collision between two entities.
+             */
+            struct Collision
+            {
+                Entity::Entity  *entity_a;
+                Entity::Entity  *entity_b;
+            };
+
             /**
              * Constructor
              */
@@ -49,7 +61,7 @@ namespace ECS {
              */
             ~CompCollideGrid();
 
-            typedef std::array<std::array<std::vector<Entity::Entity *>, 16>, 16> Grid;
+            typedef std::array<std::array<std::vector<Entity::Entity *>, GRID_NB_CASES>, GRID_NB_CASES> Grid;
 
             /**
              * Getter for the component type.
@@ -74,6 +86,13 @@ namespace ECS {
              * Grid to optimize collision calculation.
              */
             Grid        _grid;
+
+            /**
+             * To be checked after the application of the collision system, this
+             * data structure contains all the collisions that happened in the frame.
+             * To be flushed in the beginning of the collision system.
+             */
+            std::vector<Collision>   _collisions;
         };
 
   }
