@@ -18,7 +18,7 @@ namespace ECS
         CompEvent::CompEvent(void) : AComponent(), locked(false)
         {}
 
-        void CompEvent::addHook(const std::string &eventName, std::function<bool(IEvent *)> hook)
+        void CompEvent::addHook(const std::string &eventName, CompEvent::EventHandler hook)
         {
             _hooks.emplace(eventName, hook);
         }
@@ -33,7 +33,10 @@ namespace ECS
 
         void CompEvent::addSameTickEvent(const std::string &eventName, IEvent *event)
         {
+	  if (locked)
             _sameTickEvents.emplace(eventName, event);
+	  else
+	    _events.emplace(eventName, event);
         };
 
         const std::string &CompEvent::getType() const

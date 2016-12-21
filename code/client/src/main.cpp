@@ -23,11 +23,23 @@ int main(void) {
   ECS::World world;
   ECS::Component::CompMusic *music = new ECS::Component::CompMusic();
   ECS::Component::CompEvent *event = new ECS::Component::CompEvent();
+  ECS::Component::CompAsset *asset = new ECS::Component::CompAsset();
 
   music->name = "MilkyWay";
-  //THATS DANGEROUS, JUST FOR TESTING (ref or ptr catpure are not safe, (with the exception of the even component that is garantee to be existing at event execution time)
-  event->addHook("initialized", [=](ECS::Component::CompEvent::IEvent *event) {
-      music->playing = true;
+
+  //Plutot que d'utiliser une capture dangeureuse, il vaux mieux retrouver manuellement les components.
+  event->addHook("initialized", [](ECS::Component::CompEvent::IEvent *event, ECS::WorldData &data) {
+      ECS::Component::CompMusic *musicComponent = dynamic_cast<ECS::Component::CompMusic*>(data._systemEntity.getComponent(ECS::Component::MUSIC));
+      ECS::Component::CompAsset *assetComponent = dynamic_cast<ECS::Component::CompAsset*>(data._systemEntity.getComponent(ECS::Component::STANDARD_ASSET));
+
+      if (musicComponent && assetComponent && assetComponent->store) {
+	try {
+	  assetComponent->store->getMusic(musicComponent->name).getLowLevelMusic().play();
+	}
+	catch (const graphic::AssetException &e) {
+	  std::cerr << e.what() << std::endl;
+	}
+      } //else error d'ordre d'initialisation.
       return false;
     });
   
@@ -42,7 +54,7 @@ int main(void) {
   world.addSystemEntityComponent(event);
   world.addSystemEntityComponent(new ECS::Component::CompOptions());
   world.addSystemEntityComponent(music);
-  world.addSystemEntityComponent(new ECS::Component::CompAsset());
+  world.addSystemEntityComponent(asset);
 
   int i = 0;
   while(true) {

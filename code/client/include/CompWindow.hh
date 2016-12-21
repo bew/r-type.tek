@@ -19,42 +19,53 @@ namespace ECS {
      * Component for window
      */
     class CompWindow : public AComponent {
-    public:
+    protected:
       /**
        * Is the window fullscreen
        */
-      bool fullscreen;
+      bool _fullscreen;
   
       /**
        * Window width in px
        */
-      unsigned int width;
+      unsigned int _width;
   
       /**
        * Window height in px
        */
-      unsigned int height;
-  
-      /**
-       * bit per pixel
-       */
-      unsigned int bpp;
+      unsigned int _height;
   
       /**
        * anti aliasing level
        */
-      unsigned int aaliasing;
+      unsigned int _aaliasing;
   
       /**
        * Default name for the windows
        */
-      std::string title;
+      std::string _title;
 
       /**
        * Has the configuratio changed (should be set in getter but i'm lazy)
        */
-      bool changed;
-  
+      bool _changed;
+
+    public:
+
+      bool getFullscreen(void) const;
+      unsigned int getHeight(void) const;
+      unsigned int getWidth(void) const;
+      unsigned int getAAliasing(void) const;
+      const std::string &getTitle(void) const;
+      bool getChanged(void) const;
+
+      void setFullscreen(bool);
+      void setHeight(unsigned int);
+      void setWidth(unsigned int);
+      void setAAliasing(unsigned int);
+      void setTitle(const std::string &);
+      void setChanged(bool);
+      
       /**
        * Default title
        */

@@ -29,6 +29,16 @@ namespace ECS {
       std::string locale;
 
       /**
+       * The music volume
+       */
+      float musicVolume;
+
+      /**
+       * Sound effect volume
+       */
+      float effectVolume;
+
+      /**
        * @return ECS::Cmponent::OPTION
        */
       virtual const std::string &getType() const;

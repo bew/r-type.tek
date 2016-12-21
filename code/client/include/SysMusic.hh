@@ -10,7 +10,8 @@
 #include "ECS/Entity.hh"
 #include "ECS/ISystem.hh"
 #include "CompAsset.hh"
-#include "CompMusic.hh" 
+#include "CompMusic.hh"
+#include "CompOptions.hh"
 
 namespace ECS {
   namespace System {

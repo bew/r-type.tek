@@ -10,7 +10,9 @@ namespace ECS {
   namespace Component {
 
     CompOptions::CompOptions(void) :
-      locale(graphic::AssetStore::DEFAULT_LOCALE)
+      locale(graphic::AssetStore::DEFAULT_LOCALE),
+      musicVolume(100),
+      effectVolume(100)
     {};
 
     const std::string &CompOptions::getType() const {

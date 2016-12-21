@@ -9,6 +9,7 @@
 #include <unordered_map>
 #include <functional>
 
+#include "World.hh"
 #include "AComponent.hh"
 
 /**
@@ -47,7 +48,7 @@ namespace ECS
 	  /**
 	   * An event handler.
 	   */
-	  typedef std::function<bool(IEvent *)> EventHandler;
+	  typedef std::function<bool(IEvent *, WorldData &)> EventHandler;
 
 	  /**
 	   * Default constructor
