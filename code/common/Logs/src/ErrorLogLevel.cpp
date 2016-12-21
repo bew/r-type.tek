@@ -21,7 +21,7 @@ namespace logs {
         return logs::ERROR;
     }
 
-    std::ostream &ErrorLogLevel::getLogLevelStream() const {
+    std::ostream &ErrorLogLevel::getLogLevelStream() {
         return std::cerr;
     }
 

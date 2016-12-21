@@ -21,7 +21,7 @@ namespace logs {
         return logs::INFO;
     }
 
-    std::ostream &InfoLogLevel::getLogLevelStream() const {
+    std::ostream &InfoLogLevel::getLogLevelStream() {
         return std::cout;
     }
 
