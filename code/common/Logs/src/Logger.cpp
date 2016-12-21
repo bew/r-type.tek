@@ -21,7 +21,7 @@ namespace logs {
         std::stringstream filenameDate;
         filenameDate << std::put_time(std::localtime(&in_time_t), "%d-%m-%Y_%H-%M-%S");
 
-        std::string fileName = std::string("logs/r-type_") + filenameDate.str() + std::string(".logs");
+        std::string fileName = std::string("logs/r-type_") + filenameDate.str() + std::string(".log");
         _globalLogFile.open(fileName, std::ofstream::out | std::ofstream::app);
 
         if (!_globalLogFile.is_open()) {
