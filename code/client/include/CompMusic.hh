@@ -4,12 +4,6 @@
  * @brief Component for the music of the system entity.
  */
 
-/**
- * This class is subject to change to reduce the amount of data to the reference only.
- * There is also attempt to get rid of the SysMusic system, to be replaced by event only logic
- *
- */
-
 #pragma once
 
 #include "ECS/AComponent.hh"
@@ -64,6 +58,10 @@ namespace ECS {
        */
       bool _changed;
     public:
+
+      /**
+       * @return ECS::Component::MUSIC
+       */
       virtual const std::string &getType() const;
     };
   }

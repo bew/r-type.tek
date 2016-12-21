@@ -32,7 +32,10 @@ namespace ECS {
        * Offset between the center of the sprite (height/2  ad width/2) and 2D coordinates of the entity 
        */
       coordinates<int> center;
-      
+
+      /**
+       * @return ECS::Component::SPRITE
+       */
       virtual const std::string &getType() const;
     };
   }
