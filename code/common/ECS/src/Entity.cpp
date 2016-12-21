@@ -10,8 +10,10 @@
 namespace ECS {
     namespace Entity {
     
-	Entity::Entity()
-	{}
+	Entity::Entity(unsigned long id)
+            : _id(id), _components()
+        {
+        }
 
 	Entity::~Entity()
 	{}
@@ -30,10 +32,15 @@ namespace ECS {
 	    return component;
 	}
 
-      void  Entity::addComponent(ECS::Component::AComponent *comp)
-      {
-	_components[comp->getType()] = comp;
-      }
-
+        unsigned long       Entity::getId() const
+        {
+            return _id;
+        }
+        
+        void  Entity::addComponent(ECS::Component::AComponent *comp)
+        {
+            _components[comp->getType()] = comp;
+        }
+        
     }
 }

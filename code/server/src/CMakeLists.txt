@@ -1,8 +1,14 @@
-set(SV_SOURCE)
+set(SRV_SOURCE)
 
-add(SV_SOURCE some.cpp ServerLogLevel.cpp)
+add(SRV_SOURCE ServerLogLevel.cpp)
+add(SRV_SOURCE Account.cpp)
+add(SRV_SOURCE Player.cpp)
+add(SRV_SOURCE Room.cpp)
+add(SRV_SOURCE Router.cpp)
+add(SRV_SOURCE Server.cpp)
+add(SRV_SOURCE main.cpp)
 
-set(SV_EXEC server)
-add_executable(${SV_EXEC} ${SV_SOURCE})
-target_link_libraries(${SV_EXEC} ${RT_COMMON_NAMES})
-install(TARGETS ${SV_EXEC} DESTINATION bin)
+add_executable(${EXEC_NAME} ${SRV_SOURCE})
+target_link_libraries(${EXEC_NAME} ${RT_COMMON_NAMES})
+
+install(TARGETS ${EXEC_NAME} DESTINATION bin)
