@@ -1,3 +1,9 @@
+/**
+ * @file CompSprite.cpp
+ * @author Nekhot
+ * @brief Component for holding sprites.
+ */
+
 #pragma once
 
 #include <string>
