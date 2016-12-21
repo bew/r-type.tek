@@ -25,7 +25,7 @@ int main(void) {
   ECS::Component::CompEvent *event = new ECS::Component::CompEvent();
   ECS::Component::CompAsset *asset = new ECS::Component::CompAsset();
 
-  music->name = "MilkyWay";
+  music->setMusic("MilkyWay");
 
   //Plutot que d'utiliser une capture dangeureuse, il vaux mieux retrouver manuellement les components.
   event->addHook("initialized", [](ECS::Component::CompEvent::IEvent *event, ECS::WorldData &data) {
@@ -34,7 +34,7 @@ int main(void) {
 
       if (musicComponent && assetComponent && assetComponent->store) {
 	try {
-	  assetComponent->store->getMusic(musicComponent->name).getLowLevelMusic().play();
+	  assetComponent->store->getMusic(musicComponent->getMusic()).getLowLevelMusic().play();
 	}
 	catch (const graphic::AssetException &e) {
 	  std::cerr << e.what() << std::endl;

@@ -26,16 +26,16 @@ namespace ECS {
       const std::string &getLocale(void) const;
       float getMusicVolume(void) const;
       float getSoundEffectVolume(void) const;
-      bool getEffectChanged(void) const;
-      bool getVolumeChanged(void) const;
+      bool getEffectVolumeChanged(void) const;
+      bool getMusicVolumeChanged(void) const;
       bool getLocaleChanged(void) const;
       
       void setLocale(const std::string &);
       void setMusicVolume(float);
       void setSoundEffectVolume(float);
       void setLocaleChanged(bool);
-      void setMusicChanged(bool);
-      void setEffectChanged(bool);
+      void setMusicVolumeChanged(bool);
+      void setEffectVolumeChanged(bool);
       
     protected:
       /**

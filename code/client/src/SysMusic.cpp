@@ -14,9 +14,13 @@ namespace ECS {
       Component::CompAsset *assetc = dynamic_cast<Component::CompAsset*>(world._systemEntity.getComponent(ECS::Component::STANDARD_ASSET));
       Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
 
-      if (musicc && musicc->name != "" && assetc && assetc->store && optionsc) {
+      if (musicc && assetc && assetc->store && optionsc) {
 	try {
-	  sf::Music &music = assetc->store->getMusic(musicc->name).getLowLevelMusic();
+	  //bloaty and ugly. Still thinking about how to handle everyhing correctly.
+	  if (optionsc->getMusicVolumeChanged() || musicc->getChanged()) {
+	    assetc->store->getMusic(musicc->getMusic()).getLowLevelMusic().setVolume(optionsc->getMusicVolume());
+	    optionsc->setMusicVolumeChanged(false);
+	  }
 	}
 	catch (const graphic::AssetException &e) {
 	  std::cerr << e.what() << std::endl;

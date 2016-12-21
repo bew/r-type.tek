@@ -31,11 +31,11 @@ namespace ECS {
       return _effectVolume;
     };
     
-    bool CompOptions::getEffectChanged(void) const {
-      return _localeChanged;
+    bool CompOptions::getEffectVolumeChanged(void) const {
+      return _effectVolumeChanged;
     };
     
-    bool CompOptions::getVolumeChanged(void) const {
+    bool CompOptions::getMusicVolumeChanged(void) const {
       return _effectVolumeChanged;
     };
     
@@ -64,10 +64,10 @@ namespace ECS {
     void CompOptions::setLocaleChanged(bool changed) {
       _localeChanged = changed;
     };
-    void CompOptions::setMusicChanged(bool changed) {
+    void CompOptions::setMusicVolumeChanged(bool changed) {
       _effectVolumeChanged = changed;
     };
-    void CompOptions::setEffectChanged(bool changed) {
+    void CompOptions::setEffectVolumeChanged(bool changed) {
       _musicVolumeChanged = changed;
     };
 

@@ -22,21 +22,18 @@ namespace ECS {
 
       CompMusic(void);
 
-      /**
-       * Is looping
-       */
-      bool loop;
-
-      /**
-       * Is playing (set)
-       */
-      bool playing;
-
+      const std::string &getMusic(void) const;
+      bool getChanged(void) const;
+      void setMusic(const std::string &name);
+      void setChanged(bool changed);
+      
+    protected:
       /**
        * The asset reference in assetStore
        */
-      std::string name;
-      
+      std::string _name;
+      bool _changed;
+    public:
       virtual const std::string &getType() const;
     };
   }
