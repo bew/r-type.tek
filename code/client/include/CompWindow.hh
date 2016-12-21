@@ -45,12 +45,11 @@ namespace ECS {
        */
       std::string _title;
 
+    public:
       /**
-       * Has the configuratio changed (should be set in getter but i'm lazy)
+       * Has the configuration changed
        */
       bool _changed;
-
-    public:
 
       /**
        * @return Getter
@@ -78,11 +77,6 @@ namespace ECS {
       const std::string &getTitle(void) const;
 
       /**
-       * @return Getter
-       */
-      bool getChanged(void) const;
-
-      /**
        * @param ... Setter, will also set changed to true
        */
       void setFullscreen(bool);
@@ -107,11 +101,6 @@ namespace ECS {
        */
       void setTitle(const std::string &);
 
-      /**
-       * @param ... Setter
-       */
-      void setChanged(bool);
-      
       /**
        * Default title
        */

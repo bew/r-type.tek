@@ -1,7 +1,7 @@
 /**
- * @file CompWindow.cpp
- * @author Nekhot.
- * @brief Implementation of Component for entity that need there own windows.
+ * @file CompAsset.cpp
+ * @author Nekhot
+ * @brief Component for holding system entity standard asset.
  */
 
 #include "CompAsset.hh"

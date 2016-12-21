@@ -42,21 +42,6 @@ namespace ECS {
       float getSoundEffectVolume(void) const;
 
       /**
-       * @return Getter
-       */
-      bool getEffectVolumeChanged(void) const;
-
-      /**
-       * @return Getter
-       */
-      bool getMusicVolumeChanged(void) const;
-
-      /**
-       * @return Getter
-       */
-      bool getLocaleChanged(void) const;
-
-      /**
        * @param ... Setter Will also set according 'changed' to true
        */
       void setLocale(const std::string &);
@@ -74,39 +59,33 @@ namespace ECS {
       void setSoundEffectVolume(float);
 
       /**
-       * @param ... Setter
+       * True to fire locale_changed event
        */
-      void setLocaleChanged(bool);
+      bool _localeChanged;
+      /**
+       * True to fire music_config_changed
+       */
+      bool _musicVolumeChanged;
+      /**
+       * True to fire effect_config_changed
+       */
+      bool _effectVolumeChanged;
 
-      
-      /**
-       * @param ... Setter
-       */
-      void setMusicVolumeChanged(bool);
-      
-      /**
-       * @param ... Setter
-       */
-      void setEffectVolumeChanged(bool);
-      
     protected:
       /**
        * The locale to use for assets
        */
       std::string _locale;
-      bool _localeChanged;
 
       /**
        * The music volume
        */
       float _musicVolume;
-      bool _musicVolumeChanged;
 
       /**
        * Sound effect volume
        */
       float _effectVolume;
-      bool _effectVolumeChanged;
 
     public:
       /**
