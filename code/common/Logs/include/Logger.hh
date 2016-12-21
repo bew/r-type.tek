@@ -51,7 +51,7 @@ namespace logs {
          *
          * @return the stream of the log level to know where to write
          */
-        virtual std::ostream &getLogLevelStream(void) const = 0;
+        virtual std::ostream &getLogLevelStream(void) = 0;
     };
 
     /**
