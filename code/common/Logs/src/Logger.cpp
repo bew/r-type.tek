@@ -35,8 +35,12 @@ namespace logs {
             _globalLogFile.close();
     }
 
-    void Logger::registerLog(ALogLevel *logLevel) {
+    void Logger::registerLogLevel(ALogLevel *logLevel) {
         _logsLevel[logLevel->getLogLevelName()] = logLevel;
+    }
+
+    bool Logger::unregisterLogLevel(const std::string &logLevelName) {
+        return _logsLevel.erase(logLevelName) > 0;
     }
 
     Logger &Logger::logLevel(const std::string &logLevelName) {

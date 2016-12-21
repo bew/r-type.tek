@@ -11,7 +11,7 @@
 
 namespace logs {
     DebugLogLevel::DebugLogLevel() {
-        logger.registerLog(this);
+        logger.registerLogLevel(this);
     }
 
     DebugLogLevel::~DebugLogLevel() {

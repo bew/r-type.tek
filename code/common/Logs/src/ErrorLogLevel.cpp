@@ -11,7 +11,7 @@
 
 namespace logs {
     ErrorLogLevel::ErrorLogLevel() {
-        logger.registerLog(this);
+        logger.registerLogLevel(this);
     }
 
     ErrorLogLevel::~ErrorLogLevel() {

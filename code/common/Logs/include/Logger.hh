@@ -99,13 +99,21 @@ namespace logs {
          *
          * @param logLevel the log level to register in order to be used
          */
-        void registerLog(ALogLevel *logLevel);
+        void registerLogLevel(ALogLevel *logLevel);
+
+        /**
+         * Allow to unregister a log level inside the Logger
+         *
+         * @param logLevelName the name of the log level to unregister
+         * @return true if there was a log level to unregister, else false
+         */
+        bool unregisterLogLevel(const std::string& logLevelName);
 
         /**
          * Create a new entry inside the logger and change the log level if required
          *
          * @param logLevelName the name of the log level to use for the new entry
-         * @throw std::out_of_range if the logLevelname doesn't match any log level info register previously
+         * @throw std::out_of_range if the logLevelName doesn't match any log level info register previously
          * @return the Logger in order to chain call for logging
          */
         Logger &logLevel(const std::string &logLevelName);

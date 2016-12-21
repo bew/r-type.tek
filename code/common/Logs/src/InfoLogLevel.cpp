@@ -11,7 +11,7 @@
 
 namespace logs {
     InfoLogLevel::InfoLogLevel() {
-        logger.registerLog(this);
+        logger.registerLogLevel(this);
     }
 
     InfoLogLevel::~InfoLogLevel() {
