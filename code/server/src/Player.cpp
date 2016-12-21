@@ -6,6 +6,11 @@
 
 #include "Player.hpp"
 
+Player::Player(Account const & account, std::shared_ptr<network::ClientTCP> const & sock) :
+  _account(account),
+  _sock(sock)
+{}
+
 Account & Player::getAccount()
 {
   return _account;

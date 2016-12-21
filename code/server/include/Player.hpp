@@ -7,7 +7,9 @@
 #ifndef PLAYER_HPP_
 # define PLAYER_HPP_
 
+# include <memory>
 # include "Account.hpp"
+# include "Network/ClientTCP.hh"
 
 /**
  * Represent a Player
@@ -18,7 +20,7 @@ public:
   /**
    * Construct a player
    */
-  Player(); // TODO: construct a player from his associated socket
+  Player(Account const & account, std::shared_ptr<network::ClientTCP> const & sock);
 
   /**
    * Destructor for a player
@@ -41,8 +43,7 @@ protected:
    * Store the player's account
    */
   Account _account;
-
-  // TODO: socket ?
+  std::shared_ptr<network::ClientTCP> _sock;
 };
 
 #endif /* !PLAYER_HPP_ */
