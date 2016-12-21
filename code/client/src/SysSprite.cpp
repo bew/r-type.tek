@@ -17,7 +17,7 @@ namespace ECS {
       Component::CompSprite *spritec;
       Component::CompMovement *movementc;
       
-      if (windowc && windowc->window && assetc && movementc) {
+      if (windowc && windowc->window && assetc) {
 	for (ECS::Entity::Entity *entity : world._gameEntities) {
 	  spritec = dynamic_cast<Component::CompSprite*>(entity->getComponent(ECS::Component::SPRITE));
 	  movementc = dynamic_cast<Component::CompMovement*>(entity->getComponent(ECS::Component::MOVEMENT));
