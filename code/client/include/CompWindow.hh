@@ -52,18 +52,64 @@ namespace ECS {
 
     public:
 
+      /**
+       * @return Getter
+       */
       bool getFullscreen(void) const;
+
+      /**
+       * @return Getter
+       */
       unsigned int getHeight(void) const;
+
+      /**
+       * @return Getter
+       */
       unsigned int getWidth(void) const;
+
+      /**
+       * @return Getter
+       */
       unsigned int getAAliasing(void) const;
+
+      /**
+       * @return Getter
+       */
       const std::string &getTitle(void) const;
+
+      /**
+       * @return Getter
+       */
       bool getChanged(void) const;
 
+      /**
+       * @param ... Setter, will also set changed to true
+       */
       void setFullscreen(bool);
+
+      /**
+       * @param ... Setter, will also set changed to true
+       */
       void setHeight(unsigned int);
+
+      /**
+       * @param ... Setter, will also set changed to true
+       */
       void setWidth(unsigned int);
+
+      /**
+       * @param ... Setter, will also set changed to true
+       */
       void setAAliasing(unsigned int);
+
+      /**
+       * @param ... Setter, will also set changed to true
+       */
       void setTitle(const std::string &);
+
+      /**
+       * @param ... Setter
+       */
       void setChanged(bool);
       
       /**

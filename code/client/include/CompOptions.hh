@@ -13,6 +13,9 @@
 namespace ECS {
   namespace Component {
 
+    /**
+     * Type for options component
+     */
     static const std::string OPTIONS = "options";
 
     /**
@@ -23,18 +26,67 @@ namespace ECS {
 
       CompOptions(void);
 
+      /**
+       * @return Getter
+       */
       const std::string &getLocale(void) const;
+
+      /**
+       * @return Getter
+       */
       float getMusicVolume(void) const;
+
+      /**
+       * @return Getter
+       */
       float getSoundEffectVolume(void) const;
+
+      /**
+       * @return Getter
+       */
       bool getEffectVolumeChanged(void) const;
+
+      /**
+       * @return Getter
+       */
       bool getMusicVolumeChanged(void) const;
+
+      /**
+       * @return Getter
+       */
       bool getLocaleChanged(void) const;
-      
+
+      /**
+       * @param ... Setter Will also set according 'changed' to true
+       */
       void setLocale(const std::string &);
+
+      
+      /**
+       * @param ... Setter Will also set according 'changed' to true
+       */
       void setMusicVolume(float);
+
+      
+      /**
+       * @param ... Setter Will also set according 'changed' to true
+       */
       void setSoundEffectVolume(float);
+
+      /**
+       * @param ... Setter
+       */
       void setLocaleChanged(bool);
+
+      
+      /**
+       * @param ... Setter
+       */
       void setMusicVolumeChanged(bool);
+      
+      /**
+       * @param ... Setter
+       */
       void setEffectVolumeChanged(bool);
       
     protected:

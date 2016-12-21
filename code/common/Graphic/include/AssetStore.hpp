@@ -46,6 +46,9 @@ namespace graphic {
      */
     ~AssetStore(void);
 
+    /**
+     * @return The current locale
+     */
     const std::string &getLocale(void) const;
 
   protected:

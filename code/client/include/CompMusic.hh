@@ -12,6 +12,9 @@
 namespace ECS {
   namespace Component {
 
+    /**
+     * Component type
+     */
     static const std::string MUSIC = "music";
 
     /**
@@ -22,9 +25,23 @@ namespace ECS {
 
       CompMusic(void);
 
+      /**
+       * @return The music name
+       */
       const std::string &getMusic(void) const;
+
+      /**
+       * @return if the music changed
+       */
       bool getChanged(void) const;
+
+      /**
+       * @param name Name of the music
+       */
       void setMusic(const std::string &name);
+      /**
+       * @param changed
+       */
       void setChanged(bool changed);
       
     protected:
