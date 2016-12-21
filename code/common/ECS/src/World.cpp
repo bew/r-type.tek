@@ -6,13 +6,11 @@
  */
 
 #include "World.hh"
-#include "SystemTest.hh"
-#include "ComponentTest.hh"
 
 namespace ECS {
 
     WorldData::WorldData()
-    	: _gameEntities(), _systemEntity()
+    	: _gameEntities(), _systemEntity(0)
     {}
 
     WorldData::~WorldData()
@@ -25,22 +23,6 @@ namespace ECS {
 
     World::~World()
     {
-    }
-
-    void	World::initTestSystem()
-    {
-	System::ISystem	*systemTest = new System::SystemTest(); 
-	_systems.push_back(systemTest);
-    }
-
-    
-    void	World::addTestEntity()
-    {
-	Entity::Entity	*testEntity = new Entity::Entity();
-	Component::ComponentTest *testComponent = new Component::ComponentTest();
-
-	testEntity->addComponent(testComponent);
-	_world._gameEntities.push_back(testEntity);
     }
 
     void	World::addSystem(System::ISystem *system)

@@ -14,20 +14,22 @@
 /**
  * Namespace of ECS.
  */
-namespace ECS {
+namespace ECS
+{
 
     /**
      * Namespace of components.
      */
-    namespace Component {
+    namespace Component
+    {
 
         /**
          * Component type id.
          */
-	static const std::string MOVEMENT = "movement";
+        static const std::string MOVEMENT = "movement";
 
         /**
-         * Abstract class for components.
+         * class that represents entites movements.
          */
         class CompMovement : public AComponent
         {
@@ -36,10 +38,17 @@ namespace ECS {
              * Constructor.
              */
             CompMovement();
+
             /**
              * Destructor.
              */
             ~CompMovement();
+
+            /**
+             * get the type of component
+             * @return string that reprents his type
+             */
+            virtual const std::string	&getType() const;
 
             /**
              * Description of the way the sprite should face during
@@ -55,23 +64,23 @@ namespace ECS {
             /**
              * Coordinates of the entity.
              */
-            coordinates<int>    _coo;
+            coordinates<int> _coo;
             /**
              * Vector deplacement of the entity.
              */
-            coordinates<float>  _dir;
+            coordinates<float> _dir;
             /**
              * Speed of the entity.
              */
-            float               _speed;
+            float _speed;
             /**
              * Current advance of the entity for <1 pixel movement.
              */
-            coordinates<float>  _advance;
+            coordinates<float> _advance;
             /**
              * Direction faced by the entiy;
              */
-            FacingDirection     _facingDir;
+            FacingDirection _facingDir;
         };
 
     }

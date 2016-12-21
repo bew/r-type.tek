@@ -1,12 +1,14 @@
-set(LIB_SOURCE AComponent.cpp ComponentTest.cpp Entity.cpp SystemTest.cpp World.cpp CompEvent.cpp SysEvent.cpp CompHitbox.cpp CompMovement.cpp SysMovement.cpp)
+set(LIB_SOURCE AComponent.cpp Entity.cpp World.cpp CompEvent.cpp SysEvent.cpp CompHitbox.cpp CompMovement.cpp SysMovement.cpp CompCollision.cpp SysCollision.cpp)
 set(LIB_SOURCE ${LIB_SOURCE} CompEvent.cpp SysEvent.cpp)
 set(LIB_SOURCE ${LIB_SOURCE} CompHitbox.cpp CompMovement.cpp)
-
+set(LIB_SOURCE ${LIB_SOURCE} CompLife.cpp)
+set(LIB_SOURCE ${LIB_SOURCE} CompTick.cpp SysTick.cpp)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
 add_library(${LIB_TEST_NAME} SHARED ${LIB_SOURCE})
 target_link_libraries(${LIB_NAME} ${LIB_DEPENDENCIES})
 target_link_libraries(${LIB_TEST_NAME} ${LIB_DEPENDENCIES})
+target_link_libraries(${LIB_NAME} BSON)
 install(TARGETS ${LIB_TEST_NAME} DESTINATION bin/test/lib)
 target_include_directories(${LIB_NAME} PUBLIC ${LIB_INCLUDE})
 target_include_directories(${LIB_TEST_NAME} PUBLIC ${LIB_INCLUDE})

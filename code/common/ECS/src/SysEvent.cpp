@@ -1,7 +1,7 @@
 /**
- * @file SysWindow.cpp
+ * @file SysEvent.cpp
  * @author Nekhot.
- * @brief Impelmentation of system procesing windows.
+ * @brief Impelmentation of system procesing events.
  */
 
 #include <iostream>
@@ -12,42 +12,43 @@ namespace ECS {
 
     void SysEvent::update(WorldData &world) {
       Component::CompEvent *eventc;
-      eventc = dynamic_cast<Component::CompEvent*>(world._systemEntity.getComponent("event"));
+      eventc = dynamic_cast<Component::CompEvent*>(world._systemEntity.getComponent(ECS::Component::EVENT));
       if (eventc)
 	eventc->locked = true;
 
       for (Entity::Entity *entity : world._gameEntities) {
 	Component::CompEvent *eventc;
-	eventc = dynamic_cast<Component::CompEvent*>(entity->getComponent("event"));
+	eventc = dynamic_cast<Component::CompEvent*>(entity->getComponent(ECS::Component::EVENT));
 	if (eventc)
 	  eventc->locked = true;
       }
-      update(world._systemEntity);
+      update(world._systemEntity, world);
       for (Entity::Entity *entity : world._gameEntities) {
-	update(*entity);
+	update(*entity, world);
       }
-      eventc = dynamic_cast<Component::CompEvent*>(world._systemEntity.getComponent("event"));
+      eventc = dynamic_cast<Component::CompEvent*>(world._systemEntity.getComponent(ECS::Component::EVENT));
       if (eventc)
 	eventc->locked = false;
       for (Entity::Entity *entity : world._gameEntities) {
-	Component::CompEvent *eventc = dynamic_cast<Component::CompEvent*>(entity->getComponent("event"));
+	Component::CompEvent *eventc = dynamic_cast<Component::CompEvent*>(entity->getComponent(ECS::Component::EVENT));
 	if(eventc)
 	  eventc->locked = false;
       }
     }
 
-    void SysEvent::update(Entity::Entity &entity) {
-      Component::CompEvent *eventc = dynamic_cast<Component::CompEvent*>(entity.getComponent("event"));
+    void SysEvent::update(Entity::Entity &entity, WorldData &world) {
+      Component::CompEvent *eventc = dynamic_cast<Component::CompEvent*>(entity.getComponent(ECS::Component::EVENT));
       if (eventc) {
 
         for (auto ievent = eventc->_events.begin(); ievent != eventc->_events.end(); ievent++) {
 	  auto range = eventc->_hooks.equal_range((*ievent).first);
 	  for (auto ihook = range.first; ihook != range.second;) {
-	    if (!(*ihook).second((*ievent).second)) {
+	    if (!(*ihook).second((*ievent).second, world)) {
 	      eventc->_hooks.erase(ihook++);
 	    }
 	    else
 	      ++ihook;
+	    delete (*ievent).second;
 	  }
         }
 	eventc->_events.clear();
@@ -56,7 +57,7 @@ namespace ECS {
 	  for (auto ievent = eventc->_sameTickEvents.begin(); ievent != eventc->_sameTickEvents.end(); ievent++) {
 	    auto range = eventc->_hooks.equal_range((*ievent).first);
 	    for (auto ihook = range.first; ihook != range.second;) {
-	      if (!(*ihook).second((*ievent).second)) {
+	      if (!(*ihook).second((*ievent).second, world)) {
 		eventc->_hooks.erase(ihook++);
 	      }
 	      else
