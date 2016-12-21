@@ -83,11 +83,15 @@ public:
 
   /**
    * Copy constructor
+   *
+   * @param other The other Router to copy from
    */
   Router(Router const & other);
 
   /**
    * Copy by assignement
+   * @param other The other Router to copy from
+   * @return a reference to this Router
    */
   Router & operator=(Router const & other);
 

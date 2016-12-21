@@ -11,7 +11,7 @@ int main()
 {
   Server server("my_little_server");
 
-  unsigned port = server.initNetwork();
+  unsigned short port = server.initNetwork();
   if (port == 0)
     {
       std::cerr << "There was an error while initializing server network" << std::endl;

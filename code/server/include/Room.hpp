@@ -13,13 +13,10 @@
 #include "Player.hpp"
 //#include "Plugins.hpp"
 
-class FullRoom : public std::runtime_error
-{
-public:
-  FullRoom() :
-    std::runtime_error("The room is full")
-  {}
-};
+/**
+ * Represents a component flag exception, it's thrown when room error occured
+ */
+using RoomException = std::runtime_error;
 
 /**
  * Represent a Room where players can play
@@ -50,7 +47,6 @@ public:
    * Add a given player to the room
    *
    * @param player The player to add to the room
-   * @return false if there is no more slot available
    */
   void addPlayer(std::shared_ptr<Player> const & player);
 

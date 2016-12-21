@@ -1,3 +1,9 @@
+/**
+ * @file Account.cpp
+ * @author Benoit de Chezelles
+ * @brief Implementation for an Account
+ */
+
 #include "Account.hpp"
 
 Account::Account(std::string const & username, std::string const & password) :

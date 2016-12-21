@@ -15,7 +15,7 @@ Server::Server(std::string const & name) :
 Server::~Server()
 {}
 
-unsigned Server::initNetwork(unsigned port)
+unsigned Server::initNetwork(unsigned short port)
 {
   network::SockAddr addr(port);
   try

@@ -19,6 +19,9 @@ class Player
 public:
   /**
    * Construct a player
+   *
+   * @param account The account for this player
+   * @param sock The client's control socket
    */
   Player(Account const & account, std::shared_ptr<network::ClientTCP> const & sock);
 
@@ -43,6 +46,10 @@ protected:
    * Store the player's account
    */
   Account _account;
+
+  /**
+   * Store the player's control socket
+   */
   std::shared_ptr<network::ClientTCP> _sock;
 };
 

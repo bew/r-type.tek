@@ -21,7 +21,7 @@ class Server
 {
 public:
   /**
-   * Construct a server instance, with a name on a specified port
+   * Construct a server instance, with a network name
    *
    * @param name The name of the server used for server identification on the network
    */
@@ -41,18 +41,14 @@ public:
    *
    * @param port The port on which to bind the server. If not given, the first
    * available port will be taken.
-   * @param nb_client_max The maximum number of client to handle.
    * @return The used port, 0 if there where an error.
    */
-  unsigned initNetwork(unsigned port = 0);
+  unsigned initNetwork(unsigned short port = 0);
 
   /**
    * Run the main server logic
    */
   void run();
-
-protected:
-
 
 protected:
   /**
@@ -66,8 +62,14 @@ protected:
    */
   std::vector<Room> _rooms;
 
+  /**
+   * Store the server name for network identification
+   */
   std::string _serverName;
 
+  /**
+   * Store the server socket
+   */
   network::ServerTCP _serverSock;
 };
 

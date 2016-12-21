@@ -16,7 +16,7 @@ Room::~Room()
 void Room::addPlayer(std::shared_ptr<Player> const & player)
 {
   if (_players.size() >= _nbSlots)
-    throw FullRoom();
+    throw RoomException("The room is full, there were only " + std::to_string(_nbSlots) + " slot available");
 
   _players.push_back(player);
 }
