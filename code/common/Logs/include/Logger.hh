@@ -30,9 +30,9 @@ namespace logs {
          */
         ALogLevel(void) {}
 
-        ALogLevel(const ALogLevel &aLogLevel) = delete;
+        ALogLevel(const ALogLevel &aLogLevel);
 
-        ALogLevel &operator=(const ALogLevel &aLogLevel) = delete;
+        ALogLevel &operator=(const ALogLevel &aLogLevel);
 
         /**
          * Dtor
@@ -62,7 +62,7 @@ namespace logs {
         /**
          * The line number displayed by the Logger
          */
-        size_t _logNumber;
+        unsigned int _logNumber;
 
         /**
          * A global log file which store ALL the logs
