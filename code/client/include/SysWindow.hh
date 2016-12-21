@@ -9,6 +9,7 @@
 #include "ECS/World.hh"
 #include "ECS/Entity.hh"
 #include "ECS/ISystem.hh"
+#include "ECS/CompEvent.hh"
 #include "CompWindow.hh"
 
 namespace ECS {

@@ -6,6 +6,7 @@
  *
  */
 
+#include <iostream>
 #include "SysMovement.hh"
 #include "CompMovement.hh"
 #include "CompCollision.hh"
@@ -40,8 +41,8 @@ namespace ECS {
                 comp->_facingDir = Component::CompMovement::FacingDirection::FORWARD;
 
             comp->_advance._y -= static_cast<int>(comp->_advance._y);
-            comp->_advance._x -= static_cast<int>(comp->_advance._x);
-        }
+            comp->_advance._x -= static_cast<int>(comp->_advance._x);		      
+	}
 
         void    SysMovement::putEntityInGrid(Component::CompMovement *mov_comp,
                                              Entity::Entity *entity,

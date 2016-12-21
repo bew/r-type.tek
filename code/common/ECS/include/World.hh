@@ -32,16 +32,16 @@ namespace ECS {
 	 * Destructor.
 	 */
 	~WorldData();
-
+      
         /**
 	 * Game entities such as enemy, players, or bullets.
 	 */
 	std::vector<Entity::Entity *>	_gameEntities;
 
-        /**
-	 * System entity managing network and graphics components.
-	 */
-	Entity::Entity			_systemEntity;
+      /**
+       * System entity managing network and graphics components.
+       */
+      Entity::Entity			_systemEntity;
     };
     
     /**

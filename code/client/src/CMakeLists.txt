@@ -1,5 +1,7 @@
 set(CL_SOURCE)
 add(CL_SOURCE CompWindow.cpp SysWindow.cpp main.cpp)
+add(CL_SOURCE CompAsset.cpp CompOptions.cpp CompMusic.cpp SysAsset.cpp SysMusic.cpp ${CL_SOURCE})
+add(CL_SOURCE CompSprite.cpp SysSprite.cpp SysController.cpp SysOptions.cpp ${CL_SOURCE})
 set(CL_EXEC client)
 
 add_executable(${CL_EXEC} ${CL_SOURCE})
