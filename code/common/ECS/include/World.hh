@@ -87,8 +87,6 @@ namespace ECS {
 	 */
 	std::vector<System::ISystem *>	_systems;
 
-      // TESTING ONLY, SHOULD NOT PASS REVIEW
-    public:
         /**
 	 * Data of the ecs. The systems will read and update these datas.
 	 */

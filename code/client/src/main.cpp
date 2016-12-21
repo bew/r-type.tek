@@ -73,7 +73,8 @@ int main(void) {
 
 
   ///////////////// Ajouter une entité de test
-
+  // necessite ECS::World::_world public 
+  /*
   ECS::Entity::Entity entity;
   ECS::Component::CompSprite sprite;
   ECS::Component::CompMovement movement;
@@ -83,7 +84,7 @@ int main(void) {
   entity.addComponent(&sprite);
   entity.addComponent(&movement);
   world._world._gameEntities.push_back(&entity);
-  
+  */  
   while(true)
     world.update();
   return 0;
