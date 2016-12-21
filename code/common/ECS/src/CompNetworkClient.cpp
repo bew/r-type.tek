@@ -1,6 +1,8 @@
-//
-// Created by tookie on 12/21/16.
-//
+/**
+ * @file CompNetworkClient.hh
+ * @author Tookie.
+ * @brief component use by one client to communicate with the server.
+ */
 
 #include "CompNetworkClient.hh"
 
