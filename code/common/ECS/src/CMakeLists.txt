@@ -3,6 +3,7 @@ set(LIB_SOURCE ${LIB_SOURCE} CompEvent.cpp SysEvent.cpp)
 set(LIB_SOURCE ${LIB_SOURCE} CompHitbox.cpp CompMovement.cpp)
 set(LIB_SOURCE ${LIB_SOURCE} CompLife.cpp)
 set(LIB_SOURCE ${LIB_SOURCE} CompTick.cpp SysTick.cpp)
+set(LIB_SOURCE ${LIB_SOURCE} CompNetworkClient.cpp)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
 add_library(${LIB_TEST_NAME} SHARED ${LIB_SOURCE})
