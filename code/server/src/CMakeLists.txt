@@ -1,6 +1,6 @@
 set(SV_SOURCE)
 
-add(SV_SOURCE some.cpp)
+add(SV_SOURCE some.cpp ServerLogLevel.cpp)
 
 set(SV_EXEC server)
 add_executable(${SV_EXEC} ${SV_SOURCE})
