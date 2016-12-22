@@ -51,6 +51,33 @@ namespace bson {
         return _key;
     }
 
+    void Document::Element::toJson(unsigned int spaces) const {
+        std::cout << std::string(spaces, ' ' ) << '"' << this->getKey() << "\": ";
+        switch (_valueType) {
+            case (bson::DOUBLE):
+                std::cout << this->getValueDouble();
+                break;
+            case (bson::STRING):
+                std::cout << '"' << this->getValueString() << '"';
+                break;
+            case (bson::DOCUMENT):
+                this->getValueDocument().toJSON(spaces, false);
+                break;
+            case (bson::BOOL):
+                std::cout << std::boolalpha << this->getValueBool() << std::noboolalpha;
+                break;
+            case (bson::NULLVALUE):
+                std::cout << "null";
+                break;
+            case (bson::INT32):
+                std::cout << this->getValueInt32();
+                break;
+            case (bson::INT64):
+                std::cout << this->getValueInt64();
+                break;
+        }
+    }
+
     double Document::Element::getValueDouble() const {
         this->isRightType(bson::DOUBLE);
 
@@ -355,6 +382,20 @@ namespace bson {
         file.read(&bytes[0], fileSize);
 
         this->unserializeBuffer(std::vector<unsigned char>(bytes.begin(), bytes.end()));
+    }
+
+    void Document::toJSON(unsigned int spaces, bool newLine) const {
+        bool first = true;
+        std::cout << "{" << std::endl;
+        for (const auto& element : _elements) {
+            if (!first)
+                std::cout << ',' << std::endl;
+            element.toJson(spaces + 2);
+            first = false;
+        }
+        std::cout << std::endl << std::string(spaces, ' ' ) << "}";
+        if (newLine)
+            std::cout << std::endl;
     }
 
     Document &Document::operator<<(const char *string) {

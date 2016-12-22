@@ -104,6 +104,8 @@ namespace bson {
              */
             const std::string &getKey(void) const;
 
+            void toJson(unsigned int spaces) const;
+
             /**
              * Get the double representation from the value stored in it's BSON representation
              *
@@ -429,6 +431,8 @@ namespace bson {
          * @throw BsonException if the document is incomplete (next input is not key)
          */
         void readFromFile(const std::string& filename);
+
+        void toJSON(unsigned int spaces = 0, bool newLine = true) const;
 
         /**
          * Add a string as key into the Document
