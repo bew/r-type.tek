@@ -13,6 +13,7 @@
 #include "ECS/CompTick.hh"
 #include "ECS/CompCollision.hh"
 #include "CompWindow.hh"
+#include "CompOptions.hh"
 
 namespace ECS {
   namespace System {

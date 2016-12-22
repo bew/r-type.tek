@@ -14,6 +14,9 @@ namespace ECS {
       Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
       
       if (eventc && optionsc) {
+	if (optionsc->_localeChanged || optionsc->_effectVolumeChanged || optionsc->_musicVolumeChanged || optionsc->_windowChanged) {
+          eventc->addEvent("config_update", nullptr);
+        }
 	if (optionsc->_localeChanged) {
 	  eventc->addEvent("config_update_locale", nullptr);
 	  optionsc->_localeChanged = false;
@@ -26,9 +29,10 @@ namespace ECS {
           eventc->addEvent("config_update_music", nullptr);
           optionsc->_musicVolumeChanged = false;
         }
-	if (optionsc->_localeChanged || optionsc->_effectVolumeChanged || optionsc->_musicVolumeChanged) {
-	  eventc->addEvent("config_update", nullptr);
-	}
+	if (optionsc->_windowChanged) {
+          eventc->addEvent("config_update_window", nullptr);
+          optionsc->_windowChanged = false;
+        }
       }
     }
 

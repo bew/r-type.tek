@@ -67,6 +67,11 @@ namespace ECS {
 	  optionsc->setLocale(document["locale"].getValueString());
 	  optionsc->setMusicVolume(static_cast<float>(document["effect"].getValueDouble()));
 	  optionsc->setSoundEffectVolume(static_cast<float>(document["music"].getValueDouble()));
+          optionsc->setFullscreen(document["fullscreen"].getValueBool());
+          optionsc->setWidth(document["width"].getValueInt32());
+          optionsc->setHeight(document["height"].getValueInt32());
+          optionsc->setAAliasing(document["aliasing"].getValueInt32());
+          optionsc->setTitle(document["title"].getValueString());	  
 	  return repeat;
 	}
 	catch (const bson::BsonException &e) {
@@ -93,8 +98,12 @@ namespace ECS {
 	  options << "locale" << optionsc->getLocale();
 	  options << "effect" << optionsc->getMusicVolume();
 	  options << "music" << optionsc->getSoundEffectVolume();
-	  for (unsigned char uc : options.getBuffer())
-	    file.write(reinterpret_cast<char*>(&uc), 1);
+	  options << "fullscreen" << optionsc->getFullscreen();
+	  options << "width" << static_cast<int>(optionsc->getWidth());
+	  options << "height" << static_cast<int>(optionsc->getHeight());
+	  options << "aaliasing" << static_cast<int>(optionsc->getAAliasing());
+	  options << "title" << optionsc->getTitle();
+	  file.write(reinterpret_cast<char*>(&(options.getBuffer()[0])), options.getBuffer().size());
 	}
 	return repeat;
       }
