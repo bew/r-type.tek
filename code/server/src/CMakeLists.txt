@@ -6,6 +6,7 @@ add(SRV_SOURCE Room.cpp)
 add(SRV_SOURCE Router.cpp)
 add(SRV_SOURCE Server.cpp)
 add(SRV_SOURCE main.cpp)
+add(SRV_SOURCE ClientCommandsState.cpp)
 
 add_executable(${EXEC_NAME} ${SRV_SOURCE})
 target_link_libraries(${EXEC_NAME} ${RT_COMMON_NAMES})
