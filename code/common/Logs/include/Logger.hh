@@ -55,6 +55,48 @@ namespace logs {
     };
 
     /**
+     * Abstract class for a log level with a file
+     */
+    class ALogLevelFile : public ALogLevel {
+    private:
+        /**
+         * Log file
+         */
+        std::ofstream _logFile;
+
+    public:
+        /**
+         * Ctor
+         *
+         * @param filename the name of the log file
+         */
+        ALogLevelFile(const std::string& filename);
+
+        ALogLevelFile(const ALogLevel &aLogLevel) = delete;
+
+        ALogLevelFile &operator=(const ALogLevelFile &aLogLevelFile) = delete;
+
+        /**
+         * Dtor
+         */
+        virtual ~ALogLevelFile();
+
+        /**
+         * Get the name of the log level
+         *
+         * @return the name of the log level
+         */
+        virtual std::string getLogLevelName(void) const = 0;
+
+        /**
+         * Get the stream of the log level to know where to write
+         *
+         * @return the stream of the log level to know where to write
+         */
+        virtual std::ostream &getLogLevelStream(void);
+    };
+
+    /**
      * Allow to log a lot of things
      */
     class Logger {
