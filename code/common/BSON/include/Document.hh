@@ -104,7 +104,13 @@ namespace bson {
              */
             const std::string &getKey(void) const;
 
-            void toJson(unsigned int spaces) const;
+            /**
+             * Get the Element representation in JSON
+             *
+             * @param spaces the spaces to add for alignment
+             * @return the Element representation in JSON
+             */
+            std::string toJson(unsigned int spaces) const;
 
             /**
              * Get the double representation from the value stored in it's BSON representation
@@ -432,7 +438,13 @@ namespace bson {
          */
         void readFromFile(const std::string& filename);
 
-        void toJSON(unsigned int spaces = 0, bool newLine = true) const;
+        /**
+         * Return the Document in JSON representation
+         *
+         * @param spaces the spaces to add for alignment
+         * @return the Document in JSON representation
+         */
+        std::string toJSON(unsigned int spaces = 0) const;
 
         /**
          * Add a string as key into the Document

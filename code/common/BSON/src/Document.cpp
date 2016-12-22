@@ -51,31 +51,33 @@ namespace bson {
         return _key;
     }
 
-    void Document::Element::toJson(unsigned int spaces) const {
-        std::cout << std::string(spaces, ' ' ) << '"' << this->getKey() << "\": ";
+    std::string Document::Element::toJson(unsigned int spaces) const {
+        std::string json = "";
+        json += std::string(spaces, ' ' ) + '"' + this->getKey() + "\": ";
         switch (_valueType) {
             case (bson::DOUBLE):
-                std::cout << this->getValueDouble();
+                json += std::to_string(this->getValueDouble());
                 break;
             case (bson::STRING):
-                std::cout << '"' << this->getValueString() << '"';
+                json += '"' + this->getValueString() + '"';
                 break;
             case (bson::DOCUMENT):
-                this->getValueDocument().toJSON(spaces, false);
+                json += this->getValueDocument().toJSON(spaces);
                 break;
             case (bson::BOOL):
-                std::cout << std::boolalpha << this->getValueBool() << std::noboolalpha;
+                json += (this->getValueBool() ? "true" : "false");
                 break;
             case (bson::NULLVALUE):
-                std::cout << "null";
+                json += "null";
                 break;
             case (bson::INT32):
-                std::cout << this->getValueInt32();
+                json += std::to_string(this->getValueInt32());
                 break;
             case (bson::INT64):
-                std::cout << this->getValueInt64();
+                json += std::to_string(this->getValueInt64());
                 break;
         }
+        return json;
     }
 
     double Document::Element::getValueDouble() const {
@@ -384,18 +386,19 @@ namespace bson {
         this->unserializeBuffer(std::vector<unsigned char>(bytes.begin(), bytes.end()));
     }
 
-    void Document::toJSON(unsigned int spaces, bool newLine) const {
+    std::string Document::toJSON(unsigned int spaces) const {
         bool first = true;
-        std::cout << "{" << std::endl;
+        std::string json = "";
+        json += "{\n";
         for (const auto& element : _elements) {
             if (!first)
-                std::cout << ',' << std::endl;
-            element.toJson(spaces + 2);
+                json += ",\n";
+            json += element.toJson(spaces + 2);
             first = false;
         }
-        std::cout << std::endl << std::string(spaces, ' ' ) << "}";
-        if (newLine)
-            std::cout << std::endl;
+        json += "\n" + std::string(spaces, ' ' ) + "}";
+
+        return json;
     }
 
     Document &Document::operator<<(const char *string) {
