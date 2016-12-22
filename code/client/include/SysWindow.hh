@@ -10,6 +10,8 @@
 #include "ECS/Entity.hh"
 #include "ECS/ISystem.hh"
 #include "ECS/CompEvent.hh"
+#include "ECS/CompTick.hh"
+#include "ECS/CompCollision.hh"
 #include "CompWindow.hh"
 
 namespace ECS {

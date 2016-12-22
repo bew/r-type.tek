@@ -75,6 +75,11 @@ namespace ECS
 	  std::chrono::time_point<std::chrono::system_clock> previous;
 
 	  /**
+	   * Set to true to kill the game
+	   */
+	  bool kill;
+
+	  /**
 	   * Get the component type
 	   *
 	   * @return ECS::Component::TICK

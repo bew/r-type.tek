@@ -32,6 +32,7 @@ int main(void) {
   ECS::Component::CompMusic *music = new ECS::Component::CompMusic();
   ECS::Component::CompEvent *event = new ECS::Component::CompEvent();
   ECS::Component::CompAsset *asset = new ECS::Component::CompAsset();
+  ECS::Component::CompTick *tick = new ECS::Component::CompTick();
 
   music->setMusic("MilkyWay");
 
@@ -51,9 +52,10 @@ int main(void) {
 	world.addSystem(new ECS::System::SysOptions());
 	return false;
     });
-  
-  //add hook parser les options
-  
+
+  event->addHook("initialization", ECS::System::SysOptions::READ_CONFIG_FILE<false>);
+  event->addHook("config_update", ECS::System::SysOptions::WRITE_CONFIG_FILE<true>);
+
   //////////////////////////////////////////
   
   world.addSystem(new ECS::System::SysTick());
@@ -64,7 +66,7 @@ int main(void) {
   world.addSystem(new ECS::System::SysEvent());
   
   
-  world.addSystemEntityComponent(new ECS::Component::CompTick());
+  world.addSystemEntityComponent(tick);
   world.addSystemEntityComponent(new ECS::Component::CompWindow());
   world.addSystemEntityComponent(event);
   world.addSystemEntityComponent(new ECS::Component::CompOptions());
@@ -76,8 +78,8 @@ int main(void) {
 
   ///////////////// Ajouter une entité de test
   // necessite ECS::World::_world public 
-  /*
-  ECS::Entity::Entity entity;
+
+  ECS::Entity::Entity entity(1);
   ECS::Component::CompSprite sprite;
   ECS::Component::CompMovement movement;
   sprite.name = "burrito";
@@ -86,8 +88,8 @@ int main(void) {
   entity.addComponent(&sprite);
   entity.addComponent(&movement);
   world._world._gameEntities.push_back(&entity);
-  */  
-  while(true)
+
+  while (!tick->kill)
     world.update();
   return 0;
 };

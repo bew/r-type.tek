@@ -3,7 +3,6 @@
  * @author Nekhot
  * @brief Impelmentation of system procesing options.
  */
-
 #include "SysOptions.hh"
 
 namespace ECS {
@@ -27,7 +26,12 @@ namespace ECS {
           eventc->addEvent("config_update_music", nullptr);
           optionsc->_musicVolumeChanged = false;
         }
+	if (optionsc->_localeChanged || optionsc->_effectVolumeChanged || optionsc->_musicVolumeChanged) {
+	  eventc->addEvent("config_update", nullptr);
+	}
       }
     }
+
+    const std::string SysOptions::CONFIG_FILE = "configuration.bson";
   }
 }
