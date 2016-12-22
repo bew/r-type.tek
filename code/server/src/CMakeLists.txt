@@ -1,5 +1,6 @@
 set(SRV_SOURCE)
 
+add(SRV_SOURCE ServerLogLevel.cpp)
 add(SRV_SOURCE Account.cpp)
 add(SRV_SOURCE Player.cpp)
 add(SRV_SOURCE Room.cpp)
