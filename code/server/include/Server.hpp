@@ -8,11 +8,12 @@
 # define SERVER_HPP_
 
 # include <string>
+# include <map>
 # include <vector>
 # include <memory>
+# include "Network/ServerTCP.hh"
 # include "Player.hpp"
 # include "Room.hpp"
-# include "Network/ServerTCP.hh"
 
 /**
  * Represent the server
@@ -52,10 +53,23 @@ public:
 
 protected:
   /**
-   * Store the players connected and authenticated to the server
-   * They can be playing in a room or not.
+   * Process an incoming message from the given client
+   *
+   * @param client The client
    */
-  std::vector<std::shared_ptr<Player>> _players;
+  void processMessage(std::shared_ptr<network::ClientTCP> client);
+
+protected:
+  /**
+   * Store the association between a client socket and a Player
+   * The players can be in any state
+   */
+  std::map<std::shared_ptr<network::ClientTCP>, std::shared_ptr<Player>> _players;
+
+  /**
+   * Store the registered accounts
+   */
+  std::vector<std::shared_ptr<Account>> _accounts;
 
   /**
    * Store the opened rooms
