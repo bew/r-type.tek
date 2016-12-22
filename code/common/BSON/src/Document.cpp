@@ -8,6 +8,7 @@
  */
 
 #include <iostream>
+#include <fstream>
 #include "Document.hh"
 #include "Endianess.hh"
 
@@ -204,8 +205,41 @@ namespace bson {
         return *this;
     }
 
-    Document::Document(const std::vector<unsigned char> &buffer)
-    : _nextInputType(Document::KEY) {
+    Document::Document(const std::vector<unsigned char> &buffer) : _nextInputType(Document::KEY) {
+        this->unserializeBuffer(buffer);
+    }
+
+    Document::Document(const std::string &buffer) : _nextInputType(Document::KEY) {
+        this->unserializeBuffer(std::vector<unsigned char>(buffer.begin(), buffer.end()));
+    }
+
+    Document::~Document() {
+    }
+
+    void Document::isInputValue() const {
+        if (_nextInputType != Document::VALUE)
+            throw BsonException("Next input into the document should be a key as a string.");
+    }
+
+    void Document::insertElement(bson::type valueType, const std::vector<unsigned char> &elementBuffer) {
+        Document::Element newElement(valueType, _lastKey, elementBuffer);
+
+        size_t i = 0;
+        for (const auto &element : _elements) {
+            if (element.getKey() == _lastKey) {
+                _elements[i] = newElement;
+                return ;
+            }
+            ++i;
+        }
+
+        _elements.push_back(newElement);
+    }
+
+    void Document::unserializeBuffer(const std::vector<unsigned char> &buffer) {
+        if (_nextInputType != Document::KEY)
+            throw BsonException("Can't unserialize while having incomplete an Document (next input should be a key)");
+
         if (buffer.size() < 4)
             throw BsonException("The given document is invalid");
 
@@ -259,32 +293,9 @@ namespace bson {
         }
     }
 
-    Document::~Document() {
-    }
-
-    void Document::isInputValue() const {
-        if (_nextInputType != Document::VALUE)
-            throw BsonException("Next input into the document should be a key as a string.");
-    }
-
-    void Document::insertElement(bson::type valueType, const std::vector<unsigned char> &elementBuffer) {
-        Document::Element newElement(valueType, _lastKey, elementBuffer);
-
-        size_t i = 0;
-        for (const auto &element : _elements) {
-            if (element.getKey() == _lastKey) {
-                _elements[i] = newElement;
-                return ;
-            }
-            ++i;
-        }
-
-        _elements.push_back(newElement);
-    }
-
     std::vector<unsigned char> Document::getBuffer() const {
         if (_nextInputType != Document::KEY)
-            throw BsonException("Incomplete document");
+            throw BsonException("Incomplete document (next input should be a key)");
 
         std::vector<unsigned char> entireBuffer;
         std::vector<unsigned char> elementsBuffer;
@@ -311,6 +322,39 @@ namespace bson {
         entireBuffer.push_back('\x00');
 
         return entireBuffer;
+    }
+
+    std::string Document::getBufferString() const {
+        std::vector<unsigned char> buffer = this->getBuffer();
+        return std::string(buffer.begin(), buffer.end());
+    }
+
+    void Document::writeToFile(const std::string &filename) const {
+        std::ofstream file(filename, std::ofstream::out | std::ofstream::app);
+        if (!file.is_open())
+            throw BsonException(std::string("Can't open file: ") + filename);
+        file << this->getBufferString();
+        file.close();
+    }
+
+    std::ostream& Document::writeToStream(std::ostream &os) const {
+        os << this->getBufferString();
+        return os;
+    }
+
+    void Document::readFromFile(const std::string &filename) {
+        std::ifstream file(filename, std::ios::in | std::ios::binary | std::ios::ate);
+
+        if (!file.is_open())
+            throw BsonException(std::string("Can't open file: ") + filename);
+
+        std::ifstream::pos_type fileSize = file.tellg();
+        file.seekg(0, std::ios::beg);
+
+        std::vector<char> bytes(fileSize);
+        file.read(&bytes[0], fileSize);
+
+        this->unserializeBuffer(std::vector<unsigned char>(bytes.begin(), bytes.end()));
     }
 
     Document &Document::operator<<(const char *string) {

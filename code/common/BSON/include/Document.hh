@@ -352,6 +352,14 @@ namespace bson {
         Document(const std::vector<unsigned char> &buffer);
 
         /**
+         * Create a Document by deserialization of the given buffer which is a valid BSON representation of a Document
+         *
+         * @param buffer the buffer which will be deserialiazed to get the Document
+         * @throw BsonException if the given buffer is invalid
+         */
+        Document(const std::string& buffer);
+
+        /**
          * Destroy the Document
          */
         ~Document(void);
@@ -373,14 +381,54 @@ namespace bson {
          */
         void insertElement(bson::type valueType, const std::vector<unsigned char> &elementBuffer);
 
+        /**
+         * Deserialization of the given buffer which is a valid BSON representation of a Document
+         *
+         * @param buffer the buffer which will be deserialiazed to get the Document
+         * @throw BsonException if the document is incomplete (next input is not key)
+         * @throw BsonException if the given buffer is invalid
+         */
+        void unserializeBuffer(const std::vector<unsigned char>& buffer);
+
     public:
         /**
-         * Get the BSON representation of the Document
+         * Get the BSON representation of the Document as binary buffer
          *
          * @throw BsonException if the document is incomplete (next input is not key)
          * @return the binary buffer which is the BSON representation of the Document
          */
         std::vector<unsigned char> getBuffer(void) const;
+
+        /**
+         * Get the BSON representation of the Document as string
+         *
+         * @throw BsonException if the document is incomplete (next input is not key)
+         * @return the string which is the BSON representation of the Document
+         */
+        std::string getBufferString(void) const;
+
+        /**
+         * Write the BSON representation to the given filename
+         *
+         * @throw BsonException if can't open the file
+         * @throw BsonException if the document is incomplete (next input is not key)
+         */
+        void writeToFile(const std::string& filename) const;
+
+        /**
+         * Write the BSON representation to the given stream
+         *
+         * @throw BsonException if the document is incomplete (next input is not key)
+         */
+        std::ostream& writeToStream(std::ostream& os) const;
+
+        /**
+         * Write the BSON representation to the given filename
+         *
+         * @throw BsonException if can't open the file
+         * @throw BsonException if the document is incomplete (next input is not key)
+         */
+        void readFromFile(const std::string& filename);
 
         /**
          * Add a string as key into the Document
