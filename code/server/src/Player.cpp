@@ -6,12 +6,20 @@
 
 #include "Player.hpp"
 
-Player::Player(Account const & account, std::shared_ptr<network::ClientTCP> const & sock) :
-  _account(account),
-  _sock(sock)
+Player::Player(std::shared_ptr<network::ClientTCP> const & sock) :
+  _sock(sock),
+  _account()
 {}
 
-Account & Player::getAccount()
+Player::~Player()
+{}
+
+Account const & Player::getAccount() const
 {
   return _account;
+}
+
+ClientCommandsState & Player::getControlState()
+{
+  return _controlState;
 }
