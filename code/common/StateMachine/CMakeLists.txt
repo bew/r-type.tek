@@ -7,6 +7,7 @@ set(TEST_EXE ${LIB_TEST_NAME}_exe)
 
 set(LIB_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories(${LIB_INCLUDE})
+set(RT_COMMON_INCLUDES ${RT_COMMON_INCLUDES} ${LIB_INCLUDE} PARENT_SCOPE)
 
 add_subdirectory(test)
 
