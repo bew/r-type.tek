@@ -43,7 +43,7 @@ public:
    * available port will be taken.
    * @return The used port, 0 if there where an error.
    */
-  unsigned initNetwork(unsigned short port = 0);
+  unsigned short initNetwork(unsigned short port = 0);
 
   /**
    * Run the main server logic
