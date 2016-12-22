@@ -33,7 +33,7 @@ namespace state_machine
          * @param name name of the state
          */
         State(const std::string &name) :
-                _name(name)
+            _name(name)
         {};
 
         /**
@@ -85,8 +85,8 @@ namespace state_machine
         }
 
         /**
-         * getter for all edge linked
-         * @return list of all edge linked
+         * getter for all linked edges
+         * @return list of all linked edges
          */
         std::list<Edge> getEdges() const
         {
