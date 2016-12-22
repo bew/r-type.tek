@@ -44,7 +44,7 @@ namespace ECS
             /**
              * represents the server UDP
              */
-             network::ServerUDP _server;
+            network::ServerUDP _server;
         };
 
     }
