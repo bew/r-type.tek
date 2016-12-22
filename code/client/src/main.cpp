@@ -32,7 +32,7 @@ int main(void) {
   ECS::Component::CompMusic *music = new ECS::Component::CompMusic();
   ECS::Component::CompEvent *event = new ECS::Component::CompEvent();
   ECS::Component::CompAsset *asset = new ECS::Component::CompAsset();
-
+  ECS::Component::CompTick *tick = new ECS::Component::CompTick();
   music->setMusic("MilkyWay");
 
 
@@ -60,7 +60,7 @@ int main(void) {
   world.addSystem(new ECS::System::SysEvent());
   
   
-  world.addSystemEntityComponent(new ECS::Component::CompTick());
+  world.addSystemEntityComponent(tick);
   world.addSystemEntityComponent(new ECS::Component::CompWindow());
   world.addSystemEntityComponent(event);
   world.addSystemEntityComponent(new ECS::Component::CompOptions());
@@ -83,7 +83,7 @@ int main(void) {
   entity.addComponent(&movement);
   world._world._gameEntities.push_back(&entity);
   */  
-  while(true) {
+  while (!tick->kill) {
     std::cout << "salut ma poule" << std::endl;
     world.update();
   }

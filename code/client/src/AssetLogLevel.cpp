@@ -20,7 +20,7 @@ namespace logs {
         return logs::ASSET;
     }
 
-    std::ostream &AssetLogLevel::getLogLevelStream() const {
+    std::ostream &AssetLogLevel::getLogLevelStream() {
         return std::cerr;
     }
 
