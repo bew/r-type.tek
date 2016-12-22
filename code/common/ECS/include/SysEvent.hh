@@ -34,6 +34,15 @@ namespace ECS {
        * @param world All the data about the world
        */
       void update(ECS::Entity::Entity &entity, ECS::WorldData &world);
+
+	  /**
+	  * Helper method to update a single entity. Same as update but with fix for windows broken iterator
+	  *
+	  * @param entity The entity that will get updated
+	  * @param world All the data about the world
+	  */
+	  void updateW(ECS::Entity::Entity &entity, ECS::WorldData &world);
+
     };
   }
 }
