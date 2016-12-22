@@ -62,17 +62,17 @@ namespace ECS
 	  /**
 	   * timestamp of first tick
 	   */
-	  std::chrono::time_point<std::chrono::system_clock> start;
+	  std::chrono::high_resolution_clock::time_point start;
 
 	  /**
 	   * timestamp of current tick
 	   */
-	  std::chrono::time_point<std::chrono::system_clock> current;
+	  std::chrono::high_resolution_clock::time_point current;
 
 	  /**
 	   * timestamp of previous tick
 	   */
-	  std::chrono::time_point<std::chrono::system_clock> previous;
+	  std::chrono::high_resolution_clock::time_point previous;
 
 	  /**
 	   * Get the component type
