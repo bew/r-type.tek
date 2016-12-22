@@ -20,7 +20,7 @@ TEST(Flags, addFlag)
 {
     ECS::Component::AComponent* life = new ECS::Component::CompLife(100);
 
-    life->addFlag(1);
+    life->addFlag(ECS::Component::SERIALIZABLE_MASK);
 
     bool isSerializable = life->hasFlag(ECS::Component::SERIALIZABLE_MASK);
 
@@ -33,7 +33,7 @@ TEST(Flags, DeleteFlag)
 {
     ECS::Component::AComponent* life = new ECS::Component::CompLife(100);
 
-    life->addFlag(1);
+    life->addFlag(ECS::Component::SERIALIZABLE_MASK);
 
     bool isSerializable = life->hasFlag(ECS::Component::SERIALIZABLE_MASK);
 
