@@ -75,7 +75,7 @@ namespace ECS {
 	  return repeat;
 	}
 	catch (const bson::BsonException &e) {
-	  //logs::logger.logLevel(logs::ERROR) << "Cannot parse from configuration file '" << e.what() << "'" << std::endl;
+	  logs::logger.logLevel(logs::ERROR) << "Cannot parse from configuration file '" << e.what() << "'" << std::endl;
 	  return repeat;
 	}
       }
@@ -90,7 +90,7 @@ namespace ECS {
 	Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
 	std::ofstream file(SysOptions::CONFIG_FILE, std::ios::binary);
 	if (!file.is_open()) {
-	  //logs::logger.logLevel(logs::ERROR) << "Cannot write to configuration file " << SysOptions::CONFIG_FILE << std::endl;
+	  logs::logger.logLevel(logs::ERROR) << "Cannot write to configuration file " << SysOptions::CONFIG_FILE << std::endl;
 	  return repeat;
 	}
 	bson::Document options;
