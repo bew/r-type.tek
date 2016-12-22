@@ -16,6 +16,9 @@ Account::Account(Account const & other) :
   _password(other._password)
 {}
 
+Account::~Account()
+{}
+
 Account & Account::operator=(Account const & other)
 {
   _username = other._username;
