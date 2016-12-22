@@ -65,5 +65,9 @@ namespace logs {
         return *this;
     }
 
+    Logger& Logger::operator[](const std::string &logLevelName) {
+        return this->logLevel(logLevelName);
+    }
+
     Logger logger;
 }
