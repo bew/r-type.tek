@@ -8,7 +8,7 @@
 
 #include <string>
 #include "Graphic/AssetStore.hpp"
-#include "ECS/AComponent.hh"
+#include "AComponent.hh"
 
 namespace ECS {
   namespace Component {

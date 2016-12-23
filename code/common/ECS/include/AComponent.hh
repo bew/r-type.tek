@@ -10,7 +10,7 @@
 
 #include <string>
 #include <map>
-#include "BSON/Document.hh"
+#include "Document.hh"
 
 /**
  * Namespace of ECS.

@@ -17,7 +17,7 @@ namespace bson {
     Document::Element::Element(type valueType, const std::string &key, const std::vector<unsigned char> &value)
     : _valueType(valueType), _key(key), _value(value)  {
     }
-
+  
     Document::Element::Element(const Document::Element &element) {
         this->operator=(element);
     }

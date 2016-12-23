@@ -9,7 +9,7 @@
 #include "SFML/Graphics/RenderWindow.hpp"
 #include "SFML/Window/VideoMode.hpp"
 #include "SFML/Window.hpp"
-#include "ECS/AComponent.hh"
+#include "AComponent.hh"
 
 namespace ECS {
   namespace Component {
