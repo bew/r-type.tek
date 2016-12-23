@@ -7,7 +7,7 @@ set(RT_COMMON_TESTS_NAMES)
 set(RT_COMMON_INCLUDES ${CMAKE_CURRENT_BINARY_DIR}/include)
 
 # Add librariries
-#add_subdirectory(Logs)          #No dependencies
+add_subdirectory(Logs)          #No dependencies
 #add_subdirectory(Concurrency)   #No dependencies
 add_subdirectory(BSON)          #No dependencies
 #add_subdirectory(LibraryLoader) #No dependencies
