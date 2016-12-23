@@ -10,9 +10,7 @@
 #include "ErrorLogLevel.hh"
 
 namespace logs {
-    ErrorLogLevel::ErrorLogLevel() {
-        logger.registerLogLevel(this);
-    }
+    ErrorLogLevel::ErrorLogLevel() {}
 
     ErrorLogLevel::~ErrorLogLevel() {
     }
@@ -25,5 +23,5 @@ namespace logs {
         return std::cerr;
     }
 
-    static ErrorLogLevel errorLogLevel;
+    ErrorLogLevel errorLogLevel;
 }

@@ -8,13 +8,13 @@
 #include "SysEvent.hh"
 
 namespace ECS {
-  namespace System {
+    namespace System {
 
-    void SysEvent::update(WorldData &world) {
-      Component::CompEvent *eventc;
-      eventc = dynamic_cast<Component::CompEvent*>(world._systemEntity.getComponent(ECS::Component::EVENT));
-      if (eventc)
-	eventc->locked = true;
+        void SysEvent::update(WorldData &world) {
+            Component::CompEvent *eventc;
+            eventc = dynamic_cast<Component::CompEvent *>(world._systemEntity.getComponent(ECS::Component::EVENT));
+            if (eventc)
+                eventc->locked = true;
 
       for (Entity::Entity *entity : world._gameEntities) {
 	Component::CompEvent *eventc;
@@ -63,7 +63,7 @@ namespace ECS {
 	  hooksToKeep.clear();
 	}
 	eventc->_events.clear();
-				
+
 	while (eventc->_sameTickEvents.size()) {
 	  for (auto ievent = eventc->_sameTickEvents.begin(); ievent != eventc->_sameTickEvents.end(); ievent++) {
 	    auto range = eventc->_hooks.equal_range((*ievent).first);
@@ -123,5 +123,4 @@ namespace ECS {
 	eventc->_nextTickEvents.clear();
       }
     }
-  }
 }

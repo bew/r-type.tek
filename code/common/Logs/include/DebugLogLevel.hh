@@ -54,6 +54,11 @@ namespace logs {
          */
         virtual std::ostream &getLogLevelStream(void);
     };
+
+    /**
+     * Singleton of DebugLogLevel
+     */
+    extern DebugLogLevel debugLogLevel;
 }
 
 #endif //LOGS_DEBUGLOGLEVEL_HH
