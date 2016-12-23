@@ -4,14 +4,20 @@ set(LIB_SOURCE ${LIB_SOURCE} CompHitbox.cpp CompMovement.cpp)
 set(LIB_SOURCE ${LIB_SOURCE} CompLife.cpp)
 set(LIB_SOURCE ${LIB_SOURCE} CompTick.cpp SysTick.cpp)
 set(LIB_SOURCE ${LIB_SOURCE} CompNetworkClient.cpp CompNetworkServer.cpp)
+set(LIB_SOURCE ${LIB_SOURCE} ECSLogLevel.cpp)
+#graphique
+set(LIB_SOURCE ${LIB_SOURCE} CompWindow.cpp SysWindow.cpp)
+set(LIB_SOURCE ${LIB_SOURCE} CompAsset.cpp CompOptions.cpp CompMusic.cpp SysAsset.cpp SysMusic.cpp)
+set(LIB_SOURCE ${LIB_SOURCE} CompSprite.cpp SysSprite.cpp SysController.cpp SysOptions.cpp)
+set(LIB_SOURCE ${LIB_SOURCE} AssetLogLevel.cpp)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
 add_library(${LIB_TEST_NAME} SHARED ${LIB_SOURCE})
 
 install(TARGETS ${LIB_TEST_NAME} DESTINATION bin/test/lib)
 
-set(LIB_DEPENDENCIES Network BSON)
-set(LIB_DEPENDENCIES_TEST Network_test BSON_test)
+set(LIB_DEPENDENCIES Network BSON Logs Graphic)
+set(LIB_DEPENDENCIES_TEST Network_test BSON_test Logs_test Graphic_test)
 
 target_link_libraries(${LIB_NAME} ${LIB_DEPENDENCIES})
 target_link_libraries(${LIB_TEST_NAME} ${LIB_DEPENDENCIES_TEST})
@@ -23,6 +29,6 @@ set(RT_COMMON_NAMES ${RT_COMMON_NAMES} ${LIB_NAME} PARENT_SCOPE)
 set(RT_COMMON_TESTS_NAMES ${RT_COMMON_TESTS_NAMES} ${LIB_TEST_NAME} PARENT_SCOPE)
 
 add_custom_command(TARGET ${LIB_NAME}
-  POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIB_INCLUDE} ${RT_COMMON_INCLUDES}/${LIB_NAME}
-  )
+    POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${LIB_INCLUDE} ${RT_COMMON_INCLUDES}/${LIB_NAME}
+    )

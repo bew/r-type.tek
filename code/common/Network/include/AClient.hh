@@ -46,6 +46,12 @@ namespace network
         virtual void addMessage(const std::string &msg) = 0;
 
         /**
+         * test if the client has received a message or not
+         * @return true if the client has received a message, else false
+         */
+        bool hasMessage() const;
+
+        /**
          * get message by read buffer
          *
          * @return message or empty string if nothing was read

@@ -105,6 +105,19 @@ namespace network
          */
         virtual bool isClose() const;
 
+        /**
+         * get the first client who has received a message
+         * @return shared ptr to a client, empty if no one has received nothing
+         */
+        std::shared_ptr<ClientTCP> getFirstClientWithMessage() const;
+
+        /**
+         * test if the client has received a message or not
+         * @param client pointer to one ClientTCP
+         * @return true if the client has received a message, else false
+         */
+        bool hasMessage(std::shared_ptr<ClientTCP> client) const;
+
     private:
 
         /**

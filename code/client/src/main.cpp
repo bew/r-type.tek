@@ -5,17 +5,17 @@
  */
 
 #include <iostream>
-#include "SysWindow.hh"
-#include "CompWindow.hh"
-#include "SysAsset.hh"
-#include "CompAsset.hh"
-#include "CompOptions.hh"
-#include "SysMusic.hh"
-#include "CompMusic.hh"
-#include "SysSprite.hh"
-#include "CompSprite.hh"
-#include "SysController.hh"
-#include "SysOptions.hh"
+#include "ECS/SysWindow.hh"
+#include "ECS/CompWindow.hh"
+#include "ECS/SysAsset.hh"
+#include "ECS/CompAsset.hh"
+#include "ECS/CompOptions.hh"
+#include "ECS/SysMusic.hh"
+#include "ECS/CompMusic.hh"
+#include "ECS/SysSprite.hh"
+#include "ECS/CompSprite.hh"
+#include "ECS/SysController.hh"
+#include "ECS/SysOptions.hh"
 #include "ECS/CompEvent.hh"
 #include "ECS/SysEvent.hh"
 #include "ECS/CompTick.hh"
@@ -32,39 +32,34 @@ int main(void) {
   ECS::Component::CompMusic *music = new ECS::Component::CompMusic();
   ECS::Component::CompEvent *event = new ECS::Component::CompEvent();
   ECS::Component::CompAsset *asset = new ECS::Component::CompAsset();
-
+  ECS::Component::CompTick *tick = new ECS::Component::CompTick();
   music->setMusic("MilkyWay");
 
 
   ///////////////////////////////////////
   
-  event->addHook("initialization", [&](ECS::Component::CompEvent::IEvent *, ECS::WorldData &data) {
+  event->addHook("initialization", [](ECS::Component::CompEvent::IEvent *, ECS::WorldData &data) {
       ECS::Component::CompAsset *assetComponent = dynamic_cast<ECS::Component::CompAsset*>(data._systemEntity.getComponent(ECS::Component::STANDARD_ASSET));
       if (assetComponent)
 	assetComponent->store.loadAll();
       return false;
     });
-
-  event->addHook("initialization", [&](ECS::Component::CompEvent::IEvent *, ECS::WorldData &data) {
-	world.addSystem(new ECS::System::SysMusic());
-	world.addSystem(new ECS::System::SysSprite());
-	world.addSystem(new ECS::System::SysOptions());
-	return false;
-    });
-  
   //add hook parser les options
   
   //////////////////////////////////////////
   
   world.addSystem(new ECS::System::SysTick());
+  world.addSystem(new ECS::System::SysOptions());
   world.addSystem(new ECS::System::SysWindow());
+  world.addSystem(new ECS::System::SysMovement());
   world.addSystem(new ECS::System::SysController());
   world.addSystem(new ECS::System::SysAsset());
-  world.addSystem(new ECS::System::SysMovement());
+  world.addSystem(new ECS::System::SysMusic());
+  world.addSystem(new ECS::System::SysSprite());
   world.addSystem(new ECS::System::SysEvent());
+
   
-  
-  world.addSystemEntityComponent(new ECS::Component::CompTick());
+  world.addSystemEntityComponent(tick);
   world.addSystemEntityComponent(new ECS::Component::CompWindow());
   world.addSystemEntityComponent(event);
   world.addSystemEntityComponent(new ECS::Component::CompOptions());
@@ -76,8 +71,8 @@ int main(void) {
 
   ///////////////// Ajouter une entité de test
   // necessite ECS::World::_world public 
-  /*
-  ECS::Entity::Entity entity;
+  
+  ECS::Entity::Entity entity(1);
   ECS::Component::CompSprite sprite;
   ECS::Component::CompMovement movement;
   sprite.name = "burrito";
@@ -86,8 +81,9 @@ int main(void) {
   entity.addComponent(&sprite);
   entity.addComponent(&movement);
   world._world._gameEntities.push_back(&entity);
-  */  
-  while(true)
+  
+  while (!tick->kill) {
     world.update();
+  }
   return 0;
 };
