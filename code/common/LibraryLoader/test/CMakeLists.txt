@@ -1,7 +1,7 @@
-use_msvc_static_runtime()
+cmake_minimum_required(VERSION 3.0)
 
 add_executable(${TEST_EXE} main.cpp)
-target_link_libraries(${TEST_EXE} ${LIB_TEST_NAME} gtest)
+target_link_libraries(${TEST_EXE} ${LIB_NAME} gtest)
 
 set(GENERATOR_NAME empty_test_generator)
 set(GENERATOR_SOURCE empty.cpp)
