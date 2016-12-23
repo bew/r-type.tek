@@ -12,7 +12,7 @@ add_subdirectory(Concurrency)   #No dependencies
 add_subdirectory(BSON)          #No dependencies
 add_subdirectory(LibraryLoader) #No dependencies
 add_subdirectory(Network)       #No dependencies
-#add_subdirectory(FSWatcher)     #No dependencies
+add_subdirectory(FSWatcher)     #No dependencies
 #add_subdirectory(Graphic)       #Depend On BSON, FSWatcher
 #add_subdirectory(Protocol)      #Depend On Network
 #add_subdirectory(ECS)		    #Depend on  a lot of things
