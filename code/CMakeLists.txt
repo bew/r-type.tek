@@ -28,6 +28,8 @@ macro(suffix_list var suffix)
 	SET(${var} "${listVar}" PARENT_SCOPE)
 endmacro(suffix_list)
 
+use_msvc_static_runtime()
+
 # MAIN COMMON LIB
 #------------------------------------
 set(RT_COMMON_NAMES)
@@ -37,19 +39,19 @@ add_subdirectory("common")
 # CLIENT/SERVER PROJECTS
 #------------------------------------
 
-add_subdirectory("client")
-add_subdirectory("server")
+#add_subdirectory("client")
+#add_subdirectory("server")
 
 # LEVEL/ENTITY/ETC GENERATORS
 #------------------------------------
 
-add_subdirectory("generators")
+#add_subdirectory("generators")
 
 # Integration tests
 #------------------------------------
 
-add_subdirectory("test")
-add_subdirectory("tool")
+#add_subdirectory("test")
+#add_subdirectory("tool")
 
 # CREATE FOLDER LOGS FOR LIB LOGS
 #------------------------------------
