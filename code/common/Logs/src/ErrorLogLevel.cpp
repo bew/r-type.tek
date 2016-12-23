@@ -16,7 +16,7 @@ namespace logs {
     }
 
     std::string ErrorLogLevel::getLogLevelName() const {
-        return logs::ERROR;
+        return logs::ERRORS;
     }
 
     std::ostream &ErrorLogLevel::getLogLevelStream() {
