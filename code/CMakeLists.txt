@@ -53,7 +53,7 @@ add_subdirectory("generators")
 # Tools
 # -----------------------------------
 
-#add_subdirectory("tool")
+add_subdirectory("tool")
 
 # CREATE FOLDER LOGS FOR LIB LOGS
 #------------------------------------
