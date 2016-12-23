@@ -8,67 +8,68 @@
 #include "SysEvent.hh"
 
 namespace ECS {
-  namespace System {
+    namespace System {
 
-    void SysEvent::update(WorldData &world) {
-      Component::CompEvent *eventc;
-      eventc = dynamic_cast<Component::CompEvent*>(world._systemEntity.getComponent(ECS::Component::EVENT));
-      if (eventc)
-	eventc->locked = true;
+        void SysEvent::update(WorldData &world) {
+            Component::CompEvent *eventc;
+            eventc = dynamic_cast<Component::CompEvent *>(world._systemEntity.getComponent(ECS::Component::EVENT));
+            if (eventc)
+                eventc->locked = true;
 
-      for (Entity::Entity *entity : world._gameEntities) {
-	Component::CompEvent *eventc;
-	eventc = dynamic_cast<Component::CompEvent*>(entity->getComponent(ECS::Component::EVENT));
-	if (eventc)
-	  eventc->locked = true;
-      }
-      update(world._systemEntity, world);
-      for (Entity::Entity *entity : world._gameEntities) {
-	update(*entity, world);
-      }
-      eventc = dynamic_cast<Component::CompEvent*>(world._systemEntity.getComponent(ECS::Component::EVENT));
-      if (eventc)
-	eventc->locked = false;
-      for (Entity::Entity *entity : world._gameEntities) {
-	Component::CompEvent *eventc = dynamic_cast<Component::CompEvent*>(entity->getComponent(ECS::Component::EVENT));
-	if(eventc)
-	  eventc->locked = false;
-      }
-    }
-
-    void SysEvent::update(Entity::Entity &entity, WorldData &world) {
-      Component::CompEvent *eventc = dynamic_cast<Component::CompEvent*>(entity.getComponent(ECS::Component::EVENT));
-      if (eventc) {
-
-        for (auto ievent = eventc->_events.begin(); ievent != eventc->_events.end(); ievent++) {
-	  auto range = eventc->_hooks.equal_range((*ievent).first);
-	  for (auto ihook = range.first; ihook != range.second;) {
-	    if (!(*ihook).second((*ievent).second, world)) {
-	      eventc->_hooks.erase(ihook++);
-	    }
-	    else
-	      ++ihook;
-	    delete (*ievent).second;
-	  }
+            for (Entity::Entity *entity : world._gameEntities) {
+                Component::CompEvent *eventc;
+                eventc = dynamic_cast<Component::CompEvent *>(entity->getComponent(ECS::Component::EVENT));
+                if (eventc)
+                    eventc->locked = true;
+            }
+            update(world._systemEntity, world);
+            for (Entity::Entity *entity : world._gameEntities) {
+                update(*entity, world);
+            }
+            eventc = dynamic_cast<Component::CompEvent *>(world._systemEntity.getComponent(ECS::Component::EVENT));
+            if (eventc)
+                eventc->locked = false;
+            for (Entity::Entity *entity : world._gameEntities) {
+                Component::CompEvent *eventc = dynamic_cast<Component::CompEvent *>(entity->getComponent(
+                        ECS::Component::EVENT));
+                if (eventc)
+                    eventc->locked = false;
+            }
         }
-	eventc->_events.clear();
 
-	while (eventc->_sameTickEvents.size()) {
-	  for (auto ievent = eventc->_sameTickEvents.begin(); ievent != eventc->_sameTickEvents.end(); ievent++) {
-	    auto range = eventc->_hooks.equal_range((*ievent).first);
-	    for (auto ihook = range.first; ihook != range.second;) {
-	      if (!(*ihook).second((*ievent).second, world)) {
-		eventc->_hooks.erase(ihook++);
-	      }
-	      else
-		++ihook;
-	    }
-	  }
-	}
-	
-        eventc->_events = eventc->_nextTickEvents;
-	eventc->_nextTickEvents.clear();
-      }
+        void SysEvent::update(Entity::Entity &entity, WorldData &world) {
+            Component::CompEvent *eventc = dynamic_cast<Component::CompEvent *>(entity.getComponent(
+                    ECS::Component::EVENT));
+            if (eventc) {
+
+                for (auto ievent = eventc->_events.begin(); ievent != eventc->_events.end(); ievent++) {
+                    auto range = eventc->_hooks.equal_range((*ievent).first);
+                    for (auto ihook = range.first; ihook != range.second;) {
+                        if (ihook->second && ievent->second && !ihook->second(ievent->second, world))
+                            ihook = eventc->_hooks.erase(ihook);
+                        else
+                            ++ihook;
+                        delete (*ievent).second;
+                    }
+                }
+                eventc->_events.clear();
+
+                while (eventc->_sameTickEvents.size()) {
+                    for (auto ievent = eventc->_sameTickEvents.begin();
+                         ievent != eventc->_sameTickEvents.end(); ievent++) {
+                        auto range = eventc->_hooks.equal_range((*ievent).first);
+                        for (auto ihook = range.first; ihook != range.second;) {
+                            if (ihook->second && ievent->second && !ihook->second(ievent->second, world))
+                                ihook = eventc->_hooks.erase(ihook);
+                            else
+                                ++ihook;
+                        }
+                    }
+                }
+
+                eventc->_events = eventc->_nextTickEvents;
+                eventc->_nextTickEvents.clear();
+            }
+        }
     }
-  }
 }
