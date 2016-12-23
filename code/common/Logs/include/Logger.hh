@@ -144,6 +144,11 @@ namespace logs {
         void registerLogLevel(ALogLevel *logLevel);
 
         /**
+         * Register all the basics log level given with the lib
+         */
+        void registerBasicsLogLevel(void);
+
+        /**
          * Allow to unregister a log level inside the Logger
          *
          * @param logLevelName the name of the log level to unregister
@@ -204,5 +209,9 @@ namespace logs {
      */
     extern Logger logger;
 };
+
+#include "InfoLogLevel.hh"
+#include "ErrorLogLevel.hh"
+#include "DebugLogLevel.hh"
 
 #endif //LOGS_LOGGER_HH
