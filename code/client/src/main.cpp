@@ -38,13 +38,12 @@ int main(void) {
 
   ///////////////////////////////////////
   
-  event->addHook("initialization", [&](ECS::Component::CompEvent::IEvent *, ECS::WorldData &data) {
+  event->addHook("initialization", [](ECS::Component::CompEvent::IEvent *, ECS::WorldData &data) {
       ECS::Component::CompAsset *assetComponent = dynamic_cast<ECS::Component::CompAsset*>(data._systemEntity.getComponent(ECS::Component::STANDARD_ASSET));
       if (assetComponent)
 	assetComponent->store.loadAll();
       return false;
     });
-  
   //add hook parser les options
   
   //////////////////////////////////////////
@@ -58,7 +57,7 @@ int main(void) {
   world.addSystem(new ECS::System::SysMusic());
   world.addSystem(new ECS::System::SysSprite());
   world.addSystem(new ECS::System::SysEvent());
-  
+
   
   world.addSystemEntityComponent(tick);
   world.addSystemEntityComponent(new ECS::Component::CompWindow());
@@ -72,8 +71,8 @@ int main(void) {
 
   ///////////////// Ajouter une entité de test
   // necessite ECS::World::_world public 
-  /*
-  ECS::Entity::Entity entity;
+  
+  ECS::Entity::Entity entity(1);
   ECS::Component::CompSprite sprite;
   ECS::Component::CompMovement movement;
   sprite.name = "burrito";
@@ -82,9 +81,8 @@ int main(void) {
   entity.addComponent(&sprite);
   entity.addComponent(&movement);
   world._world._gameEntities.push_back(&entity);
-  */  
+  
   while (!tick->kill) {
-    std::cout << "salut ma poule" << std::endl;
     world.update();
   }
   return 0;

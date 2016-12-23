@@ -3,7 +3,7 @@
  * @author Nekhot.
  * @brief Impelmentation of system procesing windows.
  */
-
+#include <iostream>
 #include "SysMusic.hh"
 
 namespace ECS {
@@ -20,6 +20,7 @@ namespace ECS {
 	  if (llm.getStatus() == sf::SoundSource::Stopped) {
 	    llm.setVolume(optionsc->getMusicVolume());
 	    llm.play();
+	    std::cout << "Coucou" <<std::endl;
 	  }
 	}
 	catch (const graphic::AssetException &e) {

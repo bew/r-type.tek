@@ -35,6 +35,11 @@ namespace ECS {
       graphic::GroupedAssetStore store;
 
       /**
+       * If the store has already been loaded
+       */
+      bool loaded;
+
+      /**
        * @return ECS::Component::STANDARD_ASSET
        */
       virtual const std::string &getType() const;

@@ -15,10 +15,11 @@ namespace ECS {
       Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
       
       if (assetc && optionsc && assetc->store.getLocale() != optionsc->getLocale()) {
-        assetc->store.empty();
-	assetc->store.setLocale(optionsc->getLocale());
-	assetc->store.loadAll();
+	if (!assetc->loaded) {
+	  assetc->store.setLocale(optionsc->getLocale());
+	  assetc->store.loadAll();
+	}
       }
-    }
+    }    
   }
 }
