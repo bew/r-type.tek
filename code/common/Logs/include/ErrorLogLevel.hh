@@ -19,7 +19,7 @@ namespace logs {
     /**
      * Represent the name of the error log level
      */
-    static const std::string ERROR = "Error";
+    static const std::string ERRORS = "Error";
 
     /**
      * Error log level class for Logger

@@ -12,21 +12,23 @@ set(LIB_SOURCE ${LIB_SOURCE} CompSprite.cpp SysSprite.cpp SysController.cpp SysO
 set(LIB_SOURCE ${LIB_SOURCE} AssetLogLevel.cpp)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
-add_library(${LIB_TEST_NAME} SHARED ${LIB_SOURCE})
+#add_library(${LIB_TEST_NAME} SHARED ${LIB_SOURCE})
 
-install(TARGETS ${LIB_TEST_NAME} DESTINATION bin/test/lib)
+#install(TARGETS ${LIB_TEST_NAME} DESTINATION bin/test/lib)
+
+add_definitions(-DSFML_STATIC)
 
 set(LIB_DEPENDENCIES Network BSON Logs Graphic)
 set(LIB_DEPENDENCIES_TEST Network_test BSON_test Logs_test Graphic_test)
 
 target_link_libraries(${LIB_NAME} ${LIB_DEPENDENCIES})
-target_link_libraries(${LIB_TEST_NAME} ${LIB_DEPENDENCIES_TEST})
+#target_link_libraries(${LIB_TEST_NAME} ${LIB_DEPENDENCIES_TEST})
 
 target_include_directories(${LIB_NAME} PUBLIC ${LIB_INCLUDE})
-target_include_directories(${LIB_TEST_NAME} PUBLIC ${LIB_INCLUDE})
+#target_include_directories(${LIB_TEST_NAME} PUBLIC ${LIB_INCLUDE})
 
 set(RT_COMMON_NAMES ${RT_COMMON_NAMES} ${LIB_NAME} PARENT_SCOPE)
-set(RT_COMMON_TESTS_NAMES ${RT_COMMON_TESTS_NAMES} ${LIB_TEST_NAME} PARENT_SCOPE)
+#set(RT_COMMON_TESTS_NAMES ${RT_COMMON_TESTS_NAMES} ${LIB_TEST_NAME} PARENT_SCOPE)
 
 add_custom_command(TARGET ${LIB_NAME}
     POST_BUILD

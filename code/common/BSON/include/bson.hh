@@ -12,6 +12,7 @@
 
 #include <map>
 #include <stdexcept>
+#include <string>
 
 /**
  * Namespace that contain all the BSON stuff
