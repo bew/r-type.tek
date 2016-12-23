@@ -1,8 +1,10 @@
 cmake_minimum_required(VERSION 3.0)
 
-set(LIB_SOURCE Protocol.cpp Answers.cpp Server.cpp Client.cpp)
-add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
-target_link_libraries(${LIB_NAME} BSON)
+set(LIB_SOURCES Protocol.cpp Answers.cpp Server.cpp Client.cpp)
+set(LIB_DEPENDENCIES BSON)
+
+add_library(${LIB_NAME} STATIC ${LIB_SOURCES})
+target_link_libraries(${LIB_NAME} ${LIB_DEPENDENCIES})
 target_include_directories(${LIB_NAME} PUBLIC ${LIB_INCLUDE})
 
 add_custom_command(TARGET ${LIB_NAME}
