@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.0)
 
 project("r-type")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -DSFML_STATIC")
 
 # utility function
 # it allows to set a variable, then add some fields easily
@@ -27,8 +27,6 @@ macro(suffix_list var suffix)
 	ENDFOREACH(f)
 	SET(${var} "${listVar}" PARENT_SCOPE)
 endmacro(suffix_list)
-
-use_msvc_static_runtime()
 
 # MAIN COMMON LIB
 #------------------------------------
