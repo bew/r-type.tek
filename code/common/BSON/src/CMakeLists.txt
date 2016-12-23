@@ -1,10 +1,8 @@
+cmake_minimum_required(VERSION 3.0)
+
 set(LIB_SOURCE Document.cpp)
-
 add_library(${LIB_NAME} STATIC ${LIB_SOURCE})
-
 target_include_directories(${LIB_NAME} PUBLIC ${LIB_INCLUDE})
-
-set(RT_COMMON_NAMES ${RT_COMMON_NAMES} ${LIB_NAME} PARENT_SCOPE)
 
 add_custom_command(TARGET ${LIB_NAME}
   POST_BUILD
