@@ -8,13 +8,13 @@
 
 #include <iterator>
 #include <fstream>
-#include "ECS/World.hh"
-#include "ECS/Entity.hh"
-#include "ECS/ISystem.hh"
-#include "ECS/CompEvent.hh"
-#include "BSON/Document.hh"
+#include "World.hh"
+#include "Entity.hh"
+#include "ISystem.hh"
+#include "CompEvent.hh"
+#include "Document.hh"
 #include "CompOptions.hh"
-#include "Logs/Logger.hh"
+#include "Logger.hh"
 #include "Logs/ErrorLogLevel.hh"
 
 namespace ECS {

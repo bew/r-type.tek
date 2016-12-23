@@ -6,13 +6,13 @@
 
 #pragma once
 
-#include "ECS/World.hh"
-#include "ECS/Entity.hh"
-#include "ECS/ISystem.hh"
+#include "World.hh"
+#include "Entity.hh"
+#include "ISystem.hh"
 #include "CompAsset.hh"
 #include "CompMusic.hh"
 #include "CompOptions.hh"
-#include "Logs/Logger.hh"
+#include "Logger.hh"
 #include "AssetLogLevel.hh"
 
 namespace ECS {

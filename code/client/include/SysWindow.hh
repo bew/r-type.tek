@@ -6,12 +6,12 @@
 
 #pragma once
 
-#include "ECS/World.hh"
-#include "ECS/Entity.hh"
-#include "ECS/ISystem.hh"
-#include "ECS/CompEvent.hh"
-#include "ECS/CompTick.hh"
-#include "ECS/CompCollision.hh"
+#include "World.hh"
+#include "Entity.hh"
+#include "ISystem.hh"
+#include "CompEvent.hh"
+#include "CompTick.hh"
+#include "CompCollision.hh"
 #include "CompWindow.hh"
 #include "CompOptions.hh"
 

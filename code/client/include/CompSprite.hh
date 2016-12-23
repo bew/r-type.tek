@@ -7,8 +7,8 @@
 #pragma once
 
 #include <string>
-#include "ECS/AComponent.hh"
-#include "ECS/Coordinates.hh"
+#include "AComponent.hh"
+#include "Coordinates.hh"
 
 namespace ECS {
   namespace Component {

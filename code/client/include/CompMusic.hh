@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "ECS/AComponent.hh"
+#include "AComponent.hh"
 
 namespace ECS {
   namespace Component {

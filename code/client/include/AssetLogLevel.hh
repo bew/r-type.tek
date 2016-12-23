@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "Logs/Logger.hh"
+#include "Logger.hh"
 
 /**
  * Contain logs stuff
