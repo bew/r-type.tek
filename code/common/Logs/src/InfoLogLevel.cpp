@@ -10,9 +10,7 @@
 #include "InfoLogLevel.hh"
 
 namespace logs {
-    InfoLogLevel::InfoLogLevel() {
-        logger.registerLogLevel(this);
-    }
+    InfoLogLevel::InfoLogLevel() {}
 
     InfoLogLevel::~InfoLogLevel() {
     }
@@ -25,5 +23,5 @@ namespace logs {
         return std::cout;
     }
 
-    static InfoLogLevel infoLogLevel;
+    InfoLogLevel infoLogLevel;
 }
