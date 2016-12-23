@@ -37,8 +37,8 @@ add_subdirectory("common")
 # CLIENT/SERVER PROJECTS
 #------------------------------------
 
-add_subdirectory("client")
-add_subdirectory("server")
+#add_subdirectory("client")
+#add_subdirectory("server")
 
 # LEVEL/ENTITY/ETC GENERATORS
 #------------------------------------
@@ -53,7 +53,7 @@ add_subdirectory("generators")
 # Tools
 # -----------------------------------
 
-add_subdirectory("tool")
+#add_subdirectory("tool")
 
 # CREATE FOLDER LOGS FOR LIB LOGS
 #------------------------------------

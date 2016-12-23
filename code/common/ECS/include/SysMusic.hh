@@ -12,7 +12,7 @@
 #include "CompAsset.hh"
 #include "CompMusic.hh"
 #include "CompOptions.hh"
-#include "Logger.hh"
+#include "Logs/Logger.hh"
 #include "AssetLogLevel.hh"
 
 namespace ECS {

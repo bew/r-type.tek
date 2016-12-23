@@ -10,7 +10,7 @@
 #ifndef PROTOCOL_PROTOCOL_HH
 #define PROTOCOL_PROTOCOL_HH
 
-#include "Document.hh"
+#include "BSON/Document.hh"
 
 /**
  * Contain all functions to use for the R-Type protocol

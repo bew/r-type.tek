@@ -12,7 +12,6 @@
 
 #include <vector>
 
-
 /**
  * Namespace of ECS.
  */

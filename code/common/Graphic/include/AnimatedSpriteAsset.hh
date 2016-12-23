@@ -14,7 +14,7 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Rect.hpp>
 
-#include "Document.hh"
+#include "BSON/Document.hh"
 #include "AssetException.hh"
 
 namespace graphic {

@@ -4,6 +4,7 @@ project("common")
 
 set(RT_COMMON_NAMES)
 set(RT_COMMON_INCLUDES ${CMAKE_CURRENT_BINARY_DIR}/include)
+include_directories(${RT_COMMON_INCLUDES})
 
 # Libraries
 add_subdirectory(Logs)          #No dependencies

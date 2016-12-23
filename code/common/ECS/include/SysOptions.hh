@@ -12,9 +12,9 @@
 #include "Entity.hh"
 #include "ISystem.hh"
 #include "CompEvent.hh"
-#include "Document.hh"
+#include "BSON/Document.hh"
 #include "CompOptions.hh"
-#include "Logger.hh"
+#include "Logs/Logger.hh"
 
 namespace ECS {
   namespace System {

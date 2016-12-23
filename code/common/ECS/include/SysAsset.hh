@@ -13,7 +13,6 @@
 #include "CompAsset.hh"
 #include "CompOptions.hh"
 
-
 namespace ECS {
   namespace System {
 

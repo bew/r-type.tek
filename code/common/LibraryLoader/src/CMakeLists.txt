@@ -14,7 +14,6 @@ endif()
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCES})
 target_link_libraries(${LIB_NAME} ${LIB_DEPENDENCIES})
-target_include_directories(${LIB_NAME} PUBLIC ${LIB_INCLUDE})
 
 add_custom_command(TARGET ${LIB_NAME}
         POST_BUILD

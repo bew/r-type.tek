@@ -16,7 +16,7 @@
 #include "AnimatedSpriteAsset.hh"
 #include "MusicAsset.hh"
 #include "SoundAsset.hh"
-#include "AFileSystemWatcher.hh"
+#include "FSWatcher/AFileSystemWatcher.hh"
 
 /**
  * contain graphic stuff

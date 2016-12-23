@@ -7,7 +7,7 @@
 #pragma once
 
 #include <string>
-#include "AssetStore.hpp"
+#include "Graphic/AssetStore.hpp"
 #include "AComponent.hh"
 
 namespace ECS {
