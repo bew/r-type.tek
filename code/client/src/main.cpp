@@ -16,13 +16,13 @@
 #include "CompSprite.hh"
 #include "SysController.hh"
 #include "SysOptions.hh"
-#include "CompEvent.hh"
-#include "SysEvent.hh"
-#include "CompTick.hh"
-#include "SysTick.hh"
-#include "CompMovement.hh"
-#include "SysMovement.hh"
-#include "AssetStore.hpp"
+#include "ECS/CompEvent.hh"
+#include "ECS/SysEvent.hh"
+#include "ECS/CompTick.hh"
+#include "ECS/SysTick.hh"
+#include "ECS/CompMovement.hh"
+#include "ECS/SysMovement.hh"
+#include "Graphic/AssetStore.hpp"
 
 int main(void) {
 

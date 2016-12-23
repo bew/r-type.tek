@@ -6,15 +6,15 @@
 
 #pragma once
 
-#include "World.hh"
-#include "Entity.hh"
-#include "ISystem.hh"
-#include "SpriteAsset.hh"
+#include "ECS/World.hh"
+#include "ECS/Entity.hh"
+#include "ECS/ISystem.hh"
+#include "Graphic/SpriteAsset.hh"
 #include "CompAsset.hh"
 #include "CompWindow.hh"
 #include "CompSprite.hh"
-#include "CompMovement.hh"
-#include "Logger.hh"
+#include "ECS/CompMovement.hh"
+#include "Logs/Logger.hh"
 #include "AssetLogLevel.hh"
 #include "SFML/Graphics/Sprite.hpp"
 

@@ -37,7 +37,7 @@ add_subdirectory("common")
 # CLIENT/SERVER PROJECTS
 #------------------------------------
 
-#add_subdirectory("client")
+add_subdirectory("client")
 add_subdirectory("server")
 
 # LEVEL/ENTITY/ETC GENERATORS
