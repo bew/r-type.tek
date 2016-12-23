@@ -5,10 +5,10 @@
 
 #include <iostream>
 #include "TestClientTCP.hpp"
-#include "ServerTCP.hh"
-#include "SocketException.hh"
+#include "Network/ServerTCP.hh"
+#include "Network/SocketException.hh"
 #include "gtest/gtest.h"
-#include "Document.hh"
+#include "BSON/Document.hh"
 
 TEST(Network, SingleClientTcp)
 {

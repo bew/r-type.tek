@@ -7,8 +7,8 @@
 #include <thread>
 #include <mutex>
 #include <atomic>
-#include "SockAddr.hh"
-#include "ClientUDP.hh"
+#include "Network/SockAddr.hh"
+#include "Network/ClientUDP.hh"
 
 class ATask
 {

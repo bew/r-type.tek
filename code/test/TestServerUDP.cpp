@@ -4,10 +4,10 @@
 
 #include <iostream>
 #include "TestClientUDP.hpp"
-#include "ServerUDP.hh"
-#include "SocketException.hh"
+#include "Network/ServerUDP.hh"
+#include "Network/SocketException.hh"
 #include "gtest/gtest.h"
-#include "Document.hh"
+#include "BSON/Document.hh"
 
 TEST(Network, SingleClientUdp)
 {
