@@ -38,19 +38,24 @@ add_subdirectory("common")
 #------------------------------------
 
 add_subdirectory("client")
-#add_subdirectory("server")
+add_subdirectory("server")
 
 # LEVEL/ENTITY/ETC GENERATORS
 #------------------------------------
 
-#add_subdirectory("generators")
+add_subdirectory("generators")
 
 # Integration tests
 #------------------------------------
 
 #add_subdirectory("test")
-#add_subdirectory("tool")
+
+# Tools
+# -----------------------------------
+
+add_subdirectory("tool")
 
 # CREATE FOLDER LOGS FOR LIB LOGS
 #------------------------------------
+
 install(DIRECTORY DESTINATION bin/logs)

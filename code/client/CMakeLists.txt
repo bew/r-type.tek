@@ -5,6 +5,6 @@ set(CL_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include)
 
 project(${CL_NAME})
 
-include_directories(${LIB_INCLUDE} ${RT_COMMON_INCLUDES})
+include_directories(${CL_INCLUDE} ${RT_COMMON_INCLUDES})
 
 add_subdirectory(src)
