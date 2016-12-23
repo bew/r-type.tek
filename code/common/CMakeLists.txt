@@ -1,11 +1,11 @@
-# Set global vars
+cmake_minimum_required(VERSION 3.0)
 
 project("common")
 
 set(RT_COMMON_NAMES)
 set(RT_COMMON_INCLUDES ${CMAKE_CURRENT_BINARY_DIR}/include)
 
-# Add librariries
+# Libraries
 add_subdirectory(Logs)          #No dependencies
 add_subdirectory(Concurrency)   #No dependencies
 add_subdirectory(BSON)          #No dependencies
