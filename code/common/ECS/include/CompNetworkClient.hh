@@ -7,7 +7,7 @@
 #pragma once
 
 #include "AComponent.hh"
-#include "Network/ClientUDP.hh"
+#include "ClientUDP.hh"
 
 /**
  * Namespace of ECS.

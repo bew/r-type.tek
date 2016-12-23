@@ -1,8 +1,5 @@
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+cmake_minimum_required(VERSION 3.0)
 
-use_msvc_static_runtime()
-
-add_executable(${TEST_EXE} flags.cpp main.cpp)
-target_link_libraries(${TEST_EXE} ${LIB_TEST_NAME} gtest)
-
+add_executable(${TEST_EXE} main.cpp main.cpp flags.cpp)
+target_link_libraries(${TEST_EXE} ${LIB_NAME} gtest)
 install(TARGETS ${TEST_EXE} DESTINATION bin/test)
