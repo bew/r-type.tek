@@ -13,15 +13,14 @@ macro(use_msvc_static_runtime)
   endif()
 endmacro(use_msvc_static_runtime)
 
+#Allow to use libraries on window
 use_msvc_static_runtime()
 
 set(CMAKE_INSTALL_PREFIX ${CMAKE_CURRENT_SOURCE_DIR})
 set(ASSET_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/asset)
 
 add_subdirectory(vendor)
-
 add_subdirectory(code)
-
 add_subdirectory(doc)
 
 install(DIRECTORY ${ASSET_DIRECTORY}

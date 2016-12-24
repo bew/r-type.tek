@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 set(SOURCES main.cpp)
-set(DEPENDENCIES ${SFML_LIBRARIES} ${SFML_DEPENDENCIES} ${RT_COMMON_NAMES})
+set(DEPENDENCIES ${RT_COMMON_NAMES})
 
 add_executable(${CL_NAME} ${SOURCES})
 target_link_libraries(${CL_NAME} ${DEPENDENCIES})
