@@ -39,7 +39,7 @@ namespace protocol {
     bson::Document createHeader(const std::string &action);
 
     /**
-     * Check if the given Document is a correct message header
+     * Check if the given Document is a correct header message
      *
      * @param header the Document to check
      * @return true if the Document is correct, else false
