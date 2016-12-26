@@ -10,9 +10,7 @@
 #include "DebugLogLevel.hh"
 
 namespace logs {
-    DebugLogLevel::DebugLogLevel() {
-        logger.registerLogLevel(this);
-    }
+    DebugLogLevel::DebugLogLevel() {}
 
     DebugLogLevel::~DebugLogLevel() {
     }
@@ -25,5 +23,5 @@ namespace logs {
         return std::cout;
     }
 
-    static DebugLogLevel debugLogLevel;
+    DebugLogLevel debugLogLevel;
 }

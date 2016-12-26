@@ -1,8 +1,9 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
 project("r-type")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set (CMAKE_CXX_STANDARD 11)
+add_definitions (-DSFML_STATIC)
 
 # utility function
 # it allows to set a variable, then add some fields easily
@@ -28,6 +29,12 @@ macro(suffix_list var suffix)
 	SET(${var} "${listVar}" PARENT_SCOPE)
 endmacro(suffix_list)
 
+macro(copy TARGET WHAT WHERE)
+	add_custom_command(TARGET ${TARGET} POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${WHAT} ${WHERE}
+	)
+endmacro(copy)
+
 # MAIN COMMON LIB
 #------------------------------------
 set(RT_COMMON_NAMES)
@@ -49,8 +56,13 @@ add_subdirectory("generators")
 #------------------------------------
 
 add_subdirectory("test")
+
+# Tools
+# -----------------------------------
+
 add_subdirectory("tool")
 
 # CREATE FOLDER LOGS FOR LIB LOGS
 #------------------------------------
+
 install(DIRECTORY DESTINATION bin/logs)

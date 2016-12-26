@@ -8,7 +8,7 @@
 
 #include "TestClientTCP.hpp"
 #include "gtest/gtest.h"
-#include "Document.hh"
+#include "BSON/Document.hh"
 
 ClientTCP::ClientTCP(const network::SockAddr& serverInfos) : ATask(), _client(), _serverInfos(serverInfos)
 {

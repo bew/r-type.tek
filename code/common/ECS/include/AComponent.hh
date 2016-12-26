@@ -1,4 +1,3 @@
-
 /**
  * @file AComponent.hh
  * @author Alexis.

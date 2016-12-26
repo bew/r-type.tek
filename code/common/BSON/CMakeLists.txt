@@ -1,15 +1,13 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
-project(BSON)
 set(LIB_NAME BSON)
-set(LIB_TEST_NAME ${LIB_NAME}_test)
-set(TEST_EXE ${LIB_TEST_NAME}_exe)
-
+set(TEST_EXE ${LIB_NAME}_test)
 set(LIB_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+set(RT_COMMON_NAMES ${RT_COMMON_NAMES} ${LIB_NAME} PARENT_SCOPE)
+
+project(${LIB_NAME})
+
 include_directories(${LIB_INCLUDE})
-		 
+
 add_subdirectory(src)
 add_subdirectory(test)
-
-set(RT_COMMON_NAMES ${RT_COMMON_NAMES} PARENT_SCOPE)
-set(RT_COMMON_TESTS_NAMES ${RT_COMMON_TESTS_NAMES} PARENT_SCOPE)

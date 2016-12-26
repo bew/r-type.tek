@@ -18,7 +18,8 @@ namespace ECS
 	AComponent(),
 	tick(0),
 	tickDuration(1.0 / static_cast<float>(CompTick::FREQUENCY)),
-	lag(0)
+	lag(0),
+	kill(false)
       {}
       
       const std::string &CompTick::getType() const

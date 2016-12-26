@@ -10,20 +10,18 @@
 #include "ErrorLogLevel.hh"
 
 namespace logs {
-    ErrorLogLevel::ErrorLogLevel() {
-        logger.registerLogLevel(this);
-    }
+    ErrorLogLevel::ErrorLogLevel() {}
 
     ErrorLogLevel::~ErrorLogLevel() {
     }
 
     std::string ErrorLogLevel::getLogLevelName() const {
-        return logs::ERROR;
+        return logs::ERRORS;
     }
 
     std::ostream &ErrorLogLevel::getLogLevelStream() {
         return std::cerr;
     }
 
-    static ErrorLogLevel errorLogLevel;
+    ErrorLogLevel errorLogLevel;
 }

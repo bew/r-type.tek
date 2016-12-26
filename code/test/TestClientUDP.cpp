@@ -4,7 +4,7 @@
 
 #include "TestClientUDP.hpp"
 #include "gtest/gtest.h"
-#include "Document.hh"
+#include "BSON/Document.hh"
 
 ATask::LockGuard::LockGuard(std::mutex &mutex) : _mutex(mutex)
 {

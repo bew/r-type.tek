@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
 project(Server)
 set(EXEC_NAME server)
@@ -8,4 +8,3 @@ include_directories(${SRV_INCLUDE} ${RT_COMMON_INCLUDES})
 
 add_subdirectory("src")
 #add_subdirectory("test")
-

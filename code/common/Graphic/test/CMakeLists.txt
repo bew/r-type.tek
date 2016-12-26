@@ -1,11 +1,10 @@
-use_msvc_static_runtime()
+cmake_minimum_required(VERSION 3.1)
 
-add_executable(${TEST_EXE} main.cpp)
-target_link_libraries(${TEST_EXE} sfml-graphics sfml-window sfml-system sfml-audio BSON_test FSWatcher_test ${LIB_TEST_NAME} gtest)
+set(SOURCES main.cpp)
+set(DEPENDENCIES)
 
+add_executable(${TEST_EXE} ${SOURCES})
+target_link_libraries(${TEST_EXE} ${DEPENDENCIES} ${LIB_NAME} gtest)
 install(TARGETS ${TEST_EXE} DESTINATION bin/test)
 
-add_custom_command(TARGET ${TEST_EXE}
-  POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/asset ${CMAKE_INSTALL_PREFIX}/bin/test/asset
-  )
+copy(${TEST_EXE} ${CMAKE_CURRENT_SOURCE_DIR}/asset ${CMAKE_INSTALL_PREFIX}/bin/test/asset)

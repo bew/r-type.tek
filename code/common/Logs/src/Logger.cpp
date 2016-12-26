@@ -39,6 +39,12 @@ namespace logs {
         _logsLevel[logLevel->getLogLevelName()] = logLevel;
     }
 
+    void Logger::registerBasicsLogLevel() {
+        this->registerLogLevel(&logs::infoLogLevel);
+        this->registerLogLevel(&logs::errorLogLevel);
+        this->registerLogLevel(&logs::debugLogLevel);
+    }
+
     bool Logger::unregisterLogLevel(const std::string &logLevelName) {
         return _logsLevel.erase(logLevelName) > 0;
     }
@@ -63,6 +69,10 @@ namespace logs {
 
         _lastLogLevel = logLevel;
         return *this;
+    }
+
+    Logger& Logger::operator[](const std::string &logLevelName) {
+        return this->logLevel(logLevelName);
     }
 
     Logger logger;
