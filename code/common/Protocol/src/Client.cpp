@@ -11,9 +11,8 @@
 
 namespace protocol {
     namespace client {
-        bson::Document signUp(const std::string& username, const std::string& password) {
+        bson::Document signUp(const std::string &username, const std::string &password) {
             bson::Document document;
-
             bson::Document message;
 
             message << u8"username" << username;
@@ -25,9 +24,14 @@ namespace protocol {
             return document;
         }
 
-        bson::Document login(const std::string& username, const std::string& password) {
-            bson::Document document;
+        bool checkDocument(const bson::Document &document) {
+            return document.elementsCount() == 2 &&
+                   protocol::checkString(document, u8"username") &&
+                   protocol::checkString(document, u8"password");
+        }
 
+        bson::Document login(const std::string &username, const std::string &password) {
+            bson::Document document;
             bson::Document message;
 
             message << u8"username" << username;
@@ -39,13 +43,15 @@ namespace protocol {
             return document;
         }
 
-        bson::Document logout(const std::string& username, const std::string& password) {
+        bool checkLogin(const bson::Document &document) {
+            return document.elementsCount() == 2 &&
+                   protocol::checkString(document, u8"username") &&
+                   protocol::checkString(document, u8"password");
+        }
+
+        bson::Document logout(void) {
             bson::Document document;
-
             bson::Document message;
-
-            message << u8"username" << username;
-            message << u8"password" << password;
 
             document << u8"header" << protocol::createHeader("Logout");
             document << u8"data" << message;
@@ -53,17 +59,32 @@ namespace protocol {
             return document;
         }
 
-        bson::Document roomJoin(const std::string& name, const std::string& password) {
+        bool checkLogout(const bson::Document &document) {
+            return !document.elementsCount();
+        }
+
+        bson::Document roomJoin(const std::string &name, const std::string &password) {
             bson::Document document;
             bson::Document message;
 
             message << u8"name" << name;
-            message << u8"password" << password;
+            if (!password.empty())
+                message << u8"password" << password;
 
             document << u8"header" << protocol::createHeader("RoomJoin");
             document << u8"data" << message;
 
             return document;
+        }
+
+        bool checkRoomJoin(const bson::Document &document) {
+            if (document.hasKey("password"))
+                return document.elementsCount() == 2 &&
+                       protocol::checkString(document, "name") &&
+                       protocol::checkString(document, "password");
+            else
+                return document.elementsCount() == 2 &&
+                       protocol::checkString(document, "name");
         }
 
         bson::Document roomLeave(void) {
@@ -76,7 +97,11 @@ namespace protocol {
             return document;
         }
 
-        bson::Document roomKick(const std::string& username) {
+        bool checkRoomLeave(const bson::Document &document) {
+            return !document.elementsCount();
+        }
+
+        bson::Document roomKick(const std::string &username) {
             bson::Document document;
             bson::Document message;
 
@@ -86,6 +111,11 @@ namespace protocol {
             document << u8"data" << message;
 
             return document;
+        }
+
+        bool checkRoomKick(const bson::Document &document) {
+            return document.elementsCount() == 1 &&
+                   protocol::checkString(document, "username");
         }
 
         bson::Document gameStart(void) {
@@ -98,6 +128,10 @@ namespace protocol {
             return document;
         }
 
+        bool checkGameStart(const bson::Document &document) {
+            return !document.elementsCount();
+        }
+
         bson::Document gameLeave(void) {
             bson::Document document;
             bson::Document message;
@@ -108,7 +142,11 @@ namespace protocol {
             return document;
         }
 
-        bson::Document entityUpdate(int64_t entity_id, const bson::Document& components) {
+        bool checkGameLeave(const bson::Document &document) {
+            return !document.elementsCount();
+        }
+
+        bson::Document entityUpdate(int64_t entity_id, const bson::Document &components) {
             bson::Document document;
             bson::Document message;
 
