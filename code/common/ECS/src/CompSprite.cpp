@@ -9,9 +9,11 @@
 namespace ECS {
   namespace Component {
 
-    CompSprite::CompSprite(void) :
-      name(""),
-      center(0, 0)
+    const std::string CompSprite::NO_SPRITE = "";
+    
+    CompSprite::CompSprite(const std::string &pname, int x, int y) :
+      name(pname),
+      center(x, y)
     {};
 
     const std::string &CompSprite::getType() const {

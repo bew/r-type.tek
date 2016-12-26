@@ -11,6 +11,7 @@
 #include "ECS/ISystem.hh"
 #include "ECS/CompMovement.hh"
 #include "SFML/Window/Keyboard.hpp"
+#include "CompController.hh"
 
 namespace ECS {
   namespace System {

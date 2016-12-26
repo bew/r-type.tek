@@ -14,9 +14,9 @@ namespace ECS
     namespace Component
     {
 
-        CompMovement::CompMovement()
+      CompMovement::CompMovement(coordinates<int> coor)
                 : AComponent(),
-                  _coo(0, 0),
+                  _coo(coor),
                   _dir(0.f, 0.f),
                   _speed(0.f),
                   _advance(0.f, 0.f),

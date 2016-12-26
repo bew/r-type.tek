@@ -7,21 +7,26 @@
 #include <iostream>
 #include "SysWindow.hh"
 #include "CompWindow.hh"
+
 #include "SysAsset.hh"
-#include "CompAsset.hh"
-#include "CompOptions.hh"
+#include "ECS/CompAsset.hh"
 #include "SysMusic.hh"
-#include "CompMusic.hh"
+#include "ECS/CompMusic.hh"
 #include "SysSprite.hh"
-#include "CompSprite.hh"
+#include "ECS/CompSprite.hh"
+
+#include "CompOptions.hh"
 #include "SysController.hh"
 #include "SysOptions.hh"
+#include "CompController.hh"
+
 #include "ECS/CompEvent.hh"
 #include "ECS/SysEvent.hh"
 #include "ECS/CompTick.hh"
 #include "ECS/SysTick.hh"
 #include "ECS/CompMovement.hh"
 #include "ECS/SysMovement.hh"
+#include "ECS/CompHitbox.hh"
 #include "Graphic/AssetStore.hpp"
 
 int main(void) {
@@ -72,15 +77,19 @@ int main(void) {
   ///////////////// Ajouter une entité de test
   // necessite ECS::World::_world public 
   
-  ECS::Entity::Entity entity(1);
-  ECS::Component::CompSprite sprite;
-  ECS::Component::CompMovement movement;
-  sprite.name = "burrito";
-  movement._coo._x = 300;
-  movement._coo._y = 300;
-  entity.addComponent(&sprite);
-  entity.addComponent(&movement);
-  world._world._gameEntities.push_back(&entity);
+  ECS::Entity::Entity *entity = new ECS::Entity::Entity(1);
+  entity->addComponent(new ECS::Component::CompSprite("burrito"));  
+  entity->addComponent(new ECS::Component::CompMovement({300, 300}));
+  entity->addComponent(new ECS::Component::CompHitbox(60, 60));
+  entity->addComponent(new ECS::Component::CompController());
+
+  ECS::Entity::Entity *entityFixed = new ECS::Entity::Entity(2);
+  entityFixed->addComponent(new ECS::Component::CompSprite("burrito"));
+  entityFixed->addComponent(new ECS::Component::CompMovement({600, 600}));
+  entityFixed->addComponent(new ECS::Component::CompHitbox(60, 60));
+  
+  world._world._gameEntities.push_back(entity);
+  world._world._gameEntities.push_back(entityFixed);
   
   while (!tick->kill) {
     world.update();
