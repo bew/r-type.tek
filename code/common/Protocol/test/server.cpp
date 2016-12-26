@@ -27,6 +27,8 @@ TEST(Server, RoomJoin) {
 
     bson::Document data = message["data"].getValueDocument();
     EXPECT_EQ(data["username"].getValueString(), username);
+
+    EXPECT_EQ(protocol::server::checkRoomJoin(message), true);
 }
 
 /**
@@ -46,6 +48,8 @@ TEST(Server, RoomLeave) {
 
     bson::Document data = message["data"].getValueDocument();
     EXPECT_EQ(data["username"].getValueString(), username);
+
+    EXPECT_EQ(protocol::server::checkRoomLeave(message), true);
 }
 
 /**
@@ -65,6 +69,8 @@ TEST(Server, RoomKick) {
 
     bson::Document data = message["data"].getValueDocument();
     EXPECT_EQ(data["username"].getValueString(), username);
+
+    EXPECT_EQ(protocol::server::checkRoomKick(message), true);
 }
 
 /**
@@ -78,6 +84,11 @@ TEST(Server, GameStart) {
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "GameStart");
     EXPECT_EQ(header["version"].getValueString(), protocol::version);
+
+    bson::Document data = message["data"].getValueDocument();
+    EXPECT_EQ(data.isEmpty(), true);
+
+    EXPECT_EQ(protocol::server::checkGameStart(message), true);
 }
 
 /**
@@ -97,6 +108,8 @@ TEST(Server, GameLeave) {
 
     bson::Document data = message["data"].getValueDocument();
     EXPECT_EQ(data["username"].getValueString(), username);
+
+    EXPECT_EQ(protocol::server::checkGameLeave(message), true);
 }
 
 /**

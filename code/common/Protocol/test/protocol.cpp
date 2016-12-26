@@ -20,4 +20,6 @@ TEST(Protocol, basic) {
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "SomeAction");
     EXPECT_EQ(header["version"].getValueString(), protocol::version);
+
+    EXPECT_EQ(protocol::checkHeader(header, "SomeAction"), true);
 }
