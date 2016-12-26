@@ -154,7 +154,8 @@ namespace protocol {
         }
 
         bool checkAnswer(const bson::Document &document) {
-            if (!protocol::checkMessage(document) && document[u8"header"][u8"action"].getValueString() == "Answer")
+            if (!protocol::checkMessage(document) ||
+                protocol::checkHeader(document[u8"header"].getValueDocument(), "Answer"))
                 return false;
             bson::Document data = document[u8"data"].getValueDocument();
             return protocol::answers::checkCode(data) &&
