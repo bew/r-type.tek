@@ -139,16 +139,24 @@ namespace protocol {
             return document;
         }
 
-        bool checkAnswer(const bson::Document &answer) {
+        bool checkCode(const bson::Document &document) {
             static const std::set<int32_t> codes = {200, 400, 401, 403, 404, 429, 500, 501, 503};
 
-            return answer.hasKey(u8"code") && answer[u8"code"].getValueType() == bson::INT32 &&
-                   codes.count(answer[u8"code"].getValueInt32()) &&
-                   ((answer[u8"code"].getValueInt32() != 200 && answer.elementsCount() == 2) ||
-                    (answer[u8"code"].getValueInt32() == 200 && answer.elementsCount() == 3 &&
-                     answer.hasKey(u8"data") && answer[u8"data"].getValueType() == bson::DOCUMENT)) &&
-                   answer.hasKey(u8"message") && answer[u8"message"].getValueType() == bson::STRING &&
-                   answer.hasKey(u8"timestamp") && answer[u8"timestamp"].getValueType() == bson::INT64;
+            if (document.hasKey(u8"code") && document[u8"code"].getValueType() == bson::INT32 &&
+                codes.count(document[u8"code"].getValueInt32())) {
+                if (document[u8"code"].getValueInt32() != 200 && document.elementsCount() == 2)
+                    return true;
+                else if (document[u8"code"].getValueInt32() == 200 && document.elementsCount() == 3 &&
+                         document.hasKey(u8"data") && document[u8"data"].getValueType() == bson::DOCUMENT)
+                    return true;
+            }
+            return false;
+        }
+
+        bool checkDocument(const bson::Document &document) {
+            return protocol::documents::checkCode(document) &&
+                   protocol::checkString(document, "message") &&
+                   protocol::checkTimestamp(document);
         }
     }
 }

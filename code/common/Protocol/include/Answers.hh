@@ -108,12 +108,20 @@ namespace protocol {
         bson::Document serviceUnavailable(int64_t timestamp, const std::string& message = "Service Unavailable");
 
         /**
+         * Check if the code is right inside the given Document
+         *
+         * @param document the Document to check
+         * @return true if the code is right, else false
+         */
+        bool checkCode(const bson::Document& document);
+
+        /**
          * Check if the given Document is a correct answer message
          *
-         * @param answer the Document to check
+         * @param document the Document to check
          * @return true if the Document is correct, else false
          */
-        bool checkAnswer(const bson::Document& answer);
+        bool checkAnswer(const bson::Document& document);
     }
 }
 
