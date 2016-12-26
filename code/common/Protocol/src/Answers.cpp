@@ -144,9 +144,9 @@ namespace protocol {
 
             if (document.hasKey(u8"code") && document[u8"code"].getValueType() == bson::INT32 &&
                 codes.count(document[u8"code"].getValueInt32())) {
-                if (document[u8"code"].getValueInt32() != 200 && document.elementsCount() == 2)
+                if (document[u8"code"].getValueInt32() != 200 && document.elementsCount() == 3)
                     return true;
-                else if (document[u8"code"].getValueInt32() == 200 && document.elementsCount() == 3 &&
+                else if (document[u8"code"].getValueInt32() == 200 && document.elementsCount() == 4 &&
                          document.hasKey(u8"data") && document[u8"data"].getValueType() == bson::DOCUMENT)
                     return true;
             }
@@ -155,7 +155,7 @@ namespace protocol {
 
         bool checkAnswer(const bson::Document &document) {
             if (!protocol::checkMessage(document) ||
-                protocol::checkHeader(document[u8"header"].getValueDocument(), u8"Answer"))
+                !protocol::checkHeader(document[u8"header"].getValueDocument(), u8"Answer"))
                 return false;
             bson::Document data = document[u8"data"].getValueDocument();
             return protocol::answers::checkCode(data) &&
