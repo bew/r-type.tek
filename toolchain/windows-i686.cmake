@@ -1,3 +1,5 @@
+cmake_minimum_required(VERSION 3.1)
+
 SET(CROSS_COMPILE true)
 SET(CMAKE_SYSTEM_NAME Windows)
 SET(CMAKE_C_COMPILER i686-w64-mingw32-cc)

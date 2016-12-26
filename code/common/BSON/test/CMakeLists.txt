@@ -1,7 +1,8 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
-use_msvc_static_runtime()
+set(SOURCES main.cpp serialization.cpp miscellaneous.cpp)
+set(DEPENDENCIES)
 
-add_executable(${TEST_EXE} main.cpp serialization.cpp miscellaneous.cpp)
-target_link_libraries(${TEST_EXE} ${LIB_TEST_NAME} gtest)
+add_executable(${TEST_EXE} ${SOURCES})
+target_link_libraries(${TEST_EXE} ${DEPENDENCIES} ${LIB_NAME} gtest)
 install(TARGETS ${TEST_EXE} DESTINATION bin/test)

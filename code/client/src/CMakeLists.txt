@@ -1,12 +1,8 @@
-set(CL_SOURCE)
-add(CL_SOURCE CompWindow.cpp SysWindow.cpp main.cpp)
-add(CL_SOURCE CompAsset.cpp CompOptions.cpp CompMusic.cpp SysAsset.cpp SysMusic.cpp ${CL_SOURCE})
-add(CL_SOURCE CompSprite.cpp SysSprite.cpp SysController.cpp SysOptions.cpp ${CL_SOURCE})
-add(CL_SOURCE AssetLogLevel.cpp ${CL_SOURCE})
-set(CL_EXEC client)
+cmake_minimum_required(VERSION 3.1)
 
-add_definitions(-DSFML_STATIC)
+set(SOURCES main.cpp)
+set(DEPENDENCIES ${RT_COMMON_NAMES})
 
-add_executable(${CL_EXEC} ${CL_SOURCE})
-target_link_libraries(${CL_EXEC} sfml-graphics sfml-window sfml-audio sfml-system ${RT_COMMON_NAMES})
-install(TARGETS ${CL_EXEC} DESTINATION bin)
+add_executable(${CL_NAME} ${SOURCES})
+target_link_libraries(${CL_NAME} ${DEPENDENCIES})
+install(TARGETS ${CL_NAME} DESTINATION bin)

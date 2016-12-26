@@ -55,6 +55,48 @@ namespace logs {
     };
 
     /**
+     * Abstract class for a log level with a file
+     */
+    class ALogLevelFile : public ALogLevel {
+    private:
+        /**
+         * Log file
+         */
+        std::ofstream _logFile;
+
+    public:
+        /**
+         * Ctor
+         *
+         * @param filename the name of the log file
+         */
+        ALogLevelFile(const std::string& filename);
+
+        ALogLevelFile(const ALogLevel &aLogLevel) = delete;
+
+        ALogLevelFile &operator=(const ALogLevelFile &aLogLevelFile) = delete;
+
+        /**
+         * Dtor
+         */
+        virtual ~ALogLevelFile();
+
+        /**
+         * Get the name of the log level
+         *
+         * @return the name of the log level
+         */
+        virtual std::string getLogLevelName(void) const = 0;
+
+        /**
+         * Get the stream of the log level to know where to write
+         *
+         * @return the stream of the log level to know where to write
+         */
+        virtual std::ostream &getLogLevelStream(void);
+    };
+
+    /**
      * Allow to log a lot of things
      */
     class Logger {
@@ -102,6 +144,11 @@ namespace logs {
         void registerLogLevel(ALogLevel *logLevel);
 
         /**
+         * Register all the basics log level given with the lib
+         */
+        void registerBasicsLogLevel(void);
+
+        /**
          * Allow to unregister a log level inside the Logger
          *
          * @param logLevelName the name of the log level to unregister
@@ -117,6 +164,15 @@ namespace logs {
          * @return the Logger in order to chain call for logging
          */
         Logger &logLevel(const std::string &logLevelName);
+
+        /**
+         * Create a new entry inside the logger and change the log level if required
+         *
+         * @param logLevelName the name of the log level to use for the new entry
+         * @throw std::out_of_range if the logLevelName doesn't match any log level info register previously
+         * @return the Logger in order to chain call for logging
+         */
+        Logger& operator[](const std::string &logLevelName);
 
         /**
          * Allow to log everything that has an operator << with ostream
@@ -153,5 +209,9 @@ namespace logs {
      */
     extern Logger logger;
 };
+
+#include "InfoLogLevel.hh"
+#include "ErrorLogLevel.hh"
+#include "DebugLogLevel.hh"
 
 #endif //LOGS_LOGGER_HH

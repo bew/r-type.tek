@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "Document.hh"
+#include "BSON/Document.hh"
  
 int main()
 {

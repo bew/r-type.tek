@@ -12,7 +12,6 @@
 
 #include <vector>
 
-
 /**
  * Namespace of ECS.
  */
@@ -87,6 +86,8 @@ namespace ECS {
 	 */
 	std::vector<System::ISystem *>	_systems;
 
+      // For testing purpose, will be removed from public scope:
+    public:
         /**
 	 * Data of the ecs. The systems will read and update these datas.
 	 */
