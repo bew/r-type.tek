@@ -8,8 +8,8 @@
 
 //== Request implementation =================================================
 
-Request::Request(bson::Document const & packet) :
-  _packet(packet),
+Request::Request(bson::Document const & packet, std::shared_ptr<network::ClientTCP> fromClient) :
+  _client(fromClient),
   _header(packet["header"].getValueDocument()),
   _data(packet["data"].getValueDocument())
 {}
@@ -58,9 +58,9 @@ void Router::setFallbackHandler(RouteHandler handler)
   _fallbackHandler = handler;
 }
 
-void Router::routePacket(bson::Document const & packet) const
+Router::RouteHandler::result_type Router::routePacket(bson::Document const & packet, std::shared_ptr<network::ClientTCP> fromClient) const
 {
-  Request req(packet);
+  Request req(packet, fromClient);
 
   auto & header = req.getHeader();
   std::string action;
@@ -70,11 +70,12 @@ void Router::routePacket(bson::Document const & packet) const
   if (!_handlers.count(action))
     {
       if (_fallbackHandler)
-	_fallbackHandler(req);
-      return;
+	return _fallbackHandler(req);
+      else
+	throw NoRouteException("No route for action '" + action + "'");
     }
 
-  RouteHandler handler = _handlers.at(action);
-  handler(req);
+  RouteHandler const & handler = _handlers.at(action);
+  return handler(req);
 }
 

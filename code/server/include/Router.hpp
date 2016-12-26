@@ -10,8 +10,19 @@
 # include <string>
 # include <map>
 # include <functional>
+# include <stdexcept>
+# include <memory>
+
+class Request;
+class Router;
+
 # include "BSON/Document.hh"
-# include "Server.hpp"
+# include "Network/ClientTCP.hh"
+
+/**
+ * Exception thrown when there is no route for a packet
+ */
+using NoRouteException = std::runtime_error;
 
 /**
  * Represent a request
@@ -21,8 +32,11 @@ class Request
 public:
   /**
    * Construct a request from a BSON packet
+   *
+   * @param packet The BSON data
+   * @param fromClient The client who sent the request
    */
-  Request(bson::Document const & packet);
+  Request(bson::Document const & packet, std::shared_ptr<network::ClientTCP> fromClient);
 
   /**
    * Destructor of a request
@@ -47,21 +61,26 @@ public:
    */
   bson::Document const & getData() const;
 
+  /**
+   * Get the client who received the request
+   *
+   * @return a shared_ptr to the client socket
+   */
+  std::shared_ptr<network::ClientTCP> getClient() const;
+
 protected:
   /**
-   * Store a reference to the packet
-   */
-  bson::Document const & _packet;
-
-  /**
-   * Store a reference to the packet header
+   * Reference to the packet header
    */
   bson::Document const & _header;
 
   /**
-   * Store a reference to the packet data
+   * Reference to the packet data
    */
   bson::Document const & _data;
+
+
+  std::shared_ptr<network::ClientTCP> _client;
 };
 
 /**
@@ -73,7 +92,7 @@ public:
   /**
    * Type representation for a route handler
    */
-  typedef std::function<void(Request &)> RouteHandler;
+  typedef std::function<bool(Request &)> RouteHandler;
 
 public:
   /**
@@ -113,8 +132,9 @@ public:
    * Given a packet, re-route the packet to the correct handler
    *
    * @param packet The packet to re-route
+   * @param fromClient The client who sent the request
    */
-  void routePacket(bson::Document const & packet) const;
+  RouteHandler::result_type routePacket(bson::Document const & packet, std::shared_ptr<network::ClientTCP> fromClient) const;
 
   /**
    * Set the fallback handler when no route match the packet request

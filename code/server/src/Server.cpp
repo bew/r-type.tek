@@ -6,11 +6,13 @@
 
 #include <iostream>
 #include "BSON/Document.hh"
-#include "Server.hpp"
+#include "Protocol/Answers.hh"
 #include "Network/SocketException.hh"
+#include "Server.hpp"
 
 Server::Server(std::string const & name) :
-  _serverName(name)
+  _serverName(name),
+  _clientRouter(*this)
 {}
 
 Server::~Server()
@@ -53,20 +55,25 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
   bson::Document packet(std::vector<unsigned char>(raw_packet.begin(), raw_packet.end()));
 
   // TODO: check packet header
-  // TODO: based on the action, check the packet content
-
-  std::string action;
-  packet["action"] >> action;
 
   if (! _players.count(client)) // this is a new client
     _players[client] = std::make_shared<Player>(client);
 
+  int64_t timestamp;
+  std::string action;
+
+  bson::Document const & header = packet["header"].getValueDocument();
+  header["timestamp"] >> timestamp;
+  header["action"] >> action;
+
   ClientCommandsState & state = _players.at(client)->getControlState();
-
   if (!state.gotoNextStateVia(action))
-    ; // TODO: send error : request not allowed ?
+    {
+      client->addMessage(protocol::answers::unauthorized(timestamp).getBufferString());
+      return;
+    }
 
-  // process the request, execute the callback
-  if (!callback())
-  //   state.revertToPreviousState();
+  if (! _clientRouter.routePacket(packet, client))
+    state.revertToPreviousState();
 }
+

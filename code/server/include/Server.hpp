@@ -11,7 +11,11 @@
 # include <map>
 # include <vector>
 # include <memory>
+
+class Server;
+
 # include "Network/ServerTCP.hh"
+# include "ClientRouter.hpp"
 # include "Player.hpp"
 # include "Room.hpp"
 
@@ -22,14 +26,14 @@ class Server
 {
 public:
   /**
-   * Construct a server instance, with a network name
+   * Construct a server instance
    *
-   * @param name The name of the server used for server identification on the network
+   * @param name The name of the server used for identification on the network
    */
   Server(std::string const & name);
 
   /**
-   * Destructor for the server
+   * Destruct the server
    */
   ~Server();
 
@@ -40,8 +44,8 @@ public:
   /**
    * Initialize the server's network
    *
-   * @param port The port on which to bind the server. If not given, the first
-   * available port will be taken.
+   * @param port The port on which to bind the server. If not given, an
+   * available port will be used.
    * @return The used port, 0 if there where an error.
    */
   unsigned short initNetwork(unsigned short port = 0);
@@ -77,14 +81,19 @@ protected:
   std::vector<Room> _rooms;
 
   /**
-   * Store the server name for network identification
+   * The server name for network identification
    */
   std::string _serverName;
 
   /**
-   * Store the server socket
+   * The server socket
    */
   network::ServerTCP _serverSock;
+
+  /**
+   * The router for client's packets
+   */
+  ClientRouter _clientRouter;
 };
 
 #endif /* !SERVER_HPP_ */
