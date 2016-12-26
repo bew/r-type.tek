@@ -11,7 +11,7 @@
 
 namespace protocol {
     namespace answers {
-        bson::Document ok(int64_t timestamp, const bson::Document& data, const std::string& message) {
+        bson::Document ok(int64_t timestamp, const bson::Document &data, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -26,7 +26,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document badRequest(int64_t timestamp, const std::string& message) {
+        bson::Document badRequest(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -40,7 +40,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document unauthorized(int64_t timestamp, const std::string& message) {
+        bson::Document unauthorized(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -54,7 +54,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document forbidden(int64_t timestamp, const std::string& message) {
+        bson::Document forbidden(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -68,7 +68,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document notFound(int64_t timestamp, const std::string& message) {
+        bson::Document notFound(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -82,7 +82,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document tooManyRequests(int64_t timestamp, const std::string& message) {
+        bson::Document tooManyRequests(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -96,7 +96,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document internalServerError(int64_t timestamp, const std::string& message) {
+        bson::Document internalServerError(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -110,7 +110,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document notImplemented(int64_t timestamp, const std::string& message) {
+        bson::Document notImplemented(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -124,7 +124,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document serviceUnavailable(int64_t timestamp, const std::string& message) {
+        bson::Document serviceUnavailable(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -138,12 +138,12 @@ namespace protocol {
             return document;
         }
 
-        bool checkAnswer(const bson::Document& answer) {
+        bool checkAnswer(const bson::Document &answer) {
             return answer.hasKey(u8"code") && answer[u8"code"].getValueType() == bson::INT32 &&
                    answer.hasKey(u8"message") && answer[u8"message"].getValueType() == bson::STRING &&
                    answer.hasKey(u8"timestamp") && answer[u8"timestamp"].getValueType() == bson::INT64 &&
-                   (answer[u8"code"].getValueInt32() == 200 ?
-                        answer.hasKey(u8"data") && answer[u8"data"].getValueType() == bson::DOCUMENT : true);
+                   (answer[u8"code"].getValueInt32() != 200 ||
+                    answer.hasKey(u8"data") && answer[u8"data"].getValueType() == bson::DOCUMENT);
         }
     }
 }
