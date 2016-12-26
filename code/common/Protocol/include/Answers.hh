@@ -98,7 +98,7 @@ namespace protocol {
         bson::Document notImplemented(int64_t timestamp, const std::string& message = "Not Implemented");
 
         /**
-         * mean that the request has been ignored because the receiver is currently unavailable
+         * Mean that the request has been ignored because the receiver is currently unavailable
          * (because it is overloaded or down for maintenance). Generally, this is a temporary state (503)
          *
          * @param timestamp the timestamp of the answered command
@@ -106,6 +106,14 @@ namespace protocol {
          * @return the bson Document formatted for the following answer
          */
         bson::Document serviceUnavailable(int64_t timestamp, const std::string& message = "Service Unavailable");
+
+        /**
+         * Check if the given Document is a correct answer
+         *
+         * @param answer the Document to check
+         * @return true if the Document is correct, else false
+         */
+        bool checkAnswer(const bson::Document& answer);
     }
 }
 

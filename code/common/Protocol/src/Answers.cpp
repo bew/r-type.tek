@@ -137,5 +137,13 @@ namespace protocol {
 
             return document;
         }
+
+        bool checkAnswer(const bson::Document& answer) {
+            return answer.hasKey(u8"code") && answer[u8"code"].getValueType() == bson::INT32 &&
+                   answer.hasKey(u8"message") && answer[u8"message"].getValueType() == bson::STRING &&
+                   answer.hasKey(u8"timestamp") && answer[u8"timestamp"].getValueType() == bson::INT64 &&
+                   (answer[u8"code"].getValueInt32() == 200 ?
+                        answer.hasKey(u8"data") && answer[u8"data"].getValueType() == bson::DOCUMENT : true);
+        }
     }
 }
