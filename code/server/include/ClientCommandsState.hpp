@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "StateMachine.hpp"
+#include "StateMachine/StateMachine.hpp"
 
 /**
  * Represent a Navigable State Machine for client's commands

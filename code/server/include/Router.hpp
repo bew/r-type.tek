@@ -10,7 +10,7 @@
 # include <string>
 # include <map>
 # include <functional>
-# include "Document.hh"
+# include "BSON/Document.hh"
 # include "Server.hpp"
 
 /**

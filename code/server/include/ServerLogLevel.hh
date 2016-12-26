@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "Logger.hh"
+#include "Logs/Logger.hh"
 #include <fstream>
 #include <string>
 #include <stdexcept>
