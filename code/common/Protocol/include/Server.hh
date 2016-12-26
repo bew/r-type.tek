@@ -26,7 +26,15 @@ namespace protocol {
          * @param username the username of the player that joined the room
          * @return the bson Document formatted for the following action
          */
-        bson::Document roomJoin(const std::string& username);
+        bson::Document roomJoin(const std::string &username);
+
+        /**
+         * Check if the given Document is a correct roomJoin message
+         *
+         * @param document the Document to check
+         * @return true if the Document is correct, else false
+         */
+        bool checkRoomJoin(const bson::Document &document);
 
         /**
          * Create a message to notify all the other players that a player leaved the room
@@ -34,7 +42,15 @@ namespace protocol {
          * @param username the username of the player that leaved the room
          * @return the bson Document formatted for the following action
          */
-        bson::Document roomLeave(const std::string& username);
+        bson::Document roomLeave(const std::string &username);
+
+        /**
+         * Check if the given Document is a correct roomLeave message
+         *
+         * @param document the Document to check
+         * @return true if the Document is correct, else false
+         */
+        bool checkRoomLeave(const bson::Document &document);
 
         /**
          * Create a message to notify all the other players that a player has been kicked from the room
@@ -42,7 +58,15 @@ namespace protocol {
          * @param username the username of the player that has been kicked from the room
          * @return the bson Document formatted for the following action
          */
-        bson::Document roomKick(const std::string& username);
+        bson::Document roomKick(const std::string &username);
+
+        /**
+         * Check if the given Document is a correct roomKick message
+         *
+         * @param document the Document to check
+         * @return true if the Document is correct, else false
+         */
+        bool checkRoomKick(const bson::Document &document);
 
         /**
          * Create a message to notify all the players that the game has started
@@ -52,12 +76,28 @@ namespace protocol {
         bson::Document gameStart(void);
 
         /**
+         * Check if the given Document is a correct gameStart message
+         *
+         * @param document the Document to check
+         * @return true if the Document is correct, else false
+         */
+        bool checkGameStart(const bson::Document &document);
+
+        /**
          * Create a message to notify all the other players that a player has been leaved the game
          *
          * @param username the username of the player that leaved the game
          * @return the bson Document formatted for the following action
          */
-        bson::Document gameLeave(const std::string& username);
+        bson::Document gameLeave(const std::string &username);
+
+        /**
+         * Check if the given Document is a correct gameLeave message
+         *
+         * @param document the Document to check
+         * @return true if the Document is correct, else false
+         */
+        bool checkGameLeave(const bson::Document &document);
 
         /**
          * Create a message to update an entity to a client
@@ -66,7 +106,7 @@ namespace protocol {
          * @param components a Document of components to update
          * @return the bson Document formatted for the following action
          */
-        bson::Document entityUpdate(int64_t entity_id, const bson::Document& components);
+        bson::Document entityUpdate(int64_t entity_id, const bson::Document &components);
     }
 }
 

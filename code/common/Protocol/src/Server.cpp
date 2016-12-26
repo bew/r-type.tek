@@ -23,6 +23,11 @@ namespace protocol {
             return document;
         }
 
+        bool checkRoomJoin(const bson::Document &document) {
+            return document.elementsCount() == 1 &&
+                   protocol::checkString(document, "username");
+        }
+
         bson::Document roomLeave(const std::string& username) {
             bson::Document document;
             bson::Document message;
@@ -33,6 +38,11 @@ namespace protocol {
             document << u8"data" << message;
 
             return document;
+        }
+
+        bool checkRoomLeave(const bson::Document &document) {
+            return document.elementsCount() == 1 &&
+                   protocol::checkString(document, "username");
         }
 
         bson::Document roomKick(const std::string& username) {
@@ -47,6 +57,11 @@ namespace protocol {
             return document;
         }
 
+        bool checkRoomKick(const bson::Document &document) {
+            return document.elementsCount() == 1 &&
+                   protocol::checkString(document, "username");
+        }
+
         bson::Document gameStart(void) {
             bson::Document document;
             bson::Document message;
@@ -55,6 +70,10 @@ namespace protocol {
             document << u8"data" << message;
 
             return document;
+        }
+
+        bool checkGameStart(const bson::Document &document) {
+            return !document.elementsCount();
         }
 
         bson::Document gameLeave(const std::string& username) {
@@ -67,6 +86,11 @@ namespace protocol {
             document << u8"data" << message;
 
             return document;
+        }
+
+        bool checkGameLeave(const bson::Document &document) {
+            return document.elementsCount() == 1 &&
+                   protocol::checkString(document, "username");
         }
 
         bson::Document entityUpdate(int64_t entity_id, const bson::Document& components) {
