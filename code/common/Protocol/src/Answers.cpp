@@ -154,8 +154,8 @@ namespace protocol {
         }
 
         bool checkDocument(const bson::Document &document) {
-            return protocol::documents::checkCode(document) &&
-                   protocol::checkString(document, "message") &&
+            return protocol::answers::checkCode(document) &&
+                   protocol::checkString(document, u8"message") &&
                    protocol::checkTimestamp(document);
         }
     }
