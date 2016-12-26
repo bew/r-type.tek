@@ -25,9 +25,13 @@ namespace protocol {
         }
 
         bool checkSignUp(const bson::Document &document) {
-            return document.elementsCount() == 2 &&
-                   protocol::checkString(document, u8"username") &&
-                   protocol::checkString(document, u8"password");
+            if (!protocol::checkMessage(document) ||
+                !protocol::checkHeader(document[u8"header"].getValueDocument(), "SignUp"))
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.elementsCount() == 2 &&
+                   protocol::checkString(data, u8"username") &&
+                   protocol::checkString(data, u8"password");
         }
 
         bson::Document login(const std::string &username, const std::string &password) {
@@ -44,9 +48,13 @@ namespace protocol {
         }
 
         bool checkLogin(const bson::Document &document) {
-            return document.elementsCount() == 2 &&
-                   protocol::checkString(document, u8"username") &&
-                   protocol::checkString(document, u8"password");
+            if (!protocol::checkMessage(document) ||
+                !protocol::checkHeader(document[u8"header"].getValueDocument(), "Login"))
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.elementsCount() == 2 &&
+                   protocol::checkString(data, u8"username") &&
+                   protocol::checkString(data, u8"password");
         }
 
         bson::Document logout(void) {
@@ -60,7 +68,11 @@ namespace protocol {
         }
 
         bool checkLogout(const bson::Document &document) {
-            return !document.elementsCount();
+            if (!protocol::checkMessage(document) ||
+                !protocol::checkHeader(document[u8"header"].getValueDocument(), "Logout"))
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.isEmpty();
         }
 
         bson::Document roomJoin(const std::string &name, const std::string &password) {
@@ -78,13 +90,17 @@ namespace protocol {
         }
 
         bool checkRoomJoin(const bson::Document &document) {
-            if (document.hasKey("password"))
-                return document.elementsCount() == 2 &&
-                       protocol::checkString(document, "name") &&
-                       protocol::checkString(document, "password");
+            if (!protocol::checkMessage(document) ||
+                !protocol::checkHeader(document[u8"header"].getValueDocument(), "RoomJoin"))
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            if (data.hasKey("password"))
+                return data.elementsCount() == 2 &&
+                       protocol::checkString(data, "name") &&
+                       protocol::checkString(data, "password");
             else
-                return document.elementsCount() == 2 &&
-                       protocol::checkString(document, "name");
+                return data.elementsCount() == 1 &&
+                       protocol::checkString(data, "name");
         }
 
         bson::Document roomLeave(void) {
@@ -98,7 +114,11 @@ namespace protocol {
         }
 
         bool checkRoomLeave(const bson::Document &document) {
-            return !document.elementsCount();
+            if (!protocol::checkMessage(document) ||
+                !protocol::checkHeader(document[u8"header"].getValueDocument(), "RoomLeave"))
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.isEmpty();
         }
 
         bson::Document roomKick(const std::string &username) {
@@ -114,8 +134,12 @@ namespace protocol {
         }
 
         bool checkRoomKick(const bson::Document &document) {
-            return document.elementsCount() == 1 &&
-                   protocol::checkString(document, "username");
+            if (!protocol::checkMessage(document) ||
+                !protocol::checkHeader(document[u8"header"].getValueDocument(), "RoomKick"))
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.elementsCount() == 1 &&
+                   protocol::checkString(data, "username");
         }
 
         bson::Document gameStart(void) {
@@ -129,7 +153,11 @@ namespace protocol {
         }
 
         bool checkGameStart(const bson::Document &document) {
-            return !document.elementsCount();
+            if (!protocol::checkMessage(document) ||
+                !protocol::checkHeader(document[u8"header"].getValueDocument(), "GameStart"))
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.isEmpty();
         }
 
         bson::Document gameLeave(void) {
@@ -143,7 +171,11 @@ namespace protocol {
         }
 
         bool checkGameLeave(const bson::Document &document) {
-            return !document.elementsCount();
+            if (!protocol::checkMessage(document) ||
+                !protocol::checkHeader(document[u8"header"].getValueDocument(), "GameLeave"))
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.isEmpty();
         }
 
         bson::Document entityUpdate(int64_t entity_id, const bson::Document &components) {
