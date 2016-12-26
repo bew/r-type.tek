@@ -37,7 +37,8 @@ namespace protocol {
     }
 
     bool checkMessage(const bson::Document &message) {
-        return message.hasKey(u8"header") && protocol::checkHeader(message[u8"header"].getValueDocument()) &&
+        return message.elementsCount() == 2 &&
+               message.hasKey(u8"header") && protocol::checkHeader(message[u8"header"].getValueDocument()) &&
                message.hasKey(u8"data") && message[u8"data"].getValueType() == bson::DOCUMENT &&
                (*checkFunctions.at(message[u8"header"]["action"].getValueString()))(message[u8"data"]);
     }
