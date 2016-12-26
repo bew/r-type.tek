@@ -2,7 +2,8 @@ cmake_minimum_required(VERSION 3.0)
 
 project("r-type")
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -DSFML_STATIC")
+set (CMAKE_CXX_STANDARD 11)
+add_definitions (-DSFML_STATIC)
 
 # utility function
 # it allows to set a variable, then add some fields easily

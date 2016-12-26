@@ -127,9 +127,9 @@ else()
 endif()
 
 # define SFML_STATIC if the build type is not set to 'shared'
-#if(NOT BUILD_SHARED_LIBS)
+if(NOT BUILD_SHARED_LIBS)
     add_definitions(-DSFML_STATIC)
-#endif()
+endif()
 
 # Visual C++: remove warnings regarding SL security and algorithms on pointers
 if(SFML_COMPILER_MSVC)

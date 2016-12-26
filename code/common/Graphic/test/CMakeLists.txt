@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
 set(SOURCES main.cpp)
-set(DEPENDENCIES sfml-graphics sfml-window sfml-system sfml-audio BSON FSWatcher)
+set(DEPENDENCIES)
 
 add_executable(${TEST_EXE} ${SOURCES})
 target_link_libraries(${TEST_EXE} ${DEPENDENCIES} ${LIB_NAME} gtest)
