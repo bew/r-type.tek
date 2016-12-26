@@ -23,11 +23,11 @@ namespace protocol {
         return header;
     }
 
-    typedef bool (*checkFunction)(const bson::Document &);
-
-    static const std::map<std::string, checkFunction> checkFunctions = {
-            {"Answer", &protocol::answers::checkAnswer},
-    };
+    bool checkString(const bson::Document &document, const std::string &key) {
+        return document.hasKey(key) &&
+               document[key].getValueType() == bson::STRING &&
+               !document[key].getValueString().empty();
+    }
 
     bool checkMagic(const bson::Document &document) {
         return document.hasKey(u8"magic") &&
@@ -41,14 +41,11 @@ namespace protocol {
         return document.hasKey(u8"timestamp") &&
                document[u8"timestamp"].getValueType() == bson::INT64 &&
                document[u8"timestamp"].getValueInt64() > now - (protocol::latency - 86400) &&
-               document[u8"timestamp"].getValueInt64() <
-               now + (protocol::latency + 86400); // Yes, things can come from the future
+               document[u8"timestamp"].getValueInt64() < now + (protocol::latency + 86400); // We never know
     }
 
     bool checkAction(const bson::Document &document) {
-        return document.hasKey(u8"action") &&
-               document[u8"action"].getValueType() == bson::STRING &&
-               checkFunctions.count(document[u8"action"].getValueString());
+        return protocol::checkString(document, "action");
     }
 
     bool checkVersion(const bson::Document &document) {
@@ -67,14 +64,7 @@ namespace protocol {
 
     bool checkMessage(const bson::Document &document) {
         return document.elementsCount() == 2 &&
-               document.hasKey(u8"header") && protocol::checkHeader(document[u8"header"].getValueDocument()) &&
-               document.hasKey(u8"data") && document[u8"data"].getValueType() == bson::DOCUMENT &&
-               (*checkFunctions.at(document[u8"header"]["action"].getValueString()))(document[u8"data"].getValueDocument());
-    }
-
-    bool checkString(const bson::Document &document, const std::string &key) {
-        return document.hasKey(key) &&
-               document[key].getValueType() == bson::STRING &&
-               !document[key].getValueString().empty();
+               document.hasKey(u8"header") && document[u8"header"].getValueType() == bson::DOCUMENT &&
+               document.hasKey(u8"data") && document[u8"data"].getValueType() == bson::DOCUMENT;
     }
 }

@@ -154,9 +154,12 @@ namespace protocol {
         }
 
         bool checkAnswer(const bson::Document &document) {
-            return protocol::answers::checkCode(document) &&
-                   protocol::checkString(document, u8"message") &&
-                   protocol::checkTimestamp(document);
+            if (!protocol::checkMessage(document) && document[u8"header"][u8"action"].getValueString() == "Answer")
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return protocol::answers::checkCode(data) &&
+                   protocol::checkString(data, u8"message") &&
+                   protocol::checkTimestamp(data);
         }
     }
 }
