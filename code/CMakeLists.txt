@@ -29,6 +29,12 @@ macro(suffix_list var suffix)
 	SET(${var} "${listVar}" PARENT_SCOPE)
 endmacro(suffix_list)
 
+macro(copy TARGET WHAT WHERE)
+	add_custom_command(TARGET ${TARGET} POST_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${WHAT} ${WHERE}
+	)
+endmacro(copy)
+
 # MAIN COMMON LIB
 #------------------------------------
 set(RT_COMMON_NAMES)
