@@ -28,7 +28,7 @@ namespace ECS {
 				 movementc->_coo._y - (sprite.getTextureRect().height / 2) + spritec->center._y);
 	      windowc->window->draw(sprite);
 	    } catch (const graphic::AssetException &e) {
-	      logs::logger.logLevel(logs::ASSET) << e.what() << std::endl;
+	      logs::logger[logs::ASSET] << e.what() << std::endl;
 	    }
 	  }
 	}

@@ -24,7 +24,7 @@ namespace ECS {
 	  }
 	}
 	catch (const graphic::AssetException &e) {
-	  logs::logger.logLevel(logs::ASSET) << e.what() << std::endl;
+	  logs::logger[logs::ASSET] << e.what() << std::endl;
 	}
       }
     }
