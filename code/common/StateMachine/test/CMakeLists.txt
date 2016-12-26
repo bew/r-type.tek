@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
 set(SOURCES main.cpp StateTest.cpp StateMachineTest.cpp)
 set(DEPENDENCIES)

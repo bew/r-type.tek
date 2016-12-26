@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
 set(LIB_NAME FSWatcher)
 set(TEST_EXE ${LIB_NAME}_test)

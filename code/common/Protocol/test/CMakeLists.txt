@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
 set(SOURCES main.cpp protocol.cpp answers.cpp server.cpp client.cpp)
 set(DEPENDENCIES)

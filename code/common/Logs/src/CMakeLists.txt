@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
 set(LIB_SOURCES Logger.cpp ALogLevelFile.cpp InfoLogLevel.cpp ErrorLogLevel.cpp DebugLogLevel.cpp)
 set(LIB_DEPENDENCIES)

@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
 set(LIB_SOURCES ATask.cpp)
 set(LIB_DEPENDENCIES)

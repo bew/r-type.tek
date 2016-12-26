@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.1)
 
 set(LIB_SOURCES Protocol.cpp Answers.cpp Server.cpp Client.cpp)
 set(LIB_DEPENDENCIES BSON)
