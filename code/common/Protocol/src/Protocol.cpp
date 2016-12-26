@@ -57,7 +57,7 @@ namespace protocol {
                document[u8"version"].getValueString() == protocol::version;
     }
 
-    bool checkDocument(const bson::Document &document) {
+    bool checkHeader(const bson::Document &document) {
         return document.elementsCount() == 4 &&
                protocol::checkMagic(document) &&
                protocol::checkTimestamp(document) &&
@@ -69,7 +69,7 @@ namespace protocol {
         return document.elementsCount() == 2 &&
                document.hasKey(u8"header") && protocol::checkHeader(document[u8"header"].getValueDocument()) &&
                document.hasKey(u8"data") && document[u8"data"].getValueType() == bson::DOCUMENT &&
-               (*checkFunctions.at(document[u8"header"]["action"].getValueString()))(document[u8"data"]);
+               (*checkFunctions.at(document[u8"header"]["action"].getValueString()))(document[u8"data"].getValueDocument());
     }
 
     bool checkString(const bson::Document &document, const std::string &key) {

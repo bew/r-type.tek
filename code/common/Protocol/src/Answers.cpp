@@ -153,7 +153,7 @@ namespace protocol {
             return false;
         }
 
-        bool checkDocument(const bson::Document &document) {
+        bool checkAnswer(const bson::Document &document) {
             return protocol::answers::checkCode(document) &&
                    protocol::checkString(document, u8"message") &&
                    protocol::checkTimestamp(document);
