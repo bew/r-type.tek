@@ -5,7 +5,7 @@
 #ifndef GENERATOR_EMPTY_H
 #define GENERATOR_EMPTY_H
 
-#include "libraryUtils.hh"
+#include "LibraryLoader/libraryUtils.hh"
 
 class Empty : public IGenerator {
 public:

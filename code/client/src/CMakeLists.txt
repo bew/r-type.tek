@@ -1,8 +1,8 @@
-set(CL_EXEC client)
-set(CL_SOURCE main.cpp)
+cmake_minimum_required(VERSION 3.1)
 
-add_definitions(-DSFML_STATIC)
+set(SOURCES main.cpp)
+set(DEPENDENCIES ${RT_COMMON_NAMES})
 
-add_executable(${CL_EXEC} ${CL_SOURCE})
-target_link_libraries(${CL_EXEC} ${SFML_LIBRARIES} ${SFML_DEPENDENCIES} ${RT_COMMON_NAMES})
-install(TARGETS ${CL_EXEC} DESTINATION bin)
+add_executable(${CL_NAME} ${SOURCES})
+target_link_libraries(${CL_NAME} ${DEPENDENCIES})
+install(TARGETS ${CL_NAME} DESTINATION bin)

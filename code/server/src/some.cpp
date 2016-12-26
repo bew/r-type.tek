@@ -1,4 +1,4 @@
-#include "Logger.hh"
+#include "Logs/Logger.hh"
 
 int main(void) {
   logs::logger.registerBasicsLogLevel();

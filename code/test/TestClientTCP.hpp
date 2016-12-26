@@ -8,8 +8,8 @@
 #include <mutex>
 #include <atomic>
 #include "TestClientUDP.hpp"
-#include "SockAddr.hh"
-#include "ClientTCP.hh"
+#include "Network/SockAddr.hh"
+#include "Network/ClientTCP.hh"
 
 class ClientTCP : public ATask
 {

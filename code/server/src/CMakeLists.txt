@@ -1,8 +1,8 @@
-set(SV_SOURCE)
+cmake_minimum_required(VERSION 3.1)
 
-add(SV_SOURCE some.cpp)
+set(SOURCES some.cpp)
+set(DEPENDENCIES ${RT_COMMON_NAMES})
 
-set(SV_EXEC server)
-add_executable(${SV_EXEC} ${SV_SOURCE})
-target_link_libraries(${SV_EXEC} ${RT_COMMON_NAMES})
-install(TARGETS ${SV_EXEC} DESTINATION bin)
+add_executable(${SRV_NAME} ${SOURCES})
+target_link_libraries(${SRV_NAME} ${DEPENDENCIES})
+install(TARGETS ${SRV_NAME} DESTINATION bin)

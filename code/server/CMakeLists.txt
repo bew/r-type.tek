@@ -1,5 +1,10 @@
-set(CL_INCLUDE)
-add(CL_INCLUDE include)
+cmake_minimum_required(VERSION 3.1)
 
-include_directories(${CL_INCLUDE})
-add_subdirectory("src")
+set(SRV_NAME server)
+set(SRV_INCLUDE ${CMAKE_CURRENT_SOURCE_DIR}/include)
+
+project(${SRV_NAME})
+
+include_directories(${SRV_INCLUDE} ${RT_COMMON_INCLUDES})
+
+add_subdirectory(src)

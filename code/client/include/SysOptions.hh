@@ -15,7 +15,6 @@
 #include "BSON/Document.hh"
 #include "CompOptions.hh"
 #include "Logs/Logger.hh"
-#include "Logs/ErrorLogLevel.hh"
 
 namespace ECS {
   namespace System {
@@ -51,7 +50,7 @@ namespace ECS {
 	std::vector<unsigned char> buffer;
 
 	if (!file.is_open()) {
-	  //logs::logger.logLevel(logs::ERROR) << "Cannot read from configuration file " << SysOptions::CONFIG_FILE << std::endl;
+	  //logs::logger[logs::ERROR] << "Cannot read from configuration file " << SysOptions::CONFIG_FILE << std::endl;
 	  return repeat;
 	}
 	file.unsetf(std::ios::skipws);
@@ -75,7 +74,7 @@ namespace ECS {
 	  return repeat;
 	}
 	catch (const bson::BsonException &e) {
-	  logs::logger.logLevel(logs::ERROR) << "Cannot parse from configuration file '" << e.what() << "'" << std::endl;
+	  logs::logger[logs::ERRORS] << "Cannot parse from configuration file '" << e.what() << "'" << std::endl;
 	  return repeat;
 	}
       }
@@ -90,7 +89,7 @@ namespace ECS {
 	Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
 	std::ofstream file(SysOptions::CONFIG_FILE, std::ios::binary);
 	if (!file.is_open()) {
-	  logs::logger.logLevel(logs::ERROR) << "Cannot write to configuration file " << SysOptions::CONFIG_FILE << std::endl;
+	  logs::logger[logs::ERRORS] << "Cannot write to configuration file " << SysOptions::CONFIG_FILE << std::endl;
 	  return repeat;
 	}
 	bson::Document options;

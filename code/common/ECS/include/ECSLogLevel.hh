@@ -10,7 +10,7 @@
 
 #include <stdexcept>
 #include <fstream>
-#include "Logger.hh"
+#include "Logs/Logger.hh"
 
 /**
  * Contain logs stuff

@@ -1,12 +1,9 @@
 set(TEST_EXE integration_test_exe)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+set(SOURCES main.cpp TestClientUDP.cpp TestServerUDP.cpp TestClientTCP.cpp TestServerTCP.cpp)
+set(DEPENDENCIES ${RT_COMMON_NAMES})
 
-use_msvc_static_runtime()
-
-set(SOURCE_FILES main.cpp TestClientUDP.cpp TestServerUDP.cpp TestClientTCP.cpp TestServerTCP.cpp)
-add_executable(${TEST_EXE} ${SOURCE_FILES})
-
-target_link_libraries(${TEST_EXE} ${RT_COMMON_TESTS_NAMES} gtest)
-
+include_directories(${RT_COMMON_INCLUDES})
+add_executable(${TEST_EXE} ${SOURCES})
+target_link_libraries(${TEST_EXE} ${DEPENDENCIES} gtest)
 install(TARGETS ${TEST_EXE} DESTINATION bin/test)

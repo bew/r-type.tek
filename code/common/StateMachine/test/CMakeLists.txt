@@ -1,10 +1,8 @@
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+cmake_minimum_required(VERSION 3.1)
 
-use_msvc_static_runtime()
+set(SOURCES main.cpp StateTest.cpp StateMachineTest.cpp)
+set(DEPENDENCIES)
 
-set(SOURCE_FILES main.cpp StateTest.cpp StateMachineTest.cpp)
-add_executable(${TEST_EXE} ${SOURCE_FILES})
-
-target_link_libraries(${TEST_EXE} gtest)
-
+add_executable(${TEST_EXE} ${SOURCES})
+target_link_libraries(${TEST_EXE} ${DEPENDENCIES} gtest)
 install(TARGETS ${TEST_EXE} DESTINATION bin/test)
