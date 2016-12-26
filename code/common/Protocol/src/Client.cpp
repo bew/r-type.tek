@@ -24,7 +24,7 @@ namespace protocol {
             return document;
         }
 
-        bool checkDocument(const bson::Document &document) {
+        bool checkSignUp(const bson::Document &document) {
             return document.elementsCount() == 2 &&
                    protocol::checkString(document, u8"username") &&
                    protocol::checkString(document, u8"password");
