@@ -11,7 +11,7 @@
 
 namespace protocol {
     namespace server {
-        bson::Document roomJoin(const std::string& username) {
+        bson::Document roomJoin(const std::string &username) {
             bson::Document document;
             bson::Document message;
 
@@ -24,11 +24,15 @@ namespace protocol {
         }
 
         bool checkRoomJoin(const bson::Document &document) {
-            return document.elementsCount() == 1 &&
-                   protocol::checkString(document, "username");
+            if (!protocol::checkMessage(document) ||
+                !protocol::checkHeader(document[u8"header"].getValueDocument(), "RoomJoin"))
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.elementsCount() == 1 &&
+                   protocol::checkString(data, "username");
         }
 
-        bson::Document roomLeave(const std::string& username) {
+        bson::Document roomLeave(const std::string &username) {
             bson::Document document;
             bson::Document message;
 
@@ -41,11 +45,15 @@ namespace protocol {
         }
 
         bool checkRoomLeave(const bson::Document &document) {
-            return document.elementsCount() == 1 &&
-                   protocol::checkString(document, "username");
+            if (!protocol::checkMessage(document) ||
+                !protocol::checkHeader(document[u8"header"].getValueDocument(), "RoomLeave"))
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.elementsCount() == 1 &&
+                   protocol::checkString(data, "username");
         }
 
-        bson::Document roomKick(const std::string& username) {
+        bson::Document roomKick(const std::string &username) {
             bson::Document document;
             bson::Document message;
 
@@ -58,8 +66,12 @@ namespace protocol {
         }
 
         bool checkRoomKick(const bson::Document &document) {
-            return document.elementsCount() == 1 &&
-                   protocol::checkString(document, "username");
+            if (!protocol::checkMessage(document) ||
+                !protocol::checkHeader(document[u8"header"].getValueDocument(), "RoomKick"))
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.elementsCount() == 1 &&
+                   protocol::checkString(data, "username");
         }
 
         bson::Document gameStart(void) {
@@ -73,10 +85,14 @@ namespace protocol {
         }
 
         bool checkGameStart(const bson::Document &document) {
-            return !document.elementsCount();
+            if (!protocol::checkMessage(document) ||
+                !protocol::checkHeader(document[u8"header"].getValueDocument(), "GameStart"))
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.isEmpty();
         }
 
-        bson::Document gameLeave(const std::string& username) {
+        bson::Document gameLeave(const std::string &username) {
             bson::Document document;
             bson::Document message;
 
@@ -89,11 +105,15 @@ namespace protocol {
         }
 
         bool checkGameLeave(const bson::Document &document) {
-            return document.elementsCount() == 1 &&
-                   protocol::checkString(document, "username");
+            if (!protocol::checkMessage(document) ||
+                !protocol::checkHeader(document[u8"header"].getValueDocument(), "GameLeave"))
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.elementsCount() == 1 &&
+                   protocol::checkString(data, "username");
         }
 
-        bson::Document entityUpdate(int64_t entity_id, const bson::Document& components) {
+        bson::Document entityUpdate(int64_t entity_id, const bson::Document &components) {
             bson::Document document;
             bson::Document message;
 
