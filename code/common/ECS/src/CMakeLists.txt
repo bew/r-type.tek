@@ -7,6 +7,7 @@ set(LIB_SOURCES ${LIB_SOURCES} CompLife.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompTick.cpp SysTick.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompNetworkClient.cpp CompNetworkServer.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} ECSLogLevel.cpp)
+set(LIB_SOURCES ${LIB_SOURCES} CompStateMachine.cpp)
 #graphique
 set(LIB_SOURCES ${LIB_SOURCES} CompWindow.cpp SysWindow.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompAsset.cpp CompOptions.cpp CompMusic.cpp SysAsset.cpp SysMusic.cpp)
