@@ -13,6 +13,7 @@
 #include <vector>
 #include <typeinfo>
 #include "bson.hh"
+#include "JsonParser.hh"
 
 /**
  * Namespace that contain all the BSON stuff
@@ -315,10 +316,25 @@ namespace bson {
             VALUE
         };
 
+    public:
+        /**
+         * The enum to allow to enable array method
+         */
+        enum arrayMode {
+            ARRAY_ENABLED,
+            ARRAY_DISABLED
+        };
+
+    private:
         /**
          * Store the next input type the document need to receive
          */
         inputTypes _nextInputType;
+
+        /**
+         * Internal state of the array mode
+         */
+        arrayMode _arrayMode;
 
         /**
          * Store the last key given
@@ -363,9 +379,11 @@ namespace bson {
          * Create a Document by deserialization of the given buffer which is a valid BSON representation of a Document
          *
          * @param buffer the buffer which will be deserialiazed to get the Document
+         * @param json if the given string is JSON format
+         * @throw BsonException if can't parse json if selected
          * @throw BsonException if the given buffer is invalid
          */
-        Document(const std::string& buffer);
+        Document(const std::string& buffer, bool json = false);
 
         /**
          * Destroy the Document
@@ -418,25 +436,32 @@ namespace bson {
         /**
          * Write the BSON representation to the given filename
          *
+         * @param filename the path to the file
+         * @param json if need to write in json
          * @throw BsonException if can't open the file
          * @throw BsonException if the document is incomplete (next input is not key)
          */
-        void writeToFile(const std::string& filename) const;
+        void writeToFile(const std::string& filename, bool json = false) const;
 
         /**
          * Write the BSON representation to the given stream
          *
+         * @param os the stream to write on
+         * @param json if need to write in json
          * @throw BsonException if the document is incomplete (next input is not key)
          */
-        std::ostream& writeToStream(std::ostream& os) const;
+        std::ostream& writeToStream(std::ostream& os, bool json = false) const;
 
         /**
-         * Write the BSON representation to the given filename
+         * Read the BSON representation to the given filename
          *
+         * @param filename the path to the file
+         * @param json if the file format is json
          * @throw BsonException if can't open the file
+         * @throw BsonException if can't parse json if selected
          * @throw BsonException if the document is incomplete (next input is not key)
          */
-        void readFromFile(const std::string& filename);
+        void readFromFile(const std::string& filename, bool json = false);
 
         /**
          * Return the Document in JSON representation
@@ -473,7 +498,7 @@ namespace bson {
          * @return the Document with the string added
          */
         Document &operator<<(const std::string &string);
-        
+
         /**
          * Add a Document into the Document
          * 
@@ -482,7 +507,7 @@ namespace bson {
          * @return the Document with the Document added
          */
         Document &operator<<(const Document &document);
-        
+
         /**
          * Add a bool into the Document
          * 
@@ -491,7 +516,7 @@ namespace bson {
          * @return the Document with the bool added
          */
         Document &operator<<(bool boolean);
-        
+
         /**
          * Add a null value into the Document
          * 
@@ -500,7 +525,7 @@ namespace bson {
          * @return the Document with the null value added
          */
         Document &operator<<(std::nullptr_t ptr);
-        
+
         /**
          * Add a int32 into the Document
          * 
@@ -518,6 +543,14 @@ namespace bson {
          * @return the Document with the int64 added
          */
         Document &operator<<(int64_t integer);
+
+        /**
+         * Allow to enable or disable array mode
+         *
+         * @param arrayModeChoosen the mode choosen
+         * @return the Document with the array mode choose enable
+         */
+        Document &operator<<(Document::arrayMode arrayModeChoosen);
 
         /**
          * Get the Element linked to the given key which is the representation of a value inside the BSON representation of the Document
@@ -551,21 +584,21 @@ namespace bson {
          * @return true if the Document contain the key else false
          */
         bool hasKey(const std::string& key) const;
-        
+
         /**
          * Get the list of keys inside the Document
          * 
          * @return a vector of strings which represent the keys 
          */
         std::vector<std::string> getKeys(void) const;
-        
+
         /**
          * Get the number of Elements inside the Document
          * 
          * @return the number of Elements inside the Document
          */
         size_t elementsCount(void) const;
-        
+
         /**
          * Check if the Document is empty
          * 
