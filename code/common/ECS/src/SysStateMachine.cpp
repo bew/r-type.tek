@@ -40,7 +40,7 @@ namespace ECS
                         else
                             answer = protocol::answers::unauthorized(doc["header"]["timestamp"].getValueInt64());
                     }
-                    else if (doc["header"].getValueDocument()["action"].getValueString() != "Answer")
+                    else if (doc["header"]["action"].getValueString() != "Answer")
                         answer = protocol::answers::notFound(doc["header"]["timestamp"].getValueInt64());
                 }
                 else if (!doc.isEmpty())
