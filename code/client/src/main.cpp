@@ -97,7 +97,7 @@ int main(int ac, char**av) {
   entity->addComponent(new ECS::Component::CompProjectile("dices"));
 
   ECS::Entity::Entity *entityFixed = new ECS::Entity::Entity(2);
-  entityFixed->addComponent(new ECS::Component::CompSprite("ship"));
+  entityFixed->addComponent(new ECS::Component::CompSprite("fly", {0, 0}, "default"));
   entityFixed->addComponent(new ECS::Component::CompMovement({600, 600}));
   entityFixed->addComponent(new ECS::Component::CompHitbox(60, 60));
   

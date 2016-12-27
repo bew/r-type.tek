@@ -57,7 +57,7 @@ namespace ECS {
           optionsc->setFullscreen(document["fullscreen"].getValueBool());
           optionsc->setWidth(document["width"].getValueInt32());
           optionsc->setHeight(document["height"].getValueInt32());
-          optionsc->setAAliasing(document["aliasing"].getValueInt32());
+          optionsc->setAAliasing(document["aaliasing"].getValueInt32());
           optionsc->setTitle(document["title"].getValueString());	  
 	  return repeat;
 	}
