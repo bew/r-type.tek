@@ -6,7 +6,6 @@
 
 #include "SysGameNetworkClient.hh"
 #include "CompNetworkClient.hh"
-#include "BSON/Document.hh"
 
 namespace ECS
 {

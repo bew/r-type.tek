@@ -1,7 +1,7 @@
 /**
- * @file SysGameNetworkClient.hh
+ * @file SysGameNetworkServer.hh
  * @author Tookie.
- * @brief System for client network during a game.
+ * @brief System for server network during a game.
  */
 
 #pragma once
@@ -17,7 +17,7 @@ namespace ECS
         /**
          * System for network Client
          */
-        class SysGameNetworkClient : public ISystem
+        class SysGameNetworkServer: public ISystem
         {
         public:
             /**

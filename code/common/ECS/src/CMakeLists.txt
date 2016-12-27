@@ -6,7 +6,7 @@ set(LIB_SOURCES ${LIB_SOURCES} CompHitbox.cpp CompMovement.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompLife.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompTick.cpp SysTick.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompNetworkClient.cpp CompNetworkServer.cpp)
-set(LIB_SOURCES ${LIB_SOURCES} SysGameNetworkClient.cpp)
+set(LIB_SOURCES ${LIB_SOURCES} SysGameNetworkClient.cpp SysGameNetworkServer.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} ECSLogLevel.cpp)
 #graphique
 set(LIB_SOURCES ${LIB_SOURCES} CompWindow.cpp SysWindow.cpp)
