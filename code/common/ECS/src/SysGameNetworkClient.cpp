@@ -30,7 +30,7 @@ namespace ECS
 
                     bson::Document components = doc["data"]["components"].getValueDocument();
 
-                    for (auto keys : components.getKeys())
+                    for (const auto& keys : components.getKeys())
                     {
                         Component::AComponent *component = entity->getComponent(keys);
                         if (component)
