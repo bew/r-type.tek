@@ -17,7 +17,7 @@ namespace bson {
     Document::Element::Element(type valueType, const std::string &key, const std::vector<unsigned char> &value)
     : _valueType(valueType), _key(key), _value(value)  {
     }
-  
+
     Document::Element::Element(const Document::Element &element) {
         this->operator=(element);
     }
@@ -218,7 +218,7 @@ namespace bson {
     }
 
     Document::Document()
-    : _nextInputType(Document::KEY) {
+    : _nextInputType(Document::KEY), _arrayMode(Document::ARRAY_DISABLED) {
     }
 
     Document::Document(const Document &document) {
@@ -229,12 +229,14 @@ namespace bson {
         if (this != &document) {
             _nextInputType = document._nextInputType;
             _lastKey = document._lastKey;
+            _arrayMode = document._arrayMode;
             _elements = document._elements;
         }
         return *this;
     }
 
-    Document::Document(const std::vector<unsigned char> &buffer) : _nextInputType(Document::KEY) {
+    Document::Document(const std::vector<unsigned char> &buffer)
+            : _nextInputType(Document::KEY), _arrayMode(Document::ARRAY_DISABLED) {
         this->unserializeBuffer(buffer);
     }
 
@@ -266,6 +268,11 @@ namespace bson {
             }
             ++i;
         }
+
+        if (_arrayMode == Document::ARRAY_ENABLED)
+            _lastKey = std::to_string(std::stoi(_lastKey) + 1);
+        else
+            _nextInputType = Document::KEY;
 
         _elements.push_back(newElement);
     }
@@ -440,8 +447,6 @@ namespace bson {
 
         this->insertElement(valueType, elementBuffer);
 
-        _nextInputType = KEY;
-
         return *this;
     }
 
@@ -465,8 +470,6 @@ namespace bson {
             elementBuffer.push_back('\x00');
 
             this->insertElement(valueType, elementBuffer);
-
-            _nextInputType = Document::KEY;
         }
 
         return *this;
@@ -485,7 +488,6 @@ namespace bson {
 
         this->insertElement(valueType, elementBuffer);
 
-        _nextInputType = Document::KEY;
         return *this;
     }
 
@@ -499,7 +501,6 @@ namespace bson {
 
         this->insertElement(valueType, elementBuffer);
 
-        _nextInputType = Document::KEY;
         return *this;
     }
 
@@ -510,7 +511,6 @@ namespace bson {
 
         this->insertElement(valueType, std::vector<unsigned char>());
 
-        _nextInputType = Document::KEY;
         return *this;
     }
 
@@ -530,7 +530,6 @@ namespace bson {
 
         this->insertElement(valueType, elementBuffer);
 
-        _nextInputType = Document::KEY;
         return *this;
     }
 
@@ -550,7 +549,19 @@ namespace bson {
 
         this->insertElement(valueType, elementBuffer);
 
-        _nextInputType = Document::KEY;
+        return *this;
+    }
+
+    Document& Document::operator<<(Document::arrayMode arrayModeChoosen) {
+        _arrayMode = arrayModeChoosen;
+
+        if (arrayModeChoosen == Document::ARRAY_DISABLED)
+            _nextInputType = Document::KEY;
+        else if (_arrayMode == Document::ARRAY_ENABLED) {
+            _lastKey = "0";
+            _nextInputType = Document::VALUE;
+        }
+
         return *this;
     }
 
@@ -564,7 +575,7 @@ namespace bson {
 
     bool Document::operator==(const Document &document) const {
         return this == &document || (_nextInputType == document._nextInputType &&
-                                    _lastKey == document._lastKey &&
+                                    _lastKey == document._lastKey && _arrayMode == document._arrayMode &&
                                     this->getBuffer() == document.getBuffer() &&
                                     _elements == document._elements);
     }
@@ -583,17 +594,17 @@ namespace bson {
 
     std::vector<std::string> Document::getKeys() const {
         std::vector<std::string> keys;
-        
+
         for (const auto& element : _elements)
             keys.push_back(element.getKey());
-        
+
         return keys;
     }
-    
+
     size_t Document::elementsCount() const {
         return _elements.size();
     }
-    
+
     bool Document::isEmpty() const {
         return _elements.size() == 0;
     }
