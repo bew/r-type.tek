@@ -24,6 +24,9 @@ namespace ECS {
     class CompSprite : public AComponent {
     public:
 
+      /**
+       * Value to signal that the sprite is currently unset
+       */
       static const std::string NO_SPRITE;
       
       /**
@@ -45,6 +48,9 @@ namespace ECS {
        */
       coordinates<int> center;
 
+      /**
+       * @return A pointer to a new CompSprite with a state similar to this
+       */
       virtual AComponent *clone(void) const;
 
       /**

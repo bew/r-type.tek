@@ -48,6 +48,9 @@ namespace ECS
              */
             ~CompMovement();
 
+	  /**
+	   * @return A pointer to a new CompMevement with a state similar to this
+	   */
 	  AComponent *clone(void) const;
 
             /**

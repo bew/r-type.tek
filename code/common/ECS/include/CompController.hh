@@ -11,6 +11,9 @@
 namespace ECS {
   namespace Component {
 
+    /**
+     * Type identifier for CompController
+     */
     static const std::string CONTROLLER = "controller";
 
     /**
@@ -27,12 +30,35 @@ namespace ECS {
       /**
        * Booleans for controls
        */
+
+      /**
+       * Is the fire button down
+       */
       bool fire;
+
+      /**
+       * Is the up buttun down
+       */
       bool up;
+
+      /**
+       * Is the down button down
+       */
       bool down;
+
+      /**
+       * Is the right button down
+       */
       bool right;
+      
+      /**
+       * Is the left button down
+       */
       bool left;
 
+      /**
+       * Default virtual destructor
+       */
       virtual ~CompController(void);
     };
   }

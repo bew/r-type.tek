@@ -25,15 +25,26 @@ namespace ECS {
     class CompBlueprint : public AComponent {
     public:
 
+      /**
+       * Default constructor
+       *
+       * @param offset The base id to begin with. Default to 5 (0 s reserved by systemEntity, 1, 2, 3, 4 are reserved for player
+       */
       CompBlueprint(int offset = 5);
 
+      /**
+       * Default virtual destructor
+       */
       ~CompBlueprint(void);
       
       /**
        * Store each blueprint by name
        */
       std::unordered_map<std::string, std::vector<ECS::Component::AComponent *>> blueprints;
-      
+
+      /**
+       * @return nextID and post increment it
+       */
       int getNextID();
       
       /**
