@@ -83,14 +83,14 @@ int main(void) {
   ///////////////////////// ADD ENTITIES TO WORLD
   
   ECS::Entity::Entity *entity = new ECS::Entity::Entity(1);
-  entity->addComponent(new ECS::Component::CompSprite("burrito"));  
+  entity->addComponent(new ECS::Component::CompSprite("ship"));  
   entity->addComponent(new ECS::Component::CompMovement({300, 300}));
   entity->addComponent(new ECS::Component::CompHitbox(60, 60));
   entity->addComponent(new ECS::Component::CompController());
   entity->addComponent(new ECS::Component::CompProjectile("dices"));
 
   ECS::Entity::Entity *entityFixed = new ECS::Entity::Entity(2);
-  entityFixed->addComponent(new ECS::Component::CompSprite("burrito"));
+  entityFixed->addComponent(new ECS::Component::CompSprite("ship"));
   entityFixed->addComponent(new ECS::Component::CompMovement({600, 600}));
   entityFixed->addComponent(new ECS::Component::CompHitbox(60, 60));
   
