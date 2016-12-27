@@ -7,11 +7,12 @@
  *
  */
 
+#include <set>
 #include "Answers.hh"
 
 namespace protocol {
     namespace answers {
-        bson::Document ok(int64_t timestamp, const bson::Document& data, const std::string& message) {
+        bson::Document ok(int64_t timestamp, const bson::Document &data, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -26,7 +27,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document badRequest(int64_t timestamp, const std::string& message) {
+        bson::Document badRequest(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -40,7 +41,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document unauthorized(int64_t timestamp, const std::string& message) {
+        bson::Document unauthorized(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -54,7 +55,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document forbidden(int64_t timestamp, const std::string& message) {
+        bson::Document forbidden(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -68,7 +69,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document notFound(int64_t timestamp, const std::string& message) {
+        bson::Document notFound(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -82,7 +83,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document tooManyRequests(int64_t timestamp, const std::string& message) {
+        bson::Document tooManyRequests(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -96,7 +97,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document internalServerError(int64_t timestamp, const std::string& message) {
+        bson::Document internalServerError(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -110,7 +111,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document notImplemented(int64_t timestamp, const std::string& message) {
+        bson::Document notImplemented(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -124,7 +125,7 @@ namespace protocol {
             return document;
         }
 
-        bson::Document serviceUnavailable(int64_t timestamp, const std::string& message) {
+        bson::Document serviceUnavailable(int64_t timestamp, const std::string &message) {
             bson::Document document;
             bson::Document answer;
 
@@ -136,6 +137,30 @@ namespace protocol {
             document << u8"data" << answer;
 
             return document;
+        }
+
+        bool checkCode(const bson::Document &document) {
+            static const std::set<int32_t> codes = {200, 400, 401, 403, 404, 429, 500, 501, 503};
+
+            if (document.hasKey(u8"code") && document[u8"code"].getValueType() == bson::INT32 &&
+                codes.count(document[u8"code"].getValueInt32())) {
+                if (document[u8"code"].getValueInt32() != 200 && document.elementsCount() == 3)
+                    return true;
+                else if (document[u8"code"].getValueInt32() == 200 && document.elementsCount() == 4 &&
+                         document.hasKey(u8"data") && document[u8"data"].getValueType() == bson::DOCUMENT)
+                    return true;
+            }
+            return false;
+        }
+
+        bool checkAnswer(const bson::Document &document) {
+            if (!protocol::checkMessage(document) ||
+                document[u8"header"][u8"action"].getValueString() != u8"Answer")
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return protocol::answers::checkCode(data) &&
+                   protocol::checkString(data, u8"message") &&
+                   protocol::checkTimestamp(data);
         }
     }
 }
