@@ -19,10 +19,10 @@ namespace bson {
 
         this->ignoreBlanks();
         if (_pos == _json.end())
-            throw BsonException(std::string("empty JSON"));
+            return document;
 
         this->ignoreBlanks();
-        if (!this->readObject(document))
+        if (!this->readObject(document) && !this->readArray(document))
             throw BsonException(this->getErrorMessage(std::string("can't parse object or array")));
 
         this->ignoreBlanks();
@@ -181,6 +181,7 @@ namespace bson {
             if (!this->readDouble(document) &&
                 !this->readString(document) &&
                 !this->readObject(innerDocument) &&
+                !this->readArray(innerDocument) &&
                 !this->readBool(document) &&
                 !this->readNull(document) &&
                 !this->readInteger(document))
@@ -191,6 +192,41 @@ namespace bson {
             first = false;
             this->ignoreBlanks();
         }
+
+        return true;
+    }
+
+    bool JsonParser::readArray(bson::Document &document) {
+        SAVE_CONTEXT;
+        if (!this->readChar('[')) {
+            RESTORE_CONTEXT;
+            return false;
+        }
+
+        document << bson::Document::ARRAY_ENABLED;
+        bool first = true;
+        this->ignoreBlanks();
+        while (!this->readChar(']')) {
+            if (!first && !this->readChar(','))
+                throw BsonException(this->getErrorMessage("missing ','"));
+
+            bson::Document innerDocument;
+            this->ignoreBlanks();
+            if (!this->readDouble(document) &&
+                !this->readString(document) &&
+                !this->readObject(innerDocument) &&
+                !this->readArray(innerDocument) &&
+                !this->readBool(document) &&
+                !this->readNull(document) &&
+                !this->readInteger(document))
+                throw BsonException(this->getErrorMessage("no value detected"));
+            if (!innerDocument.isEmpty())
+                document << innerDocument;
+
+            first = false;
+            this->ignoreBlanks();
+        }
+        document << bson::Document::ARRAY_DISABLED;
 
         return true;
     }

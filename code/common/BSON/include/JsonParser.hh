@@ -65,6 +65,7 @@ namespace bson {
         /**
          * Parse the JSON given in the ctor an return it's BSON representation as a Document
          *
+         * @throw BsonException if cna't parse JSON
          * @return the BSON representation of the JSON as a Document
          */
         bson::Document parse(void);
@@ -151,6 +152,7 @@ namespace bson {
          * Read a string and store it inside the given Document
          * 
          * @param document the Document where to store the string
+         * @throw BsonException if string is not terminated
          * @return true if the string has been stored, else false
          */
         bool readString(bson::Document &document);
@@ -159,9 +161,19 @@ namespace bson {
          * Read a JSON object (BSON Document) and store it inside the given Document
          *
          * @param document the Document where to store the JSON object
+         * @throw BsonException if object is malformated
          * @return true if the JSON object has been stored, else false
          */
         bool readObject(bson::Document &document);
+
+        /**
+         * Read a JSON array (BSON Document) and store it inside the given Document
+         *
+         * @param document the Document where to store the JSON array
+         * @throw BsonException if array is malformated
+         * @return true if the JSON object has been stored, else false
+         */
+        bool readArray(bson::Document &document);
 
         /**
          * Read a bool and store it inside the given Document
