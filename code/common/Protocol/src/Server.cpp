@@ -131,5 +131,16 @@ namespace protocol {
             return document;
         }
 
+        bool checkEntityUpdate(const bson::Document &document) {
+            if (!protocol::checkMessage(document) ||
+                !protocol::checkHeader(document[u8"header"].getValueDocument()) ||
+                document[u8"header"]["action"].getValueString() != u8"EntityUpdate")
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.elementsCount() == 2 &&
+                   data.hasKey(u8"entity_id") && data[u8"entity_id"].getValueType() == bson::INT64 &&
+                   data.hasKey(u8"components") && data[u8"components"].getValueType() == bson::DOCUMENT;
+        }
+
     }
 }

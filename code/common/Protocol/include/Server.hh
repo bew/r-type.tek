@@ -107,6 +107,14 @@ namespace protocol {
          * @return the bson Document formatted for the following action
          */
         bson::Document entityUpdate(int64_t entity_id, const bson::Document &components);
+
+        /**
+         * Check if the given Document is a correct entityUpdate message
+         *
+         * @param document the Document to check
+         * @return true if the Document is correct, else false
+         */
+        bool checkEntityUpdate(const bson::Document &document);
     }
 }
 

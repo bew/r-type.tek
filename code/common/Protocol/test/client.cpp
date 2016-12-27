@@ -201,4 +201,6 @@ TEST(Client, EntityUpdate) {
     bson::Document data = message["data"].getValueDocument();
     EXPECT_EQ(data["entity_id"].getValueInt64(), entity_id);
     EXPECT_EQ(data["components"]["test"].getValueDocument(), componentTest);
+
+    EXPECT_EQ(protocol::server::checkEntityUpdate(message), true);
 }
