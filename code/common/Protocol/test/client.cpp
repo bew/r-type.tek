@@ -179,7 +179,7 @@ TEST(Client, GameLeave) {
  * Check if the message GetAvailableRooms build correctly
  */
 TEST(Client, GetAvailableRooms) {
-    bson::Document message = protocol::client::gameLeave();
+    bson::Document message = protocol::client::getAvailableRooms();
 
     bson::Document header = message["header"].getValueDocument();
     EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
