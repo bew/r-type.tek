@@ -380,6 +380,7 @@ namespace bson {
          *
          * @param buffer the buffer which will be deserialiazed to get the Document
          * @param json if the given string is JSON format
+         * @throw BsonException if can't parse json if selected
          * @throw BsonException if the given buffer is invalid
          */
         Document(const std::string& buffer, bool json = false);
@@ -455,6 +456,7 @@ namespace bson {
          * @param filename the path to the file
          * @param json if the given string is JSON format
          * @throw BsonException if can't open the file
+         * @throw BsonException if can't parse json if selected
          * @throw BsonException if the document is incomplete (next input is not key)
          */
         void readFromFile(const std::string& filename, bool json = false);
