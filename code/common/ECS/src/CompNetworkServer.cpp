@@ -23,7 +23,7 @@ namespace ECS
 
         bool CompNetworkServer::isValidActionUdp(const std::string &action)
         {
-            for (std::string actionFromClients : ACTIONS_FROM_CLIENTS_UDP)
+            for (const std::string& actionFromClients : ACTIONS_FROM_CLIENTS_UDP)
             {
                 if (actionFromClients == action)
                     return true;

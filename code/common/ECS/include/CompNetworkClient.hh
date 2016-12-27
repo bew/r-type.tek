@@ -29,12 +29,13 @@ namespace ECS
         /**
          * list of action received from server on protocol UDP
          */
-         static const std::list<std::string> ACTIONS_FROM_SERVER_UDP = {"EntityUpdate"};
+        static const std::list<std::string> ACTIONS_FROM_SERVER_UDP = {"EntityUpdate"};
 
         /**
          * list of action received from server on protocol TCP
          */
         static const std::list<std::string> ACTIONS_FROM_SERVER_TCP = {"RoomJoin", "RoomLeave", "RoomKick", "GameStart", "GameLeave"};
+
         /**
          * representation of a component network for clients
          */
@@ -73,7 +74,7 @@ namespace ECS
             static bool isValidActionTcp(const std::string &action);
 
             /**
-             * check if the action is in list ACTIONS_FROM_SERVER_UD
+             * check if the action is in list ACTIONS_FROM_SERVER_UDP
              * @param action action to check
              * @return true if action is in list, else false
              */

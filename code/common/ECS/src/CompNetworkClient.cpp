@@ -29,7 +29,7 @@ namespace ECS
 
         bool CompNetworkClient::isValidActionTcp(const std::string &action)
         {
-            for (std::string actionFromServer : ACTIONS_FROM_SERVER_TCP)
+            for (const std::string& actionFromServer : ACTIONS_FROM_SERVER_TCP)
             {
                 if (actionFromServer == action)
                     return true;
@@ -39,7 +39,7 @@ namespace ECS
 
         bool CompNetworkClient::isValidActionUdp(const std::string &action)
         {
-            for (std::string actionFromServer : ACTIONS_FROM_SERVER_UDP)
+            for (const std::string& actionFromServer : ACTIONS_FROM_SERVER_UDP)
             {
                 if (actionFromServer == action)
                     return true;
