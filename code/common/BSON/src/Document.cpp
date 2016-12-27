@@ -576,7 +576,7 @@ namespace bson {
             if (element.getKey() == key)
                 return element;
         }
-        throw BsonException("No such key inside the Document");
+        throw BsonException(std::string("No such key \"") + key + std::string("\" inside the Document"));
     }
 
     bool Document::operator==(const Document &document) const {
