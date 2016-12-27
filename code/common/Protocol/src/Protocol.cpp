@@ -44,10 +44,8 @@ namespace protocol {
                document[u8"timestamp"].getValueInt64() <= (now + (protocol::latency + 86400)); // We never know
     }
 
-    bool checkAction(const bson::Document &document, const std::string& action) {
-        return document.hasKey(u8"action") &&
-               document[u8"action"].getValueType() == bson::STRING &&
-               document[u8"action"].getValueString() == action;
+    bool checkAction(const bson::Document &document) {
+        return protocol::checkString(document, u8"action");
     }
 
     bool checkVersion(const bson::Document &document) {
@@ -56,11 +54,11 @@ namespace protocol {
                document[u8"version"].getValueString() == protocol::version;
     }
 
-    bool checkHeader(const bson::Document &document, const std::string &action) {
+    bool checkHeader(const bson::Document &document) {
         return document.elementsCount() == 4 &&
                protocol::checkMagic(document) &&
                protocol::checkTimestamp(document) &&
-               protocol::checkAction(document, action) &&
+               protocol::checkAction(document) &&
                protocol::checkVersion(document);
     }
 

@@ -72,10 +72,9 @@ namespace protocol {
      * Check if the action is right inside the given Document
      *
      * @param document the Document to check
-     * @param action the action to check
      * @return true if the action is right, else false
      */
-    bool checkAction(const bson::Document &document, const std::string &action);
+    bool checkAction(const bson::Document &document);
 
     /**
      * Check if the version is right inside the given Document
@@ -89,10 +88,9 @@ namespace protocol {
      * Check if the given Document is a correct header message
      *
      * @param document the Document to check
-     * @param action the action to check
      * @return true if the Document is correct, else false
      */
-    bool checkHeader(const bson::Document &document, const std::string& action);
+    bool checkHeader(const bson::Document &document);
 
     /**
      * Check if the given Document is a correct message

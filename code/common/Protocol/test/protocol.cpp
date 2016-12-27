@@ -21,5 +21,5 @@ TEST(Protocol, basic) {
     EXPECT_EQ(header["action"].getValueString(), "SomeAction");
     EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
-    EXPECT_EQ(protocol::checkHeader(header, "SomeAction"), true);
+    EXPECT_EQ(protocol::checkHeader(header), true);
 }
