@@ -176,6 +176,25 @@ TEST(Client, GameLeave) {
 }
 
 /**
+ * Check if the message GetAvailableRooms build correctly
+ */
+TEST(Client, GetAvailableRooms) {
+    bson::Document message = protocol::client::gameLeave();
+
+    bson::Document header = message["header"].getValueDocument();
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
+    EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
+    EXPECT_EQ(header["action"].getValueString(), "GetAvailableRooms");
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
+
+
+    bson::Document data = message["data"].getValueDocument();
+    EXPECT_EQ(data.isEmpty(), true);
+
+    EXPECT_EQ(protocol::client::checkGetAvailableRooms(message), true);
+}
+
+/**
  * Check if the message EntityUpdate build correctly
  */
 TEST(Client, EntityUpdate) {
