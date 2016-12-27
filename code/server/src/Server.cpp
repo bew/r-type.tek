@@ -89,5 +89,3 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
   else
     logs::logger[logs::SERVER] << "Client state is now '" << state.getCurrentState()->getName() << "'" << std::endl;
 }
-
-//logs::logger[logs::SERVER] << "" << std::endl;

@@ -6,60 +6,60 @@
 
 #pragma once
 
-#include "Router.hpp"
-#include "Server.hpp"
+class ClientRouter;
 
+class Server;
+
+#include "Protocol/Answers.hh"
+#include "Router.hpp"
+
+// TODO: doc
 class ClientRouter : public Router
 {
 public:
-  ClientRouter(Server & server) :
-    _server(server)
-  {
-    this->addRoute("SignUp",    std::bind(&ClientRouter::SignUpHandler, this, std::placeholders::_1));
-    this->addRoute("Login",     std::bind(&ClientRouter::LoginHandler, this, std::placeholders::_1));
-    this->addRoute("Logout",    std::bind(&ClientRouter::LogoutHandler, this, std::placeholders::_1));
-    this->addRoute("RoomLeave", std::bind(&ClientRouter::RoomLeaveHandler, this, std::placeholders::_1));
-    this->addRoute("RoomKick",  std::bind(&ClientRouter::RoomKickHandler, this, std::placeholders::_1));
-    this->addRoute("GameStart", std::bind(&ClientRouter::GameStartHandler, this, std::placeholders::_1));
-    this->addRoute("GameLeave", std::bind(&ClientRouter::GameLeaveHandler, this, std::placeholders::_1));
-  }
+  ClientRouter(Server & server);
 
-  bool SignUpHandler(Request & req)
-    {
-      bson::Document const & rdata = req.getData();
-      std::string username, password;
-
-      rdata["username"] >> username;
-      rdata["password"] >> password;
-
-
-    }
-
-  bool LoginHandler(Request &)
-    {
-    }
-
-  bool LogoutHandler(Request &)
-    {
-    }
-
-  bool RoomLeaveHandler(Request &)
-    {
-    }
-
-  bool RoomKickHandler(Request &)
-    {
-    }
-
-  bool GameStartHandler(Request &)
-    {
-    }
-
-  bool GameLeaveHandler(Request &)
-    {
-    }
+  bool SignUpHandler(Request & req);
+  bool LoginHandler(Request &);
+  bool LogoutHandler(Request &);
+  bool RoomLeaveHandler(Request &);
+  bool RoomKickHandler(Request &);
+  bool GameStartHandler(Request &);
+  bool GameLeaveHandler(Request &);
 
 protected:
-  Server & _server;
+  template <typename AnswerType, typename... Args>
+  bool reply(bool returnValue, Request & req, Args &&... args);
+
+  template <typename AnswerType, typename... Args>
+  bool reply_fail(Request & req, Args &&... args);
+
+  template <typename... Args>
+  bool reply_ok(Request & req, Args &&... args);
+
+protected:
+  Server * _server;
 };
 
+
+template <typename AnswerType, typename... Args>
+bool ClientRouter::reply(bool returnValue, Request & req, Args &&... args)
+{
+  int64_t timestamp = req.getHeader()["timestamp"].getValueInt64();
+
+  auto const & answer = AnswerType(timestamp, std::forward<Args>(args)...);
+  req.getClient()->addMessage(answer);
+  return returnValue;
+}
+
+template <typename AnswerType, typename... Args>
+bool ClientRouter::reply_fail(Request & req, Args &&... args)
+{
+  return reply<AnswerType>(false, req, std::forward<Args>(args)...);
+}
+
+template <typename... Args>
+bool ClientRouter::reply_ok(Request & req, Args &&... args)
+{
+  return reply<protocol::answers::ok>(true, req, std::forward<Args>(args)...);
+}
