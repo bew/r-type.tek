@@ -437,24 +437,26 @@ namespace bson {
          * Write the BSON representation to the given filename
          *
          * @param filename the path to the file
+         * @param json if need to write in json
          * @throw BsonException if can't open the file
          * @throw BsonException if the document is incomplete (next input is not key)
          */
-        void writeToFile(const std::string& filename) const;
+        void writeToFile(const std::string& filename, bool json = false) const;
 
         /**
          * Write the BSON representation to the given stream
          *
-         * @param the stream to write on
+         * @param os the stream to write on
+         * @param json if need to write in json
          * @throw BsonException if the document is incomplete (next input is not key)
          */
-        std::ostream& writeToStream(std::ostream& os) const;
+        std::ostream& writeToStream(std::ostream& os, bool json = false) const;
 
         /**
-         * Write the BSON representation to the given filename
+         * Read the BSON representation to the given filename
          *
          * @param filename the path to the file
-         * @param json if the given string is JSON format
+         * @param json if the file format is json
          * @throw BsonException if can't open the file
          * @throw BsonException if can't parse json if selected
          * @throw BsonException if the document is incomplete (next input is not key)

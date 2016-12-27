@@ -370,16 +370,22 @@ namespace bson {
         return std::string(buffer.begin(), buffer.end());
     }
 
-    void Document::writeToFile(const std::string &filename) const {
+    void Document::writeToFile(const std::string &filename, bool json) const {
         std::ofstream file(filename, std::ofstream::out | std::ofstream::app);
         if (!file.is_open())
             throw BsonException(std::string("Can't open file: ") + filename);
-        file << this->getBufferString();
+        if (!json)
+            file << this->getBufferString();
+        else
+            file << this->toJSON();
         file.close();
     }
 
-    std::ostream& Document::writeToStream(std::ostream &os) const {
-        os << this->getBufferString();
+    std::ostream& Document::writeToStream(std::ostream &os, bool json) const {
+        if (!json)
+            os << this->getBufferString();
+        else
+            os << this->toJSON();
         return os;
     }
 
