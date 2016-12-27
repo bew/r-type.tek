@@ -35,7 +35,7 @@ namespace ECS
 
                             const bson::Document &components = doc["data"]["components"].getValueDocument();
 
-                            for (const auto &key : components.getKeys())
+                            for (const std::string &key : components.getKeys())
                             {
                                 Component::AComponent *component = entity->getComponent(key);
                                 if (component)

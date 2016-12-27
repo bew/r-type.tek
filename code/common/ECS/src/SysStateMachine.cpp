@@ -28,7 +28,7 @@ namespace ECS
 
                 if (protocol::checkMessage(doc))
                 {
-                    if (network->isValidActionTcp(doc["header"].getValueDocument()["action"].getValueString()))
+                    if (network->isValidActionTcp(doc["header"]["action"].getValueString()))
                     {
                         std::string action = doc["header"]["action"].getValueString();
                         if (stateMachine->_sm[stateMachine->_currentState]->has(action))

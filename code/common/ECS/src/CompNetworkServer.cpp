@@ -4,7 +4,6 @@
  * @brief component use by server to communicate with clients.
  */
 
-#include <CompNetworkServer.hh>
 #include "CompNetworkServer.hh"
 
 namespace ECS
