@@ -44,10 +44,10 @@ namespace ECS
 
     Entity::Entity *WorldData::getEntityById(int64_t id)
     {
-        for (Entity::Entity* entityTmp : _gameEntities)
+        for (Entity::Entity *entity : _gameEntities)
         {
-            if (entityTmp->getId() == id)
-                return entityTmp;
+            if (entity->getId() == id)
+                return entity;
         }
         return nullptr;
     }

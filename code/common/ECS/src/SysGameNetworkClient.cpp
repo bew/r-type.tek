@@ -28,16 +28,16 @@ namespace ECS
 
                     Entity::Entity *entity = world.getEntityById(doc["data"]["entity_id"].getValueInt64());
 
-                    bson::Document components = doc["data"]["components"].getValueDocument();
+                    const bson::Document& components = doc["data"]["components"].getValueDocument();
 
-                    for (const auto& keys : components.getKeys())
+                    for (const auto& key : components.getKeys())
                     {
-                        Component::AComponent *component = entity->getComponent(keys);
+                        Component::AComponent *component = entity->getComponent(key);
                         if (component)
                         {
                             try
                             {
-                                component->deserialize(components[keys].getValueDocument());
+                                component->deserialize(components[key].getValueDocument());
                             }
                             catch (Component::ComponentFlagException &e)
                             {
