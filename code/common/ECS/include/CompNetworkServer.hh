@@ -26,9 +26,9 @@ namespace ECS
         static const std::string NETWORK_SERVER = "network server";
 
         /**
-         * list of action received from clients
+         * list of action received from clients on protocol UDP
          */
-        static const std::list<std::string> ACTIONS_FROM_CLIENTS = {"EntityUpdate", "SignUp", "Login", "Logout", "RoomJoin", "RoomLeave", "RoomKick", "GameStart", "GameLeave"};
+        static const std::list<std::string> ACTIONS_FROM_CLIENTS_UDP = {"EntityUpdate"};
 
         class CompNetworkServer
         {
@@ -50,11 +50,11 @@ namespace ECS
             virtual const std::string& getType() const;
 
             /**
-             * check if the action is in list ACTIONS_FROM_CLIENTS
+             * check if the action is in list ACTIONS_FROM_CLIENTS_UDP
              * @param action action to check
              * @return true if action is in list, else false
              */
-            static bool isValidAction(const std::string &action);
+            static bool isValidActionUdp(const std::string &action);
 
             /**
              * represents the server UDP

@@ -27,9 +27,19 @@ namespace ECS
             return Component::NETWORK_CLIENT;
         }
 
-        bool CompNetworkClient::isValidAction(const std::string &action)
+        bool CompNetworkClient::isValidActionTcp(const std::string &action)
         {
-            for (std::string actionFromServer : ACTIONS_FROM_SERVER)
+            for (std::string actionFromServer : ACTIONS_FROM_SERVER_TCP)
+            {
+                if (actionFromServer == action)
+                    return true;
+            }
+            return false;
+        }
+
+        bool CompNetworkClient::isValidActionUdp(const std::string &action)
+        {
+            for (std::string actionFromServer : ACTIONS_FROM_SERVER_UDP)
             {
                 if (actionFromServer == action)
                     return true;

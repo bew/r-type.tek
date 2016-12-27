@@ -29,7 +29,7 @@ namespace ECS
                     {
                         logs::logger[logs::ECS] << doc.toJSON() << std::endl;
 
-                        if (Component::CompNetworkServer::isValidAction(doc["header"].getValueDocument()["action"].getValueString()))
+                        if (Component::CompNetworkServer::isValidActionUdp(doc["header"].getValueDocument()["action"].getValueString()))
                         {
                             Entity::Entity *entity = world.getEntityById(doc["data"]["entity_id"].getValueInt64());
 
