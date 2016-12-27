@@ -4,8 +4,12 @@
  * @brief System for client network during a game.
  */
 
+#include <ECSLogLevel.hh>
 #include "SysGameNetworkClient.hh"
 #include "CompNetworkClient.hh"
+#include "Protocol/Server.hh"
+#include "ECSLogLevel.hh"
+#include "Entity.hh"
 
 namespace ECS
 {
@@ -19,10 +23,21 @@ namespace ECS
             if (network)
             {
                 network->_clientUDP.update();
-                std::string msg = network->_clientUDP.getMessage();
-                if (!msg.empty())
+                bson::Document doc(network->_clientUDP.getMessage());
+                if (!doc.isEmpty() && protocol::server::checkEntityUpdate(doc))
                 {
-                    bson::Document doc(msg);
+                    logs::logger[logs::ECS] << doc.toJSON() << std::endl;
+
+                    Entity::Entity *entity = world.getEntityById(doc["data"]["entity_id"].getValueInt64());
+
+                    bson::Document components = doc["data"]["components"].getValueDocument();
+
+                    for (auto keys : components.getKeys())
+                    {
+                        Component::AComponent *component = entity->getComponent(keys);
+                        if (component)
+                            component->deserialize(components[keys].getValueDocument());
+                    }
                 }
             }
         }
