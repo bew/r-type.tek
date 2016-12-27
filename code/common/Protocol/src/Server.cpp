@@ -26,7 +26,7 @@ namespace protocol {
         bool checkRoomJoin(const bson::Document &document) {
             if (!protocol::checkMessage(document) ||
                 !protocol::checkHeader(document[u8"header"].getValueDocument()) ||
-                document[u8"header"]["action"].getValueString() != u8"RoomJoin")
+                document[u8"header"][u8"action"].getValueString() != u8"RoomJoin")
                 return false;
             bson::Document data = document[u8"data"].getValueDocument();
             return data.elementsCount() == 1 &&
@@ -48,7 +48,7 @@ namespace protocol {
         bool checkRoomLeave(const bson::Document &document) {
             if (!protocol::checkMessage(document) ||
                 !protocol::checkHeader(document[u8"header"].getValueDocument()) ||
-                document[u8"header"]["action"].getValueString() != u8"RoomLeave")
+                document[u8"header"][u8"action"].getValueString() != u8"RoomLeave")
                 return false;
             bson::Document data = document[u8"data"].getValueDocument();
             return data.elementsCount() == 1 &&
@@ -70,7 +70,7 @@ namespace protocol {
         bool checkRoomKick(const bson::Document &document) {
             if (!protocol::checkMessage(document) ||
                 !protocol::checkHeader(document[u8"header"].getValueDocument()) ||
-                document[u8"header"]["action"].getValueString() != u8"RoomKick")
+                document[u8"header"][u8"action"].getValueString() != u8"RoomKick")
                 return false;
             bson::Document data = document[u8"data"].getValueDocument();
             return data.elementsCount() == 1 &&
@@ -90,7 +90,7 @@ namespace protocol {
         bool checkGameStart(const bson::Document &document) {
             if (!protocol::checkMessage(document) ||
                 !protocol::checkHeader(document[u8"header"].getValueDocument()) ||
-                document[u8"header"]["action"].getValueString() != u8"GameStart")
+                document[u8"header"][u8"action"].getValueString() != u8"GameStart")
                 return false;
             bson::Document data = document[u8"data"].getValueDocument();
             return data.isEmpty();
@@ -111,7 +111,7 @@ namespace protocol {
         bool checkGameLeave(const bson::Document &document) {
             if (!protocol::checkMessage(document) ||
                 !protocol::checkHeader(document[u8"header"].getValueDocument()) ||
-                document[u8"header"]["action"].getValueString() != u8"GameLeave")
+                document[u8"header"][u8"action"].getValueString() != u8"GameLeave")
                 return false;
             bson::Document data = document[u8"data"].getValueDocument();
             return data.elementsCount() == 1 &&
@@ -134,7 +134,7 @@ namespace protocol {
         bool checkEntityUpdate(const bson::Document &document) {
             if (!protocol::checkMessage(document) ||
                 !protocol::checkHeader(document[u8"header"].getValueDocument()) ||
-                document[u8"header"]["action"].getValueString() != u8"EntityUpdate")
+                document[u8"header"][u8"action"].getValueString() != u8"EntityUpdate")
                 return false;
             bson::Document data = document[u8"data"].getValueDocument();
             return data.elementsCount() == 2 &&
