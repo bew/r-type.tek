@@ -13,6 +13,7 @@
 #include <vector>
 #include <typeinfo>
 #include "bson.hh"
+#include "JsonParser.hh"
 
 /**
  * Namespace that contain all the BSON stuff
@@ -363,9 +364,10 @@ namespace bson {
          * Create a Document by deserialization of the given buffer which is a valid BSON representation of a Document
          *
          * @param buffer the buffer which will be deserialiazed to get the Document
+         * @param json if the given string is JSON format
          * @throw BsonException if the given buffer is invalid
          */
-        Document(const std::string& buffer);
+        Document(const std::string& buffer, bool json = false);
 
         /**
          * Destroy the Document
@@ -418,6 +420,7 @@ namespace bson {
         /**
          * Write the BSON representation to the given filename
          *
+         * @param filename the path to the file
          * @throw BsonException if can't open the file
          * @throw BsonException if the document is incomplete (next input is not key)
          */
@@ -426,6 +429,7 @@ namespace bson {
         /**
          * Write the BSON representation to the given stream
          *
+         * @param the stream to write on
          * @throw BsonException if the document is incomplete (next input is not key)
          */
         std::ostream& writeToStream(std::ostream& os) const;
@@ -433,10 +437,12 @@ namespace bson {
         /**
          * Write the BSON representation to the given filename
          *
+         * @param filename the path to the file
+         * @param json if the given string is JSON format
          * @throw BsonException if can't open the file
          * @throw BsonException if the document is incomplete (next input is not key)
          */
-        void readFromFile(const std::string& filename);
+        void readFromFile(const std::string& filename, bool json = false);
 
         /**
          * Return the Document in JSON representation
@@ -584,6 +590,11 @@ namespace bson {
          * Clear the Document (empty it)
          */
         void clear(void);
+
+
+        static bson::Document fromJson(const std::string& json) {
+
+        }
     };
 }
 

@@ -21,6 +21,7 @@ namespace bson {
         if (_pos == _json.end())
             throw BsonException(std::string("empty JSON"));
 
+        this->ignoreBlanks();
         if (!this->readObject(document))
             throw BsonException(this->getErrorMessage(std::string("can't parse object or array")));
 
@@ -33,7 +34,7 @@ namespace bson {
 
     std::string JsonParser::getErrorMessage(const std::string &string) const {
         return std::string("Invalid JSON: ") + string + std::string(", at position: ") +
-               std::to_string(_pos - _json.begin());
+               std::to_string(_pos - _json.begin()) + std::string(" (") + *_pos + std::string(")");
     }
 
     bool JsonParser::beginCapture(const std::string &tag) {
@@ -103,36 +104,34 @@ namespace bson {
     }
 
     void JsonParser::ignoreBlanks() {
-        while (_pos != _json.end() && (*_pos == ' ' || *_pos == '\t'))
+        while (_pos != _json.end() && (*_pos == ' ' || *_pos == '\t' || *_pos == '\n'))
             ++_pos;
     }
 
-    bool JsonParser::readObject(bson::Document &document) {
-        this->ignoreBlanks();
-        if (!this->readChar('{'))
+    bool JsonParser::readDouble(bson::Document &document) {
+        SAVE_CONTEXT;
+        bool negative = this->readChar('-');
+
+        if (!this->beginCapture("readDoubleTag") || !this->readDigit()) {
+            RESTORE_CONTEXT;
             return false;
-
-        bool first = true;
-        this->ignoreBlanks();
-        while (!this->readChar('}')) {
-            if (!first && !this->readChar(','))
-                throw BsonException(this->getErrorMessage("missing ','"));
-
-            this->ignoreBlanks();
-            if (!this->readString(document))
-                throw BsonException(this->getErrorMessage("can't find any key"));
-
-            this->ignoreBlanks();
-            if (!this->readChar(':'))
-                throw BsonException(this->getErrorMessage("can't parse pair, got: ") + *_pos);
-
-            this->ignoreBlanks();
-            if (!this->readBool(document) && !this->readNull(document))
-                throw BsonException("no value detected");
-
-            first = false;
-            this->ignoreBlanks();
         }
+
+        while (this->readDigit());
+
+        if (!this->readChar('.')) {
+            RESTORE_CONTEXT;
+            return false;
+        }
+
+        std::string number;
+        this->endCapture("readDoubleTag", number);
+        double floating = std::stod(number);
+
+        if (negative)
+            floating *= -1;
+
+        document << floating;
 
         return true;
     }
@@ -152,6 +151,46 @@ namespace bson {
         document << string;
 
         this->readChar('"');
+
+        return true;
+    }
+
+    bool JsonParser::readObject(bson::Document &document) {
+        SAVE_CONTEXT;
+        if (!this->readChar('{')) {
+            RESTORE_CONTEXT;
+            return false;
+        }
+
+        bool first = true;
+        this->ignoreBlanks();
+        while (!this->readChar('}')) {
+            if (!first && !this->readChar(','))
+                throw BsonException(this->getErrorMessage("missing ','"));
+
+            this->ignoreBlanks();
+            if (!this->readString(document))
+                throw BsonException(this->getErrorMessage("can't find any key"));
+
+            this->ignoreBlanks();
+            if (!this->readChar(':'))
+                throw BsonException(this->getErrorMessage("can't parse pair, got: ") + *_pos);
+
+            bson::Document innerDocument;
+            this->ignoreBlanks();
+            if (!this->readDouble(document) &&
+                !this->readString(document) &&
+                !this->readObject(innerDocument) &&
+                !this->readBool(document) &&
+                !this->readNull(document) &&
+                !this->readInteger(document))
+                throw BsonException(this->getErrorMessage("no value detected"));
+            if (!innerDocument.isEmpty())
+                document << innerDocument;
+
+            first = false;
+            this->ignoreBlanks();
+        }
 
         return true;
     }
@@ -176,10 +215,13 @@ namespace bson {
     }
 
     bool JsonParser::readInteger(bson::Document &document) {
+        SAVE_CONTEXT;
         bool negative = this->readChar('-');
 
-        if (!this->beginCapture("readIntegerTag") || !this->readDigit())
+        if (!this->beginCapture("readIntegerTag") || !this->readDigit()) {
+            RESTORE_CONTEXT;
             return false;
+        }
 
         while (this->readDigit());
 
@@ -194,29 +236,6 @@ namespace bson {
             document << static_cast<int32_t>(integer);
         else
             document << integer;
-
-        return true;
-    }
-
-    bool JsonParser::readDouble(bson::Document &document) {
-        bool negative = this->readChar('-');
-
-        if (!this->beginCapture("readDoubleTag") || !this->readDigit())
-            return false;
-
-        while (this->readDigit());
-
-        if (!this->readChar('.'))
-            return false;
-
-        std::string number;
-        this->endCapture("readDoubleTag", number);
-        double floating = std::stod(number);
-
-        if (negative)
-            floating *= -1;
-
-        document << floating;
 
         return true;
     }

@@ -14,6 +14,10 @@
 #include <map>
 #include "Document.hh"
 
+namespace bson {
+    class Document;
+}
+
 #ifndef SAVE_CONTEXT
 # define SAVE_CONTEXT std::string::iterator tmpPos = _pos
 #endif  // !SAVE_CONTEXT
@@ -135,28 +139,52 @@ namespace bson {
          */
         void ignoreBlanks(void);
 
+        /**
+         * Read a double and store it inside the given Document
+         * 
+         * @param document the Document where to store the double
+         * @return true if the double has been stored, else false
+         */
         bool readDouble(bson::Document &document);
 
         /**
-         * Read a string between quotes
-         *
-         * @return true if the string has been read, else false
+         * Read a string and store it inside the given Document
+         * 
+         * @param document the Document where to store the string
+         * @return true if the string has been stored, else false
          */
         bool readString(bson::Document &document);
 
         /**
-         * Read a JSON object
+         * Read a JSON object (BSON Document) and store it inside the given Document
          *
-         * @param document the Document to fill
-         * @throw BsonException if the JSON object is mal formated
-         * @return the JSON object parsed as a Document
+         * @param document the Document where to store the JSON object
+         * @return true if the JSON object has been stored, else false
          */
         bool readObject(bson::Document &document);
 
+        /**
+         * Read a bool and store it inside the given Document
+         * 
+         * @param document the Document where to store the bool
+         * @return true if the bool has been stored, else false
+         */
         bool readBool(bson::Document &document);
 
+        /**
+         * Read a null and store it inside the given Document
+         * 
+         * @param document the Document where to store the null
+         * @return true if the null has been stored, else false
+         */
         bool readNull(bson::Document &document);
 
+        /**
+         * Read a integer and store it inside the given Document
+         * 
+         * @param document the Document where to store the integer
+         * @return true if the integer has been stored, else false
+         */
         bool readInteger(bson::Document &document);
     };
 }

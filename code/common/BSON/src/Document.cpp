@@ -238,8 +238,13 @@ namespace bson {
         this->unserializeBuffer(buffer);
     }
 
-    Document::Document(const std::string &buffer) : _nextInputType(Document::KEY) {
-        this->unserializeBuffer(std::vector<unsigned char>(buffer.begin(), buffer.end()));
+    Document::Document(const std::string &buffer, bool json) : _nextInputType(Document::KEY) {
+        if (!json)
+            this->unserializeBuffer(std::vector<unsigned char>(buffer.begin(), buffer.end()));
+        else {
+            JsonParser parser(buffer);
+            *this = parser.parse();
+        }
     }
 
     Document::~Document() {
@@ -371,7 +376,7 @@ namespace bson {
         return os;
     }
 
-    void Document::readFromFile(const std::string &filename) {
+    void Document::readFromFile(const std::string &filename, bool json) {
         std::ifstream file(filename, std::ios::in | std::ios::binary | std::ios::ate);
 
         if (!file.is_open())
@@ -383,7 +388,12 @@ namespace bson {
         std::vector<char> bytes(fileSize);
         file.read(&bytes[0], fileSize);
 
-        this->unserializeBuffer(std::vector<unsigned char>(bytes.begin(), bytes.end()));
+        if (!json)
+            this->unserializeBuffer(std::vector<unsigned char>(bytes.begin(), bytes.end()));
+        else {
+            JsonParser parser(std::string(bytes.begin(), bytes.end()));
+            *this = parser.parse();
+        }
     }
 
     std::string Document::toJSON(unsigned int spaces) const {
