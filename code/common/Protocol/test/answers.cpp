@@ -8,15 +8,15 @@
  */
 
 #include <gtest/gtest.h>
-#include <stdlib.h>
+#include <chrono>
 #include "Answers.hh"
 
 /**
  * Check answer ok (200)
  */
 TEST(Answers, Ok) {
-    std::srand(std::time(0));
-    int64_t timestamp = std::rand();
+    int64_t timestamp = std::chrono::duration_cast<std::chrono::seconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch()).count();
     bson::Document dataAnswer;
     dataAnswer << u8"login" << std::string("toto42sh");
 
@@ -34,14 +34,16 @@ TEST(Answers, Ok) {
     EXPECT_EQ(data["timestamp"].getValueInt64(), timestamp);
     EXPECT_EQ(data["message"].getValueString(), "Ok");
     EXPECT_EQ(data["data"].getValueDocument(), dataAnswer);
+
+    EXPECT_EQ(protocol::answers::checkAnswer(answerOk), true);
 }
 
 /**
  * Check answer bad request (400)
  */
 TEST(Answers, BadRequest) {
-    std::srand(std::time(0));
-    int64_t timestamp = std::rand();
+    int64_t timestamp = std::chrono::duration_cast<std::chrono::seconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
     bson::Document answerBadRequest = protocol::answers::badRequest(timestamp);
 
@@ -56,14 +58,16 @@ TEST(Answers, BadRequest) {
     EXPECT_EQ(data["code"].getValueInt32(), 400);
     EXPECT_EQ(data["timestamp"].getValueInt64(), timestamp);
     EXPECT_EQ(data["message"].getValueString(), "Bad Request");
+
+    EXPECT_EQ(protocol::answers::checkAnswer(answerBadRequest), true);
 }
 
 /**
  * Check answer unauthorized (401)
  */
 TEST(Answers, Unauthorized) {
-    std::srand(std::time(0));
-    int64_t timestamp = std::rand();
+    int64_t timestamp = std::chrono::duration_cast<std::chrono::seconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
     bson::Document answerUnauthorized = protocol::answers::unauthorized(timestamp);
 
@@ -78,14 +82,16 @@ TEST(Answers, Unauthorized) {
     EXPECT_EQ(data["code"].getValueInt32(), 401);
     EXPECT_EQ(data["timestamp"].getValueInt64(), timestamp);
     EXPECT_EQ(data["message"].getValueString(), "Unauthorized");
+
+    EXPECT_EQ(protocol::answers::checkAnswer(answerUnauthorized), true);
 }
 
 /**
  * Check answer forbidden (403)
  */
 TEST(Answers, Forbidden) {
-    std::srand(std::time(0));
-    int64_t timestamp = std::rand();
+    int64_t timestamp = std::chrono::duration_cast<std::chrono::seconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
     bson::Document answerForbidden = protocol::answers::forbidden(timestamp);
 
@@ -100,14 +106,17 @@ TEST(Answers, Forbidden) {
     EXPECT_EQ(data["code"].getValueInt32(), 403);
     EXPECT_EQ(data["timestamp"].getValueInt64(), timestamp);
     EXPECT_EQ(data["message"].getValueString(), "Forbidden");
+
+
+    EXPECT_EQ(protocol::answers::checkAnswer(answerForbidden), true);
 }
 
 /**
  * Check answer not found (404)
  */
 TEST(Answers, NotFound) {
-    std::srand(std::time(0));
-    int64_t timestamp = std::rand();
+    int64_t timestamp = std::chrono::duration_cast<std::chrono::seconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
     bson::Document answerNotFound = protocol::answers::notFound(timestamp);
 
@@ -122,14 +131,17 @@ TEST(Answers, NotFound) {
     EXPECT_EQ(data["code"].getValueInt32(), 404);
     EXPECT_EQ(data["timestamp"].getValueInt64(), timestamp);
     EXPECT_EQ(data["message"].getValueString(), "Not Found");
+
+
+    EXPECT_EQ(protocol::answers::checkAnswer(answerNotFound), true);
 }
 
 /**
  * Check answer too many requests (429)
  */
 TEST(Answers, TooManyRequests) {
-    std::srand(std::time(0));
-    int64_t timestamp = std::rand();
+    int64_t timestamp = std::chrono::duration_cast<std::chrono::seconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
     bson::Document answerTooManyRequests = protocol::answers::tooManyRequests(timestamp);
 
@@ -144,14 +156,16 @@ TEST(Answers, TooManyRequests) {
     EXPECT_EQ(data["code"].getValueInt32(), 429);
     EXPECT_EQ(data["timestamp"].getValueInt64(), timestamp);
     EXPECT_EQ(data["message"].getValueString(), "Too Many Requests");
+
+    EXPECT_EQ(protocol::answers::checkAnswer(answerTooManyRequests), true);
 }
 
 /**
  * Check answer internal server error (500)
  */
 TEST(Answers, InternalServerError) {
-    std::srand(std::time(0));
-    int64_t timestamp = std::rand();
+    int64_t timestamp = std::chrono::duration_cast<std::chrono::seconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
     bson::Document answerInternalServerError = protocol::answers::internalServerError(timestamp);
 
@@ -166,14 +180,16 @@ TEST(Answers, InternalServerError) {
     EXPECT_EQ(data["code"].getValueInt32(), 500);
     EXPECT_EQ(data["timestamp"].getValueInt64(), timestamp);
     EXPECT_EQ(data["message"].getValueString(), "Internal Server Error");
+
+    EXPECT_EQ(protocol::answers::checkAnswer(answerInternalServerError), true);
 }
 
 /**
  * Check answer not implemented (501)
  */
 TEST(Answers, NotImplemented) {
-    std::srand(std::time(0));
-    int64_t timestamp = std::rand();
+    int64_t timestamp = std::chrono::duration_cast<std::chrono::seconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
     bson::Document answerNotImplemented = protocol::answers::notImplemented(timestamp);
 
@@ -188,14 +204,16 @@ TEST(Answers, NotImplemented) {
     EXPECT_EQ(data["code"].getValueInt32(), 501);
     EXPECT_EQ(data["timestamp"].getValueInt64(), timestamp);
     EXPECT_EQ(data["message"].getValueString(), "Not Implemented");
+
+    EXPECT_EQ(protocol::answers::checkAnswer(answerNotImplemented), true);
 }
 
 /**
  * Check answer service unavailable (503)
  */
 TEST(Answers, ServiceUnavailable) {
-    std::srand(std::time(0));
-    int64_t timestamp = std::rand();
+    int64_t timestamp = std::chrono::duration_cast<std::chrono::seconds>(
+            std::chrono::high_resolution_clock::now().time_since_epoch()).count();
 
     bson::Document answerServiceUnavailable = protocol::answers::serviceUnavailable(timestamp);
 
@@ -210,4 +228,6 @@ TEST(Answers, ServiceUnavailable) {
     EXPECT_EQ(data["code"].getValueInt32(), 503);
     EXPECT_EQ(data["timestamp"].getValueInt64(), timestamp);
     EXPECT_EQ(data["message"].getValueString(), "Service Unavailable");
+
+    EXPECT_EQ(protocol::answers::checkAnswer(answerServiceUnavailable), true);
 }
