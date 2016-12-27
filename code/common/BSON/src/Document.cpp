@@ -17,7 +17,7 @@ namespace bson {
     Document::Element::Element(type valueType, const std::string &key, const std::vector<unsigned char> &value)
     : _valueType(valueType), _key(key), _value(value)  {
     }
-  
+
     Document::Element::Element(const Document::Element &element) {
         this->operator=(element);
     }
@@ -218,7 +218,7 @@ namespace bson {
     }
 
     Document::Document()
-    : _nextInputType(Document::KEY) {
+    : _nextInputType(Document::KEY), _arrayMode(Document::ARRAY_DISABLED) {
     }
 
     Document::Document(const Document &document) {
@@ -229,17 +229,24 @@ namespace bson {
         if (this != &document) {
             _nextInputType = document._nextInputType;
             _lastKey = document._lastKey;
+            _arrayMode = document._arrayMode;
             _elements = document._elements;
         }
         return *this;
     }
 
-    Document::Document(const std::vector<unsigned char> &buffer) : _nextInputType(Document::KEY) {
+    Document::Document(const std::vector<unsigned char> &buffer)
+            : _nextInputType(Document::KEY), _arrayMode(Document::ARRAY_DISABLED) {
         this->unserializeBuffer(buffer);
     }
 
-    Document::Document(const std::string &buffer) : _nextInputType(Document::KEY) {
-        this->unserializeBuffer(std::vector<unsigned char>(buffer.begin(), buffer.end()));
+    Document::Document(const std::string &buffer, bool json) : _nextInputType(Document::KEY) {
+        if (!json)
+            this->unserializeBuffer(std::vector<unsigned char>(buffer.begin(), buffer.end()));
+        else {
+            JsonParser parser(buffer);
+            *this = parser.parse();
+        }
     }
 
     Document::~Document() {
@@ -261,6 +268,11 @@ namespace bson {
             }
             ++i;
         }
+
+        if (_arrayMode == Document::ARRAY_ENABLED)
+            _lastKey = std::to_string(std::stoi(_lastKey) + 1);
+        else
+            _nextInputType = Document::KEY;
 
         _elements.push_back(newElement);
     }
@@ -358,20 +370,26 @@ namespace bson {
         return std::string(buffer.begin(), buffer.end());
     }
 
-    void Document::writeToFile(const std::string &filename) const {
+    void Document::writeToFile(const std::string &filename, bool json) const {
         std::ofstream file(filename, std::ofstream::out | std::ofstream::app);
         if (!file.is_open())
             throw BsonException(std::string("Can't open file: ") + filename);
-        file << this->getBufferString();
+        if (!json)
+            file << this->getBufferString();
+        else
+            file << this->toJSON();
         file.close();
     }
 
-    std::ostream& Document::writeToStream(std::ostream &os) const {
-        os << this->getBufferString();
+    std::ostream& Document::writeToStream(std::ostream &os, bool json) const {
+        if (!json)
+            os << this->getBufferString();
+        else
+            os << this->toJSON();
         return os;
     }
 
-    void Document::readFromFile(const std::string &filename) {
+    void Document::readFromFile(const std::string &filename, bool json) {
         std::ifstream file(filename, std::ios::in | std::ios::binary | std::ios::ate);
 
         if (!file.is_open())
@@ -383,7 +401,12 @@ namespace bson {
         std::vector<char> bytes(fileSize);
         file.read(&bytes[0], fileSize);
 
-        this->unserializeBuffer(std::vector<unsigned char>(bytes.begin(), bytes.end()));
+        if (!json)
+            this->unserializeBuffer(std::vector<unsigned char>(bytes.begin(), bytes.end()));
+        else {
+            JsonParser parser(std::string(bytes.begin(), bytes.end()));
+            *this = parser.parse();
+        }
     }
 
     std::string Document::toJSON(unsigned int spaces) const {
@@ -430,8 +453,6 @@ namespace bson {
 
         this->insertElement(valueType, elementBuffer);
 
-        _nextInputType = KEY;
-
         return *this;
     }
 
@@ -455,8 +476,6 @@ namespace bson {
             elementBuffer.push_back('\x00');
 
             this->insertElement(valueType, elementBuffer);
-
-            _nextInputType = Document::KEY;
         }
 
         return *this;
@@ -475,7 +494,6 @@ namespace bson {
 
         this->insertElement(valueType, elementBuffer);
 
-        _nextInputType = Document::KEY;
         return *this;
     }
 
@@ -489,7 +507,6 @@ namespace bson {
 
         this->insertElement(valueType, elementBuffer);
 
-        _nextInputType = Document::KEY;
         return *this;
     }
 
@@ -500,7 +517,6 @@ namespace bson {
 
         this->insertElement(valueType, std::vector<unsigned char>());
 
-        _nextInputType = Document::KEY;
         return *this;
     }
 
@@ -520,7 +536,6 @@ namespace bson {
 
         this->insertElement(valueType, elementBuffer);
 
-        _nextInputType = Document::KEY;
         return *this;
     }
 
@@ -540,7 +555,19 @@ namespace bson {
 
         this->insertElement(valueType, elementBuffer);
 
-        _nextInputType = Document::KEY;
+        return *this;
+    }
+
+    Document& Document::operator<<(Document::arrayMode arrayModeChoosen) {
+        _arrayMode = arrayModeChoosen;
+
+        if (arrayModeChoosen == Document::ARRAY_DISABLED)
+            _nextInputType = Document::KEY;
+        else if (_arrayMode == Document::ARRAY_ENABLED) {
+            _lastKey = "0";
+            _nextInputType = Document::VALUE;
+        }
+
         return *this;
     }
 
@@ -554,7 +581,7 @@ namespace bson {
 
     bool Document::operator==(const Document &document) const {
         return this == &document || (_nextInputType == document._nextInputType &&
-                                    _lastKey == document._lastKey &&
+                                    _lastKey == document._lastKey && _arrayMode == document._arrayMode &&
                                     this->getBuffer() == document.getBuffer() &&
                                     _elements == document._elements);
     }
@@ -573,17 +600,17 @@ namespace bson {
 
     std::vector<std::string> Document::getKeys() const {
         std::vector<std::string> keys;
-        
+
         for (const auto& element : _elements)
             keys.push_back(element.getKey());
-        
+
         return keys;
     }
-    
+
     size_t Document::elementsCount() const {
         return _elements.size();
     }
-    
+
     bool Document::isEmpty() const {
         return _elements.size() == 0;
     }

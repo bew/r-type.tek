@@ -11,7 +11,7 @@
 
 namespace protocol {
     namespace server {
-        bson::Document roomJoin(const std::string& username) {
+        bson::Document roomJoin(const std::string &username) {
             bson::Document document;
             bson::Document message;
 
@@ -23,7 +23,16 @@ namespace protocol {
             return document;
         }
 
-        bson::Document roomLeave(const std::string& username) {
+        bool checkRoomJoin(const bson::Document &document) {
+            if (!protocol::checkMessage(document) ||
+                document[u8"header"][u8"action"].getValueString() != u8"RoomJoin")
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.elementsCount() == 1 &&
+                   protocol::checkString(data, "username");
+        }
+
+        bson::Document roomLeave(const std::string &username) {
             bson::Document document;
             bson::Document message;
 
@@ -35,7 +44,16 @@ namespace protocol {
             return document;
         }
 
-        bson::Document roomKick(const std::string& username) {
+        bool checkRoomLeave(const bson::Document &document) {
+            if (!protocol::checkMessage(document) ||
+                document[u8"header"][u8"action"].getValueString() != u8"RoomLeave")
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.elementsCount() == 1 &&
+                   protocol::checkString(data, "username");
+        }
+
+        bson::Document roomKick(const std::string &username) {
             bson::Document document;
             bson::Document message;
 
@@ -45,6 +63,15 @@ namespace protocol {
             document << u8"data" << message;
 
             return document;
+        }
+
+        bool checkRoomKick(const bson::Document &document) {
+            if (!protocol::checkMessage(document) ||
+                document[u8"header"][u8"action"].getValueString() != u8"RoomKick")
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.elementsCount() == 1 &&
+                   protocol::checkString(data, "username");
         }
 
         bson::Document gameStart(void) {
@@ -57,7 +84,15 @@ namespace protocol {
             return document;
         }
 
-        bson::Document gameLeave(const std::string& username) {
+        bool checkGameStart(const bson::Document &document) {
+            if (!protocol::checkMessage(document) ||
+                document[u8"header"][u8"action"].getValueString() != u8"GameStart")
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.isEmpty();
+        }
+
+        bson::Document gameLeave(const std::string &username) {
             bson::Document document;
             bson::Document message;
 
@@ -69,7 +104,16 @@ namespace protocol {
             return document;
         }
 
-        bson::Document entityUpdate(int64_t entity_id, const bson::Document& components) {
+        bool checkGameLeave(const bson::Document &document) {
+            if (!protocol::checkMessage(document) ||
+                document[u8"header"][u8"action"].getValueString() != u8"GameLeave")
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.elementsCount() == 1 &&
+                   protocol::checkString(data, "username");
+        }
+
+        bson::Document entityUpdate(int64_t entity_id, const bson::Document &components) {
             bson::Document document;
             bson::Document message;
 
@@ -80,6 +124,16 @@ namespace protocol {
             document << u8"data" << message;
 
             return document;
+        }
+
+        bool checkEntityUpdate(const bson::Document &document) {
+            if (!protocol::checkMessage(document) ||
+                document[u8"header"][u8"action"].getValueString() != u8"EntityUpdate")
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.elementsCount() == 2 &&
+                   data.hasKey(u8"entity_id") && data[u8"entity_id"].getValueType() == bson::INT64 &&
+                   data.hasKey(u8"components") && data[u8"components"].getValueType() == bson::DOCUMENT;
         }
 
     }

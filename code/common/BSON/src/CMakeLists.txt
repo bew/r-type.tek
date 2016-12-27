@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(LIB_SOURCES Document.cpp)
+set(LIB_SOURCES Document.cpp JsonParser.cpp)
 set(LIB_DEPENDENCIES)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCES})

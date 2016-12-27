@@ -29,6 +29,8 @@ TEST(Client, SignUp) {
     bson::Document data = message["data"].getValueDocument();
     EXPECT_EQ(data["username"].getValueString(), username);
     EXPECT_EQ(data["password"].getValueString(), password);
+
+    EXPECT_EQ(protocol::client::checkSignUp(message), true);
 }
 
 /**
@@ -50,16 +52,15 @@ TEST(Client, Login) {
     bson::Document data = message["data"].getValueDocument();
     EXPECT_EQ(data["username"].getValueString(), username);
     EXPECT_EQ(data["password"].getValueString(), password);
+
+    EXPECT_EQ(protocol::client::checkLogin(message), true);
 }
 
 /**
  * Check if the message Logout build correctly
  */
 TEST(Client, Logout) {
-    std::string username("toto42sh");
-    std::string password("secret");
-
-    bson::Document message = protocol::client::logout(username, password);
+    bson::Document message = protocol::client::logout();
 
     bson::Document header = message["header"].getValueDocument();
     EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
@@ -69,8 +70,9 @@ TEST(Client, Logout) {
 
 
     bson::Document data = message["data"].getValueDocument();
-    EXPECT_EQ(data["username"].getValueString(), username);
-    EXPECT_EQ(data["password"].getValueString(), password);
+    EXPECT_EQ(data.isEmpty(), true);
+
+    EXPECT_EQ(protocol::client::checkLogout(message), true);
 }
 
 /**
@@ -92,6 +94,9 @@ TEST(Client, RoomJoin) {
     bson::Document data = message["data"].getValueDocument();
     EXPECT_EQ(data["name"].getValueString(), name);
     EXPECT_EQ(data["password"].getValueString(), password);
+
+
+    EXPECT_EQ(protocol::client::checkRoomJoin(message), true);
 }
 
 /**
@@ -105,6 +110,11 @@ TEST(Client, RoomLeave) {
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "RoomLeave");
     EXPECT_EQ(header["version"].getValueString(), protocol::version);
+
+    bson::Document data = message["data"].getValueDocument();
+    EXPECT_EQ(data.isEmpty(), true);
+
+    EXPECT_EQ(protocol::client::checkRoomLeave(message), true);
 }
 
 /**
@@ -124,6 +134,8 @@ TEST(Client, RoomKick) {
 
     bson::Document data = message["data"].getValueDocument();
     EXPECT_EQ(data["username"].getValueString(), username);
+
+    EXPECT_EQ(protocol::client::checkRoomKick(message), true);
 }
 
 /**
@@ -137,6 +149,11 @@ TEST(Client, GameStart) {
     EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
     EXPECT_EQ(header["action"].getValueString(), "GameStart");
     EXPECT_EQ(header["version"].getValueString(), protocol::version);
+
+    bson::Document data = message["data"].getValueDocument();
+    EXPECT_EQ(data.isEmpty(), true);
+
+    EXPECT_EQ(protocol::client::checkGameStart(message), true);
 }
 
 /**
@@ -153,6 +170,9 @@ TEST(Client, GameLeave) {
 
 
     bson::Document data = message["data"].getValueDocument();
+    EXPECT_EQ(data.isEmpty(), true);
+
+    EXPECT_EQ(protocol::client::checkGameLeave(message), true);
 }
 
 /**
@@ -181,4 +201,6 @@ TEST(Client, EntityUpdate) {
     bson::Document data = message["data"].getValueDocument();
     EXPECT_EQ(data["entity_id"].getValueInt64(), entity_id);
     EXPECT_EQ(data["components"]["test"].getValueDocument(), componentTest);
+
+    EXPECT_EQ(protocol::server::checkEntityUpdate(message), true);
 }
