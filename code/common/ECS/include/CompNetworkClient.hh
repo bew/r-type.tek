@@ -8,6 +8,7 @@
 
 #include "AComponent.hh"
 #include "Network/ClientUDP.hh"
+#include "Network/ClientTCP.hh"
 
 /**
  * Namespace of ECS.
@@ -52,9 +53,14 @@ namespace ECS
             virtual const std::string& getType() const;
 
             /**
-             * reprents one client udp
+             * represents one client udp
              */
-            network::ClientUDP _client;
+            network::ClientUDP _clientUDP;
+
+            /**
+             * represents one client tcp
+             */
+            network::ClientTCP _clientTCP;
         };
     }
 }
