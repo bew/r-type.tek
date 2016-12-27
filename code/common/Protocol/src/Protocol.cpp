@@ -65,6 +65,7 @@ namespace protocol {
     bool checkMessage(const bson::Document &document) {
         return document.elementsCount() == 2 &&
                document.hasKey(u8"header") && document[u8"header"].getValueType() == bson::DOCUMENT &&
+               protocol::checkHeader(document[u8"header"].getValueDocument()) &&
                document.hasKey(u8"data") && document[u8"data"].getValueType() == bson::DOCUMENT;
     }
 }
