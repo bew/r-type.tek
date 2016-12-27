@@ -7,6 +7,8 @@
  */
 
 #pragma once
+
+#include <list>
 #include "ISystem.hh"
 #include "CompCollision.hh"
 
@@ -66,7 +68,7 @@ namespace ECS {
              */
             void    checkCollision(unsigned offset,
                                    std::vector<Entity::Entity *> others,
-                                   std::list<Component::CompCollision::Collision> &col_list);
+                                   std::vector<Component::CompCollision::Collision> &col_list);
 
             
         };

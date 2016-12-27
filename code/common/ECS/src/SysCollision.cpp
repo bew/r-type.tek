@@ -6,8 +6,8 @@
  *
  */
 
-#include <list>
 #include <iostream>
+#include <algorithm>
 
 #include "ISystem.hh"
 #include "CompCollision.hh"
@@ -68,7 +68,7 @@ namespace ECS {
 
         void    SysCollision::checkCollision(unsigned offset,
                                              std::vector<Entity::Entity *> others,
-                                             std::list<Component::CompCollision::Collision> &col_list)
+                                             std::vector<Component::CompCollision::Collision> &col_list)
         {
             for (std::vector<Entity::Entity *>::iterator it = others.begin() + offset + 1;
                  it != others.end();
@@ -82,7 +82,7 @@ namespace ECS {
 
         void        SysCollision::update(WorldData &data)
         {
-            std::list<Component::CompCollision::Collision>        collision_list;
+            std::vector<Component::CompCollision::Collision>        collision_vector;
 
             Component::CompCollision *collision_comp = static_cast<Component::CompCollision *>(
                 data._systemEntity.getComponent(Component::COLLISION));
@@ -93,23 +93,37 @@ namespace ECS {
                 {
                     for (auto &column : row)
                     {
-
                         for (int i = 0; i < column.size(); ++i)
                         {
-                            this->checkCollision(i, column, collision_list);
+                            this->checkCollision(i, column, collision_vector);
                         }
-
                     }
                 }
                 
-                ////////////
-                for (auto &e : collision_list)
-                {
-                    std::cout << e.entity_a << "   " << e.entity_b << std::endl;
-                }
-                ////////////
+                std::sort(collision_vector.begin(), collision_vector.end(),
+                          [] (const Component::CompCollision::Collision &a,
+                              const Component::CompCollision::Collision &b) {
+                              if (a.entity_a < b.entity_a)
+                                  return true;
+                              if (a.entity_a == b.entity_a)
+                                  return a.entity_b < b.entity_b;
+                              return false;
+                          }
+                    );
+
+                std::list<Component::CompCollision::Collision> collision_list {
+                    std::make_move_iterator(std::begin(collision_vector)),
+                    std::make_move_iterator(std::end(collision_vector))
+                };
+                
+                collision_list.unique();
                 
                 collision_comp->flushGrid();
+                collision_comp->_collisions.clear();
+                collision_comp->_collisions = std::vector<Component::CompCollision::Collision> {
+                    std::make_move_iterator(std::begin(collision_list)),
+                    std::make_move_iterator(std::end(collision_list))
+                };
             }
         }
         

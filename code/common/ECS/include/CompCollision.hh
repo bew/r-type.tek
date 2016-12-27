@@ -12,7 +12,7 @@
 #include "AComponent.hh"
 #include "Entity.hh"
 
-# define GRID_NB_CASES  (16)
+# define GRID_NB_CASES  (12)
 
 /**
  * Namespace of ECS.
@@ -51,6 +51,12 @@ namespace ECS {
             {
                 Entity::Entity  *entity_a;
                 Entity::Entity  *entity_b;
+
+                /**
+                 * Comparaisons of collisions.
+                 * @param other A collision.
+                 */
+                bool operator==(const Collision &other);
             };
 
             /**

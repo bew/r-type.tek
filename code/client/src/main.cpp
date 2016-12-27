@@ -14,6 +14,7 @@
 #include "ECS/CompMusic.hh"
 #include "SysSprite.hh"
 #include "ECS/CompSprite.hh"
+#include "ECS/CompCollision.hh"
 
 #include "CompOptions.hh"
 #include "SysController.hh"
@@ -26,8 +27,11 @@
 #include "ECS/SysTick.hh"
 #include "ECS/CompMovement.hh"
 #include "ECS/SysMovement.hh"
+#include "ECS/SysCollision.hh"
 #include "ECS/CompHitbox.hh"
 #include "Graphic/AssetStore.hpp"
+
+
 
 int main(void) {
 
@@ -62,12 +66,14 @@ int main(void) {
   world.addSystem(new ECS::System::SysMusic());
   world.addSystem(new ECS::System::SysSprite());
   world.addSystem(new ECS::System::SysEvent());
+  world.addSystem(new ECS::System::SysCollision());
 
   
   world.addSystemEntityComponent(tick);
   world.addSystemEntityComponent(new ECS::Component::CompWindow());
   world.addSystemEntityComponent(event);
   world.addSystemEntityComponent(new ECS::Component::CompOptions());
+  world.addSystemEntityComponent(new ECS::Component::CompCollision());
   world.addSystemEntityComponent(music);
   world.addSystemEntityComponent(asset);
 

@@ -6,7 +6,6 @@
  *
  */
 
-#include <iostream>
 #include "SysMovement.hh"
 #include "CompMovement.hh"
 #include "CompCollision.hh"
