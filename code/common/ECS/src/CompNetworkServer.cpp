@@ -1,6 +1,8 @@
-//
-// Created by tookie on 12/21/16.
-//
+/**
+ * @file CompNetworkServer.cpp
+ * @author Tookie.
+ * @brief component use by server to communicate with clients.
+ */
 
 #include "CompNetworkServer.hh"
 
