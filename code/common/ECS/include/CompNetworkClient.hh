@@ -8,6 +8,7 @@
 
 #include "AComponent.hh"
 #include "Network/ClientUDP.hh"
+#include "Network/ClientTCP.hh"
 
 /**
  * Namespace of ECS.
@@ -24,6 +25,9 @@ namespace ECS
          */
         static const std::string NETWORK_CLIENT = "network client";
 
+        /**
+         * representation of a component network for clients
+         */
         class CompNetworkClient: public AComponent
         {
         public:
@@ -47,14 +51,19 @@ namespace ECS
 
             /**
              * get the type of component
-             * @return string that reprents his type
+             * @return string that represents his type
              */
             virtual const std::string& getType() const;
 
             /**
-             * reprents one client udp
+             * represents one client udp
              */
-            network::ClientUDP _client;
+            network::ClientUDP _clientUDP;
+
+            /**
+             * represents one client tcp
+             */
+            network::ClientTCP _clientTCP;
         };
     }
 }

@@ -11,15 +11,16 @@ namespace ECS
     namespace Component
     {
         CompNetworkClient::CompNetworkClient(const std::string &ip, unsigned short port) :
-                _client(ip, port)
+            _clientUDP(ip, port), _clientTCP()
         {}
 
         CompNetworkClient::CompNetworkClient(const network::SockAddr &addr) :
-                _client(addr)
+            _clientUDP(addr), _clientTCP()
         {}
 
         CompNetworkClient::~CompNetworkClient()
-        {}
+        {
+        }
 
         const std::string &CompNetworkClient::getType() const
         {

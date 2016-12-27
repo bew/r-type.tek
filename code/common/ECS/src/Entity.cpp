@@ -10,7 +10,7 @@
 namespace ECS {
     namespace Entity {
     
-	Entity::Entity(unsigned long id)
+	Entity::Entity(int64_t  id)
             : _id(id), _components()
         {
         }
@@ -35,7 +35,7 @@ namespace ECS {
 	    return component;
 	}
 
-        unsigned long       Entity::getId() const
+		int64_t        Entity::getId() const
         {
             return _id;
         }

@@ -29,7 +29,7 @@
 #include "ECS/CompProjectile.hh"
 #include "Graphic/AssetStore.hpp"
 
-int main(void) {
+int main(int ac, char**av) {
 
   ECS::World world;  
   logs::logger.registerLogLevel(&logs::assetLogLevel);
@@ -103,4 +103,4 @@ int main(void) {
     world.update();
   }
   return 0;
-};
+}

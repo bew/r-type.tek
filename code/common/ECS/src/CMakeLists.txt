@@ -4,12 +4,16 @@ set(LIB_SOURCES AComponent.cpp Entity.cpp World.cpp CompEvent.cpp SysEvent.cpp C
 set(LIB_SOURCES ${LIB_SOURCES} CompLife.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompTick.cpp SysTick.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompNetworkClient.cpp CompNetworkServer.cpp)
+set(LIB_SOURCES ${LIB_SOURCES} SysGameNetworkClient.cpp SysGameNetworkServer.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} ECSLogLevel.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompController.cpp SysController.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompProjectile.cpp CompBlueprint.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompMusic.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompSprite.cpp)
+set(LIB_SOURCES ${LIB_SOURCES} CompStateMachine.cpp)
+set(LIB_SOURCES ${LIB_SOURCES} SysStateMachine.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} AssetLogLevel.cpp)
+
 set(LIB_DEPENDENCIES Network BSON Logs Graphic)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCES})
