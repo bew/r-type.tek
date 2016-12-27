@@ -1,11 +1,13 @@
 /**
- * @file SysGameNetworkServer.hh
+ * @file SysGameNetworkServer.cpp
  * @author Tookie.
  * @brief System for server network during a game.
  */
 
 #include "CompNetworkServer.hh"
 #include "SysGameNetworkServer.hh"
+#include "Protocol/Client.hh"
+#include "ECSLogLevel.hh"
 
 namespace ECS
 {
@@ -20,12 +22,32 @@ namespace ECS
             if (network)
             {
                 network->_server.update();
-                for (auto& client: network->_server.getConnections())
+                for (auto &client: network->_server.getConnections())
                 {
-                    std::string msg = network->_server.getMessage(client);
-                    if (!msg.empty())
+                    bson::Document doc(network->_server.getMessage(client));
+                    if (!doc.isEmpty() && protocol::client::checkEntityUpdate(doc))
                     {
-                        bson::Document doc(msg);
+                        logs::logger[logs::ECS] << doc.toJSON() << std::endl;
+
+                        Entity::Entity *entity = world.getEntityById(doc["data"]["entity_id"].getValueInt64());
+
+                        bson::Document components = doc["data"]["components"].getValueDocument();
+
+                        for (auto keys : components.getKeys())
+                        {
+                            Component::AComponent *component = entity->getComponent(keys);
+                            if (component)
+                            {
+                                try
+                                {
+                                    component->deserialize(components[keys].getValueDocument());
+                                }
+                                catch (Component::ComponentFlagException &e)
+                                {
+                                    logs::logger[logs::ERRORS] << e.what() << std::endl;
+                                }
+                            }
+                        }
                     }
                 }
             }

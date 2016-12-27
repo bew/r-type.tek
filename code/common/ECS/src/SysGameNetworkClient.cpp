@@ -8,8 +8,6 @@
 #include "SysGameNetworkClient.hh"
 #include "CompNetworkClient.hh"
 #include "Protocol/Server.hh"
-#include "ECSLogLevel.hh"
-#include "Entity.hh"
 
 namespace ECS
 {
@@ -36,7 +34,16 @@ namespace ECS
                     {
                         Component::AComponent *component = entity->getComponent(keys);
                         if (component)
-                            component->deserialize(components[keys].getValueDocument());
+                        {
+                            try
+                            {
+                                component->deserialize(components[keys].getValueDocument());
+                            }
+                            catch (Component::ComponentFlagException &e)
+                            {
+                                logs::logger[logs::ERRORS] << e.what() << std::endl;
+                            }
+                        }
                     }
                 }
             }
