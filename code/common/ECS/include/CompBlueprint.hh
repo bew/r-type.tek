@@ -8,6 +8,7 @@
 
 #include <string>
 #include <unordered_map>
+
 #include "AComponent.hh"
 
 namespace ECS {
@@ -24,15 +25,25 @@ namespace ECS {
     class CompBlueprint : public AComponent {
     public:
 
+      CompBlueprint(int offset = 5);
+
+      ~CompBlueprint(void);
+      
       /**
        * Store each blueprint by name
        */
-      std::unordered_map<std::string, std::vector<ECS::AComponent *>> blueprints;
-
+      std::unordered_map<std::string, std::vector<ECS::Component::AComponent *>> blueprints;
+      
+      int getNextID();
+      
       /**
        * @return ECS::Component::BLUEPRINT
        */
       virtual const std::string &getType() const;
+
+    protected:
+      
+      int nextID;
     };
   }
 }

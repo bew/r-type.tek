@@ -1,9 +1,7 @@
-
 /**
  * @file AComponent.hh
  * @author Alexis.
  * @brief This abstract class is destinated to manipulate the components.
- *
  */
 
 #pragma once
@@ -32,6 +30,12 @@ namespace ECS
          * Mask for test if a componenet is serializable
          */
         static const short SERIALIZABLE_MASK = 1 << 0;
+
+      /**                                                                                                                                                                                 
+       * Mask for test if a componenet is clonable                                                                                                                                    
+       */
+      static const short CLONABLE_MASK = 1 << 1;
+
 
         /**
          * Abstract class for components.
@@ -88,6 +92,13 @@ namespace ECS
              * @throw ComponentFlagException if the component is not serialisable or if the component does not override this method
              */
             virtual void deserialize(const bson::Document& document);
+	  
+	  /**
+	   * Return a new component that behave the same way as the current
+	   * @throw ComponentFlagException if the component is not clonable or if the component does not override this method
+	   */
+	  virtual AComponent *clone(void) const;
+	  
             /**
              * flags of the component
              */

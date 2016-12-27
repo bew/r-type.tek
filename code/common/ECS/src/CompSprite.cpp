@@ -9,10 +9,17 @@
 namespace ECS {
   namespace Component {
 
-    CompSprite::CompSprite(void) :
-      name(""),
-      center(0, 0)
+    const std::string CompSprite::NO_SPRITE = "";
+    
+    CompSprite::CompSprite(const std::string &pname, int x, int y) :
+      AComponent(CLONABLE_MASK),
+      name(pname),
+      center(x, y)
     {};
+
+    AComponent *CompSprite::clone(void) const {
+      return new CompSprite(name, center._x, center._y);
+    }
 
     const std::string &CompSprite::getType() const {
       return Component::SPRITE;

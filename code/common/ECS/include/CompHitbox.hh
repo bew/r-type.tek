@@ -44,6 +44,8 @@ namespace ECS {
 	     */
 	    ~CompHitbox();
 
+	  virtual AComponent *clone(void) const;
+
             /**
              * get the type of component
              * @return string that reprents his type

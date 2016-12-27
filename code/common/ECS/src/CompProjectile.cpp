@@ -9,8 +9,10 @@
 namespace ECS {
   namespace Component {
 
-    CompProjectile::CompProjectile(const std::string &pname = "") :
-      name(pname)
+    CompProjectile::CompProjectile(const std::string &pname) :
+      name(pname),
+      fireRate(12),
+      lastFireTick(-12)
     {};
 
     const std::string &CompProjectile::getType() const {

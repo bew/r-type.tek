@@ -7,6 +7,7 @@
 #pragma once
 
 #include <string>
+#include "Coordinates.hh"
 #include "AComponent.hh"
 
 namespace ECS {
@@ -24,7 +25,7 @@ namespace ECS {
     public:
 
       /**
-       * Construcotr
+       * Constructor
        *
        * @param name The name of the projectile bluprint, default to ""
        */
@@ -34,6 +35,16 @@ namespace ECS {
        * Name of the projectile entity blueprint
        */
       std::string name;
+
+      /**
+       * Rate of fire in tick
+       */
+      int fireRate;
+
+      /**
+       * Last tick at which projectile was fired
+       */
+      unsigned int lastFireTick;
 
       /**
        * @return ECS::Component::PROJECTILE

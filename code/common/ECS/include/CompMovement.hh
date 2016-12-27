@@ -36,13 +36,19 @@ namespace ECS
         public:
             /**
              * Constructor.
+	     *
+	     * @param coop Initial coordonate
+	     * @param speed Initial speed
+	     * @param dir Initial direction
              */
-            CompMovement();
+	  CompMovement(coordinates<int> coor = {0, 0}, float speed = 0, coordinates<float> dir = {0.0, 0.0});
 
             /**
              * Destructor.
              */
             ~CompMovement();
+
+	  AComponent *clone(void) const;
 
             /**
              * get the type of component

@@ -16,7 +16,10 @@ namespace ECS {
         }
 
 	Entity::~Entity()
-	{}
+	{
+	  for (auto component : _components)
+	    delete component.second;
+	}
 	
 	Component::AComponent	*Entity::getComponent(const std::string &type)
 	{
