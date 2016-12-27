@@ -4,7 +4,10 @@ set(LIB_SOURCES AComponent.cpp Entity.cpp World.cpp CompEvent.cpp SysEvent.cpp C
 set(LIB_SOURCES ${LIB_SOURCES} CompLife.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompTick.cpp SysTick.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompNetworkClient.cpp CompNetworkServer.cpp)
+set(LIB_SOURCES ${LIB_SOURCES} SysGameNetworkClient.cpp SysGameNetworkServer.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} ECSLogLevel.cpp)
+set(LIB_SOURCES ${LIB_SOURCES} CompStateMachine.cpp)
+set(LIB_SOURCES ${LIB_SOURCES} SysStateMachine.cpp)
 #graphique
 
 set(LIB_SOURCES ${LIB_SOURCES} CompAsset.cpp CompMusic.cpp)
