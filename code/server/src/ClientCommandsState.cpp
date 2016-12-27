@@ -33,6 +33,11 @@ void ClientCommandsState::revertToPreviousState()
     _currentState = _previousState;
 }
 
+std::shared_ptr<state_machine::State<std::string>> ClientCommandsState::getCurrentState() const
+{
+  return _currentState;
+}
+
 /**
  * Different states of the Player, with transitionnal commands
  *

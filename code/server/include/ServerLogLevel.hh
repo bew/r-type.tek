@@ -9,10 +9,10 @@
 
 #pragma once
 
-#include "Logs/Logger.hh"
 #include <fstream>
 #include <string>
 #include <stdexcept>
+#include "Logs/Logger.hh"
 
 /**
  * Contain logs stuff

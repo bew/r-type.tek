@@ -43,6 +43,13 @@ public:
    */
   void revertToPreviousState();
 
+  /**
+   * Get the current state
+   *
+   * @return The current state
+   */
+  std::shared_ptr<state_machine::State<std::string>> getCurrentState() const;
+
 private:
   /**
    * Initialize the internal state machine
