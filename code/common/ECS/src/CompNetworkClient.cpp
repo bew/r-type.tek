@@ -26,5 +26,15 @@ namespace ECS
         {
             return Component::NETWORK_CLIENT;
         }
+
+        bool CompNetworkClient::isValidAction(const std::string &action)
+        {
+            for (std::string actionFromServer : ACTIONS_FROM_SERVER)
+            {
+                if (actionFromServer == action)
+                    return true;
+            }
+            return false;
+        }
     }
 }

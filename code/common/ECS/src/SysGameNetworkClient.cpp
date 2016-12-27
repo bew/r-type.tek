@@ -22,26 +22,29 @@ namespace ECS
             {
                 network->_clientUDP.update();
                 bson::Document doc(network->_clientUDP.getMessage());
-                if (!doc.isEmpty() && protocol::server::checkEntityUpdate(doc))
+                if (protocol::server::checkEntityUpdate(doc))
                 {
                     logs::logger[logs::ECS] << doc.toJSON() << std::endl;
 
-                    Entity::Entity *entity = world.getEntityById(doc["data"]["entity_id"].getValueInt64());
-
-                    const bson::Document& components = doc["data"]["components"].getValueDocument();
-
-                    for (const auto& key : components.getKeys())
+                    if (Component::CompNetworkClient::isValidAction(doc["header"].getValueDocument()["action"].getValueString()))
                     {
-                        Component::AComponent *component = entity->getComponent(key);
-                        if (component)
+                        Entity::Entity *entity = world.getEntityById(doc["data"]["entity_id"].getValueInt64());
+
+                        const bson::Document &components = doc["data"]["components"].getValueDocument();
+
+                        for (const auto &key : components.getKeys())
                         {
-                            try
+                            Component::AComponent *component = entity->getComponent(key);
+                            if (component)
                             {
-                                component->deserialize(components[key].getValueDocument());
-                            }
-                            catch (Component::ComponentFlagException &e)
-                            {
-                                logs::logger[logs::ERRORS] << e.what() << std::endl;
+                                try
+                                {
+                                    component->deserialize(components[key].getValueDocument());
+                                }
+                                catch (Component::ComponentFlagException &e)
+                                {
+                                    logs::logger[logs::ERRORS] << e.what() << std::endl;
+                                }
                             }
                         }
                     }

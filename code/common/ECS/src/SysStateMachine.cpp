@@ -28,14 +28,20 @@ namespace ECS
 
                 if (protocol::checkMessage(doc))
                 {
-                    std::string action = doc["header"]["action"].getValueString();
-                    if (stateMachine->_sm[stateMachine->_currentState]->has(action))
+                    if (network->isValidAction(doc["header"].getValueDocument()["action"].getValueString()))
                     {
-                        stateMachine->_currentState = stateMachine->_sm[stateMachine->_currentState]->getLink(action);
-                        answer = protocol::answers::ok(doc["header"]["timestamp"].getValueInt64(), answer);
+                        std::string action = doc["header"]["action"].getValueString();
+                        if (stateMachine->_sm[stateMachine->_currentState]->has(action))
+                        {
+                            stateMachine->_currentState = stateMachine->_sm[stateMachine->_currentState]->getLink(
+                                action);
+                            answer = protocol::answers::ok(doc["header"]["timestamp"].getValueInt64(), answer);
+                        }
+                        else
+                            answer = protocol::answers::unauthorized(doc["header"]["timestamp"].getValueInt64());
                     }
-                    else
-                        answer = protocol::answers::unauthorized(doc["header"]["timestamp"].getValueInt64());
+                    else if (doc["header"].getValueDocument()["action"].getValueString() != "Answer")
+                        answer = protocol::answers::notFound(doc["header"]["timestamp"].getValueInt64());
                 }
                 else if (!doc.isEmpty())
                 {
