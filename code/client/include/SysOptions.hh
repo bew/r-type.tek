@@ -40,29 +40,17 @@ namespace ECS {
       /**
        * Hook for updating the configuration file
        *
-       * @tparam repeat Should the hook persist                                                                                                                                             
+       * @tparam repeat Should the hook persist
        */
       template<bool repeat>
       static bool READ_CONFIG_FILE(ECS::Component::CompEvent::IEvent *event, ECS::WorldData &world) {
 	Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
-	std::ifstream file(SysOptions::CONFIG_FILE, std::ios::binary);
-	std::streampos fileSize;
-	std::vector<unsigned char> buffer;
 
-	if (!file.is_open()) {
-	  //logs::logger[logs::ERROR] << "Cannot read from configuration file " << SysOptions::CONFIG_FILE << std::endl;
-	  return repeat;
-	}
-	file.unsetf(std::ios::skipws);
-	file.seekg(0, std::ios::end);
-	fileSize = file.tellg();
-	file.seekg(0, std::ios::beg);
-	buffer.reserve(static_cast<unsigned int>(fileSize));
-	buffer.insert(buffer.begin(),
-		      std::istream_iterator<unsigned char>(file),
-		      std::istream_iterator<unsigned char>());
+	logs::logger[logs::INFO] << "Loading configuration file '" << SysOptions::CONFIG_FILE  << "'" << std::endl;
+	
 	try {
-	  const bson::Document document(buffer);
+	  bson::Document document;
+	  document.readFromFile(SysOptions::CONFIG_FILE, true);
 	  optionsc->setLocale(document["locale"].getValueString());
 	  optionsc->setMusicVolume(static_cast<float>(document["effect"].getValueDouble()));
 	  optionsc->setSoundEffectVolume(static_cast<float>(document["music"].getValueDouble()));
@@ -74,7 +62,7 @@ namespace ECS {
 	  return repeat;
 	}
 	catch (const bson::BsonException &e) {
-	  logs::logger[logs::ERRORS] << "Cannot parse from configuration file '" << e.what() << "'" << std::endl;
+	  logs::logger[logs::ERRORS] << "Cannot load from configuration file '" << e.what() << "'" << std::endl;
 	  return repeat;
 	}
       }
@@ -87,23 +75,27 @@ namespace ECS {
       template<bool repeat>
       static bool WRITE_CONFIG_FILE(ECS::Component::CompEvent::IEvent *event, ECS::WorldData &world) {
 	Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
-	std::ofstream file(SysOptions::CONFIG_FILE, std::ios::binary);
-	if (!file.is_open()) {
-	  logs::logger[logs::ERRORS] << "Cannot write to configuration file " << SysOptions::CONFIG_FILE << std::endl;
-	  return repeat;
+
+	logs::logger[logs::INFO] << "Updating configuration file '" << SysOptions::CONFIG_FILE  << "'" << std::endl;
+	
+	try {
+	  bson::Document options;
+	  if (optionsc) {
+	    options << "locale" << optionsc->getLocale();
+	    options << "effect" << optionsc->getMusicVolume();
+	    options << "music" << optionsc->getSoundEffectVolume();
+	    options << "fullscreen" << optionsc->getFullscreen();
+	    options << "width" << static_cast<int>(optionsc->getWidth());
+	    options << "height" << static_cast<int>(optionsc->getHeight());
+	    options << "aaliasing" << static_cast<int>(optionsc->getAAliasing());
+	    options << "title" << optionsc->getTitle();
+	    options.writeToFile(SysOptions::CONFIG_FILE, true);
+	  }
 	}
-	bson::Document options;
-	if (optionsc && file.is_open()) {
-	  options << "locale" << optionsc->getLocale();
-	  options << "effect" << optionsc->getMusicVolume();
-	  options << "music" << optionsc->getSoundEffectVolume();
-	  options << "fullscreen" << optionsc->getFullscreen();
-	  options << "width" << static_cast<int>(optionsc->getWidth());
-	  options << "height" << static_cast<int>(optionsc->getHeight());
-	  options << "aaliasing" << static_cast<int>(optionsc->getAAliasing());
-	  options << "title" << optionsc->getTitle();
-	  file.write(reinterpret_cast<char*>(&(options.getBuffer()[0])), options.getBuffer().size());
-	}
+	catch (const bson::BsonException &e) {
+          logs::logger[logs::ERRORS] << "Cannot update configuration file '" << e.what() << "'" << std::endl;
+          return repeat;
+        }
 	return repeat;
       }
       

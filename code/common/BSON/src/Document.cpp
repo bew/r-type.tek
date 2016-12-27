@@ -371,7 +371,7 @@ namespace bson {
     }
 
     void Document::writeToFile(const std::string &filename, bool json) const {
-        std::ofstream file(filename, std::ofstream::out | std::ofstream::app);
+      std::ofstream file(filename, std::ofstream::out | std::ofstream::trunc);
         if (!file.is_open())
             throw BsonException(std::string("Can't open file: ") + filename);
         if (!json)

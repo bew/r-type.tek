@@ -36,6 +36,6 @@ namespace ECS {
       }
     }
 
-    const std::string SysOptions::CONFIG_FILE = "configuration.bson";
+    const std::string SysOptions::CONFIG_FILE = "configuration.json";
   }
 }

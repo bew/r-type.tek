@@ -64,6 +64,7 @@ int main(int ac, char**av) {
   ECS::Component::CompMusic *music = new ECS::Component::CompMusic();
   ECS::Component::CompBlueprint *blueprints = new ECS::Component::CompBlueprint();
   ECS::Component::CompTick *tick = new ECS::Component::CompTick();
+  ECS::Component::CompEvent *event = new ECS::Component::CompEvent();
   
   music->setMusic("MilkyWay");
   blueprints->blueprints["dices"] = {
@@ -75,11 +76,17 @@ int main(int ac, char**av) {
   world.addSystemEntityComponent(blueprints);
   world.addSystemEntityComponent(tick);
   world.addSystemEntityComponent(new ECS::Component::CompWindow());
-  world.addSystemEntityComponent(new ECS::Component::CompEvent());
+  world.addSystemEntityComponent(event);
   world.addSystemEntityComponent(new ECS::Component::CompOptions());
   world.addSystemEntityComponent(music);
   world.addSystemEntityComponent(new ECS::Component::CompAsset());
 
+  ///////////////////////// HOOKS EVENTS
+  
+  event->addHook("initilisation", ECS::System::SysOptions::WRITE_CONFIG_FILE<false>);
+  event->addHook("initilisation", ECS::System::SysOptions::READ_CONFIG_FILE<false>);
+  event->addHook("config_update", ECS::System::SysOptions::WRITE_CONFIG_FILE<true>);
+  
   ///////////////////////// ADD ENTITIES TO WORLD
   
   ECS::Entity::Entity *entity = new ECS::Entity::Entity(1);
@@ -98,6 +105,8 @@ int main(int ac, char**av) {
   world._world._gameEntities.push_back(entityFixed);
 
   //////////////////////// RUN THE WORLD
+
+  event->addEvent("initilisation");
   
   while (!tick->kill) {
     world.update();
