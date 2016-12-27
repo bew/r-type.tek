@@ -24,12 +24,30 @@ namespace ECS
             {
                 network->_clientTCP.update();
                 bson::Document doc(network->_clientTCP.getMessage());
+                bson::Document answer;
+
                 if (protocol::checkMessage(doc))
                 {
                     std::string action = doc["header"]["action"].getValueString();
-
                     if (stateMachine->_sm[stateMachine->_currentState]->has(action))
+                    {
                         stateMachine->_currentState = stateMachine->_sm[stateMachine->_currentState]->getLink(action);
+                        answer = protocol::answers::ok(doc["header"]["timestamp"].getValueInt64(), answer);
+                    }
+                    else
+                        answer = protocol::answers::unauthorized(doc["header"]["timestamp"].getValueInt64());
+                }
+                else if (!doc.isEmpty())
+                {
+                    if (doc.hasKey("header") && doc["header"].getValueDocument().hasKey("timestamp"))
+                        answer = protocol::answers::badRequest(doc["header"]["timestamp"].getValueInt64());
+                    else
+                        answer = protocol::answers::badRequest(-1);
+                }
+                if (!answer.isEmpty())
+                {
+                    network->_clientTCP.addMessage(answer.getBufferString());
+                    network->_clientTCP.update();
                 }
             }
         }
