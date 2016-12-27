@@ -104,6 +104,16 @@ namespace state_machine
         }
 
         /**
+         * Test if the state machine has the name of this state in his map
+         * @param name name of the state
+         * @return true if the state is in the map, else fas
+         */
+        bool hasState(const std::string& name)
+        {
+            return _states.find(name) != _states.end();
+        }
+
+        /**
          * return the state who has the name given as parameter
          * @param name name of the state
          * @return shared ptr to the state

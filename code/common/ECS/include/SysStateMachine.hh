@@ -34,6 +34,16 @@ namespace ECS
              * @param world All the data about the world
              */
             virtual void update(ECS::WorldData &world);
+
+            /**
+             * process and analyse the message received
+             * @param doc Document that contains the message received
+             * @param stateMachine component use to pass to next state
+             * @param network component use to receive and send message
+             * @return Document that contains the answer
+             */
+            bson::Document processMessage(const bson::Document& doc, Component::CompStateMachine* stateMachine, Component::CompNetworkClient* network);
+
         };
 
     }
