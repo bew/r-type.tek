@@ -6,8 +6,6 @@
 
 #include <ECSLogLevel.hh>
 #include "SysStateMachine.hh"
-#include "CompNetworkClient.hh"
-#include "CompStateMachine.hh"
 #include "Protocol/Server.hh"
 
 namespace ECS

@@ -15,6 +15,8 @@
 #include "BSON/Document.hh"
 #include "CompOptions.hh"
 #include "Logs/Logger.hh"
+#include "CompNetworkClient.hh"
+#include "CompStateMachine.hh"
 
 namespace ECS
 {
