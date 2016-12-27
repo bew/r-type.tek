@@ -28,8 +28,7 @@ namespace protocol {
          * @param data a bson Document which will be included into the answer
          * @return the bson Document formatted for the following answer
          */
-        bson::Document
-        ok(int64_t timestamp, const bson::Document &data = bson::Document(), const std::string &message = "Ok");
+        bson::Document ok(int64_t timestamp, const bson::Document &data = bson::Document(), const std::string &message = "Ok");
 
         /**
          * Mean that the request which has been received is a bad request (malformed request syntax)
