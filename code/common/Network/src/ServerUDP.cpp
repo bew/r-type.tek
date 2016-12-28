@@ -34,7 +34,6 @@ namespace network
             struct timeval timer;
             timer.tv_sec = ms / 1000;
             timer.tv_usec = (ms - (timer.tv_sec * 1000)) * 1000;
-            timer.tv_usec = 0;
             _selector.select(&timer);
             if (_selector.isReadable(_socket.getSocket()))
             {

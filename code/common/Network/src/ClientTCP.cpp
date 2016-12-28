@@ -70,9 +70,7 @@ namespace network
                 {
                     msg += network::CR;
                     msg += network::LF;
-                    std::cout << msg.length() << "     " << msg << std::endl;
                     size_t nbBytesSend = _socket.send(msg);
-                    std::cout << nbBytesSend << std::endl;
                     _writeBuffer.updatePosition(nbBytesSend);
 
                     if (_writeBuffer.get().empty())
