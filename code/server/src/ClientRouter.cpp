@@ -31,11 +31,17 @@ bool ClientRouter::SignUpHandler(Request & req)
   rdata["password"] >> password;
 
   if (_server->_accounts.count(username))
-    return reply_fail<protocol::answers::badRequest>(req, "Username " + username + " already taken.");
+    {
+      auto const & answer = protocol::answers::badRequest(getTimestamp(req), "Username " + username + " already taken.");
+      req.getClient()->addMessage(answer.getBufferString() + network::CR + network::LF);
+      return false;
+    }
 
   _server->_accounts[username] = std::make_shared<Account>(username, password);
 
-  return reply_ok(req);
+  auto const & answer = protocol::answers::ok(getTimestamp(req));
+  req.getClient()->addMessage(answer.getBufferString() + network::CR + network::LF);
+  return true;
 }
 
 bool ClientRouter::LoginHandler(Request & req)
@@ -47,13 +53,23 @@ bool ClientRouter::LoginHandler(Request & req)
   rdata["password"] >> password;
 
   if (!_server->_accounts.count(username))
-    return reply_fail<protocol::answers::unauthorized>(req, "Unknown username/password");
+    {
+      auto const & answer = protocol::answers::unauthorized(getTimestamp(req), "Unknown username/password");
+      req.getClient()->addMessage(answer.getBufferString() + network::CR + network::LF);
+      return false;
+    }
 
   std::shared_ptr<Account> const account = _server->_accounts.at(username);
   if (! (account->getPassword() == password))
-    return reply_fail<protocol::answers::unauthorized>(req, "Unknown username/password");
+    {
+      auto const & answer = protocol::answers::unauthorized(getTimestamp(req), "Unknown username/password");
+      req.getClient()->addMessage(answer.getBufferString() + network::CR + network::LF);
+      return false;
+    }
 
-  return reply_ok(req);
+  auto const & answer = protocol::answers::ok(getTimestamp(req));
+  req.getClient()->addMessage(answer.getBufferString() + network::CR + network::LF);
+  return true;
 }
 
 bool ClientRouter::LogoutHandler(Request &)
@@ -91,4 +107,9 @@ bool ClientRouter::GameStartHandler(Request &)
 bool ClientRouter::GameLeaveHandler(Request &)
 {
   // send to other players
+}
+
+int64_t ClientRouter::getTimestamp(Request & req) const
+{
+  return req.getHeader()["timestamp"].getValueInt64();
 }
