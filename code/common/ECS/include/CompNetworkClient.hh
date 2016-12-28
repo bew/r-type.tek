@@ -6,8 +6,10 @@
 
 #pragma once
 
+#include <list>
 #include "AComponent.hh"
 #include "Network/ClientUDP.hh"
+#include "Network/ClientTCP.hh"
 
 /**
  * Namespace of ECS.
@@ -24,6 +26,19 @@ namespace ECS
          */
         static const std::string NETWORK_CLIENT = "network client";
 
+        /**
+         * list of action received from server on protocol UDP
+         */
+        static const std::list<std::string> ACTIONS_FROM_SERVER_UDP = {"EntityUpdate"};
+
+        /**
+         * list of action received from server on protocol TCP
+         */
+        static const std::list<std::string> ACTIONS_FROM_SERVER_TCP = {"RoomJoin", "RoomLeave", "RoomKick", "GameStart", "GameLeave"};
+
+        /**
+         * representation of a component network for clients
+         */
         class CompNetworkClient: public AComponent
         {
         public:
@@ -47,14 +62,33 @@ namespace ECS
 
             /**
              * get the type of component
-             * @return string that reprents his type
+             * @return string that represents his type
              */
             virtual const std::string& getType() const;
 
             /**
-             * reprents one client udp
+             * check if the action is in list ACTIONS_FROM_SERVER_TCP
+             * @param action action to check
+             * @return true if action is in list, else false
              */
-            network::ClientUDP _client;
+            static bool isValidActionTcp(const std::string &action);
+
+            /**
+             * check if the action is in list ACTIONS_FROM_SERVER_UDP
+             * @param action action to check
+             * @return true if action is in list, else false
+             */
+            static bool isValidActionUdp(const std::string &action);
+
+            /**
+             * represents one client udp
+             */
+            network::ClientUDP _clientUDP;
+
+            /**
+             * represents one client tcp
+             */
+            network::ClientTCP _clientTCP;
         };
     }
 }
