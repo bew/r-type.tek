@@ -15,65 +15,69 @@
 /**
  * Namespace of ECS.
  */
-namespace ECS {
+namespace ECS
+{
 
     /**
      * Namespace of entities.
      */
-    namespace Entity {
+    namespace Entity
+    {
 
-	/**
-	 * Class implementing an entity.
-	 */
-	class Entity
-	{
-	public:
+        /**
+         * Class implementing an entity.
+         */
+        class Entity
+        {
+        public:
 
-	  Entity(void) = delete;
-	  
-	    /**
-	     * Constructor.
-             * @param id The id of the entity.
-	     */
-	    Entity(unsigned long id);
+            Entity(void) = delete;
 
-	  /**
-	     * Destructor.
-	     */
-	    ~Entity();
+            /**
+             * Constructor.
+                 * @param id The id of the entity.
+             */
+            Entity(int64_t id);
 
-	    Entity(const Entity &) = delete;
-	    Entity &operator=(const Entity &) = delete;
+            /**
+               * Destructor.
+               */
+            ~Entity();
 
-	    /**
-	     * Get the entity's component of a given type.
-	     * @param type The type of component requested.
-	     * @return The component requested, or a nullptr if it doesn't exist.
-	     */
-	    Component::AComponent	*getComponent(const std::string &type);
+            Entity(const Entity &) = delete;
+
+            Entity &operator=(const Entity &) = delete;
+
+            /**
+             * Get the entity's component of a given type.
+             * @param type The type of component requested.
+             * @return The component requested, or a nullptr if it doesn't exist.
+             */
+            Component::AComponent *getComponent(const std::string &type);
 
             /**
              * Get the id of the entity.
              * @return the id of the entity.
              */
-            unsigned long       getId() const;
+            int64_t getId() const;
 
             /**
-	     * add a component.
-	     * @param comp the component.
-	     */
-            void	addComponent(ECS::Component::AComponent *comp);
-	private:
+    	     * add a component.
+	         * @param comp the component.
+	         */
+            void addComponent(ECS::Component::AComponent *comp);
+
+        private:
             /**
              * Id of the entity.
              */
-            const unsigned long       _id;
+            const int64_t _id;
 
             /**
-	     * Map of components of the entity.
-	     */
-	    std::map<const std::string, Component::AComponent *>	_components;
-	};
+      	     * Map of components of the entity.
+	         */
+            std::map<const std::string, Component::AComponent *> _components;
+        };
 
     }
 }

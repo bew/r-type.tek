@@ -33,8 +33,9 @@ namespace network
 
         /**
          * test if sockets are writable or readable and call send or recv
+         * @param ms timeout in milliseconds
          */
-        virtual void update() = 0;
+        virtual void update(unsigned long ms) = 0;
 
         /**
          * call the bind method of TCP or UDP Socket

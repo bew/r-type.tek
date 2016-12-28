@@ -12,6 +12,7 @@
 #include "Entity.hh"
 #include "ISystem.hh"
 #include "CompTick.hh"
+#include "Logs/Logger.hh"
 
 namespace ECS {
   namespace System {

@@ -30,9 +30,9 @@ namespace graphic {
      */
     struct FrameDescriptions {
       /**
-       * The animation frequency
+       * The animation frequency (tick between each frame)
        */
-      double frequency;
+      int frequency;
       /**
        * The reactangles of each frame if the animation
        */

@@ -110,7 +110,7 @@ namespace ECS
 	   * @param eventName The name of the event that will fire the function
 	   * @param event The event passed to hooks for eventName, if there are some
 	   */
-	  void addEvent(const std::string &eventName, IEvent *event);
+	  void addEvent(const std::string &eventName, IEvent *event = nullptr);
 
 	  /**
 	   * Add a hook for eventName.
@@ -123,7 +123,7 @@ namespace ECS
 	   * @param eventName The name of the event that will fire the function
 	   * @param event The event passed to hooks for eventName, if there are some
 	   */
-	  void addSameTickEvent(const std::string &eventName, IEvent *event);
+	  void addSameTickEvent(const std::string &eventName, IEvent *event = nullptr);
 
 	  /**
 	   * get the type of component

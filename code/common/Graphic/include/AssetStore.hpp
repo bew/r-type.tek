@@ -17,6 +17,7 @@
 #include "MusicAsset.hh"
 #include "SoundAsset.hh"
 #include "FSWatcher/AFileSystemWatcher.hh"
+#include "Logs/Logger.hh"
 
 /**
  * contain graphic stuff

@@ -128,7 +128,11 @@ namespace ECS {
        * True to fire window_config_changed
        */
       bool _windowChanged;
-      
+
+      /**
+       * Has the configuration been loaded
+       */
+      bool loaded;
       
     protected:
       /**
