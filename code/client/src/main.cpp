@@ -8,7 +8,7 @@
 #include "SysWindow.hh"
 #include "CompWindow.hh"
 #include "SysAsset.hh"
-#include "ECS/CompAsset.hh"
+#include "CompAsset.hh"
 #include "SysMusic.hh"
 #include "ECS/CompMusic.hh"
 #include "SysSprite.hh"

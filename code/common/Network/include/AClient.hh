@@ -35,8 +35,9 @@ namespace network
 
         /**
          * test if socket is writable or readable and call send or recv
+         * @param ms timeout in milliseconds
          */
-        virtual void update() = 0;
+        virtual void update(unsigned long ms) = 0;
 
         /**
          * add message to the write buffer

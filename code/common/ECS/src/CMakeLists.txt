@@ -15,9 +15,12 @@ set(LIB_SOURCES ${LIB_SOURCES} SysStateMachine.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} AssetLogLevel.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompType.cpp)
 
-set(LIB_DEPENDENCIES Network BSON Logs Graphic)
+set(LIB_DEPENDENCIES Network BSON Logs Graphic Protocol)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCES})
 target_link_libraries(${LIB_NAME} ${LIB_DEPENDENCIES})
 
 copy(${LIB_NAME} ${LIB_INCLUDE} ${RT_COMMON_INCLUDES}/${LIB_NAME})
+add_custom_command(TARGET ${LIB_NAME} PRE_BUILD
+		COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_SOURCE_DIR}/../../StateMachine/include ${RT_COMMON_INCLUDES}/StateMachine
+	)

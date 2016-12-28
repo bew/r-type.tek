@@ -57,9 +57,10 @@ namespace network
         /**
          * test if socket is writable or readable and call send or recv
          *
+         * @param ms timeout in milliseconds
          * @throw SocketException if select, recv or send failed or if client receive a message by unexpected server
          */
-        virtual void update();
+        virtual void update(unsigned long ms = 10000);
 
         /**
          * add message to the write buffer
