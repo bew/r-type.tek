@@ -13,6 +13,7 @@
 #include "ECS/CompMusic.hh"
 #include "SysSprite.hh"
 #include "ECS/CompSprite.hh"
+#include "ECS/CompCollision.hh"
 #include "CompOptions.hh"
 #include "SysKeyboard.hh"
 #include "ECS/SysController.hh"
@@ -24,6 +25,7 @@
 #include "ECS/SysTick.hh"
 #include "ECS/CompMovement.hh"
 #include "ECS/SysMovement.hh"
+#include "ECS/SysCollision.hh"
 #include "ECS/CompHitbox.hh"
 #include "ECS/CompBlueprint.hh"
 #include "ECS/CompProjectile.hh"
@@ -34,7 +36,6 @@ int main(int ac, char**av) {
   ECS::World world;  
   logs::logger.registerLogLevel(&logs::assetLogLevel);
   logs::logger.registerBasicsLogLevel();
-
   
   ////////////////////////// ADD SYSTEMS TO WORLD
   

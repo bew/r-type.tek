@@ -25,26 +25,29 @@ namespace ECS
                 for (auto &client: network->_server.getConnections())
                 {
                     bson::Document doc(network->_server.getMessage(client));
-                    if (!doc.isEmpty() && protocol::client::checkEntityUpdate(doc))
+                    if (protocol::client::checkEntityUpdate(doc))
                     {
                         logs::logger[logs::ECS] << doc.toJSON() << std::endl;
 
-                        Entity::Entity *entity = world.getEntityById(doc["data"]["entity_id"].getValueInt64());
-
-                        const bson::Document& components = doc["data"]["components"].getValueDocument();
-
-                        for (const auto& key : components.getKeys())
+                        if (Component::CompNetworkServer::isValidActionUdp(doc["header"]["action"].getValueString()))
                         {
-                            Component::AComponent *component = entity->getComponent(key);
-                            if (component)
+                            Entity::Entity *entity = world.getEntityById(doc["data"]["entity_id"].getValueInt64());
+
+                            const bson::Document &components = doc["data"]["components"].getValueDocument();
+
+                            for (const std::string &key : components.getKeys())
                             {
-                                try
+                                Component::AComponent *component = entity->getComponent(key);
+                                if (component)
                                 {
-                                    component->deserialize(components[key].getValueDocument());
-                                }
-                                catch (Component::ComponentFlagException &e)
-                                {
-                                    logs::logger[logs::ERRORS] << e.what() << std::endl;
+                                    try
+                                    {
+                                        component->deserialize(components[key].getValueDocument());
+                                    }
+                                    catch (Component::ComponentFlagException &e)
+                                    {
+                                        logs::logger[logs::ERRORS] << e.what() << std::endl;
+                                    }
                                 }
                             }
                         }

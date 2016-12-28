@@ -28,7 +28,7 @@ namespace ECS
         /**
          * representation of a component state machine
          */
-        class CompStateMachine: public AComponent
+        class CompStateMachine : public AComponent
         {
         public:
             /**
@@ -67,7 +67,12 @@ namespace ECS
             /**
              * Contains the name of the current state
              */
-             std::string _currentState;
+            std::string _currentState;
+
+            /**
+             * Contains the name of the next state
+             */
+            std::string _nextState;
         };
 
     }
