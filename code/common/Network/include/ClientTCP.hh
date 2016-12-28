@@ -69,7 +69,14 @@ namespace network
          * @param ms timeout in milliseconds
          * @throw SocketException if select, recv or send failed
          */
-        virtual void update(unsigned long ms = 1000);
+        virtual void update(unsigned long ms = 1);
+
+
+        /**
+         * getter for selector
+         * @return ref to selector
+         */
+        NetworkSelect& getSelector();
 
         /**
          * add message to the write buffer

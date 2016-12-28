@@ -12,8 +12,7 @@ namespace network
 {
 
     ServerTCP::ServerTCP() : _socketServer()
-    {
-    }
+    {}
 
     ServerTCP::~ServerTCP()
     {
@@ -45,30 +44,12 @@ namespace network
 
             for (auto client = _clients.begin(); client != _clients.end(); ++client)
             {
-                if (_selector.isReadable((*client)->getSocket().getSocket()))
+                (*client)->update(0);
+                if ((*client)->isClose())
                 {
-                    std::string msg = (*client)->getSocket().recv();
-                    (*client)->getReadBuffer().fill(msg);
-                    if ((*client)->isClose())
-                    {
-                        client = _clients.erase(client);
-                        if (client == _clients.end())
-                            break;
-                    }
-                }
-                if (_selector.isWritable((*client)->getSocket().getSocket()))
-                {
-                    std::string msg;
-                    if (!(msg = (*client)->getWriteBuffer().get()).empty())
-                    {
-                        msg += network::CR;
-                        msg += network::LF;
-                        size_t nbBytesSend = (*client)->getSocket().send(msg);
-                        (*client)->getWriteBuffer().updatePosition(nbBytesSend);
-
-                        if ((*client)->getWriteBuffer().get().empty())
-                            _selector.unmonitor((*client)->getSocket().getSocket(), NetworkSelect::WRITE);
-                    }
+                    client = _clients.erase(client);
+                    if (client == _clients.end())
+                        break;
                 }
             }
         }
@@ -92,8 +73,9 @@ namespace network
     void ServerTCP::accept()
     {
         Socket_t newConnection = _socketServer.accept();
-        _selector.monitor(newConnection, NetworkSelect::READ);
-        _clients.push_back(std::shared_ptr<ClientTCP>(new ClientTCP(newConnection)));
+        std::shared_ptr<ClientTCP> newClient = std::make_shared<ClientTCP>(newConnection);
+        newClient->getSelector().monitor(newConnection, NetworkSelect::READ);
+        _clients.push_back(newClient);
     }
 
     std::string ServerTCP::getMessage(const std::shared_ptr<ClientTCP> client)
@@ -104,8 +86,6 @@ namespace network
     void ServerTCP::addMessage(const std::shared_ptr<ClientTCP> client, const std::string &message)
     {
         client->addMessage(message);
-        if (*(--message.end()) == network::CR || *(--message.end()) == network::LF)
-            _selector.monitor(client->getSocket().getSocket(), NetworkSelect::WRITE);
     }
 
     const std::vector<std::shared_ptr<ClientTCP>> &ServerTCP::getConnections() const

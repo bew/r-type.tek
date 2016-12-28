@@ -33,12 +33,12 @@ void ClientTCP::execLoop()
 
     _client.addMessage(messageSerialized);
 
-    _client.update();
+    _client.update(0);
 
     std::string ok = "";
 
     while ((ok = _client.getMessage()) == "")
-        _client.update();
+        _client.update(0);
 
     std::vector<unsigned char> bufferReceived(ok.begin(), ok.end());
     bson::Document messageReceived(bufferReceived);
