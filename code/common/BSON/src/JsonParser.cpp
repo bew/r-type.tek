@@ -124,6 +124,8 @@ namespace bson {
             return false;
         }
 
+        while (this->readDigit());
+
         std::string number;
         this->endCapture("readDoubleTag", number);
         double floating = std::stod(number);

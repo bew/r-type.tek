@@ -69,6 +69,19 @@ namespace bson {
     };
 
     /**
+     * A map where the types are the keys and their name are the values
+     */
+    static const std::map<bson::type, std::string> enumString = {
+            {bson::DOUBLE, "double"},
+            {bson::STRING, "string"},
+            {bson::DOCUMENT, "document"},
+            {bson::BOOL, "bool"},
+            {bson::NULLVALUE, "null"},
+            {bson::INT32, "int32"},
+            {bson::INT64, "int64"},
+    };
+
+    /**
      * The generic exception for BSON
      */
     class BsonException : public std::runtime_error {

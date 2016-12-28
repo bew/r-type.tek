@@ -36,7 +36,8 @@ namespace bson {
 
     void Document::Element::isRightType(bson::type valueType) const {
         if (valueType != _valueType)
-            throw BsonException("The value store inside the element is not the same as requested.");
+            throw BsonException(std::string("The value store inside the element is not the same as requested (key: ") +
+            _key + std::string(", value type: ") + enumString.at(_valueType) + std::string(")"));
     }
 
     bson::type Document::Element::getValueType() const {
@@ -371,7 +372,7 @@ namespace bson {
     }
 
     void Document::writeToFile(const std::string &filename, bool json) const {
-        std::ofstream file(filename, std::ofstream::out | std::ofstream::app);
+      std::ofstream file(filename, std::ofstream::out | std::ofstream::trunc);
         if (!file.is_open())
             throw BsonException(std::string("Can't open file: ") + filename);
         if (!json)
@@ -576,7 +577,7 @@ namespace bson {
             if (element.getKey() == key)
                 return element;
         }
-        throw BsonException("No such key inside the Document");
+        throw BsonException(std::string("No such key \"") + key + std::string("\" inside the Document"));
     }
 
     bool Document::operator==(const Document &document) const {

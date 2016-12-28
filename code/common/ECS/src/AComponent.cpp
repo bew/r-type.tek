@@ -36,7 +36,7 @@ namespace ECS
         bson::Document AComponent::serialize() const
         {
             if (this->hasFlag(SERIALIZABLE_MASK))
-                throw ComponentFlagException("Component does not override this method");
+                throw ComponentFlagException("Component does not override serialize method");
             else
                 throw ComponentFlagException("Component is not serializable");
         }
@@ -44,9 +44,17 @@ namespace ECS
         void AComponent::deserialize(const bson::Document& document)
         {
             if (this->hasFlag(SERIALIZABLE_MASK))
-                throw ComponentFlagException("Component does not override this method");
+                throw ComponentFlagException("Component does not override deserialize method");
             else
                 throw ComponentFlagException("Component is not serializable");
         }
+      
+      AComponent *AComponent::clone(void) const {
+	if (this->hasFlag(CLONABLE_MASK))
+	  throw ComponentFlagException("Component does not override clone method");
+	else
+	  throw ComponentFlagException("Component is not clonable");
+      }
+      
     }
 }
