@@ -7,21 +7,28 @@
 #include <iostream>
 #include "SysWindow.hh"
 #include "CompWindow.hh"
+
 #include "SysAsset.hh"
-#include "CompAsset.hh"
-#include "CompOptions.hh"
+#include "ECS/CompAsset.hh"
 #include "SysMusic.hh"
-#include "CompMusic.hh"
+#include "ECS/CompMusic.hh"
 #include "SysSprite.hh"
-#include "CompSprite.hh"
+#include "ECS/CompSprite.hh"
+#include "ECS/CompCollision.hh"
+
+#include "CompOptions.hh"
 #include "SysController.hh"
 #include "SysOptions.hh"
+#include "CompController.hh"
+
 #include "ECS/CompEvent.hh"
 #include "ECS/SysEvent.hh"
 #include "ECS/CompTick.hh"
 #include "ECS/SysTick.hh"
 #include "ECS/CompMovement.hh"
 #include "ECS/SysMovement.hh"
+#include "ECS/SysCollision.hh"
+#include "ECS/CompHitbox.hh"
 #include "Graphic/AssetStore.hpp"
 
 int main(int ac, char **av)

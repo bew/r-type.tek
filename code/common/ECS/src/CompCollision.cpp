@@ -16,6 +16,11 @@ namespace ECS {
         CompCollision::~CompCollision()
         {}
         
+        bool CompCollision::Collision::operator==(const CompCollision::Collision &other)
+        {
+            return this->entity_a == other.entity_a && this->entity_b == other.entity_b;
+        }
+
         const std::string &CompCollision::getType() const
         {
             return COLLISION;
@@ -32,5 +37,6 @@ namespace ECS {
                 for (auto &column : row)
                     column.clear();
         }
+
     }
 }

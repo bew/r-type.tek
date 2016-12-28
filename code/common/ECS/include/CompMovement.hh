@@ -36,8 +36,10 @@ namespace ECS
         public:
             /**
              * Constructor.
+	     *
+	     * @parap coor Initial coordonate
              */
-            CompMovement();
+	  CompMovement(coordinates<int> coor = {0, 0});
 
             /**
              * Destructor.

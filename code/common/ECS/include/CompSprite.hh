@@ -24,10 +24,16 @@ namespace ECS {
     class CompSprite : public AComponent {
     public:
 
+      static const std::string NO_SPRITE;
+      
       /**
-       * Default constructor
+       * Constructor
+       *
+       * @param pname Name of sprite, default to CompSprite::NO_SPRITE
+       * @param x X center offset of the sprite Default to 0
+       * @param y Y center offset of the sprite Defautl to 0
        */
-      CompSprite(void);
+      CompSprite(const std::string &pname = "", int x = 0, int y = 0);
       
       /**
        * The name of the sprite, as reference to asset store.
