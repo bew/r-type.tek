@@ -49,12 +49,12 @@ void graphic::GroupedAssetStore::loadRessource<graphic::AnimatedSpriteAsset>(std
     if ((*i).second == FileSystemWatcher::Add) {
       try {
 	if (ressourceExist(_root + "/" + directory + "/" + this->_locale + "/" + (*i).first) &&
-	    ressourceExist(_root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" + this->_locale + "/" + (*i).first))
+	    ressourceExist(_root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" + this->_locale + "/" + getRessourceName((*i).first) + graphic::AssetStore::ANIMATED_EXTENSION))
 	  store.emplace(std::piecewise_construct,
 			std::forward_as_tuple(getRessourceName((*i).first)),
 			std::forward_as_tuple(_root + "/" + directory + "/" + this->_locale + "/" + (*i).first,
 					      _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
-					      this->_locale + "/" + getRessourceName((*i).first) +  graphic::AssetStore::ANIMATED_EXTENSION
+					      this->_locale + "/" + getRessourceName((*i).first) + graphic::AssetStore::ANIMATED_EXTENSION
 					      )
 			);
 	else

@@ -1,6 +1,6 @@
 {
     "default": {
-	"frequency": 3,
+	"frequency": 10,
 	"frames": [
 	{
 	    "x": 0,

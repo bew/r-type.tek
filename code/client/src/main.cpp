@@ -38,11 +38,11 @@ int main(int ac, char**av) {
   
   ////////////////////////// ADD SYSTEMS TO WORLD
   
-  // control time
+  // control time, Has absolut priority over any other system
   world.addSystem(new ECS::System::SysTick());
-  // process options (read/write/events)
+  // process options (read/write/events). Should be initilized before system that use options to avoid doing the same things multiple things
   world.addSystem(new ECS::System::SysOptions());
-  // open, reopen, clear and display window
+  // open, reopen, clear and display window. Should be initilized before running system that draw things
   world.addSystem(new ECS::System::SysWindow());
   // transform input to data(up, down, fire, left, right)
   world.addSystem(new ECS::System::SysKeyboard());
@@ -80,12 +80,6 @@ int main(int ac, char**av) {
   world.addSystemEntityComponent(new ECS::Component::CompOptions());
   world.addSystemEntityComponent(music);
   world.addSystemEntityComponent(new ECS::Component::CompAsset());
-
-  ///////////////////////// HOOKS EVENTS
-  
-  event->addHook("initilisation", ECS::System::SysOptions::WRITE_CONFIG_FILE<false>);
-  event->addHook("initilisation", ECS::System::SysOptions::READ_CONFIG_FILE<false>);
-  event->addHook("config_update", ECS::System::SysOptions::WRITE_CONFIG_FILE<true>);
   
   ///////////////////////// ADD ENTITIES TO WORLD
   
@@ -105,8 +99,6 @@ int main(int ac, char**av) {
   world._world._gameEntities.push_back(entityFixed);
 
   //////////////////////// RUN THE WORLD
-
-  event->addEvent("initilisation");
   
   while (!tick->kill) {
     world.update();

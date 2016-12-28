@@ -14,6 +14,11 @@ namespace ECS {
       Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
       
       if (eventc && optionsc) {
+	if (!optionsc->loaded) {
+	  SysOptions::READ_CONFIG_FILE<false>(nullptr, world);
+	  optionsc->loaded = true;
+	  eventc->addHook("config_update", SysOptions::WRITE_CONFIG_FILE<true>);
+	}
 	if (optionsc->_localeChanged || optionsc->_effectVolumeChanged || optionsc->_musicVolumeChanged || optionsc->_windowChanged) {
           eventc->addEvent("config_update", nullptr);
         }

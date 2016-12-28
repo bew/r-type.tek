@@ -62,7 +62,8 @@ namespace ECS {
 	  return repeat;
 	}
 	catch (const bson::BsonException &e) {
-	  logs::logger[logs::ERRORS] << "Cannot load from configuration file '" << e.what() << "'" << std::endl;
+	  logs::logger[logs::ERRORS] << "Cannot load from configuration file (file is corrupted or absent)'" << e.what() << "'" << std::endl;
+	  WRITE_CONFIG_FILE<false>(nullptr, world);
 	  return repeat;
 	}
       }
