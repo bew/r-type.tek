@@ -209,7 +209,7 @@ const std::string graphic::AssetStore::MUSIC_EXTENSION = ".ogg";
 
 const std::string graphic::AssetStore::SOUND_EXTENSION = ".ogg";
 
-const std::string graphic::AssetStore::SPRITE_EXTENSION = ".bmp";
+const std::string graphic::AssetStore::SPRITE_EXTENSION = ".png";
 
 const std::string graphic::AssetStore::ANIMATED_EXTENSION = ".anim";
 

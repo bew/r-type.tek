@@ -10,6 +10,8 @@
 #include <unordered_map>
 
 #include "AComponent.hh"
+#include "CompMovement.hh"
+#include "Entity.hh"
 
 namespace ECS {
   namespace Component {
@@ -52,8 +54,21 @@ namespace ECS {
        */
       virtual const std::string &getType() const;
 
+      /**
+       * Helper function
+       *
+       * @param name Name of the blueprint to spawn
+       * @param owner Optionnal owner.
+       * @return The new entity
+       * @throw ComponentFlagException if the entity couldn't be spawn
+       */
+      Entity::Entity *spawn(const std::string &name, Entity::Entity *owner = nullptr);
+
     protected:
       
+      /**
+       * The next id to return from getNextID
+       */
       int nextID;
     };
   }

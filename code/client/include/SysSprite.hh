@@ -36,6 +36,15 @@ namespace ECS {
        * @param world All the data about the world
        */
       virtual void update(ECS::WorldData &world);
+
+    protected:
+      /**
+       * Draw a single entity.
+       *
+       * @param entity The entity to draw
+       * @param world All the data about the world
+       */
+      void update(Entity::Entity *entity, ECS::WorldData &world);
     };
   }
 }
