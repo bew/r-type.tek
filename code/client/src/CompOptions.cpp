@@ -21,7 +21,8 @@ namespace ECS {
       _height(720),
       _aaliasing(0),
       _title("Aru Taipu"),
-      _windowChanged(false)
+      _windowChanged(false),
+      loaded(false)
     {};
 
     const std::string &CompOptions::getType() const {

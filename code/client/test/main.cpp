@@ -14,10 +14,9 @@ TEST(clientTest, loginSinup)
     logs::logger.registerLogLevel(&logs::ecsLogLevel);
 
     ECS::World world;
-    network::SockAddr addr(26130, "127.0.0.1");
-    ECS::Component::CompNetworkClient* networkClient = new ECS::Component::CompNetworkClient("127.0.0.1", 26130);
+    ECS::Component::CompNetworkClient* networkClient = new ECS::Component::CompNetworkClient("10.41.175.111", 50833);
     world._world._systemEntity.addComponent(networkClient);
-    networkClient->_clientTCP.connect(addr);
+    networkClient->_clientTCP.connect(networkClient->_clientUDP.getAddr());
     ECS::Component::CompStateMachine *stateMachine = new ECS::Component::CompStateMachine;
     std::shared_ptr<state_machine::State<std::string>> sAuth = std::make_shared<state_machine::State<std::string>>(
         "s_auth");

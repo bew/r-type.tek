@@ -15,7 +15,10 @@ namespace ECS
     {}
 
     WorldData::~WorldData()
-    {}
+    {
+      for (Entity::Entity *entity : _gameEntities)
+	delete entity;
+    }
 
     World::World()
         : _systems(), _world()
@@ -24,6 +27,8 @@ namespace ECS
 
     World::~World()
     {
+      for (System::ISystem *system : _systems)
+	delete system;
     }
 
     void World::addSystem(System::ISystem *system)

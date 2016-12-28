@@ -13,7 +13,7 @@ namespace ECS {
       Component::CompTick *tickc = dynamic_cast<Component::CompTick*>(world._systemEntity.getComponent(Component::TICK));
       Component::CompEvent *eventc = dynamic_cast<Component::CompEvent*>(world._systemEntity.getComponent(Component::EVENT));
       if (tickc) {
-	if (tickc->tick = 0) {
+	if (tickc->tick == 0) {
 	  tickc->start = std::chrono::high_resolution_clock::now();
 	  tickc->previous = tickc->start;
 	  tickc->current = tickc->start;
