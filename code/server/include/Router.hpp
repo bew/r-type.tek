@@ -70,16 +70,18 @@ public:
 
 protected:
   /**
-   * Reference to the packet header
+   * The packet header
    */
-  bson::Document const & _header;
+  bson::Document _header;
 
   /**
-   * Reference to the packet data
+   * The packet data
    */
-  bson::Document const & _data;
+  bson::Document _data;
 
-
+  /**
+   * The client associated with the request
+   */
   std::shared_ptr<network::ClientTCP> _client;
 };
 

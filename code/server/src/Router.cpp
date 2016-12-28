@@ -27,6 +27,11 @@ bson::Document const & Request::getData() const
   return _data;
 }
 
+std::shared_ptr<network::ClientTCP> Request::getClient() const
+{
+  return _client;
+}
+
 //== Router implementation ==================================================
 
 Router::Router() :

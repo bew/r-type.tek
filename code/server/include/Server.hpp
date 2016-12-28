@@ -71,14 +71,16 @@ protected:
   std::map<std::shared_ptr<network::ClientTCP>, std::shared_ptr<Player>> _players;
 
   /**
-   * Store the registered accounts
+   * Store the association between a username and a registered accounts
+   * There cannot be 2 account with the same username
    */
-  std::vector<std::shared_ptr<Account>> _accounts;
+  std::map<std::string, std::shared_ptr<Account>> _accounts;
 
   /**
    * Store the opened rooms
    */
   std::vector<Room> _rooms;
+  //std::map<std::string, Room> _rooms;
 
   /**
    * The server name for network identification
@@ -94,6 +96,8 @@ protected:
    * The router for client's packets
    */
   ClientRouter _clientRouter;
+
+  friend ClientRouter;
 };
 
 #endif /* !SERVER_HPP_ */

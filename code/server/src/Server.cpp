@@ -85,9 +85,10 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
     }
 
   if (! _clientRouter.routePacket(packet, client))
-    state.revertToPreviousState();
-  else
-    logs::logger[logs::SERVER] << "Client state is now '" << state.getCurrentState()->getName() << "'" << std::endl;
+    {
+      state.revertToPreviousState();
+      return;
+    }
+  logs::logger[logs::SERVER] << "Client state is now '" << state.getCurrentState()->getName() << "'" << std::endl;
+  client;
 }
-
-//logs::logger[logs::SERVER] << "" << std::endl;
