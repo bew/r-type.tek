@@ -10,7 +10,7 @@
 #include "ECS/Entity.hh"
 #include "ECS/ISystem.hh"
 #include "Graphic/SpriteAsset.hh"
-#include "ECS/CompAsset.hh"
+#include "CompAsset.hh"
 #include "CompWindow.hh"
 #include "ECS/CompSprite.hh"
 #include "ECS/CompMovement.hh"

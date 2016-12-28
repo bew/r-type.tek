@@ -10,7 +10,7 @@
 #include "ECS/Entity.hh"
 #include "ECS/ISystem.hh"
 #include "ECS/CompEvent.hh"
-#include "ECS/CompAsset.hh"
+#include "CompAsset.hh"
 #include "CompOptions.hh"
 
 namespace ECS {
