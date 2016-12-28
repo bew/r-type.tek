@@ -4,8 +4,6 @@
  * @brief representation of server tcp
  */
 
-
-
 #include <iostream>
 #include "ServerTCP.hh"
 #include "SocketException.hh"
@@ -14,8 +12,7 @@ namespace network
 {
 
     ServerTCP::ServerTCP() : _socketServer()
-    {
-    }
+    {}
 
     ServerTCP::~ServerTCP()
     {
@@ -26,7 +23,7 @@ namespace network
 
     std::shared_ptr<ClientTCP> ServerTCP::getFirstClientWithMessage() const
     {
-        for (auto& client : _clients)
+        for (auto &client : _clients)
         {
             if (client->hasMessage())
                 return client;
@@ -34,43 +31,25 @@ namespace network
         return nullptr;
     }
 
-    void ServerTCP::update()
+    void ServerTCP::update(unsigned long ms)
     {
         try
         {
             struct timeval timer;
-            timer.tv_sec = 1;
-            timer.tv_usec = 0;
+            timer.tv_sec = ms / 1000;
+            timer.tv_usec = (ms - (timer.tv_sec * 1000)) * 1000;
             _selector.select(&timer);
             if (_selector.isReadable(_socketServer.getSocket()))
                 accept();
 
             for (auto client = _clients.begin(); client != _clients.end(); ++client)
             {
-                if (_selector.isReadable((*client)->getSocket().getSocket()))
+                (*client)->update(0);
+                if ((*client)->isClose())
                 {
-                    std::string msg = (*client)->getSocket().recv();
-                    (*client)->getReadBuffer().fill(msg);
-                    if ((*client)->isClose())
-                    {
-                        client = _clients.erase(client);
-                        if (client == _clients.end())
-                            break;
-                    }
-                }
-                if (_selector.isWritable((*client)->getSocket().getSocket()))
-                {
-                    std::string msg;
-                    if (!(msg = (*client)->getWriteBuffer().get()).empty())
-                    {
-                        msg += network::CR;
-                        msg += network::LF;
-                        size_t nbBytesSend = (*client)->getSocket().send(msg);
-                        (*client)->getWriteBuffer().updatePosition(nbBytesSend);
-
-                        if ((*client)->getWriteBuffer().get().empty())
-                            _selector.unmonitor((*client)->getSocket().getSocket(), NetworkSelect::WRITE);
-                    }
+                    client = _clients.erase(client);
+                    if (client == _clients.end())
+                        break;
                 }
             }
         }
@@ -80,7 +59,7 @@ namespace network
         }
     }
 
-    void ServerTCP::bind(SockAddr& hostInfos)
+    void ServerTCP::bind(SockAddr &hostInfos)
     {
         _socketServer.bind(hostInfos);
         _selector.monitor(_socketServer.getSocket(), NetworkSelect::READ);
@@ -94,8 +73,9 @@ namespace network
     void ServerTCP::accept()
     {
         Socket_t newConnection = _socketServer.accept();
-        _selector.monitor(newConnection, NetworkSelect::READ);
-        _clients.push_back(std::shared_ptr<ClientTCP>(new ClientTCP(newConnection)));
+        std::shared_ptr<ClientTCP> newClient = std::make_shared<ClientTCP>(newConnection);
+        newClient->getSelector().monitor(newConnection, NetworkSelect::READ);
+        _clients.push_back(newClient);
     }
 
     std::string ServerTCP::getMessage(const std::shared_ptr<ClientTCP> client)
@@ -106,8 +86,6 @@ namespace network
     void ServerTCP::addMessage(const std::shared_ptr<ClientTCP> client, const std::string &message)
     {
         client->addMessage(message);
-        if (*(--message.end()) == network::CR || *(--message.end()) == network::LF)
-            _selector.monitor(client->getSocket().getSocket(), NetworkSelect::WRITE);
     }
 
     const std::vector<std::shared_ptr<ClientTCP>> &ServerTCP::getConnections() const

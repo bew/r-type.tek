@@ -9,7 +9,7 @@
 #include "ECS/World.hh"
 #include "ECS/Entity.hh"
 #include "ECS/ISystem.hh"
-#include "ECS/CompAsset.hh"
+#include "CompAsset.hh"
 #include "ECS/CompMusic.hh"
 #include "CompOptions.hh"
 #include "Logs/Logger.hh"

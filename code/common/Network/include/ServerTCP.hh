@@ -49,9 +49,10 @@ namespace network
         /**
          * test if sockets are writable or readable and call send or recv
          *
+         * @param ms timeout in milliseconds
          * @throw SocketException if select, recv or send failed
          */
-        virtual void update();
+        virtual void update(unsigned long ms = 1);
 
         /**
          * call the bind method of SocketTCP

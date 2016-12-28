@@ -53,6 +53,8 @@ namespace ECS
             if (network && stateMachine)
             {
                 network->_clientTCP.update();
+                if (!network->_clientTCP.hasMessage())
+                    return;
                 bson::Document doc(network->_clientTCP.getMessage());
                 bson::Document answer;
 

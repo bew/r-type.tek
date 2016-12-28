@@ -31,7 +31,7 @@ namespace logs
     /**
      * ECS log level class for Logger
      */
-    class ECSLogLevel
+    class ECSLogLevel: public ALogLevel
     {
     public:
         /**
@@ -64,5 +64,7 @@ namespace logs
          */
         std::ofstream _file;
     };
+
+    extern ECSLogLevel ecsLogLevel;
 
 }

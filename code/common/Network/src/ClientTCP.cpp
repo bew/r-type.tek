@@ -4,7 +4,6 @@
  * @brief implementation of Client TCP class
  */
 
-
 #include <iostream>
 #include "ClientTCP.hh"
 #include "SocketException.hh"
@@ -23,7 +22,7 @@ namespace network
 
     ClientTCP::~ClientTCP()
     {
-       close();
+        close();
     }
 
     void ClientTCP::close()
@@ -36,6 +35,11 @@ namespace network
         }
     }
 
+    NetworkSelect& ClientTCP::getSelector()
+    {
+        return _selector;
+    }
+
     void ClientTCP::connect(SockAddr &hostInfos)
     {
         if (!_isConnected)
@@ -46,15 +50,15 @@ namespace network
         }
     }
 
-    void ClientTCP::update()
+    void ClientTCP::update(unsigned long ms)
     {
         if (isClose())
             return;
         try
         {
             struct timeval timer;
-            timer.tv_sec = 1;
-            timer.tv_usec = 0;
+            timer.tv_sec = ms / 1000;
+            timer.tv_usec = (ms - (timer.tv_sec * 1000)) * 1000;
             _selector.select(&timer);
             if (_selector.isReadable(_socket.getSocket()))
             {

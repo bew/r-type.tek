@@ -33,5 +33,5 @@ namespace logs
         return _file;
     }
 
-    static ECSLogLevel ECSLogLevel;
+    ECSLogLevel ecsLogLevel;
 }
