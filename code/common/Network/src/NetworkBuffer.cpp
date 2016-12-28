@@ -11,7 +11,7 @@ namespace network
 {
 
     NetworkBuffer::NetworkBuffer() :
-            _readPosition(0), _writePosition(0)
+        _readPosition(0), _writePosition(0)
     {
         initBuffer();
     }
@@ -38,12 +38,16 @@ namespace network
 
         while (i < length)
         {
+            if (_buffer[_readPosition] == network::CR || _buffer[_readPosition] == network::LF ||
+                _buffer[_readPosition] == 0)
+                _buffer[_readPosition] = -1;
             ++_readPosition;
             if (_readPosition == network::BUFFER_SIZE)
                 _readPosition = 0;
             ++i;
         }
-        if (_buffer[_readPosition] == network::CR || _buffer[_readPosition] == network::LF || _buffer[_readPosition] == 0)
+        if (_buffer[_readPosition] == network::CR || _buffer[_readPosition] == network::LF ||
+            _buffer[_readPosition] == 0)
         {
             _buffer[_readPosition] = -1;
             updatePosition(1);

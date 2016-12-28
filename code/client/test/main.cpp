@@ -14,7 +14,7 @@ TEST(clientTest, loginSinup)
     logs::logger.registerLogLevel(&logs::ecsLogLevel);
 
     ECS::World world;
-    ECS::Component::CompNetworkClient* networkClient = new ECS::Component::CompNetworkClient("10.41.175.111", 50833);
+    ECS::Component::CompNetworkClient* networkClient = new ECS::Component::CompNetworkClient("10.41.175.111", 42402);
     world._world._systemEntity.addComponent(networkClient);
     networkClient->_clientTCP.connect(networkClient->_clientUDP.getAddr());
     ECS::Component::CompStateMachine *stateMachine = new ECS::Component::CompStateMachine;
@@ -63,7 +63,13 @@ TEST(clientTest, loginSinup)
 
     bson::Document signup = protocol::client::signUp(username, pwd);
 
-    networkClient->_clientTCP.addMessage(signup.getBufferString());
+    std::string msg(signup.getBufferString());
+    msg +=  network::CR;
+    msg +=  network::LF;
+
+    std::cout << msg << std::endl;
+    std::cout << signup.toJSON() << std::endl;
+    networkClient->_clientTCP.addMessage(msg);
     stateMachine->_nextState = sAuth->getName();
 
     world.update();
@@ -90,7 +96,11 @@ TEST(clientTest, loginSinup)
 
     stateMachine->_nextState = sMenu->getName();
 
-    networkClient->_clientTCP.addMessage(login.getBufferString());
+    msg = login.getBufferString();
+    msg +=  network::CR;
+    msg +=  network::LF;
+
+    networkClient->_clientTCP.addMessage(msg);
 
     world.update();
 

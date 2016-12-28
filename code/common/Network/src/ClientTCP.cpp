@@ -4,7 +4,6 @@
  * @brief implementation of Client TCP class
  */
 
-
 #include <iostream>
 #include "ClientTCP.hh"
 #include "SocketException.hh"
@@ -23,7 +22,7 @@ namespace network
 
     ClientTCP::~ClientTCP()
     {
-       close();
+        close();
     }
 
     void ClientTCP::close()
@@ -46,15 +45,15 @@ namespace network
         }
     }
 
-    void ClientTCP::update()
+    void ClientTCP::update(unsigned long ms)
     {
         if (isClose())
             return;
         try
         {
             struct timeval timer;
-            timer.tv_sec = 1;
-            timer.tv_usec = 0;
+            timer.tv_sec = ms / 1000;
+            timer.tv_usec = (ms - (timer.tv_sec * 1000)) * 1000;
             _selector.select(&timer);
             if (_selector.isReadable(_socket.getSocket()))
             {
@@ -71,7 +70,9 @@ namespace network
                 {
                     msg += network::CR;
                     msg += network::LF;
+                    std::cout << msg.length() << "     " << msg << std::endl;
                     size_t nbBytesSend = _socket.send(msg);
+                    std::cout << nbBytesSend << std::endl;
                     _writeBuffer.updatePosition(nbBytesSend);
 
                     if (_writeBuffer.get().empty())
