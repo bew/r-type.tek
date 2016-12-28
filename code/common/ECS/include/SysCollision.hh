@@ -7,6 +7,8 @@
  */
 
 #pragma once
+
+#include <list>
 #include "ISystem.hh"
 #include "CompCollision.hh"
 
@@ -56,7 +58,7 @@ namespace ECS {
              * @param entity_b An entity.
              * @return true if the hitboxes of the entities overlap. False otherwise.
              */
-            bool    hitboxesOverlap(Entity::Entity *entity_a, Entity::Entity *entity_b);
+            bool    hitboxesOverlap(Entity::Entity *entity_a, Entity::Entity *entity_b) const;
 
             /**
              * Check the collisions for a given cell of the grid and add them in a list.
@@ -65,8 +67,8 @@ namespace ECS {
              * @param col_list The list where the collisions are to be added.
              */
             void    checkCollision(unsigned offset,
-                                   std::vector<Entity::Entity *> others,
-                                   std::list<Component::CompCollision::Collision> &col_list);
+                                   std::vector<Entity::Entity *> &others,
+                                   std::vector<Component::CompCollision::Collision> &col_list) const;
 
             
         };

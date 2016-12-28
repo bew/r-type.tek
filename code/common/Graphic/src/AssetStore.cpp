@@ -47,23 +47,27 @@ void graphic::GroupedAssetStore::loadRessource<graphic::AnimatedSpriteAsset>(std
   
   for (auto i  = _ressources.begin(); i < _ressources.end(); i++) {
     if ((*i).second == FileSystemWatcher::Add) {
-      if (ressourceExist(_root + "/" + directory + "/" + this->_locale + "/" + (*i).first) &&
-	  ressourceExist(_root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" + this->_locale + "/" + (*i).first))
-	store.emplace(std::piecewise_construct,
-		      std::forward_as_tuple(getRessourceName((*i).first)),
-		      std::forward_as_tuple(_root + "/" + directory + "/" + this->_locale + "/" + (*i).first,
-					    _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
-					    this->_locale + "/" + getRessourceName((*i).first) +  graphic::AssetStore::ANIMATED_EXTENSION
-					    )
-		      );
-      else
-	store.emplace(std::piecewise_construct,
-		      std::forward_as_tuple(getRessourceName((*i).first)),
-		      std::forward_as_tuple(_root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + (*i).first,
-					    _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
+      try {
+	if (ressourceExist(_root + "/" + directory + "/" + this->_locale + "/" + (*i).first) &&
+	    ressourceExist(_root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" + this->_locale + "/" + getRessourceName((*i).first) + graphic::AssetStore::ANIMATED_EXTENSION))
+	  store.emplace(std::piecewise_construct,
+			std::forward_as_tuple(getRessourceName((*i).first)),
+			std::forward_as_tuple(_root + "/" + directory + "/" + this->_locale + "/" + (*i).first,
+					      _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
+					      this->_locale + "/" + getRessourceName((*i).first) + graphic::AssetStore::ANIMATED_EXTENSION
+					      )
+			);
+	else
+	  store.emplace(std::piecewise_construct,
+			std::forward_as_tuple(getRessourceName((*i).first)),
+			std::forward_as_tuple(_root + "/" + directory + "/" + graphic::AssetStore::DEFAULT_LOCALE + "/" + (*i).first,
+					      _root + "/" + graphic::AssetStore::ANIMATED_DIRECTORY + "/" +
 					    graphic::AssetStore::DEFAULT_LOCALE + "/" + getRessourceName((*i).first) +  graphic::AssetStore::ANIMATED_EXTENSION
-					    )
-		      );
+					      )
+			);
+      } catch(const graphic::AssetException &e) {
+	logs::logger[logs::ERRORS] << "Could not load animation : '" << e.what() << "'" << std::endl;
+      }
     }
   }
 }

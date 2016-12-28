@@ -88,7 +88,6 @@ namespace ECS {
             }
         }
 
-
         void SysEvent::update(Entity::Entity &entity, WorldData &world) {
             Component::CompEvent *eventc = dynamic_cast<Component::CompEvent *>(entity.getComponent(
                     ECS::Component::EVENT));

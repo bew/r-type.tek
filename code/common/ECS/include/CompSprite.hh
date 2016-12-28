@@ -25,9 +25,24 @@ namespace ECS {
     public:
 
       /**
-       * Default constructor
+       * Value to signal that the sprite is currently unset
        */
-      CompSprite(void);
+      static const std::string NO_SPRITE;
+
+      /**
+       * Value to signal that the sprite is not anmated
+       */
+      static const std::string NO_ANIMATION;
+      
+      /**
+       * Constructor
+       *
+       * @param pname Name of sprite, default to CompSprite::NO_SPRITE
+       * @param x X center offset of the sprite Default to 0
+       * @param y Y center offset of the sprite Defautl to 0
+       * @param animated Default to false.
+       */
+      CompSprite(const std::string &pname = "", coordinates<int> coor = {0, 0}, const std::string &animated = NO_ANIMATION);
       
       /**
        * The name of the sprite, as reference to asset store.
@@ -38,6 +53,16 @@ namespace ECS {
        * Offset between the center of the sprite (height/2  ad width/2) and 2D coordinates of the entity 
        */
       coordinates<int> center;
+
+      /**
+       * Is the sprite an animated sprites
+       */
+      std::string animation;
+
+      /**
+       * @return A pointer to a new CompSprite with a state similar to this
+       */
+      virtual AComponent *clone(void) const;
 
       /**
        * @return ECS::Component::SPRITE

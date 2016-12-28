@@ -44,6 +44,11 @@ namespace ECS {
 	     */
 	    ~CompHitbox();
 
+	  /**
+	   * @return A pointer to a new CompHitbox with a state similar to this
+	   */
+	  virtual AComponent *clone(void) const;
+
             /**
              * get the type of component
              * @return string that reprents his type
