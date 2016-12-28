@@ -12,25 +12,14 @@ namespace ECS {
     ECS::Entity::Entity *SysController::fire(WorldData &world, ECS::Entity::Entity *entity) {
       Component::CompBlueprint *blueprintc = dynamic_cast<Component::CompBlueprint*>(world._systemEntity.getComponent(ECS::Component::BLUEPRINT));
       Component::CompProjectile *projectilec = dynamic_cast<Component::CompProjectile*>(entity->getComponent(ECS::Component::PROJECTILE));
-      Component::CompMovement *ownerMovementc = dynamic_cast<Component::CompMovement*>(entity->getComponent(ECS::Component::MOVEMENT));
       Component::CompTick *tickc = dynamic_cast<Component::CompTick*>(world._systemEntity.getComponent(ECS::Component::TICK));
       ECS::Entity::Entity *projectile = nullptr;
 
-      if (blueprintc && projectilec && tickc && ownerMovementc && tickc->tick - projectilec->lastFireTick > projectilec->fireRate) {
+      if (blueprintc && projectilec && tickc && tickc->tick - projectilec->lastFireTick > projectilec->fireRate) {
 	try {
-	  projectile = new ECS::Entity::Entity(blueprintc->getNextID());
-	  for (ECS::Component::AComponent *component : blueprintc->blueprints.at(projectilec->name))
-	    projectile->addComponent(component->clone());
-	  if (ownerMovementc) {
-	    Component::CompMovement *projectileMovementc = dynamic_cast<Component::CompMovement*>(projectile->getComponent(ECS::Component::MOVEMENT));
-	    projectileMovementc->_coo._x += ownerMovementc->_coo._x;
-	    projectileMovementc->_coo._y += ownerMovementc->_coo._y;
-	  }
+	  projectile = blueprintc->spawn(projectilec->name, entity);
 	  projectilec->lastFireTick = tickc->tick;
 	  logs::logger[logs::INFO] << "Blueprint '" << projectilec->name << "' instanciated" << std::endl;
-	}
-	catch (const std::out_of_range &e) {
-	  logs::logger[logs::ERRORS] << "Blueprint '" << projectilec->name << "' does not exist" << std::endl;
 	}
 	catch (const ECS::Component::ComponentFlagException &e) {
 	  logs::logger[logs::ERRORS] << "Cannot clone '" << projectilec->name << "' : '" << e.what() << "'" << std::endl;

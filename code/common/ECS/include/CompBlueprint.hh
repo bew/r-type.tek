@@ -10,6 +10,8 @@
 #include <unordered_map>
 
 #include "AComponent.hh"
+#include "CompMovement.hh"
+#include "Entity.hh"
 
 namespace ECS {
   namespace Component {
@@ -51,6 +53,8 @@ namespace ECS {
        * @return ECS::Component::BLUEPRINT
        */
       virtual const std::string &getType() const;
+
+      Entity::Entity *spawn(const std::string &name, Entity::Entity *owner = nullptr);
 
     protected:
       
