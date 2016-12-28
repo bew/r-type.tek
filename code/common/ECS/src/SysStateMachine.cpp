@@ -4,7 +4,7 @@
  * @brief implementation of System for State Machine.
  */
 
-#include <ECSLogLevel.hh>
+#include "ECSLogLevel.hh"
 #include "SysStateMachine.hh"
 #include "Protocol/Server.hh"
 
@@ -13,35 +13,34 @@ namespace ECS
     namespace System
     {
         bson::Document
-        SysStateMachine::processMessage(const bson::Document &doc, Component::CompStateMachine *stateMachine,
-                                        Component::CompNetworkClient *network)
+        SysStateMachine::processMessage(const bson::Document &doc, Component::CompStateMachine &stateMachine,
+                                        const Component::CompNetworkClient &network)
         {
-            bson::Document answer;
-            if (network->isValidActionTcp(doc["header"]["action"].getValueString()))
+            if (network.isValidActionTcp(doc["header"]["action"].getValueString()))
             {
-                std::string action = doc["header"]["action"].getValueString();
-                if (stateMachine->_sm[stateMachine->_currentState]->has(action))
+                const std::string &action = doc["header"]["action"].getValueString();
+                if (stateMachine._sm[stateMachine._currentState]->has(action))
                 {
-                    stateMachine->_currentState = stateMachine->_sm[stateMachine->_currentState]->getLink(
+                    stateMachine._currentState = stateMachine._sm[stateMachine._currentState]->getLink(
                         action);
-                    answer = protocol::answers::ok(doc["header"]["timestamp"].getValueInt64(), answer);
+                    return protocol::answers::ok(doc["header"]["timestamp"].getValueInt64(), bson::Document());
                 }
                 else
-                    answer = protocol::answers::unauthorized(doc["header"]["timestamp"].getValueInt64());
+                    return protocol::answers::unauthorized(doc["header"]["timestamp"].getValueInt64());
             }
             else if (doc["header"]["action"].getValueString() != "Answer")
-                answer = protocol::answers::notFound(doc["header"]["timestamp"].getValueInt64());
+                return protocol::answers::notFound(doc["header"]["timestamp"].getValueInt64());
             else if (doc["data"]["code"].getValueInt32() == 200
-                     && !stateMachine->_nextState.empty()
-                     && stateMachine->_sm[stateMachine->_currentState]->has(stateMachine->_nextState))
+                     && !stateMachine._nextState.empty()
+                     && stateMachine._sm[stateMachine._currentState]->has(stateMachine._nextState))
             {
-                stateMachine->_currentState = stateMachine->_nextState;
-                stateMachine->_nextState.clear();
+                stateMachine._currentState = stateMachine._nextState;
+                stateMachine._nextState.clear();
             }
             else
                 logs::logger[logs::ERRORS] << doc["data"]["msg"].getValueString() << std::endl;
 
-            return answer;
+            return bson::Document();
         }
 
         void SysStateMachine::update(ECS::WorldData &world)
@@ -58,7 +57,7 @@ namespace ECS
                 bson::Document answer;
 
                 if (protocol::checkMessage(doc))
-                    answer = processMessage(doc, stateMachine, network);
+                    answer = processMessage(doc, *stateMachine, *network);
                 else if (!doc.isEmpty())
                 {
                     if (doc.hasKey("header") && doc["header"].getValueDocument().hasKey("timestamp"))

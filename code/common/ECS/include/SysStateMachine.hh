@@ -44,7 +44,7 @@ namespace ECS
              * @param network component use to receive and send message
              * @return Document that contains the answer
              */
-            bson::Document processMessage(const bson::Document& doc, Component::CompStateMachine* stateMachine, Component::CompNetworkClient* network);
+            bson::Document processMessage(const bson::Document& doc, Component::CompStateMachine& stateMachine, const Component::CompNetworkClient& network);
 
         };
 
