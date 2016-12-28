@@ -241,7 +241,8 @@ namespace bson {
         this->unserializeBuffer(buffer);
     }
 
-    Document::Document(const std::string &buffer, bool json) : _nextInputType(Document::KEY) {
+    Document::Document(const std::string &buffer, bool json)
+            : _nextInputType(Document::KEY), _arrayMode(Document::ARRAY_DISABLED) {
         if (!json)
             this->unserializeBuffer(std::vector<unsigned char>(buffer.begin(), buffer.end()));
         else {
