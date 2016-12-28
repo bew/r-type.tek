@@ -13,8 +13,7 @@ set(LIB_SOURCES ${LIB_SOURCES} CompSprite.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompStateMachine.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} SysStateMachine.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} AssetLogLevel.cpp)
-
-set(LIB_DEPENDENCIES Network BSON Logs Graphic)
+set(LIB_DEPENDENCIES Network BSON Logs Graphic Protocol)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCES})
 target_link_libraries(${LIB_NAME} ${LIB_DEPENDENCIES})
