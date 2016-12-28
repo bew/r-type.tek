@@ -73,8 +73,7 @@ namespace network
                 std::string msg;
                 if (!(msg = _writeBuffer.get()).empty())
                 {
-                    msg += network::CR;
-                    msg += network::LF;
+                    msg += network::getMagic();
                     size_t nbBytesSend = _socket.send(msg);
                     _writeBuffer.updatePosition(nbBytesSend);
 
@@ -92,7 +91,7 @@ namespace network
     void ClientTCP::addMessage(const std::string &msg)
     {
         _writeBuffer.fill(msg);
-        if (*(--msg.end()) == network::CR || *(--msg.end()) == network::LF)
+        if (msg.size() >= 8 && msg.substr(msg.length() - 8) == network::getMagic())
             _selector.monitor(_socket.getSocket(), NetworkSelect::WRITE);
     }
 
