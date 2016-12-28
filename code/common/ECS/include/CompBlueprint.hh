@@ -66,6 +66,9 @@ namespace ECS {
 
     protected:
       
+      /**
+       * The next id to return from getNextID
+       */
       int nextID;
     };
   }
