@@ -68,9 +68,9 @@ int main(int ac, char**av) {
   ECS::Component::CompEvent *event = new ECS::Component::CompEvent();
   
   music->setMusic("MilkyWay");
-  blueprints->blueprints["dices"] = {
+  blueprints->blueprints["bloodBurst"] = {
     new ECS::Component::CompMovement({0, 0}, 20, {1, 0}),
-    new ECS::Component::CompSprite("dices"),
+    new ECS::Component::CompSprite("projectileRD", {+135, +38}, "default"),
     new ECS::Component::CompHitbox(60, 60)
   };
   
@@ -81,15 +81,16 @@ int main(int ac, char**av) {
   world.addSystemEntityComponent(new ECS::Component::CompOptions());
   world.addSystemEntityComponent(music);
   world.addSystemEntityComponent(new ECS::Component::CompAsset());
+  world.addSystemEntityComponent(new ECS::Component::CompSprite("background", {0, 0}, "default"));
   
   ///////////////////////// ADD ENTITIES TO WORLD
   
   ECS::Entity::Entity *entity = new ECS::Entity::Entity(1);
-  entity->addComponent(new ECS::Component::CompSprite("ship"));  
+  entity->addComponent(new ECS::Component::CompSprite("wasp"));  
   entity->addComponent(new ECS::Component::CompMovement({300, 300}));
   entity->addComponent(new ECS::Component::CompHitbox(60, 60));
   entity->addComponent(new ECS::Component::CompController());
-  entity->addComponent(new ECS::Component::CompProjectile("dices"));
+  entity->addComponent(new ECS::Component::CompProjectile("bloodBurst"));
 
   ECS::Entity::Entity *entityFixed = new ECS::Entity::Entity(2);
   entityFixed->addComponent(new ECS::Component::CompSprite("fly", {0, 0}, "default"));

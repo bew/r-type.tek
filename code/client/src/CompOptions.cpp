@@ -48,15 +48,15 @@ namespace ECS {
     };
 
     void CompOptions::setMusicVolume(float volume) {
-      if (_effectVolume != volume)
-	_effectVolumeChanged = true;
-      _effectVolume = volume;
+      if (_musicVolume != volume)
+	_musicVolumeChanged = true;
+      _musicVolume = volume;
     };
     
     void CompOptions::setSoundEffectVolume(float volume) {
-      if(_musicVolume != volume)
-	_musicVolumeChanged = true;
-      _musicVolume = volume;
+      if(_effectVolume != volume)
+	_effectVolumeChanged = true;
+      _effectVolume = volume;
     };
     
     bool CompOptions::getFullscreen(void) const {
