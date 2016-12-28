@@ -85,7 +85,7 @@ int main(int ac, char**av) {
   ///////////////////////// ADD ENTITIES TO WORLD
   
   ECS::Entity::Entity *entity = new ECS::Entity::Entity(1);
-  entity->addComponent(new ECS::Component::CompSprite("ship"));  
+  entity->addComponent(new ECS::Component::CompSprite("wasp"));  
   entity->addComponent(new ECS::Component::CompMovement({300, 300}));
   entity->addComponent(new ECS::Component::CompHitbox(60, 60));
   entity->addComponent(new ECS::Component::CompController());
