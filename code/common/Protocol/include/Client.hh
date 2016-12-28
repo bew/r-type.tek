@@ -150,6 +150,21 @@ namespace protocol {
         bool checkGameLeave(const bson::Document &document);
 
         /**
+         * Create a message in order to get the available rooms
+         *
+         * @return the bson Document formatted for the following action
+         */
+        bson::Document getAvailableRooms(void);
+
+        /**
+         * Check if the given Document is a correct getAvalaibleRooms message
+         *
+         * @param document the Document to check
+         * @return true if the Document is correct, else false
+         */
+        bool checkGetAvailableRooms(const bson::Document &document);
+
+        /**
          * Create a message to update an entity to a client
          *
          * @param entity_id the id of the entity to update

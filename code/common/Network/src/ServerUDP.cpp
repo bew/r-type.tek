@@ -27,13 +27,13 @@ namespace network
         _selector.monitor(_socket.getSocket(), NetworkSelect::READ);
     }
 
-    void ServerUDP::update()
+    void ServerUDP::update(unsigned long ms)
     {
         try
         {
             struct timeval timer;
-            timer.tv_sec = 1;
-            timer.tv_usec = 0;
+            timer.tv_sec = ms / 1000;
+            timer.tv_usec = (ms - (timer.tv_sec * 1000)) * 1000;
             _selector.select(&timer);
             if (_selector.isReadable(_socket.getSocket()))
             {

@@ -10,7 +10,8 @@ namespace ECS {
   namespace Component {
 
     CompAsset::CompAsset(void) :
-      store("asset", "standard")
+      store("asset", "standard"),
+      loaded(false)
     {};
 
     const std::string &CompAsset::getType() const {

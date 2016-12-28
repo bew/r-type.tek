@@ -6,11 +6,16 @@
 
 #pragma once
 
+#include <vector>
 #include "World.hh"
 #include "Entity.hh"
 #include "ISystem.hh"
 #include "CompMovement.hh"
-#include "SFML/Window/Keyboard.hpp"
+#include "CompController.hh"
+#include "CompBlueprint.hh"
+#include "CompProjectile.hh"
+#include "Logs/Logger.hh"
+#include "CompTick.hh"
 
 namespace ECS {
   namespace System {
@@ -27,6 +32,11 @@ namespace ECS {
        * @param world All the data about the world
        */
       virtual void update(ECS::WorldData &world);
+    protected:
+      /**
+       * Fire a projectile for entity
+       */
+      ECS::Entity::Entity *fire(WorldData &world, ECS::Entity::Entity *entity);
     };
   }
 }

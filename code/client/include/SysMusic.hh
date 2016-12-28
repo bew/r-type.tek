@@ -10,10 +10,10 @@
 #include "ECS/Entity.hh"
 #include "ECS/ISystem.hh"
 #include "CompAsset.hh"
-#include "CompMusic.hh"
+#include "ECS/CompMusic.hh"
 #include "CompOptions.hh"
 #include "Logs/Logger.hh"
-#include "AssetLogLevel.hh"
+#include "ECS/AssetLogLevel.hh"
 
 namespace ECS {
   namespace System {
