@@ -35,9 +35,9 @@ namespace ECS
             enum Type
             {
                 PLAYER,
-                ENNEMY,
+                ENEMY,
                 PLAYER_SHOOT,
-                ENNEMY_SHOOT,
+                ENEMY_SHOOT,
                 SYSTEM
             };
 
