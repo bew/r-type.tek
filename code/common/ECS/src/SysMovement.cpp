@@ -71,7 +71,7 @@ namespace ECS {
             }
         }
         
-        void    SysMovement::playerCheckPosition(Entity::Entity &entity)
+        void    SysMovement::playerCheckPosition(const Entity::Entity &entity)
         {
             Component::CompType *type_comp = static_cast<Component::CompType *>(
                 entity.getComponent(Component::TYPE));

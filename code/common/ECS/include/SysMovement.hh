@@ -57,7 +57,7 @@ namespace ECS {
              * ie, check that the players don't leave the screen.
              * @param player The entity. The function will check if this a player.
              */
-            static void playerCheckPosition(Entity::Entity &player);
+            static void playerCheckPosition(const Entity::Entity &player);
 
             /**
              * update function. Will update all CompMovement.
