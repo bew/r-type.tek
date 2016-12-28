@@ -10,6 +10,7 @@
 #include "CompMovement.hh"
 #include "CompCollision.hh"
 #include "CompHitbox.hh"
+#include "CompType.hh"
 #include "World.hh"
 
 namespace ECS {
@@ -70,6 +71,37 @@ namespace ECS {
             }
         }
         
+        void    SysMovement::playerCheckPosition(const Entity::Entity &entity)
+        {
+            Component::CompType *type_comp = static_cast<Component::CompType *>(
+                entity.getComponent(Component::TYPE));
+
+            if (type_comp != nullptr && type_comp->_type == Component::CompType::Type::PLAYER)
+            {
+                Component::CompHitbox *hitbox_comp = static_cast<Component::CompHitbox *>(
+                    entity.getComponent(Component::HITBOX));
+                Component::CompMovement *move_comp = static_cast<Component::CompMovement *>(
+                    entity.getComponent(Component::MOVEMENT));
+
+                if (!hitbox_comp || !move_comp)
+                    return;
+                
+                int y_top_diff = move_comp->_coo._y - hitbox_comp->_midHeight;
+                int y_bottom_diff = move_comp->_coo._y + hitbox_comp->_midHeight;
+                int x_left_diff = move_comp->_coo._x - hitbox_comp->_midWidth;
+                int x_right_diff = move_comp->_coo._x + hitbox_comp->_midWidth;
+                
+                if (y_top_diff < 0)
+                    move_comp->_coo._y += -y_top_diff;
+                if (y_bottom_diff > Component::YMAX)
+                    move_comp->_coo._y -= y_bottom_diff - Component::YMAX;
+                if (x_left_diff < 0)
+                    move_comp->_coo._x += -x_left_diff;
+                if (x_right_diff > Component::XMAX)
+                    move_comp->_coo._x -= x_right_diff - Component::XMAX;
+            }
+        }
+
         void    SysMovement::update(WorldData &data)
         {
             for (auto &entity : data._gameEntities)
@@ -81,6 +113,7 @@ namespace ECS {
                     this->computeNextCoordinates(comp);
                     this->putEntityInGrid(comp, entity, data._systemEntity);
                 }
+                playerCheckPosition(*entity);
             }
         }
 
