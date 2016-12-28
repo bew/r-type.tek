@@ -35,6 +35,11 @@ namespace network
         }
     }
 
+    NetworkSelect& ClientTCP::getSelector()
+    {
+        return _selector;
+    }
+
     void ClientTCP::connect(SockAddr &hostInfos)
     {
         if (!_isConnected)
