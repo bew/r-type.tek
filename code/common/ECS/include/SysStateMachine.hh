@@ -26,7 +26,7 @@ namespace ECS
         /**
          * System for State Machine
          */
-        class SysStateMachine
+        class SysStateMachine: public ISystem
         {
         public:
 

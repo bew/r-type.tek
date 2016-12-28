@@ -15,7 +15,7 @@ set(LIB_SOURCES ${LIB_SOURCES} CompWindow.cpp SysWindow.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompAsset.cpp CompOptions.cpp CompMusic.cpp SysAsset.cpp SysMusic.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompSprite.cpp SysSprite.cpp SysController.cpp SysOptions.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} AssetLogLevel.cpp)
-set(LIB_DEPENDENCIES Network BSON Logs Graphic)
+set(LIB_DEPENDENCIES Network BSON Logs Graphic Protocol)
 
 add_library(${LIB_NAME} STATIC ${LIB_SOURCES})
 target_link_libraries(${LIB_NAME} ${LIB_DEPENDENCIES})
