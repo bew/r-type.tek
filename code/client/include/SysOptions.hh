@@ -52,8 +52,8 @@ namespace ECS {
 	  bson::Document document;
 	  document.readFromFile(SysOptions::CONFIG_FILE, true);
 	  optionsc->setLocale(document["locale"].getValueString());
-	  optionsc->setMusicVolume(static_cast<float>(document["effect"].getValueDouble()));
-	  optionsc->setSoundEffectVolume(static_cast<float>(document["music"].getValueDouble()));
+	  optionsc->setMusicVolume(static_cast<float>(document["music"].getValueDouble()));
+	  optionsc->setSoundEffectVolume(static_cast<float>(document["effect"].getValueDouble()));
           optionsc->setFullscreen(document["fullscreen"].getValueBool());
           optionsc->setWidth(document["width"].getValueInt32());
           optionsc->setHeight(document["height"].getValueInt32());
@@ -83,8 +83,8 @@ namespace ECS {
 	  bson::Document options;
 	  if (optionsc) {
 	    options << "locale" << optionsc->getLocale();
-	    options << "effect" << optionsc->getMusicVolume();
-	    options << "music" << optionsc->getSoundEffectVolume();
+	    options << "music" << optionsc->getMusicVolume();
+	    options << "effect" << optionsc->getSoundEffectVolume();
 	    options << "fullscreen" << optionsc->getFullscreen();
 	    options << "width" << static_cast<int>(optionsc->getWidth());
 	    options << "height" << static_cast<int>(optionsc->getHeight());
