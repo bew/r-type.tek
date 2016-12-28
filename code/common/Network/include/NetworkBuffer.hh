@@ -77,7 +77,7 @@ namespace network {
          *
          * @return true if the magic is the next byte to proccess into the buffer, else false
          */
-        bool checkMagic() const;
+        bool checkMagic(size_t readPosition) const;
 
         /**
          * buffer used to add and get messages
