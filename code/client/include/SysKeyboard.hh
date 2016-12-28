@@ -1,7 +1,7 @@
 /**
- * @file SysController.hh
+ * @file SysKeybaord.hh
  * @author Nekhot.
- * @brief Header of System for computing user input into movement and other data.
+ * @brief Header of System for computing user kyeboard input into serializable control.
  */
 
 #pragma once
@@ -9,8 +9,8 @@
 #include "ECS/World.hh"
 #include "ECS/Entity.hh"
 #include "ECS/ISystem.hh"
-#include "ECS/CompMovement.hh"
 #include "SFML/Window/Keyboard.hpp"
+#include "ECS/CompController.hh"
 
 namespace ECS {
   namespace System {
@@ -18,7 +18,7 @@ namespace ECS {
     /**
      * System for controller
      */
-    class SysController : public ISystem {
+    class SysKeyboard : public ISystem {
     public:
 
       /**

@@ -4,8 +4,6 @@
  * @brief representation of server tcp
  */
 
-
-
 #include <iostream>
 #include "ServerTCP.hh"
 #include "SocketException.hh"
@@ -26,7 +24,7 @@ namespace network
 
     std::shared_ptr<ClientTCP> ServerTCP::getFirstClientWithMessage() const
     {
-        for (auto& client : _clients)
+        for (auto &client : _clients)
         {
             if (client->hasMessage())
                 return client;
@@ -34,13 +32,13 @@ namespace network
         return nullptr;
     }
 
-    void ServerTCP::update()
+    void ServerTCP::update(unsigned long ms)
     {
         try
         {
             struct timeval timer;
-            timer.tv_sec = 1;
-            timer.tv_usec = 0;
+            timer.tv_sec = ms / 1000;
+            timer.tv_usec = (ms - (timer.tv_sec * 1000)) * 1000;
             _selector.select(&timer);
             if (_selector.isReadable(_socketServer.getSocket()))
                 accept();
@@ -80,7 +78,7 @@ namespace network
         }
     }
 
-    void ServerTCP::bind(SockAddr& hostInfos)
+    void ServerTCP::bind(SockAddr &hostInfos)
     {
         _socketServer.bind(hostInfos);
         _selector.monitor(_socketServer.getSocket(), NetworkSelect::READ);

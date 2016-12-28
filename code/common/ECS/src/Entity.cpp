@@ -10,13 +10,16 @@
 namespace ECS {
     namespace Entity {
     
-	Entity::Entity(unsigned long id)
+	Entity::Entity(int64_t  id)
             : _id(id), _components()
         {
         }
 
 	Entity::~Entity()
-	{}
+	{
+	  for (auto component : _components)
+	    delete component.second;
+	}
 	
 	Component::AComponent	*Entity::getComponent(const std::string &type)
 	{
@@ -32,7 +35,7 @@ namespace ECS {
 	    return component;
 	}
 
-        unsigned long       Entity::getId() const
+		int64_t        Entity::getId() const
         {
             return _id;
         }
