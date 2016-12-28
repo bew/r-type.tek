@@ -31,7 +31,7 @@ namespace ECS {
             return (v >= min) && (v <= max);
         }
 
-        bool    SysCollision::hitboxesOverlap(Entity::Entity *entity_a, Entity::Entity *entity_b)
+        bool    SysCollision::hitboxesOverlap(Entity::Entity *entity_a, Entity::Entity *entity_b) const
         {
             Component::CompMovement *mov_a = static_cast<Component::CompMovement *>(
                 entity_a->getComponent(Component::MOVEMENT));
@@ -67,8 +67,8 @@ namespace ECS {
         }
 
         void    SysCollision::checkCollision(unsigned offset,
-                                             std::vector<Entity::Entity *> others,
-                                             std::vector<Component::CompCollision::Collision> &col_list)
+                                             std::vector<Entity::Entity *> &others,
+                                             std::vector<Component::CompCollision::Collision> &col_list) const
         {
             for (std::vector<Entity::Entity *>::iterator it = others.begin() + offset + 1;
                  it != others.end();

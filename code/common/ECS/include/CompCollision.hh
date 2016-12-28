@@ -55,6 +55,7 @@ namespace ECS {
                 /**
                  * Comparaisons of collisions.
                  * @param other A collision.
+                 * @return true if the Collision are the same, else false
                  */
                 bool operator==(const Collision &other);
             };
