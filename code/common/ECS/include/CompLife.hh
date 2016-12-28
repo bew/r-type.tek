@@ -2,9 +2,7 @@
  * @file CompLife.hh
  * @author Tookie
  * @brief Component implementing the life for game entities.
- *
  */
-
 
 #pragma once
 
@@ -71,5 +69,4 @@ namespace ECS
         };
 
     }
-
 }
