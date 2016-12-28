@@ -36,7 +36,8 @@ namespace bson {
 
     void Document::Element::isRightType(bson::type valueType) const {
         if (valueType != _valueType)
-            throw BsonException("The value store inside the element is not the same as requested.");
+            throw BsonException(std::string("The value store inside the element is not the same as requested (key: ") +
+            _key + std::string(", value type: ") + enumString.at(_valueType) + std::string(")"));
     }
 
     bson::type Document::Element::getValueType() const {
