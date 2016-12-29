@@ -71,6 +71,8 @@ namespace network
     void ServerUDP::addMessage(const std::shared_ptr<ClientUDP> client, const std::string &msg)
     {
         client->addMessage(msg);
+        if (msg.size() >= 8 && msg.substr(msg.length() - 8) == network::getMagic())
+            _selector.monitor(_socket.getSocket(), NetworkSelect::WRITE);
     }
 
     std::string ServerUDP::getMessage(const std::shared_ptr<ClientUDP> client)

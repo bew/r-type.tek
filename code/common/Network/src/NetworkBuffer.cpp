@@ -10,17 +10,8 @@
 namespace network
 {
 
-    std::string getMagic() {
-        static std::string magic = "";
-        if (magic.empty()) {
-            union {
-                int64_t integer;
-                char bytes[8];
-            } cutInteger;
-            cutInteger.integer = network::magic;
-            magic = std::string(cutInteger.bytes);
-        }
-
+    std::string getMagic()
+    {
         return "12345678";
     }
 
@@ -88,21 +79,19 @@ namespace network
         return "";
     }
 
-    bool NetworkBuffer::checkMagic(size_t readPosition) const {
-        union {
-            int64_t integer;
-            char bytes[8];
-        } cutInteger;
+    bool NetworkBuffer::checkMagic(size_t readPosition) const
+    {
+        char bytes[8];
 
-        for (size_t i = 0; i < 8; ++i) {
-            cutInteger.bytes[i] = _buffer[readPosition];
+        for (size_t i = 0; i < 8; i++)
+        {
+            bytes[i] = _buffer[readPosition];
             ++readPosition;
             if (readPosition == network::BUFFER_SIZE)
                 readPosition = 0;
         }
 
-        //return cutInteger.integer == network::magic;
-        return std::string(cutInteger.bytes) == "12345678";
+        return std::string(bytes, 8) == getMagic();
     }
 
     void NetworkBuffer::initBuffer()
