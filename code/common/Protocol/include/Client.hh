@@ -122,9 +122,10 @@ namespace protocol {
         /**
          * Create a message in order to start the game
          *
+         * @param the name of the generator for the game
          * @return the bson Document formatted for the following action
          */
-        bson::Document gameStart(void);
+        bson::Document gameStart(const std::string& generator);
 
         /**
          * Check if the given Document is a correct gameStart message

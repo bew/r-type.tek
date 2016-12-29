@@ -24,7 +24,7 @@ namespace ECS {
      */
     namespace Component {
 
-        /**
+                /**
          * Component type id.
          */
         static const std::string COLLISION = "collision";

@@ -29,6 +29,7 @@
 #include "ECS/CompHitbox.hh"
 #include "ECS/CompBlueprint.hh"
 #include "ECS/CompProjectile.hh"
+#include "ECS/CompType.hh"
 #include "Graphic/AssetStore.hpp"
 
 int main(int ac, char**av) {
@@ -91,11 +92,13 @@ int main(int ac, char**av) {
   entity->addComponent(new ECS::Component::CompHitbox(60, 60));
   entity->addComponent(new ECS::Component::CompController());
   entity->addComponent(new ECS::Component::CompProjectile("bloodBurst"));
+  entity->addComponent(new ECS::Component::CompType(ECS::Component::CompType::Type::PLAYER));
 
   ECS::Entity::Entity *entityFixed = new ECS::Entity::Entity(2);
   entityFixed->addComponent(new ECS::Component::CompSprite("fly", {0, 0}, "default"));
   entityFixed->addComponent(new ECS::Component::CompMovement({600, 600}));
   entityFixed->addComponent(new ECS::Component::CompHitbox(60, 60));
+  entityFixed->addComponent(new ECS::Component::CompType(ECS::Component::CompType::Type::ENEMY));
   
   world._world._gameEntities.push_back(entity);
   world._world._gameEntities.push_back(entityFixed);
