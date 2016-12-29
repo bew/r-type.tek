@@ -9,6 +9,7 @@
 namespace ECS {
   namespace Component {
     CompDeath::CompDeath(int delay) :
+      AComponent(CLONABLE_MASK),
       _delay(delay)
     {}
     

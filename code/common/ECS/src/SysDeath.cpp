@@ -18,9 +18,13 @@ namespace ECS {
 	    if (deathc) {
 	      if (deathc->_delay <= 0) {
 		if (blueprintc && successorc) {
-		  Entity::Entity *successor = blueprintc->spawn(successorc->_successor, entity);
-		  if (successor)
+		  try {
+		    Entity::Entity *successor = blueprintc->spawn(successorc->_successor, entity);
 		    generatedEntities.push_back(successor);
+		  }
+		  catch (const ECS::Component::ComponentFlagException &e) {
+		    logs::logger[logs::ERRORS] << "Cannot clone '" << successorc->_successor << "' : '" << e.what() << "'" << std::endl;
+		  }
 		}
 		delete entity;
 		return true;

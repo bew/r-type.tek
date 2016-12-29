@@ -9,6 +9,10 @@
 #include "SysAsset.hh"
 #include "CompAsset.hh"
 #include "SysMusic.hh"
+//Client sound, not server one
+#include "CompSound.hh"
+#include "SysSound.hh"
+#include "ECS/CompMusic.hh"
 #include "ECS/CompMusic.hh"
 #include "SysSprite.hh"
 #include "ECS/CompSprite.hh"
@@ -65,6 +69,8 @@ int main(int ac, char**av) {
   world.addSystem(new ECS::System::SysAsset());
   // do something sometimes
   world.addSystem(new ECS::System::SysMusic());
+   // do something sometimes
+  world.addSystem(new ECS::System::SysSound());
   // put sprite onto window surface
   world.addSystem(new ECS::System::SysSprite());
   // process collision and apply damage
@@ -78,18 +84,18 @@ int main(int ac, char**av) {
 
   ///////////////////////// ADD UNIQUE COMPONENTS TO WORLD
 
-  ECS::Component::CompMusic *music = new ECS::Component::CompMusic();
+  ECS::Component::CompMusic *music = new ECS::Component::CompMusic("MilkyWay");
   ECS::Component::CompBlueprint *blueprints = new ECS::Component::CompBlueprint(); // should be reserved to server
   ECS::Component::CompTick *tick = new ECS::Component::CompTick();
   ECS::Component::CompEvent *event = new ECS::Component::CompEvent();
 
-  music->setMusic("MilkyWay");
   blueprints->blueprints["bloodBurst"] = {
     new ECS::Component::CompMovement({+135, +38}, 20, {1, 0}),
     new ECS::Component::CompSprite("projectileRD", {0, 0}, "default"),
     new ECS::Component::CompHitbox(35, 40),
     new ECS::Component::CompDamage(2),
-    new ECS::Component::CompType(ECS::Component::CompType::PROJECTILE)
+    new ECS::Component::CompType(ECS::Component::CompType::PROJECTILE),
+    new ECS::Component::CompSound("pwee")
   };
   blueprints->blueprints["explosion"] = {
     new ECS::Component::CompMovement({0, 0}, 0),
@@ -97,7 +103,8 @@ int main(int ac, char**av) {
     new ECS::Component::CompHitbox(60, 60),
     new ECS::Component::CompDamage(20),
     new ECS::Component::CompType(ECS::Component::CompType::CHARACTER),
-    new ECS::Component::CompDeath(23)
+    new ECS::Component::CompDeath(23),
+    new ECS::Component::CompSound("boom")
   };
   blueprints->blueprints["explosionBig"] = {
     new ECS::Component::CompMovement({0, 0}, 0),
@@ -105,7 +112,13 @@ int main(int ac, char**av) {
     new ECS::Component::CompHitbox(120, 120),
     new ECS::Component::CompDamage(20),
     new ECS::Component::CompType(ECS::Component::CompType::CHARACTER),
-    new ECS::Component::CompDeath(23)
+    new ECS::Component::CompDeath(23),
+    new ECS::Component::CompSound("boom")
+  };
+  blueprints->blueprints["organicDeath"] = {
+    new ECS::Component::CompMovement({0, 0}, 0),
+    new ECS::Component::CompDeath(1),
+    new ECS::Component::CompSound("jblurb")
   };
 
   world.addSystemEntityComponent(blueprints);
