@@ -157,6 +157,14 @@ namespace logs {
         bool unregisterLogLevel(const std::string& logLevelName);
 
         /**
+         * Check if a log level is register into the Logger
+         *
+         * @param logLevelName the name of the log level to check
+         * @return true if the log level is register, else false
+         */
+        bool isRegister(const std::string &logLevelName) const;
+
+        /**
          * Create a new entry inside the logger and change the log level if required
          *
          * @param logLevelName the name of the log level to use for the new entry
