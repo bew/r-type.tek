@@ -41,10 +41,17 @@ namespace network
             _selector.select(&timer);
             if (_selector.isReadable(_socketServer.getSocket()))
                 accept();
-
-            for (auto client = _clients.begin(); client != _clients.end(); ++client)
+        }
+        catch (SocketException &e)
+        {
+            deleteClosedConnections();
+            std::cerr << e.what() << std::endl;
+        }
+        for (auto client = _clients.begin(); client != _clients.end(); ++client)
+        {
+            try
             {
-                (*client)->update(0);
+                (*client)->update(ms);
                 if ((*client)->isClose())
                 {
                     client = _clients.erase(client);
@@ -52,10 +59,26 @@ namespace network
                         break;
                 }
             }
+            catch (SocketException &e)
+            {
+                client = _clients.erase(client);
+                if (client == _clients.end())
+                    break;
+                std::cerr << e.what() << std::endl;
+            }
         }
-        catch (SocketException &e)
+    }
+
+    void ServerTCP::deleteClosedConnections()
+    {
+        for (auto client = _clients.begin(); client != _clients.end(); ++client)
         {
-            throw e;
+            if ((*client)->isClose())
+            {
+                client = _clients.erase(client);
+                if (client == _clients.end())
+                    return;
+            }
         }
     }
 

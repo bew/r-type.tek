@@ -17,7 +17,7 @@ namespace network
     ServerUDP::~ServerUDP()
     {
         close();
-        for (auto& client : _clients)
+        for (auto &client : _clients)
             client->close();
     }
 
@@ -45,27 +45,42 @@ namespace network
 
                 this->getClient(from)->getReadBuffer().fill(msg);
             }
-            for (auto &client: _clients)
+        }
+        catch (SocketException &e)
+        {
+            deleteClosedConnections();
+            std::cerr << e.what() << std::endl;
+        }
+        for (auto client = _clients.begin(); client != _clients.end(); ++client)
+        {
+            try
             {
                 if (_selector.isWritable(_socket.getSocket()))
                 {
                     std::string msg;
-                    if (!(msg = client->getWriteBuffer().get()).empty())
+                    if (!(msg = (*client)->getWriteBuffer().get()).empty())
                     {
                         msg += network::magic;
-                        size_t nbBytesSend = _socket.send(client->getAddr(), msg);
-                        client->getWriteBuffer().updatePosition(nbBytesSend);
+                        size_t nbBytesSend = _socket.send((*client)->getAddr(), msg);
+                        (*client)->getWriteBuffer().updatePosition(nbBytesSend);
 
-                        if (client->getMessage().empty())
+                        if ((*client)->getMessage().empty())
                             _selector.unmonitor(_socket.getSocket(), NetworkSelect::WRITE);
                     }
                 }
             }
+            catch (SocketException &e)
+            {
+                if ((*client)->isClose())
+                {
+                    client = _clients.erase(client);
+                    if (client == _clients.end())
+                        break;
+                }
+                std::cerr << e.what() << std::endl;
+            }
         }
-        catch (SocketException &e)
-        {
-            throw e;
-        }
+
     }
 
     void ServerUDP::addMessage(const std::shared_ptr<ClientUDP> client, const std::string &msg)
@@ -80,7 +95,7 @@ namespace network
         return client->getMessage();
     }
 
-    const std::vector<std::shared_ptr<ClientUDP>>& ServerUDP::getConnections() const
+    const std::vector<std::shared_ptr<ClientUDP>> &ServerUDP::getConnections() const
     {
         return _clients;
     }
@@ -122,7 +137,7 @@ namespace network
 
     std::shared_ptr<ClientUDP> ServerUDP::getFirstClientWithMessage() const
     {
-        for (auto& client : _clients)
+        for (auto &client : _clients)
         {
             if (client->hasMessage())
                 return client;
@@ -135,4 +150,16 @@ namespace network
         return client->hasMessage();
     }
 
+    void ServerUDP::deleteClosedConnections()
+    {
+        for (auto client = _clients.begin(); client != _clients.end(); ++client)
+        {
+            if ((*client)->isClose())
+            {
+                client = _clients.erase(client);
+                if (client == _clients.end())
+                    return;
+            }
+        }
+    }
 }

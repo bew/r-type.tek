@@ -119,6 +119,10 @@ namespace network
          */
         bool hasMessage(std::shared_ptr<ClientTCP> client) const;
 
+        /**
+         * delete all clients not connected
+         */
+        void deleteClosedConnections();
     private:
 
         /**
