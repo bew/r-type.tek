@@ -11,6 +11,10 @@
 #include "Entity.hh"
 #include "ISystem.hh"
 #include "CompDeath.hh"
+#include "CompCollision.hh"
+#include "CompSuccessor.hh"
+#include "CompBlueprint.hh"
+#include "CompMovement.hh"
 #include "Logs/Logger.hh"
 
 namespace ECS {

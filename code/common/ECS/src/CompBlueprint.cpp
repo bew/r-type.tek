@@ -35,10 +35,15 @@ namespace ECS {
 	if (owner) {
 	  Component::CompMovement *ownerMovementc = dynamic_cast<Component::CompMovement*>(owner->getComponent(ECS::Component::MOVEMENT));
 	  Component::CompMovement *projectileMovementc = dynamic_cast<Component::CompMovement*>(projectile->getComponent(ECS::Component::MOVEMENT));
+	  Component::CompType *ownerTypec = dynamic_cast<Component::CompType*>(owner->getComponent(ECS::Component::TYPE));
+	  Component::CompType *projectileTypec = dynamic_cast<Component::CompType*>(projectile->getComponent(ECS::Component::TYPE));
+
 	  if (ownerMovementc && projectileMovementc) {
 	    projectileMovementc->_coo._x += ownerMovementc->_coo._x;
 	    projectileMovementc->_coo._y += ownerMovementc->_coo._y;
 	  }
+	  if (ownerTypec && projectileTypec)
+	    projectileTypec->_type = (projectileTypec->_type & (~ECS::Component::CompType::FILTER_TEAM) | (ownerTypec->_type & ECS::Component::CompType::FILTER_TEAM));
 	}
       }
       catch (const std::out_of_range &e) {

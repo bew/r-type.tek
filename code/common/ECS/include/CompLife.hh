@@ -7,6 +7,7 @@
 #pragma once
 
 #include "AComponent.hh"
+#include "Logs/Logger.hh"
 
 /**
  * Namespace of ECS.
@@ -31,24 +32,42 @@ namespace ECS
         class CompLife : public AComponent
         {
         public:
-            /**
-             * Constructor of component life
-             * @param maxLife max life of the entity
-             */
-            CompLife(unsigned int maxLife);
 
             /**
              * Constructor of component life
              * @param maxLife max life of the entity
              * @param currentLife current life of the entity
+	     * @param postDamageInvincibility Number of tick between possible alteration of life
              */
-            CompLife(unsigned int maxLife, unsigned int currentLife);
-
+	  CompLife(unsigned int maxLife, int postDamageInvincibility = 0);
 
             /**
              * Destructor of component life
              */
             ~CompLife();
+
+	  /**
+	   * @return Current life
+	   */
+	  int getCurrentLife(void) const;
+
+	  /**
+	   * @param The new current life
+	   * @param The current tick
+	   * @return True if the new life was applied, else false
+	   */
+	  bool setCurrentLife(int currentLife, int currentTick);
+
+	  /**
+	   * Number of tick between possible alteration of life
+	   */
+	  int postDamageInvincibility;
+	  
+	  /**
+	   * Last tick at which entity got damaged.
+	   * -1 if unkown
+	   */
+	  int lastDamageTick;
 
             /**
              * get the type of component
@@ -60,7 +79,7 @@ namespace ECS
             /**
              * Current life of the entity
              */
-            unsigned int _currentLife;
+            int _currentLife;
 
             /**
              * max life of the entity

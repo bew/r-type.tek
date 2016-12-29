@@ -11,6 +11,7 @@
 
 #include "AComponent.hh"
 #include "CompMovement.hh"
+#include "CompType.hh"
 #include "Entity.hh"
 
 namespace ECS {

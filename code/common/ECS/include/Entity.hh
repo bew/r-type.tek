@@ -53,7 +53,7 @@ namespace ECS
              * @param type The type of component requested.
              * @return The component requested, or a nullptr if it doesn't exist.
              */
-            Component::AComponent *getComponent(const std::string &type);
+            Component::AComponent *getComponent(const std::string &type) const;
 
             /**
              * Get the id of the entity.

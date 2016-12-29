@@ -1,7 +1,7 @@
 /**
- * @file SysDamage.hh
+ * @file SysLife.hh
  * @author Nekhot.
- * @brief System for applying damage to collided entity.
+ * @brief System for applying death to entity with life < 0
  */
 
 #pragma once
@@ -10,22 +10,17 @@
 #include "World.hh"
 #include "Entity.hh"
 #include "ISystem.hh"
-#include "CompDamage.hh"
-#include "CompType.hh"
-#include "CompCollision.hh"
-#include "CompLife.hh"
 #include "CompDeath.hh"
-#include "CompTick.hh"
-#include "CompSprite.hh"
+#include "CompLife.hh"
 #include "Logs/Logger.hh"
 
 namespace ECS {
   namespace System {
 
     /**
-     * System for window
+     * System for life
      */
-    class SysDamage : public ISystem {
+    class SysLife : public ISystem {
     public:
       /**
        * Update method

@@ -1,20 +1,36 @@
 /**
  * @file SysDeath.cpp
  * @author Nekhot.
- * @brief Impelmentation of system flusfing dead entity.
+ * @brief Impelmentation of system flushing dead entity.
  */
 #include "SysDeath.hh"
 
 namespace ECS {
   namespace System {
     void SysDeath::update(WorldData &world) {
-      remove_if(world._gameEntities.begin() , world._gameEntities.end(), [](Entity::Entity *entity) {
-	  if (dynamic_cast<Component::CompDeath*>(entity->getComponent(Component::DEATH))) {
-	    delete entity;
-	    return true;
+      Component::CompBlueprint* blueprintc = dynamic_cast<Component::CompBlueprint*>(world._systemEntity.getComponent(Component::BLUEPRINT));
+      std::vector<ECS::Entity::Entity *> generatedEntities;
+
+      world._gameEntities.erase(remove_if(world._gameEntities.begin() , world._gameEntities.end(), [&](Entity::Entity *entity) {
+	    Component::CompDeath* deathc = dynamic_cast<Component::CompDeath*>(entity->getComponent(Component::DEATH));
+	    Component::CompSuccessor* successorc = dynamic_cast<Component::CompSuccessor*>(entity->getComponent(Component::SUCCESSOR));
+
+	    if (deathc) {
+	      if (deathc->_delay <= 0) {
+		if (blueprintc && successorc) {
+		  Entity::Entity *successor = blueprintc->spawn(successorc->_successor, entity);
+		  if (successor)
+		    generatedEntities.push_back(successor);
+		}
+		delete entity;
+		return true;
+	      }
+	      else
+		--deathc->_delay;
 	  }
 	  return false;
-	});
+	  }), world._gameEntities.end());
+      world._gameEntities.insert(world._gameEntities.end(), generatedEntities.begin(), generatedEntities.end());
     }
   }
 }

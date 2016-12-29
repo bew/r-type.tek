@@ -21,6 +21,24 @@ namespace ECS {
      */
     class CompDeath : public AComponent {
     public:
+      
+      /**
+       * @param delay Delay in tick before deletion
+       * @param successor The successor
+       */
+      CompDeath(int delay = 0);
+
+      /**
+       * Delay before deleting the entity
+       */
+      int _delay;
+
+      /**
+       * @return A pointer to a new CompDeath with a state similar to this
+       */
+      virtual AComponent *clone(void) const;
+
+      
       /**
        * @return ECS::Component::DEATH
        */

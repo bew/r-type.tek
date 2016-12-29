@@ -21,10 +21,10 @@ namespace ECS {
 	    delete component.second;
 	}
 	
-	Component::AComponent	*Entity::getComponent(const std::string &type)
+	Component::AComponent	*Entity::getComponent(const std::string &type) const
 	{
 	    Component::AComponent *component;
-	    std::map<const std::string, Component::AComponent *>::iterator it;
+	    std::map<const std::string, Component::AComponent *>::const_iterator it;
 
 	    it = _components.find(type);
 	    if (it == _components.end())
@@ -35,7 +35,7 @@ namespace ECS {
 	    return component;
 	}
 
-		int64_t        Entity::getId() const
+        int64_t        Entity::getId() const
         {
             return _id;
         }
