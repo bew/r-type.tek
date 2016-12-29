@@ -49,7 +49,7 @@ TEST(Network, SingleClientUdp)
         const std::vector<unsigned char> &bufferToSend = messageToSend.getBuffer();
         std::string messageSerialized(bufferToSend.begin(), bufferToSend.end());
 
-        messageSerialized += network::getMagic();
+        messageSerialized += network::magic;
 
         server.addMessage(server.getConnections().at(0), messageSerialized);
         server.update();
@@ -80,7 +80,7 @@ TEST(Network, TwoClientUdp)
         const std::vector<unsigned char> &bufferToSend = messageToSend.getBuffer();
         std::string messageSerialized(bufferToSend.begin(), bufferToSend.end());
 
-        messageSerialized += network::getMagic();
+        messageSerialized += network::magic;
 
         network::SockAddr clienInfos(random_variable);
         network::SockAddr serverInfos(random_variable, "127.0.0.1");
@@ -155,7 +155,7 @@ TEST(Network, FourClientUdp)
         const std::vector<unsigned char> &bufferToSend = messageToSend.getBuffer();
         std::string messageSerialized(bufferToSend.begin(), bufferToSend.end());
 
-        messageSerialized += network::getMagic();
+        messageSerialized += network::magic;
 
         network::SockAddr clienInfos(random_variable);
         network::SockAddr serverInfos(random_variable, "127.0.0.1");

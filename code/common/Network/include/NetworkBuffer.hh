@@ -16,14 +16,7 @@ namespace network {
     /**
      * Magic to delimit binary buffer
      */
-    static const int64_t magic = 1422602646269722845;
-
-    /**
-      * Allow to get the magic representation in string in order to end the message
-      *
-      * @return the magic representation in string in order to end the message
-      */
-    std::string getMagic();
+    static const std::string magic = "Th!T^nZM";
 
     /**
      * Buffer size of the buffers

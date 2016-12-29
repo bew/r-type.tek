@@ -9,12 +9,6 @@
 
 namespace network
 {
-
-    std::string getMagic()
-    {
-        return "12345678";
-    }
-
     NetworkBuffer::NetworkBuffer() :
         _readPosition(0), _writePosition(0)
     {
@@ -91,7 +85,7 @@ namespace network
                 readPosition = 0;
         }
 
-        return std::string(bytes, 8) == getMagic();
+        return std::string(bytes, 8) == network::magic;
     }
 
     void NetworkBuffer::initBuffer()

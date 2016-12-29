@@ -48,7 +48,7 @@ namespace network
                 std::string msg;
                 if (!(msg = _writeBuffer.get()).empty())
                 {
-                    msg += network::getMagic();
+                    msg += network::magic;
                     size_t nbBytesSend = _socket.send(_addr, msg);
                     _writeBuffer.updatePosition(nbBytesSend);
 
@@ -66,7 +66,7 @@ namespace network
     void ClientUDP::addMessage(const std::string &msg)
     {
         _writeBuffer.fill(msg);
-        if (msg.size() >= 8 && msg.substr(msg.length() - 8) == network::getMagic())
+        if (msg.size() >= 8 && msg.substr(msg.length() - 8) == network::magic)
             _selector.monitor(_socket.getSocket(), NetworkSelect::WRITE);
     }
 
