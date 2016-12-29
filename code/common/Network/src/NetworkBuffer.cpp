@@ -75,17 +75,16 @@ namespace network
 
     bool NetworkBuffer::checkMagic(size_t readPosition) const
     {
-        char bytes[8];
-
         for (size_t i = 0; i < 8; i++)
         {
-            bytes[i] = _buffer[readPosition];
+            if (_buffer[readPosition] != network::magic[i])
+                return false;
             ++readPosition;
             if (readPosition == network::BUFFER_SIZE)
                 readPosition = 0;
         }
 
-        return std::string(bytes, 8) == network::magic;
+        return true;
     }
 
     void NetworkBuffer::initBuffer()
