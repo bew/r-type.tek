@@ -267,7 +267,7 @@ namespace bson {
         this->endCapture("readIntegerTag", number);
         int64_t integer = std::stoll(number);
 
-        document << (negative ? integer * -1 : integer);
+        document << (negative ? -integer : integer);
 
         return true;
     }
