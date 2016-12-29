@@ -7,7 +7,8 @@
 #include <iostream>
 #include <SocketException.hh>
 #include "ServerUDP.hh"
-
+#include "Logs/Logger.hh"
+#include "Logs/ErrorLogLevel.hh"
 namespace network
 {
     ServerUDP::ServerUDP() : _socket()
@@ -49,7 +50,10 @@ namespace network
         catch (SocketException &e)
         {
             deleteClosedConnections();
-            std::cerr << e.what() << std::endl;
+            if (logs::logger.isRegister(logs::ERRORS))
+                logs::logger[logs::ERRORS] << e.what() << std::endl;
+            else
+                std::cerr << e.what() << std::endl;
         }
         for (auto client = _clients.begin(); client != _clients.end(); ++client)
         {
@@ -77,7 +81,10 @@ namespace network
                     if (client == _clients.end())
                         break;
                 }
-                std::cerr << e.what() << std::endl;
+                if (logs::logger.isRegister(logs::ERRORS))
+                    logs::logger[logs::ERRORS] << e.what() << std::endl;
+                else
+                    std::cerr << e.what() << std::endl;
             }
         }
 

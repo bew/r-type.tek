@@ -47,7 +47,10 @@ namespace network
         catch (SocketException &e)
         {
             deleteClosedConnections();
-            std::cerr << e.what() << std::endl;
+            if (logs::logger.isRegister(logs::ERRORS))
+                logs::logger[logs::ERRORS] << e.what() << std::endl;
+            else
+                std::cerr << e.what() << std::endl;
         }
         for (auto client = _clients.begin(); client != _clients.end(); ++client)
         {
@@ -66,7 +69,10 @@ namespace network
                 client = _clients.erase(client);
                 if (client == _clients.end())
                     break;
-                std::cerr << e.what() << std::endl;
+                if (logs::logger.isRegister(logs::ERRORS))
+                    logs::logger[logs::ERRORS] << e.what() << std::endl;
+                else
+                    std::cerr << e.what() << std::endl;
             }
         }
     }
