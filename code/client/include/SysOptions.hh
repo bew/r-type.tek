@@ -55,9 +55,9 @@ namespace ECS {
 	  optionsc->setMusicVolume(static_cast<float>(document["music"].getValueDouble()));
 	  optionsc->setSoundEffectVolume(static_cast<float>(document["effect"].getValueDouble()));
           optionsc->setFullscreen(document["fullscreen"].getValueBool());
-          optionsc->setWidth(document["width"].getValueInt32());
-          optionsc->setHeight(document["height"].getValueInt32());
-          optionsc->setAAliasing(document["aaliasing"].getValueInt32());
+          optionsc->setWidth(document["width"].getValueInt64());
+          optionsc->setHeight(document["height"].getValueInt64());
+          optionsc->setAAliasing(document["aaliasing"].getValueInt64());
           optionsc->setTitle(document["title"].getValueString());	  
 	  return repeat;
 	}
