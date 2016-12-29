@@ -17,7 +17,7 @@ namespace network
     SocketLinuxTCP::SocketLinuxTCP() : ASocketTCP()
     {
         if ((_socket = ::socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == -1)
-            throw ("Could not create socket: " + std::to_string(errno));
+            throw (std::string("Could not create socket: ") + strerror(errno));
     }
 
     SocketLinuxTCP::SocketLinuxTCP(Socket_t socket) : ASocketTCP(socket)
@@ -30,7 +30,7 @@ namespace network
         close();
     }
 
-    void SocketLinuxTCP::bind(SockAddr& hostInfos)
+    void SocketLinuxTCP::bind(SockAddr &hostInfos)
     {
         int enable = 1;
         if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) != 0)
@@ -38,7 +38,7 @@ namespace network
 
         sockaddr_in & addr = hostInfos.getAddr();
         if (::bind(_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) != 0)
-            throw SocketException("could not bind TCP socket: " + std::to_string(errno));
+            throw SocketException(std::string("could not bind TCP socket: ") + strerror(errno));
 
         socklen_t len = sizeof(addr);
         ::getsockname(_socket, reinterpret_cast<sockaddr *>(&addr), &len);
@@ -47,7 +47,7 @@ namespace network
     void SocketLinuxTCP::listen()
     {
         if (::listen(_socket, SOMAXCONN) < 0)
-            throw SocketException("Listen failed: " + std::to_string(errno));
+            throw SocketException(std::string("Listen failed: ") + strerror(errno));
     }
 
     Socket_t SocketLinuxTCP::accept()
@@ -57,15 +57,15 @@ namespace network
         socklen_t clientInfosSize = sizeof(struct sockaddr_in);
         Socket_t newConnection;
         if ((newConnection = ::accept(_socket, &clientInfos, &clientInfosSize)) == -1)
-            throw SocketException("Accept failed: " + std::to_string(errno));
+            throw SocketException(std::string("Accept failed: ") + strerror(errno));
         return newConnection;
     }
 
-    void SocketLinuxTCP::connect(SockAddr& hostInfos)
+    void SocketLinuxTCP::connect(SockAddr &hostInfos)
     {
         sockaddr_in from = hostInfos.getAddr();
         if (::connect(_socket, reinterpret_cast<struct sockaddr *>(&from), sizeof(from)) < 0)
-            throw SocketException("Connect failed: " + std::to_string(errno));
+            throw SocketException(std::string("Connect failed: ") + strerror(errno));
     }
 
     std::string SocketLinuxTCP::recv()
@@ -74,7 +74,7 @@ namespace network
         std::memset(buffer, 0, network::BUFFER_SIZE);
         ssize_t ret = ::recv(_socket, buffer, network::BUFFER_SIZE, 0);
         if (ret < 0)
-            throw SocketException("Read failed: " + std::to_string(errno));
+            throw SocketException(std::string("Read failed: ") + strerror(errno));
         else if (ret == 0)
             close();
         std::string msg(buffer, ret);
@@ -85,7 +85,7 @@ namespace network
     {
         ssize_t ret = ::send(_socket, msg.c_str(), msg.length(), 0);
         if (ret < 0)
-            throw SocketException("Send failed: " + std::to_string(errno));
+            throw SocketException(std::string("Send failed: ") + strerror(errno));
         return ret;
     }
 
@@ -97,7 +97,6 @@ namespace network
             _socket = -1;
         }
     }
-
 
 
 }
