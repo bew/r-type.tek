@@ -33,14 +33,14 @@ bool ClientRouter::SignUpHandler(Request & req)
   if (_server->_accounts.count(username))
     {
       auto const & answer = protocol::answers::badRequest(getTimestamp(req), "Username " + username + " already taken.");
-      req.getClient()->addMessage(answer.getBufferString() + network::CR + network::LF);
+      req.getClient()->addMessage(answer.getBufferString() + network::magic);
       return false;
     }
 
   _server->_accounts[username] = std::make_shared<Account>(username, password);
 
   auto const & answer = protocol::answers::ok(getTimestamp(req));
-  req.getClient()->addMessage(answer.getBufferString() + network::CR + network::LF);
+  req.getClient()->addMessage(answer.getBufferString() + network::magic);
   return true;
 }
 
@@ -55,7 +55,7 @@ bool ClientRouter::LoginHandler(Request & req)
   if (!_server->_accounts.count(username))
     {
       auto const & answer = protocol::answers::unauthorized(getTimestamp(req), "Unknown username/password");
-      req.getClient()->addMessage(answer.getBufferString() + network::CR + network::LF);
+      req.getClient()->addMessage(answer.getBufferString() + network::magic);
       return false;
     }
 
@@ -63,12 +63,12 @@ bool ClientRouter::LoginHandler(Request & req)
   if (! (account->getPassword() == password))
     {
       auto const & answer = protocol::answers::unauthorized(getTimestamp(req), "Unknown username/password");
-      req.getClient()->addMessage(answer.getBufferString() + network::CR + network::LF);
+      req.getClient()->addMessage(answer.getBufferString() + network::magic);
       return false;
     }
 
   auto const & answer = protocol::answers::ok(getTimestamp(req));
-  req.getClient()->addMessage(answer.getBufferString() + network::CR + network::LF);
+  req.getClient()->addMessage(answer.getBufferString() + network::magic);
   return true;
 }
 
