@@ -21,7 +21,6 @@ namespace ECS {
 	    try {
 	      soundc->sound.setBuffer(assetc->store.getSound(soundc->name).getLowLevelSound());
 	      soundc->sound.setVolume(optionsc->getSoundEffectVolume());
-	      logs::logger[logs::ASSET] << "play " << soundc->name << " at "<< optionsc->getSoundEffectVolume() << " for " << assetc->store.getSound(soundc->name).getLowLevelSound().getDuration().asSeconds()<< std::endl;
 	      soundc->sound.play();
 	      soundc->played = true;
 	    }
