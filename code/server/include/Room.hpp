@@ -50,6 +50,13 @@ public:
    */
   void addPlayer(std::shared_ptr<Player> const & player);
 
+  /**
+   * Check if the Room is full
+   *
+   * @return true if the room is full, else false
+   */
+  bool isFull() const;
+
 protected:
   /**
    * Store the number of slot, representing the maximum number of player for this room
@@ -57,7 +64,7 @@ protected:
   unsigned int _nbSlots;
 
   /**
-   * Store the players ID currently in the room
+   * Store the players currently in the room
    */
   std::vector<std::shared_ptr<Player>> _players;
 

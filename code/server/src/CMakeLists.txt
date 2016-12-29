@@ -9,6 +9,8 @@ add(SRV_SOURCE Room.cpp)
 add(SRV_SOURCE Router.cpp)
 add(SRV_SOURCE Server.cpp)
 add(SRV_SOURCE main.cpp)
+add(SRV_SOURCE ClientCommandsState.cpp)
+add(SRV_SOURCE ClientRouter.cpp)
 
 set(DEPENDENCIES ${RT_COMMON_NAMES})
 

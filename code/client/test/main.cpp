@@ -43,6 +43,7 @@ TEST(clientTest, loginSinup)
     stateMachine->_sm.addState(sMenu);
     stateMachine->_sm.addState(sRoom);
     stateMachine->_sm.addState(sGame);
+    stateMachine->_currentState = sAuth->getName();
 
     world._world._systemEntity.addComponent(stateMachine);
 

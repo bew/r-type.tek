@@ -107,6 +107,21 @@ namespace state_machine
         }
 
         /**
+         * test if the state has an edge as transition
+         * @param e edge to test
+         * @return true if the state has this edge, else false
+         */
+        bool canAccessState(const std::string & targetState) const
+        {
+	  for (auto & kv : _nextLinks)
+	    {
+	      if (kv.second == targetState)
+		return true;
+	    }
+	  return false;
+        }
+
+        /**
          * operator == to compare two states
          * @param rhs state to compare
          * @return true if the states are equals, else false

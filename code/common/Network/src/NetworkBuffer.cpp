@@ -43,6 +43,14 @@ namespace network
                 _readPosition = 0;
             ++i;
         }
+        if (this->checkMagic(_readPosition)) {
+            for (size_t j = 0; j < 8; ++j) {
+                _buffer[_readPosition] = -1;
+                ++_readPosition;
+                if (_readPosition == network::BUFFER_SIZE)
+                    _readPosition = 0;
+            }
+        }
     }
 
     std::string NetworkBuffer::get() const

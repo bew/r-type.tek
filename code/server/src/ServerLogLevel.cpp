@@ -30,7 +30,7 @@ namespace logs
 
     std::ostream& ServerLogLevel::getLogLevelStream()
     {
-        return _file;
+        return std::cerr;
     }
 
     static ServerLogLevel serverLogLevel;

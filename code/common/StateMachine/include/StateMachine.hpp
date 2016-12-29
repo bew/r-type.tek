@@ -89,7 +89,7 @@ namespace state_machine
          */
         void setInitialState(const std::shared_ptr<StateT> state)
         {
-            if (_states.find(state->getName() == _states.end()))
+            if (_states.find(state->getName()) == _states.end())
                 addState(state);
             _initialState = state->getName();
         }

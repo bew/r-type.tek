@@ -32,6 +32,10 @@ namespace network
 
     void SocketLinuxTCP::bind(SockAddr &hostInfos)
     {
+        int enable = 1;
+        if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) != 0)
+            throw SocketException("could not bind TCP socket: " + std::to_string(errno));
+
         sockaddr_in & addr = hostInfos.getAddr();
         if (::bind(_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)) != 0)
             throw SocketException(std::string("could not bind TCP socket: ") + strerror(errno));
