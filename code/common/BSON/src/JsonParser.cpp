@@ -104,7 +104,7 @@ namespace bson {
     }
 
     void JsonParser::ignoreBlanks() {
-        while (_pos != _json.end() && (*_pos == ' ' || *_pos == '\t' || *_pos == '\n'))
+        while (_pos != _json.end() && (*_pos == ' ' || *_pos == '\t' || *_pos == '\n' || *_pos == '\r'))
             ++_pos;
     }
 
