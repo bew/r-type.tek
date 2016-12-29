@@ -120,6 +120,11 @@ namespace network
          */
         bool hasMessage(std::shared_ptr<ClientUDP> client) const;
 
+        /**
+         * delete all clients not connected
+         */
+        void deleteClosedConnections();
+
     private:
         /**
          * Represents one socket tcp

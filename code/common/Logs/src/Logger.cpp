@@ -49,6 +49,10 @@ namespace logs {
         return _logsLevel.erase(logLevelName) > 0;
     }
 
+    bool Logger::isRegister(const std::string &logLevelName) const {
+        return _logsLevel.count(logLevelName) > 0;
+    }
+
     Logger &Logger::logLevel(const std::string &logLevelName) {
         ALogLevel *logLevel = _logsLevel.at(logLevelName);
 

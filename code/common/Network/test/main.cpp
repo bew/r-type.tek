@@ -97,8 +97,7 @@ public:
         _client.connect(_serverInfos);
 
         std::string login("login");
-        login += network::CR;
-        login += network::LF;
+        login += network::magic;
 
         _client.addMessage(login);
 
@@ -133,8 +132,7 @@ public:
     {
 
         std::string login("login");
-        login += network::CR;
-        login += network::LF;
+        login += network::magic;
 
         _client.addMessage(login);
 
@@ -181,8 +179,7 @@ TEST(Network, SingleClientUdp)
         ASSERT_STREQ("login", login.c_str());
 
         std::string ok("OK");
-        ok += network::CR;
-        ok += network::LF;
+        ok += network::magic;
 
         server.addMessage(server.getConnections().at(0), ok);
         server.update();
@@ -227,8 +224,7 @@ TEST(Network, TwoClientUdp)
         ASSERT_STREQ("login", login.c_str());
 
         std::string ok("OK");
-        ok += network::CR;
-        ok += network::LF;
+        ok += network::magic;
 
         server.addMessage(server.getConnections().at(0), ok);
         server.update();
@@ -246,8 +242,7 @@ TEST(Network, TwoClientUdp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += network::CR;
-        ok += network::LF;
+        ok += network::magic;
 
         server.addMessage(server.getConnections().at(1), ok);
         server.update();
@@ -292,8 +287,7 @@ TEST(Network, FourClientUdp)
         ASSERT_STREQ("login", login.c_str());
 
         std::string ok("OK");
-        ok += network::CR;
-        ok += network::LF;
+        ok += network::magic;
 
         server.addMessage(server.getConnections().at(0), ok);
         server.update();
@@ -312,8 +306,7 @@ TEST(Network, FourClientUdp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += network::CR;
-        ok += network::LF;
+        ok += network::magic;
 
         server.addMessage(server.getConnections().at(1), ok);
         server.update();
@@ -332,8 +325,7 @@ TEST(Network, FourClientUdp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += network::CR;
-        ok += network::LF;
+        ok += network::magic;
 
         server.addMessage(server.getConnections().at(2), ok);
         server.update();
@@ -352,8 +344,7 @@ TEST(Network, FourClientUdp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += network::CR;
-        ok += network::LF;
+        ok += network::magic;
 
         server.addMessage(server.getConnections().at(3), ok);
         server.update();
@@ -395,8 +386,7 @@ TEST(Network, SingleClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         std::string ok("OK");
-        ok += network::CR;
-        ok += network::LF;
+        ok += network::magic;
 
         server.addMessage(server.getConnections().at(0), ok);
         server.update();
@@ -443,8 +433,7 @@ TEST(Network, TwoClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         std::string ok("OK");
-        ok += network::CR;
-        ok += network::LF;
+        ok += network::magic;
 
         server.addMessage(server.getConnections().at(0), ok);
         server.update();
@@ -463,8 +452,7 @@ TEST(Network, TwoClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += network::CR;
-        ok += network::LF;
+        ok += network::magic;
 
         server.addMessage(server.getConnections().at(1), ok);
         server.update();
@@ -512,8 +500,7 @@ TEST(Network, FourClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         std::string ok("OK");
-        ok += network::CR;
-        ok += network::LF;
+        ok += network::magic;
 
         server.addMessage(server.getConnections().at(0), ok);
         server.update();
@@ -533,8 +520,7 @@ TEST(Network, FourClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += network::CR;
-        ok += network::LF;
+        ok += network::magic;
 
         server.addMessage(server.getConnections().at(1), ok);
         server.update();
@@ -554,8 +540,7 @@ TEST(Network, FourClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += network::CR;
-        ok += network::LF;
+        ok += network::magic;
 
         server.addMessage(server.getConnections().at(2), ok);
         server.update();
@@ -575,9 +560,8 @@ TEST(Network, FourClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += network::CR;
-        ok += network::LF;
 
+        ok += network::magic;
         server.addMessage(server.getConnections().at(3), ok);
         server.update();
         client3.join();

@@ -142,7 +142,9 @@ TEST(Client, RoomKick) {
  * Check if the message GameStart build correctly
  */
 TEST(Client, GameStart) {
-    bson::Document message = protocol::client::gameStart();
+    std::string generator("Generator A");
+
+    bson::Document message = protocol::client::gameStart(generator);
 
     bson::Document header = message["header"].getValueDocument();
     EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
@@ -151,7 +153,7 @@ TEST(Client, GameStart) {
     EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
     bson::Document data = message["data"].getValueDocument();
-    EXPECT_EQ(data.isEmpty(), true);
+    EXPECT_EQ(data["generator"].getValueString(), generator);
 
     EXPECT_EQ(protocol::client::checkGameStart(message), true);
 }

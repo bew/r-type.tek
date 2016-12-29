@@ -48,8 +48,7 @@ namespace network
                 std::string msg;
                 if (!(msg = _writeBuffer.get()).empty())
                 {
-                    msg += network::CR;
-                    msg += network::LF;
+                    msg += network::magic;
                     size_t nbBytesSend = _socket.send(_addr, msg);
                     _writeBuffer.updatePosition(nbBytesSend);
 
@@ -60,6 +59,8 @@ namespace network
         }
         catch (SocketException &e)
         {
+            if (!isClose())
+                close();
             throw e;
         }
     }
@@ -67,7 +68,7 @@ namespace network
     void ClientUDP::addMessage(const std::string &msg)
     {
         _writeBuffer.fill(msg);
-        if (*(--msg.end()) == network::CR || *(--msg.end()) == network::LF)
+        if (msg.size() >= 8 && msg.substr(msg.length() - 8) == network::magic)
             _selector.monitor(_socket.getSocket(), NetworkSelect::WRITE);
     }
 

@@ -7,6 +7,8 @@
 #include <iostream>
 #include "ServerTCP.hh"
 #include "SocketException.hh"
+#include "Logs/Logger.hh"
+#include "Logs/ErrorLogLevel.hh"
 
 namespace network
 {
@@ -41,10 +43,20 @@ namespace network
             _selector.select(&timer);
             if (_selector.isReadable(_socketServer.getSocket()))
                 accept();
-
-            for (auto client = _clients.begin(); client != _clients.end(); ++client)
+        }
+        catch (SocketException &e)
+        {
+            deleteClosedConnections();
+            if (logs::logger.isRegister(logs::ERRORS))
+                logs::logger[logs::ERRORS] << e.what() << std::endl;
+            else
+                std::cerr << e.what() << std::endl;
+        }
+        for (auto client = _clients.begin(); client != _clients.end(); ++client)
+        {
+            try
             {
-                (*client)->update(0);
+                (*client)->update(ms);
                 if ((*client)->isClose())
                 {
                     client = _clients.erase(client);
@@ -52,10 +64,29 @@ namespace network
                         break;
                 }
             }
+            catch (SocketException &e)
+            {
+                client = _clients.erase(client);
+                if (client == _clients.end())
+                    break;
+                if (logs::logger.isRegister(logs::ERRORS))
+                    logs::logger[logs::ERRORS] << e.what() << std::endl;
+                else
+                    std::cerr << e.what() << std::endl;
+            }
         }
-        catch (SocketException &e)
+    }
+
+    void ServerTCP::deleteClosedConnections()
+    {
+        for (auto client = _clients.begin(); client != _clients.end(); ++client)
         {
-            throw e;
+            if ((*client)->isClose())
+            {
+                client = _clients.erase(client);
+                if (client == _clients.end())
+                    return;
+            }
         }
     }
 

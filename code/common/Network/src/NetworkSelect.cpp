@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <ASocket.hh>
+#include <cstring>
 #include "NetworkSelect.hh"
 #include "SocketException.hh"
 
@@ -63,7 +64,7 @@ namespace network
         _writefds_result = _writefds;
 
         if ((::select(FD_SETSIZE, &_readfds_result, &_writefds_result, NULL, timeout)) == -1)
-            throw SocketException("Select failed with error: " + std::to_string(errno));
+            throw SocketException(std::string("Select failed with error: ") + strerror(errno));
     }
 
 }
