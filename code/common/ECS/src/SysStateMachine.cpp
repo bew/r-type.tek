@@ -32,7 +32,7 @@ namespace ECS
                 return protocol::answers::notFound(doc["header"]["timestamp"].getValueInt64());
             else if (doc["data"]["code"].getValueInt32() == 200
                      && !stateMachine._nextState.empty()
-                     && stateMachine._sm[stateMachine._currentState]->has(stateMachine._nextState))
+                     && stateMachine._sm[stateMachine._currentState]->canAccessState(stateMachine._nextState))
             {
                 stateMachine._currentState = stateMachine._nextState;
                 stateMachine._nextState.clear();
