@@ -59,6 +59,8 @@ namespace network
         }
         catch (SocketException &e)
         {
+            if (!isClose())
+                close();
             throw e;
         }
     }

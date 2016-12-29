@@ -35,7 +35,7 @@ namespace network
         }
     }
 
-    NetworkSelect& ClientTCP::getSelector()
+    NetworkSelect &ClientTCP::getSelector()
     {
         return _selector;
     }
@@ -84,6 +84,8 @@ namespace network
         }
         catch (SocketException &e)
         {
+            if (!isClose())
+                close();
             throw e;
         }
     }
