@@ -560,8 +560,8 @@ TEST(Network, FourClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         ok = "OK";
-        ok += network::magic;
 
+        ok += network::magic;
         server.addMessage(server.getConnections().at(3), ok);
         server.update();
         client3.join();

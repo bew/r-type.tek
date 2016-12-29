@@ -7,6 +7,8 @@
 #include <iostream>
 #include "ServerTCP.hh"
 #include "SocketException.hh"
+#include "Logs/Logger.hh"
+#include "Logs/ErrorLogLevel.hh"
 
 namespace network
 {
