@@ -9,6 +9,7 @@
 #pragma once
 #include "ISystem.hh"
 #include "CompMovement.hh"
+#include "CompDeath.hh"
 #include "Entity.hh"
 
 /**

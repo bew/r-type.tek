@@ -32,11 +32,16 @@ namespace ECS {
         /**
          * Standard width of the window.
          */
-        static const unsigned XMAX = 1280;
+        static const int XMAX = 1280;
         /**
          * Standard height of the window.
          */
-        static const unsigned YMAX = 720;
+        static const int YMAX = 720;
+
+      /**
+       * Tolerance used for deleting entity out of screen
+       */
+      static const int ALIVE_ZONE = 400;
 
         /**
          * Component to optimize collision calculation.

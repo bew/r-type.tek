@@ -19,7 +19,6 @@ namespace ECS {
 	try {
 	  projectile = blueprintc->spawn(projectilec->name, entity);
 	  projectilec->lastFireTick = tickc->tick;
-	  logs::logger[logs::INFO] << "Blueprint '" << projectilec->name << "' instanciated" << std::endl;
 	}
 	catch (const ECS::Component::ComponentFlagException &e) {
 	  logs::logger[logs::ERRORS] << "Cannot clone '" << projectilec->name << "' : '" << e.what() << "'" << std::endl;

@@ -29,23 +29,22 @@ namespace ECS
          */
         class CompType : public AComponent {
         public:
-            /**
-             * Types of entity.
-             */
-            enum Type
-            {
-                PLAYER,
-                ENEMY,
-                PLAYER_SHOOT,
-                ENEMY_SHOOT,
-                SYSTEM
-            };
 
+	  static const int FILTER_TEAM = 0b1 << 0;
+	  static const int ENEMY = 0b1 << 0;//can hurt player
+	  static const int PLAYER = 0b0 << 0;//can hurt enemy
+	  
+	  static const int FILTER_TYPE = 0b1 << 1;
+	  static const int PROJECTILE = 0b0 << 1;//kill on pv < 0
+	  static const int CHARACTER = 0b1 << 1;//kill on contact
+	  
+	  
+	  
             /**
              * Constructor.
              * @param type The type of the entity which will possess this component.
              */
-            CompType(Type type);
+            CompType(int type);
             /**
              * Destructor.
              */
@@ -57,10 +56,16 @@ namespace ECS
              */
             virtual const std::string &getType() const;
 
+	  /**
+	   * @return A pointer to a new CompType with a state similar to this
+	   */
+	  virtual AComponent *clone(void) const;
+
+
             /**
              * Type of the entity.
              */
-            const Type  _type;
+            int  _type;
         };
     }
 }

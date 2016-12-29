@@ -76,7 +76,9 @@ namespace ECS {
             Component::CompType *type_comp = static_cast<Component::CompType *>(
                 entity.getComponent(Component::TYPE));
 
-            if (type_comp != nullptr && type_comp->_type == Component::CompType::Type::PLAYER)
+            if (type_comp != nullptr &&
+		(type_comp->_type & Component::CompType::FILTER_TEAM) == Component::CompType::PLAYER &&
+		(type_comp->_type & Component::CompType::FILTER_TYPE) != Component::CompType::PROJECTILE)
             {
                 Component::CompHitbox *hitbox_comp = static_cast<Component::CompHitbox *>(
                     entity.getComponent(Component::HITBOX));
@@ -109,14 +111,20 @@ namespace ECS {
                 Component::CompMovement *comp = static_cast<Component::CompMovement *>(
                     entity->getComponent(Component::MOVEMENT));
 
-                if (comp != nullptr) { 
-                    this->computeNextCoordinates(comp);
-                    this->putEntityInGrid(comp, entity, data._systemEntity);
-                }
+                if (comp != nullptr) {
+		  if (comp && !entity->getComponent(Component::DEATH) &&
+		      (comp->_coo._x > ECS::Component::XMAX + ECS::Component::ALIVE_ZONE) ||
+		      (comp->_coo._y > ECS::Component::YMAX + ECS::Component::ALIVE_ZONE) ||
+		      (comp->_coo._x < 0 - ECS::Component::ALIVE_ZONE) ||
+		      (comp->_coo._y < 0 - ECS::Component::ALIVE_ZONE)) {
+		    entity->addComponent(new ECS::Component::CompDeath());
+		  } else {
+		    this->computeNextCoordinates(comp);
+		    this->putEntityInGrid(comp, entity, data._systemEntity);
+		  }
+		}
                 playerCheckPosition(*entity);
             }
-        }
-
-        
+        }        
     }
 }
