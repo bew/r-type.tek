@@ -61,7 +61,7 @@ namespace ECS
                     bson::Document doc;
                     try
                     {
-                        doc = network->_clientTCP.getMessage();
+                        doc = bson::Document(network->_clientTCP.getMessage());
                     }
                     catch (bson::BsonException& bsonError)
                     {
@@ -71,9 +71,8 @@ namespace ECS
                             logs::logger[logs::ERRORS] << bsonError.what() << std::endl;
                         else
                             std::cerr << bsonError.what() << std::endl;
-                    }
-                    if (doc.isEmpty())
                         return;
+                    }
                     network->_lastReceived = doc;
                     bson::Document answer;
                     if (protocol::checkMessage(doc))
