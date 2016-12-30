@@ -69,8 +69,17 @@ void Empty::update(ECS::WorldData &world) {
 	new ECS::Component::CompDeath(23),
 	new ECS::Component::CompSound("boom")
       };
+      blueprintsc->blueprints["explosionBigDropEgg"] = {
+        new ECS::Component::CompMovement({0, 0}, 0),
+        new ECS::Component::CompSprite("explosion", {0, 0}, "default", {2.0, 2.0}),
+        new ECS::Component::CompHitbox(120, 120),
+        new ECS::Component::CompDamage(20),
+        new ECS::Component::CompType(ECS::Component::CompType::CHARACTER),
+        new ECS::Component::CompDeath(23),
+        new ECS::Component::CompSound("boom"),
+	new ECS::Component::CompSuccessor("bonusEgg"),
+      };
       blueprintsc->blueprints["organicDeath"] = {
-	new ECS::Component::CompMovement({0, 0}, 0),
 	new ECS::Component::CompDeath(1),
 	new ECS::Component::CompSound("jblurb")
       };
@@ -92,9 +101,17 @@ void Empty::update(ECS::WorldData &world) {
         new ECS::Component::CompMovement({1450, 360}),
         new ECS::Component::CompHitbox(125, 125),
         new ECS::Component::CompType(ECS::Component::CompType::ENEMY | ECS::Component::CompType::CHARACTER),
-        new ECS::Component::CompSuccessor("explosionBig"),
+        new ECS::Component::CompSuccessor("explosionBigDropEgg"),
         new ECS::Component::CompIA("sin"),
 	new ECS::Component::CompScore(25)	
+      };
+      blueprintsc->blueprints["bonusEgg"] = {
+	new ECS::Component::CompMovement({0, 0}, 0),
+        new ECS::Component::CompDamage(-2),
+        new ECS::Component::CompSprite("egg", {0, 0}, "", {3.0, 3.0}),
+        new ECS::Component::CompHitbox(10, 10),
+        new ECS::Component::CompType(ECS::Component::CompType::PROJECTILE),
+	new ECS::Component::CompSuccessor("organicDeath")
       };
       
       world._systemEntity.addComponent(new ECS::Component::CompSprite("desert", {1280/2, 720/2}));

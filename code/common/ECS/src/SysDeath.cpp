@@ -9,13 +9,11 @@ namespace ECS {
   namespace System {
     void SysDeath::update(WorldData &world) {
       Component::CompBlueprint* blueprintc = dynamic_cast<Component::CompBlueprint*>(world._systemEntity.getComponent(Component::BLUEPRINT));
-      Component::CompScore* globalScorec = dynamic_cast<Component::CompScore*>(world._systemEntity.getComponent(Component::SCORE));
       std::vector<ECS::Entity::Entity *> generatedEntities;
 
       world._gameEntities.erase(remove_if(world._gameEntities.begin() , world._gameEntities.end(), [&](Entity::Entity *entity) {
 	    Component::CompDeath* deathc = dynamic_cast<Component::CompDeath*>(entity->getComponent(Component::DEATH));
 	    Component::CompSuccessor* successorc = dynamic_cast<Component::CompSuccessor*>(entity->getComponent(Component::SUCCESSOR));
-	    Component::CompScore* scorec = dynamic_cast<Component::CompScore*>(entity->getComponent(Component::SCORE));
 	    
 	    if (deathc) {
 	      if (deathc->_delay <= 0) {
@@ -28,8 +26,6 @@ namespace ECS {
 		    logs::getLogger()[logs::ERRORS] << "Cannot clone '" << successorc->_successor << "' : '" << e.what() << "'" << std::endl;
 		  }
 		}
-		if (scorec && globalScorec)
-		  globalScorec->score += scorec->score;
 		delete entity;
 		return true;
 	      }
