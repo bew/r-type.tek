@@ -69,11 +69,8 @@ TEST(clientTest, loginSinup)
 
     bson::Document signup = protocol::client::signUp(username, pwd);
 
-    std::string msg(signup.getBufferString());
-    msg +=  network::magic;
+    std::string msg(signup.getBufferString() + network::magic);
 
-    std::cout << msg << std::endl;
-    std::cout << signup.toJSON() << std::endl;
     networkClient->_clientTCP.addMessage(msg);
     stateMachine->_currentState= sAuth->getName();
     stateMachine->_nextState = sAuth->getName();
@@ -102,8 +99,7 @@ TEST(clientTest, loginSinup)
 
     stateMachine->_nextState = sMenu->getName();
 
-    msg = login.getBufferString();
-    msg +=  network::magic;
+    msg = login.getBufferString() + network::magic;
 
     networkClient->_clientTCP.addMessage(msg);
 
@@ -162,6 +158,14 @@ TEST(ClientTest, badCommandTest)
 
     bson::Document roomJoin(protocol::server::roomJoin("tookie"));
 
-    std::string msg(roomJoin.getBufferString());
+    std::string msg(roomJoin.getBufferString() + network::magic);
 
+    networkClient->_clientTCP.addMessage(msg);
+
+    while (!networkClient->_clientTCP.hasMessage())
+        networkClient->_clientTCP.update();
+
+    world.update();
+
+    //TODO: test if message is bad answer
 }
