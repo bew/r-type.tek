@@ -61,7 +61,7 @@ namespace ECS
                     bson::Document doc;
                     try
                     {
-                        doc = network->_clientTCP.getMessage());
+                        doc = network->_clientTCP.getMessage();
                     }
                     catch (bson::BsonException& bsonError)
                     {
