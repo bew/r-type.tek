@@ -73,7 +73,6 @@ namespace ECS
                             std::cerr << bsonError.what() << std::endl;
                         return;
                     }
-                    network->_lastReceived = doc;
                     bson::Document answer;
                     if (protocol::checkMessage(doc))
                         answer = processMessage(doc, *stateMachine, *network);
@@ -87,6 +86,7 @@ namespace ECS
                     }
                     if (!answer.isEmpty())
                         network->_clientTCP.addMessage(answer.getBufferString());
+                    network->_lastReceived = doc;
                 }
                 catch (network::SocketException &socketError)
                 {
