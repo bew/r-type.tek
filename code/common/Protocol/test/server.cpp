@@ -77,7 +77,9 @@ TEST(Server, RoomKick) {
  * Check if the message GameStart build correctly
  */
 TEST(Server, GameStart) {
-    bson::Document message = protocol::server::gameStart();
+    std::string token("aToken");
+
+    bson::Document message = protocol::server::gameStart(token);
 
     bson::Document header = message["header"].getValueDocument();
     EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
@@ -86,7 +88,7 @@ TEST(Server, GameStart) {
     EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
     bson::Document data = message["data"].getValueDocument();
-    EXPECT_EQ(data.isEmpty(), true);
+    EXPECT_EQ(data["token"].getValueString(), token);
 
     EXPECT_EQ(protocol::server::checkGameStart(message), true);
 }
