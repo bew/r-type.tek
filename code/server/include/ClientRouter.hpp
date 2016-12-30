@@ -22,6 +22,7 @@ public:
   bool SignUpHandler(Request & req);
   bool LoginHandler(Request &);
   bool LogoutHandler(Request &);
+  bool RoomJoinHandler(Request &);
   bool RoomLeaveHandler(Request &);
   bool RoomKickHandler(Request &);
   bool GameStartHandler(Request &);
