@@ -38,6 +38,10 @@ namespace ECS
       
     const std::string &CompLife::getType() const {
       return Component::LIFE;
-    } 
+    }
+    
+    AComponent *CompLife::clone(void) const {
+      return new CompLife(_maxLife, postDamageInvincibility);
+    }
   }
 }

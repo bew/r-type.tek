@@ -21,6 +21,15 @@
 template<class Target, class Dependence>
 class Dependent_ptr {
 public:
+
+  /**
+   * Default constructor. Build a null pointer.
+   */
+  Dependent_ptr(void) :
+    _target(new std::shared_ptr<Target>(nullptr)),
+    _dependence(new std::shared_ptr<Dependence>(nullptr)) {
+  };
+  
   /**
    * Construct  wrapper for target that is used correclty forbid deletion of dependence before delete of target.
    *
@@ -56,6 +65,13 @@ public:
     delete _dependence;
     _target = tmp_target;
     _dependence = tmp_dependence;
+  }
+
+  /**
+   * Test if pointer is null
+   */
+  operator bool() const {
+    return (_target->get() != nullptr);
   }
 
   /**
