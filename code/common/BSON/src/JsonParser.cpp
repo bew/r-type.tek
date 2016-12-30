@@ -104,7 +104,7 @@ namespace bson {
     }
 
     void JsonParser::ignoreBlanks() {
-        while (_pos != _json.end() && (*_pos == ' ' || *_pos == '\t' || *_pos == '\n'))
+        while (_pos != _json.end() && (*_pos == ' ' || *_pos == '\t' || *_pos == '\n' || *_pos == '\r'))
             ++_pos;
     }
 
@@ -267,13 +267,7 @@ namespace bson {
         this->endCapture("readIntegerTag", number);
         int64_t integer = std::stoll(number);
 
-        if (negative)
-            integer *= -1;
-
-        if (-2147483648 <= integer && integer <= 21747483647)
-            document << static_cast<int32_t>(integer);
-        else
-            document << integer;
+        document << (negative ? -integer : integer);
 
         return true;
     }

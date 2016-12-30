@@ -29,8 +29,7 @@ TEST(Network, SingleClientTcp)
         const std::vector<unsigned char> &bufferToSend = messageToSend.getBuffer();
         std::string messageSerialized(bufferToSend.begin(), bufferToSend.end());
 
-        messageSerialized += network::CR;
-        messageSerialized += network::LF;
+        messageSerialized += network::magic;
 
         network::ServerTCP server;
         ClientTCP client(serverInfos);
@@ -42,12 +41,12 @@ TEST(Network, SingleClientTcp)
         client.launch();
 
         while (server.getConnections().size() == 0)
-            server.update();
+            server.update(0);
 
         std::string login = "";
 
         while ((login = server.getMessage(server.getConnections().at(0))).empty())
-            server.update();
+            server.update(0);
 
         bufferReceived = std::vector<unsigned char>(login.begin(), login.end());
         messageReceived = bson::Document(bufferReceived);
@@ -57,7 +56,7 @@ TEST(Network, SingleClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         server.addMessage(server.getConnections().at(0), messageSerialized);
-        server.update();
+        server.update(0);
 
         client.join();
     }
@@ -91,8 +90,7 @@ TEST(Network, TwoClientTcp)
         const std::vector<unsigned char> &bufferToSend = messageToSend.getBuffer();
         std::string messageSerialized(bufferToSend.begin(), bufferToSend.end());
 
-        messageSerialized += network::CR;
-        messageSerialized += network::LF;
+        messageSerialized += network::magic;
 
         network::ServerTCP server;
 
@@ -106,14 +104,14 @@ TEST(Network, TwoClientTcp)
         client0.launch();
 
         while (server.getConnections().size() == 0)
-            server.update();
+            server.update(0);
 
         std::string login = "";
 
         // Client 0
 
         while ((login = server.getMessage(server.getConnections().at(0))).empty())
-            server.update();
+            server.update(0);
 
         bufferReceived = std::vector<unsigned char>(login.begin(), login.end());
         messageReceived = bson::Document(bufferReceived);
@@ -123,18 +121,18 @@ TEST(Network, TwoClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         server.addMessage(server.getConnections().at(0), messageSerialized);
-        server.update();
+        server.update(0);
         client0.join();
 
         client1.launch();
 
         while (server.getConnections().size() == 1)
-            server.update();
+            server.update(0);
 
         //Client 1
         login = "";
         while ((login = server.getMessage(server.getConnections().at(1))).empty())
-            server.update();
+            server.update(0);
 
         bufferReceived = std::vector<unsigned char>(login.begin(), login.end());
         messageReceived = bson::Document(bufferReceived);
@@ -144,7 +142,7 @@ TEST(Network, TwoClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         server.addMessage(server.getConnections().at(1), messageSerialized);
-        server.update();
+        server.update(0);
         client1.join();
     }
     catch (network::SocketException &e)
@@ -177,8 +175,7 @@ TEST(Network, FourClientTcp)
         const std::vector<unsigned char> &bufferToSend = messageToSend.getBuffer();
         std::string messageSerialized(bufferToSend.begin(), bufferToSend.end());
 
-        messageSerialized += network::CR;
-        messageSerialized += network::LF;
+        messageSerialized += network::magic;
 
         network::ServerTCP server;
 
@@ -195,12 +192,12 @@ TEST(Network, FourClientTcp)
         // Client 0
 
         while (server.getConnections().size() == 0)
-            server.update();
+            server.update(0);
 
         std::string login = "";
 
         while ((login = server.getMessage(server.getConnections().at(0))).empty())
-            server.update();
+            server.update(0);
 
         bufferReceived = std::vector<unsigned char>(login.begin(), login.end());
         messageReceived = bson::Document(bufferReceived);
@@ -210,7 +207,7 @@ TEST(Network, FourClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         server.addMessage(server.getConnections().at(0), messageSerialized);
-        server.update();
+        server.update(0);
         client0.join();
 
         //Client 1
@@ -218,11 +215,11 @@ TEST(Network, FourClientTcp)
         client1.launch();
 
         while (server.getConnections().size() == 1)
-            server.update();
+            server.update(0);
 
         login = "";
         while ((login = server.getMessage(server.getConnections().at(1))).empty())
-            server.update();
+            server.update(0);
 
 
         bufferReceived = std::vector<unsigned char>(login.begin(), login.end());
@@ -233,7 +230,7 @@ TEST(Network, FourClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         server.addMessage(server.getConnections().at(1), messageSerialized);
-        server.update();
+        server.update(0);
         client1.join();
 
         //Client 2
@@ -241,11 +238,11 @@ TEST(Network, FourClientTcp)
         client2.launch();
 
         while (server.getConnections().size() == 2)
-            server.update();
+            server.update(0);
 
         login = "";
         while ((login = server.getMessage(server.getConnections().at(2))).empty())
-            server.update();
+            server.update(0);
 
         bufferReceived = std::vector<unsigned char>(login.begin(), login.end());
         messageReceived = bson::Document(bufferReceived);
@@ -255,7 +252,7 @@ TEST(Network, FourClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         server.addMessage(server.getConnections().at(2), messageSerialized);
-        server.update();
+        server.update(0);
         client2.join();
 
         //Client 3
@@ -263,11 +260,11 @@ TEST(Network, FourClientTcp)
         client3.launch();
 
         while (server.getConnections().size() == 3)
-            server.update();
+            server.update(0);
 
         login = "";
         while ((login = server.getMessage(server.getConnections().at(3))).empty())
-            server.update();
+            server.update(0);
 
         bufferReceived = std::vector<unsigned char>(login.begin(), login.end());
         messageReceived = bson::Document(bufferReceived);
@@ -277,7 +274,7 @@ TEST(Network, FourClientTcp)
         ASSERT_STREQ("login", login.c_str());
 
         server.addMessage(server.getConnections().at(3), messageSerialized);
-        server.update();
+        server.update(0);
         client3.join();
 
     }

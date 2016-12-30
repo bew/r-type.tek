@@ -142,9 +142,11 @@ namespace protocol {
                    protocol::checkString(data, "username");
         }
 
-        bson::Document gameStart(void) {
+        bson::Document gameStart(const std::string &generator) {
             bson::Document document;
             bson::Document message;
+
+            message << u8"generator" << generator;
 
             document << u8"header" << protocol::createHeader("GameStart");
             document << u8"data" << message;
@@ -157,7 +159,8 @@ namespace protocol {
                 document[u8"header"][u8"action"].getValueString() != u8"GameStart")
                 return false;
             bson::Document data = document[u8"data"].getValueDocument();
-            return data.isEmpty();
+            return data.elementsCount() == 1 &&
+                    protocol::checkString(data, "generator");
         }
 
         bson::Document gameLeave(void) {

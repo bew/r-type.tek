@@ -18,7 +18,7 @@ namespace network
     {
         _socket = ::socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
         if (_socket == -1)
-            throw ("Could not create socket, error code: " + std::to_string(errno));
+            throw (std::string("Could not create socket, error code: ") + strerror(errno));
     }
 
     SocketLinuxUDP::~SocketLinuxUDP()
@@ -30,7 +30,7 @@ namespace network
     {
         sockaddr_in addr = hostInfos.getAddr();
         if (::bind(_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)))
-            throw SocketException("could not bind UDP socket, error code: " + std::to_string(errno));
+            throw SocketException(std::string("could not bind UDP socket, error code: ") + strerror(errno));
     }
 
     std::string SocketLinuxUDP::recv(SockAddr& from)
@@ -44,7 +44,7 @@ namespace network
 
         ssize_t ret = ::recvfrom(_socket, buffer, network::BUFFER_SIZE, 0, reinterpret_cast<sockaddr *>(&fromStruct), &fromLen);
         if (ret < 0)
-            throw SocketException("Read from failed with error: " + std::to_string(errno));
+            throw SocketException(std::string("Read from failed with error: ") + strerror(errno));
 
         from.setAddr(fromStruct);
         std::string msg(buffer, ret);
@@ -58,7 +58,7 @@ namespace network
         ssize_t ret = sendto(_socket, msg.c_str(), msg.length(), 0, reinterpret_cast<sockaddr *>(&addr),
                              sizeof(addr));
         if (ret < 0)
-            throw SocketException("Send to failed with error: " + std::to_string(errno));
+            throw SocketException(std::string("Send to failed with error: ") + strerror(errno));
         return ret;
     }
 
