@@ -56,11 +56,20 @@ TEST(SimpleClientTest, RoomLeave)
     client.testRoomLeave();
 }
 
-TEST(SimpleClientTest, gameStart)
+TEST(SimpleClientTest, GameStart)
 {
     ClientTest client(SERVER_ADDR, SERVER_PORT);
 
     client.init();
 
     client.testGameStart();
+}
+
+TEST(SimpleClientTest, GameLeave)
+{
+    ClientTest client(SERVER_ADDR, SERVER_PORT);
+
+    client.init();
+
+    client.testGameLeave();
 }

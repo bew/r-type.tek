@@ -30,6 +30,8 @@ public:
 
     void testRoomLeave();
 
+    void testGameLeave();
+
 private:
     void initStateMachine();
     void initLogLevels() const;
