@@ -7,7 +7,7 @@
 #include "ECSLogLevel.hh"
 #include "SysStateMachine.hh"
 #include "Protocol/Server.hh"
-#include "../../Network/include/SocketException.hh"
+#include "Network/SocketException.hh"
 
 namespace ECS
 {
