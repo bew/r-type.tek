@@ -1,21 +1,21 @@
 /**
- * @file SysDeath.hh
+ * @file SysIA.hh
  * @author Nekhot.
- * @brief System for flushing entity that are no longer needed.
+ * @brief System for applying ia
  */
 
 #pragma once
 
 #include <algorithm>
+#include <cmath>
+#include <ctgmath>
+
 #include "World.hh"
 #include "Entity.hh"
 #include "ISystem.hh"
-#include "CompDeath.hh"
-#include "CompCollision.hh"
-#include "CompSuccessor.hh"
-#include "CompBlueprint.hh"
+#include "CompTick.hh"
+#include "CompIA.hh"
 #include "CompMovement.hh"
-#include "CompScore.hh"
 #include "Logs/Logger.hh"
 
 namespace ECS {
@@ -24,7 +24,7 @@ namespace ECS {
     /**
      * System for window
      */
-    class SysDeath : public ISystem {
+    class SysIA : public ISystem {
     public:
       /**
        * Update method

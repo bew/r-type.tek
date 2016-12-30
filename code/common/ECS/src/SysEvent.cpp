@@ -25,12 +25,12 @@ namespace ECS {
 #ifdef _WIN32
             updateW(world._systemEntity, world);
             for (Entity::Entity *entity : world._gameEntities) {
-          updateW(*entity, world);
+	      updateW(*entity, world);
             }
 #else
             update(world._systemEntity, world);
             for (Entity::Entity *entity : world._gameEntities) {
-                update(*entity, world);
+	      update(*entity, world);
             }
 #endif
             eventc = dynamic_cast<Component::CompEvent *>(world._systemEntity.getComponent(ECS::Component::EVENT));

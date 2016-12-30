@@ -14,7 +14,7 @@ namespace ECS {
       world._gameEntities.erase(remove_if(world._gameEntities.begin() , world._gameEntities.end(), [&](Entity::Entity *entity) {
 	    Component::CompDeath* deathc = dynamic_cast<Component::CompDeath*>(entity->getComponent(Component::DEATH));
 	    Component::CompSuccessor* successorc = dynamic_cast<Component::CompSuccessor*>(entity->getComponent(Component::SUCCESSOR));
-
+	    
 	    if (deathc) {
 	      if (deathc->_delay <= 0) {
 		if (blueprintc && successorc) {
@@ -23,7 +23,7 @@ namespace ECS {
 		    generatedEntities.push_back(successor);
 		  }
 		  catch (const ECS::Component::ComponentFlagException &e) {
-		    logs::logger[logs::ERRORS] << "Cannot clone '" << successorc->_successor << "' : '" << e.what() << "'" << std::endl;
+		    logs::getLogger()[logs::ERRORS] << "Cannot clone '" << successorc->_successor << "' : '" << e.what() << "'" << std::endl;
 		  }
 		}
 		delete entity;

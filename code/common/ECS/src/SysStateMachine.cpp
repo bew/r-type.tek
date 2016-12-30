@@ -48,8 +48,8 @@ namespace ECS
             }
             else
             {
-                network._lastReceived = doc;
-                logs::logger[logs::ERRORS] << doc["data"]["message"].getValueString() << std::endl;
+	      network._lastReceived = doc;
+	      logs::getLogger()[logs::ERRORS] << doc["data"]["msg"].getValueString() << std::endl;
             }
         }
 
@@ -76,8 +76,8 @@ namespace ECS
                     {
                         network->_clientTCP.addMessage(
                             protocol::answers::badRequest(-1).getBufferString() + network::magic);
-                        if (logs::logger.isRegister(logs::ERRORS))
-                            logs::logger[logs::ERRORS] << bsonError.what() << std::endl;
+                        if (logs::getLogger().isRegister(logs::ERRORS))
+			  logs::getLogger()[logs::ERRORS] << bsonError.what() << std::endl;
                         else
                             std::cerr << bsonError.what() << std::endl;
                         return;
@@ -100,8 +100,8 @@ namespace ECS
                 }
                 catch (network::SocketException &socketError)
                 {
-                    if (logs::logger.isRegister(logs::ERRORS))
-                        logs::logger[logs::ERRORS] << socketError.what() << std::endl;
+		  if (logs::getLogger().isRegister(logs::ERRORS))
+		    logs::getLogger()[logs::ERRORS] << socketError.what() << std::endl;
                     else
                         std::cerr << socketError.what() << std::endl;
                     return;
@@ -110,8 +110,8 @@ namespace ECS
                 {
                     network->_clientTCP.addMessage(
                         protocol::answers::internalServerError(-1).getBufferString() + network::magic);
-                    if (logs::logger.isRegister(logs::ERRORS))
-                        logs::logger[logs::ERRORS] << bsonError.what() << std::endl;
+                    if (logs::getLogger().isRegister(logs::ERRORS))
+		      logs::getLogger()[logs::ERRORS] << bsonError.what() << std::endl;
                     else
                         std::cerr << bsonError.what() << std::endl;
                 }

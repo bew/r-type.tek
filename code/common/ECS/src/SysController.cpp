@@ -21,7 +21,7 @@ namespace ECS {
 	  projectilec->lastFireTick = tickc->tick;
 	}
 	catch (const ECS::Component::ComponentFlagException &e) {
-	  logs::logger[logs::ERRORS] << "Cannot clone '" << projectilec->name << "' : '" << e.what() << "'" << std::endl;
+	  logs::getLogger()[logs::ERRORS] << "Cannot clone '" << projectilec->name << "' : '" << e.what() << "'" << std::endl;
 	}
       }
       return projectile;

@@ -213,9 +213,18 @@ namespace logs {
     };
 
     /**
-     * Singleton of Logger
+     * Allow to get the instance of Logger
+     *
+     * @return the instance of Logger
      */
-    extern Logger logger;
+    Logger& getLogger(void);
+
+    /**
+     * Delete the instance of Logger if it exist
+     *
+     * @return true if the instance has been deleted, else false
+     */
+    bool deleteLogger(void);
 };
 
 #include "InfoLogLevel.hh"

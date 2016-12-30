@@ -79,5 +79,9 @@ namespace logs {
         return this->logLevel(logLevelName);
     }
 
-    Logger logger;
+    Logger& getLogger(void) {
+        static Logger logger;
+        return logger;
+    }
+
 }

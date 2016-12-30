@@ -28,8 +28,16 @@ namespace ECS
     }
 
     bool CompLife::setCurrentLife(int currentLife, int currentTick) {
-      if (currentTick - lastDamageTick >= postDamageInvincibility || lastDamageTick == -1) {
+      if (currentLife > _currentLife) {
 	_currentLife = currentLife;
+	if (_currentLife > _maxLife)
+	  _currentLife = _maxLife;
+	return true;
+      }
+      else if (currentTick - lastDamageTick >= postDamageInvincibility || lastDamageTick == -1) {
+	_currentLife = currentLife;
+	if (_currentLife < 0)
+	  _currentLife = 0;
 	lastDamageTick = currentTick;
 	return true;
       }
@@ -38,6 +46,10 @@ namespace ECS
       
     const std::string &CompLife::getType() const {
       return Component::LIFE;
-    } 
+    }
+    
+    AComponent *CompLife::clone(void) const {
+      return new CompLife(_maxLife, postDamageInvincibility);
+    }
   }
 }

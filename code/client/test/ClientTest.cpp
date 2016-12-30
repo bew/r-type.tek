@@ -142,8 +142,8 @@ void ClientTest::testLoginSignup()
 
 void ClientTest::initLogLevels() const
 {
-    logs::logger.registerBasicsLogLevel();
-    logs::logger.registerLogLevel(&logs::ecsLogLevel);
+  logs::getLogger().registerBasicsLogLevel();
+  logs::getLogger().registerLogLevel(&logs::ecsLogLevel);
 }
 
 void ClientTest::testUnauthorizedRoomJoin()

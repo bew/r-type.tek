@@ -1,5 +1,5 @@
-set(GENERATOR_NAME empty)
-set(GENERATOR_SOURCE empty.cpp)
+set(GENERATOR_NAME fly)
+set(GENERATOR_SOURCE fly.cpp)
 include_directories(${RT_COMMON_INCLUDES})
 add_library(${GENERATOR_NAME} SHARED ${GENERATOR_SOURCE})
 target_link_libraries(${GENERATOR_NAME} ${RT_COMMON_NAMES})
