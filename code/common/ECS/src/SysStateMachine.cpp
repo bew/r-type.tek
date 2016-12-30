@@ -95,6 +95,7 @@ namespace ECS
                         logs::logger[logs::ERRORS] << socketError.what() << std::endl;
                     else
                         std::cerr << socketError.what() << std::endl;
+                    return;
                 }
                 catch (bson::BsonException &bsonError)
                 {
