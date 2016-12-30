@@ -99,6 +99,8 @@ bool ClientRouter::RoomJoinHandler(Request & req)
 
   std::shared_ptr<Player> player = _server->_players[req.getClient()];
 
+  Room * room_ptr = nullptr;
+
   // room exists ?
   if (_server->_rooms.count(roomName))
     {
@@ -108,6 +110,7 @@ bool ClientRouter::RoomJoinHandler(Request & req)
 
       room.players[player->name] = player;
       player->currentRoom = roomName;
+      room_ptr = &room;
     }
   else
     {
@@ -122,7 +125,10 @@ bool ClientRouter::RoomJoinHandler(Request & req)
       room.players[player->name] = player;
       room.master = player->name;
       player->currentRoom = roomName;
+      room_ptr = &room;
     }
+
+  Room & room = *room_ptr;
 
   bson::Document room_infos;
   bson::Document room_players;
@@ -157,12 +163,10 @@ bool ClientRouter::RoomLeaveHandler(Request & req)
   if (!protocol::client::checkRoomLeave(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'RoomLeave' is not correct.");
 
-  bson::Document const & rdata = req.getData();
-  std::string username;
+  std::shared_ptr<Player> player = _server->_players[req.getClient()];
+  Room & room = _server->_rooms.at(player->currentRoom);
 
-  rdata["username"] >> username;
-
-  send_to_other_players(req, protocol::server::roomLeave(username));
+  send_to_room_players(req, room, protocol::server::roomLeave(player->name));
 
   return reply_ok(req);
 }
