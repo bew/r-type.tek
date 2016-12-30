@@ -21,7 +21,9 @@ struct Player
    * @param sock The client's control socket
    */
   Player(std::shared_ptr<network::ClientTCP> const & sock) :
-    sock(sock)
+    sock(sock),
+    isPlaying(false),
+    name("")
   {};
 
   /**
@@ -33,6 +35,11 @@ struct Player
    * The player's current room name
    */
   std::string currentRoom;
+
+  /**
+   * The player is in a game, playing
+   */
+  bool isPlaying;
 
   /**
    * Store the player's control socket

@@ -79,13 +79,28 @@ bool ServerRouter::LogoutHandler(Request & req)
   if (!protocol::client::checkLogout(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'Logout' is not correct.");
 
-  bson::Document const & rdata = req.getData();
+  std::shared_ptr<Player> player = _server->_players[req.getClient()];
 
-  // send to other players : (cumulative message ?)
-  // if client was in game => send game leave
-  // if client was in room => send room leave
+  reply_ok(req);
 
-  return reply_ok(req);
+  if (!player->currentRoom.empty() && _server->_rooms.count(player->currentRoom))
+    {
+      Room & room = _server->_rooms.at(player->currentRoom);
+      if (room.players.count(player->name))
+	{
+	  // if client was in game => send game leave
+	  if (player->isPlaying)
+	    send_to_room_other_players(req, room, protocol::server::gameLeave(player->name));
+	  player->isPlaying = false;
+	}
+      // if client was in room => send room leave
+      send_to_room_other_players(req, room, protocol::server::roomLeave(player->name));
+
+      room.players.erase(player->name);
+      player->currentRoom.clear();
+    }
+
+  return true;
 }
 
 bool ServerRouter::RoomJoinHandler(Request & req)
@@ -170,6 +185,9 @@ bool ServerRouter::RoomLeaveHandler(Request & req)
   reply_ok(req);
   send_to_room_players(room, protocol::server::roomLeave(player->name));
 
+  room.players.erase(player->name);
+  player->currentRoom.clear();
+
   return true;
 }
 
@@ -220,7 +238,11 @@ bool ServerRouter::GameStartHandler(Request & req)
   // send to other players + auth token
   // FIXME: more ?
 
-  return true;
+  // set players as playing
+  for (auto & kv : room.players)
+    kv.second->isPlaying = true;
+
+  return reply_ok(req);
 }
 
 bool ServerRouter::GameLeaveHandler(Request &req)
