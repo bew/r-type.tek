@@ -152,7 +152,7 @@ bool ClientRouter::RoomJoinHandler(Request & req)
   room_generators << bson::Document::ARRAY_DISABLED;
 
   room_infos << u8"players" << room_players;
-  room_infos << u8"data" << room_generators;
+  room_infos << u8"generators" << room_generators;
 
   return reply_ok(req, room_infos);
 }
