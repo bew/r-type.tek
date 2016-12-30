@@ -23,7 +23,7 @@ namespace ECS {
 		    generatedEntities.push_back(successor);
 		  }
 		  catch (const ECS::Component::ComponentFlagException &e) {
-		    logs::logger[logs::ERRORS] << "Cannot clone '" << successorc->_successor << "' : '" << e.what() << "'" << std::endl;
+		    logs::getLogger()[logs::ERRORS] << "Cannot clone '" << successorc->_successor << "' : '" << e.what() << "'" << std::endl;
 		  }
 		}
 		delete entity;

@@ -9,9 +9,9 @@
 
 TEST(clientTest, loginSinup)
 {
-    logs::logger.registerBasicsLogLevel();
-    logs::logger.registerLogLevel(&logs::ecsLogLevel);
-    logs::logger.registerLogLevel(&logs::ecsLogLevel);
+    logs::getLogger().registerBasicsLogLevel();
+    logs::getLogger().registerLogLevel(&logs::ecsLogLevel);
+    logs::getLogger().registerLogLevel(&logs::ecsLogLevel);
 
     ECS::World world;
     ECS::Component::CompNetworkClient* networkClient = new ECS::Component::CompNetworkClient("10.41.175.111", 42402);

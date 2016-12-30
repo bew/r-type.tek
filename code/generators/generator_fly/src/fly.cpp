@@ -39,8 +39,8 @@ void Empty::update(ECS::WorldData &world) {
 
   if (tickc && blueprintsc) {
     if (tickc->tick == 1) {
-      logs::logger.registerLogLevel(&logs::assetLogLevel);
-      logs::logger.registerBasicsLogLevel();
+      logs::getLogger().registerLogLevel(&logs::assetLogLevel);
+      logs::getLogger().registerBasicsLogLevel();
       
       blueprintsc->blueprints["bloodBurst"] = {
 	new ECS::Component::CompMovement({+135, +38}, 20, {1, 0}),
@@ -101,7 +101,7 @@ void Empty::update(ECS::WorldData &world) {
 	world._gameEntities.push_back(blueprintsc->spawn("fly"));
       }
       catch (const ECS::Component::ComponentFlagException &e) {
-	logs::logger[logs::ERRORS] << "Cannot clone '" << "fly" << "' : '" << e.what() << "'" << std::endl;
+	logs::getLogger()[logs::ERRORS] << "Cannot clone '" << "fly" << "' : '" << e.what() << "'" << std::endl;
       }
     }
   }

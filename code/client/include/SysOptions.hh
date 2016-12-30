@@ -46,7 +46,7 @@ namespace ECS {
       static bool READ_CONFIG_FILE(ECS::Component::CompEvent::IEvent *event, ECS::WorldData &world) {
 	Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
 
-	logs::logger[logs::INFO] << "Loading configuration file '" << SysOptions::CONFIG_FILE  << "'" << std::endl;
+	logs::getLogger()[logs::INFO] << "Loading configuration file '" << SysOptions::CONFIG_FILE  << "'" << std::endl;
 	
 	try {
 	  bson::Document document;
@@ -62,7 +62,7 @@ namespace ECS {
 	  return repeat;
 	}
 	catch (const bson::BsonException &e) {
-	  logs::logger[logs::ERRORS] << "Cannot load from configuration file (file is corrupted or absent)'" << e.what() << "'" << std::endl;
+	  logs::getLogger()[logs::ERRORS] << "Cannot load from configuration file (file is corrupted or absent)'" << e.what() << "'" << std::endl;
 	  WRITE_CONFIG_FILE<false>(nullptr, world);
 	  return repeat;
 	}
@@ -77,7 +77,7 @@ namespace ECS {
       static bool WRITE_CONFIG_FILE(ECS::Component::CompEvent::IEvent *event, ECS::WorldData &world) {
 	Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
 
-	logs::logger[logs::INFO] << "Updating configuration file '" << SysOptions::CONFIG_FILE  << "'" << std::endl;
+	logs::getLogger()[logs::INFO] << "Updating configuration file '" << SysOptions::CONFIG_FILE  << "'" << std::endl;
 	
 	try {
 	  bson::Document options;
@@ -94,7 +94,7 @@ namespace ECS {
 	  }
 	}
 	catch (const bson::BsonException &e) {
-          logs::logger[logs::ERRORS] << "Cannot update configuration file '" << e.what() << "'" << std::endl;
+          logs::getLogger()[logs::ERRORS] << "Cannot update configuration file '" << e.what() << "'" << std::endl;
           return repeat;
         }
 	return repeat;

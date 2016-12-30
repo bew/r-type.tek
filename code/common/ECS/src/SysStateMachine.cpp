@@ -38,7 +38,7 @@ namespace ECS
                 stateMachine._nextState.clear();
             }
             else
-                logs::logger[logs::ERRORS] << doc["data"]["msg"].getValueString() << std::endl;
+                logs::getLogger()[logs::ERRORS] << doc["data"]["msg"].getValueString() << std::endl;
 
             return bson::Document();
         }

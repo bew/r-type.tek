@@ -51,8 +51,8 @@ int main(int ac, char**av) {
   ECS::World *worldPtr = new ECS::World();
   ECS::World &world = *worldPtr;
   
-  logs::logger.registerLogLevel(&logs::assetLogLevel);
-  logs::logger.registerBasicsLogLevel();
+  logs::getLogger().registerLogLevel(&logs::assetLogLevel);
+  logs::getLogger().registerBasicsLogLevel();
 
   ////////////////////////// ADD SYSTEMS TO WORLD
 
