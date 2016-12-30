@@ -47,6 +47,7 @@ void ClientTest::initStateMachine()
 
     sRoom->addLink("roomKick", sMenu->getName());
     sRoom->addLink("gameStart", sGame->getName());
+    sRoom->addLink("RoomLeave", sMenu->getName());
 
     sGame->addLink("gameLeave", sMenu->getName());
     sGame->addLink("logout", sAuth->getName());
@@ -237,7 +238,7 @@ void ClientTest::testJoinRoom()
         _networkClient->_clientTCP.update();
 
     _world.update();
-    std::cout << _networkClient->_lastReceived.toJSON() << std::endl;
+    std::cout << "[test join room]: last received: " << _networkClient->_lastReceived.toJSON() << std::endl;
 
 
     checkHeader();
@@ -256,13 +257,13 @@ void ClientTest::checkJoinRoom() const
 
     ASSERT_EQ(_networkClient->_lastReceived["data"]["data"].getValueType(), bson::DOCUMENT);
 
-    std::cout << _networkClient->_lastReceived["data"]["data"].getValueDocument().toJSON() << std::endl;
+    ASSERT_TRUE(_networkClient->_lastReceived["data"]["data"].getValueDocument().hasKey("players"));
 
-//    ASSERT_TRUE(_networkClient->_lastReceived["data"].getValueDocument().hasKey("players"));
+    ASSERT_EQ(_networkClient->_lastReceived["data"]["data"]["players"].getValueType(), bson::DOCUMENT);
 
-    //  ASSERT_EQ(_networkClient->_lastReceived["data"]["players"].getValueType(), bson::DOCUMENT);
+    ASSERT_TRUE(_networkClient->_lastReceived["data"]["data"].getValueDocument().hasKey("generators"));
 
-    //std::cout << _networkClient->_lastReceived["data"]["players"].getValueDocument().toJSON() << std::endl;
+    ASSERT_EQ(_networkClient->_lastReceived["data"]["data"]["generators"].getValueType(), bson::DOCUMENT);
 }
 
 void ClientTest::testGameStart()
@@ -328,6 +329,7 @@ void ClientTest::testRoomLeave()
     _stateMachine->_nextState = "s_menu";
 
     _world.update();
+    std::cout << "[test room leave]: last received: " << _networkClient->_lastReceived.toJSON() << std::endl;
 
     checkHeader();
 
