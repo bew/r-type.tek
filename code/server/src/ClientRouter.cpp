@@ -113,3 +113,28 @@ int64_t ClientRouter::getTimestamp(Request & req) const
 {
   return req.getHeader()["timestamp"].getValueInt64();
 }
+
+bool ClientRouter::reply_fail(Request & req, bson::Document const & message) const
+{
+  req.getClient()->addMessage(message.getBufferString() + network::magic);
+  return false;
+}
+
+bool ClientRouter::reply_ok(Request & req, std::string const & message) const
+{
+  if (message.empty())
+    return reply_ok(req, pa::ok(getTimestamp(req)));
+  else
+    return reply_ok(req, pa::ok(getTimestamp(req), message));
+}
+
+bool ClientRouter::reply_ok(Request & req, bson::Document const & message) const
+{
+  req.getClient()->addMessage(message.getBufferString() + network::magic);
+  return true;
+}
+
+bool ClientRouter::validInput(std::string const & input) const
+{
+  return input.find(network::magic) == std::string::npos;
+}

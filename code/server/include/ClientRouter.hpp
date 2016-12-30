@@ -27,7 +27,14 @@ public:
   bool GameStartHandler(Request &);
   bool GameLeaveHandler(Request &);
 
+protected:
   int64_t getTimestamp(Request & req) const;
+  bool reply_fail(Request & req, bson::Document const & message) const;
+
+  bool reply_ok(Request & req, std::string const & message = "") const;
+  bool reply_ok(Request & req, bson::Document const & message) const;
+
+  bool validInput(std::string const & input) const;
 
 protected:
   Server * _server;
