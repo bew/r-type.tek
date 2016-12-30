@@ -174,7 +174,8 @@ bool ClientRouter::GameLeaveHandler(Request &req)
     std::string errorMessage = "The packet for the action 'GameLeave' is not correct.";
     req.getClient()->addMessage(protocol::answers::badRequest(this->getTimestamp(req), errorMessage).getBufferString() + network::magic);
     logs::logger[logs::SERVER] << errorMessage << std::endl;
-    return false;  }
+    return false;
+  }
 
   // send to other players
 
