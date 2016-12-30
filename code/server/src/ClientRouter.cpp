@@ -29,8 +29,9 @@ bool ClientRouter::SignUpHandler(Request & req)
   bson::Document const & rdata = req.getData();
 
   if (protocol::client::checkSignUp(rdata)) {
-    //TODO: return 400 to client
-    logs::logger[logs::SERVER] << "The packet for the action 'SignUp' is not correct." << std::endl;
+    std::string errorMessage = "The packet for the action 'SignUp' is not correct.";
+    req.getClient()->addMessage(protocol::answers::badRequest(this->getTimestamp(req), errorMessage).getBufferString() + network::magic);
+    logs::logger[logs::SERVER] << errorMessage << std::endl;
     return false;
   }
 
@@ -58,8 +59,9 @@ bool ClientRouter::LoginHandler(Request & req)
   bson::Document const & rdata = req.getData();
 
   if (protocol::client::checkLogin(rdata)) {
-    //TODO: return 400 to client
-    logs::logger[logs::SERVER] << "The packet for the action 'Login' is not correct." << std::endl;
+    std::string errorMessage = "The packet for the action 'Login' is not correct.";
+    req.getClient()->addMessage(protocol::answers::badRequest(this->getTimestamp(req), errorMessage).getBufferString() + network::magic);
+    logs::logger[logs::SERVER] << errorMessage << std::endl;
     return false;
   }
 
@@ -70,7 +72,7 @@ bool ClientRouter::LoginHandler(Request & req)
 
   if (!_server->_accounts.count(username))
     {
-      auto const & answer = protocol::answers::unauthorized(getTimestamp(req), "Unknown username/password");
+      auto const & answer = protocol::answers::unauthorized(this->getTimestamp(req), "Unknown username/password");
       req.getClient()->addMessage(answer.getBufferString() + network::magic);
       return false;
     }
@@ -93,8 +95,9 @@ bool ClientRouter::LogoutHandler(Request &req)
   bson::Document const & rdata = req.getData();
 
   if (protocol::client::checkLogout(rdata)) {
-    //TODO: return 400 to client
-    logs::logger[logs::SERVER] << "The packet for the action 'Logout' is not correct." << std::endl;
+    std::string errorMessage = "The packet for the action 'Logout' is not correct.";
+    req.getClient()->addMessage(protocol::answers::badRequest(this->getTimestamp(req), errorMessage).getBufferString() + network::magic);
+    logs::logger[logs::SERVER] << errorMessage << std::endl;
     return false;
   }
 
@@ -109,9 +112,10 @@ bool ClientRouter::RoomLeaveHandler(Request &req)
 {
   bson::Document const & rdata = req.getData();
 
-  if (protocol::client::checkLogout(rdata)) {
-    //TODO: return 400 to client
-    logs::logger[logs::SERVER] << "The packet for the action 'Logout' is not correct." << std::endl;
+  if (protocol::client::checkRoomLeave(rdata)) {
+    std::string errorMessage = "The packet for the action 'RoomLeave' is not correct.";
+    req.getClient()->addMessage(protocol::answers::badRequest(this->getTimestamp(req), errorMessage).getBufferString() + network::magic);
+    logs::logger[logs::SERVER] << errorMessage << std::endl;
     return false;
   }
 
@@ -124,9 +128,10 @@ bool ClientRouter::RoomKickHandler(Request &req)
 {
   bson::Document const & rdata = req.getData();
 
-  if (protocol::client::checkLogout(rdata)) {
-    //TODO: return 400 to client
-    logs::logger[logs::SERVER] << "The packet for the action 'Logout' is not correct." << std::endl;
+  if (protocol::client::checkRoomKick(rdata)) {
+    std::string errorMessage = "The packet for the action 'RoomKick' is not correct.";
+    req.getClient()->addMessage(protocol::answers::badRequest(this->getTimestamp(req), errorMessage).getBufferString() + network::magic);
+    logs::logger[logs::SERVER] << errorMessage << std::endl;
     return false;
   }
 
@@ -142,9 +147,10 @@ bool ClientRouter::GameStartHandler(Request &req)
 {
   bson::Document const & rdata = req.getData();
 
-  if (protocol::client::checkLogout(rdata)) {
-    //TODO: return 400 to client
-    logs::logger[logs::SERVER] << "The packet for the action 'Logout' is not correct." << std::endl;
+  if (protocol::client::checkGameStart(rdata)) {
+    std::string errorMessage = "The packet for the action 'GameStart' is not correct.";
+    req.getClient()->addMessage(protocol::answers::badRequest(this->getTimestamp(req), errorMessage).getBufferString() + network::magic);
+    logs::logger[logs::SERVER] << errorMessage << std::endl;
     return false;
   }
 
@@ -164,11 +170,11 @@ bool ClientRouter::GameLeaveHandler(Request &req)
 {
   bson::Document const & rdata = req.getData();
 
-  if (protocol::client::checkLogout(rdata)) {
-    //TODO: return 400 to client
-    logs::logger[logs::SERVER] << "The packet for the action 'Logout' is not correct." << std::endl;
-    return false;
-  }
+  if (protocol::client::checkGameLeave(rdata)) {
+    std::string errorMessage = "The packet for the action 'GameLeave' is not correct.";
+    req.getClient()->addMessage(protocol::answers::badRequest(this->getTimestamp(req), errorMessage).getBufferString() + network::magic);
+    logs::logger[logs::SERVER] << errorMessage << std::endl;
+    return false;  }
 
   // send to other players
 
