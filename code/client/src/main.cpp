@@ -128,5 +128,6 @@ int main(int ac, char**av) {
     world.update();
   }
   delete worldPtr;
+  logs::deleteLogger();
   return 0;
 }
