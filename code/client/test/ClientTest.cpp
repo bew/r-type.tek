@@ -285,3 +285,26 @@ void ClientTest::checkGameStart() const
     checkAnswer(200);
 }
 
+void ClientTest::testRoomLeave()
+{
+    testJoinRoom();
+
+    _networkClient->_clientTCP.addMessage(protocol::client::roomLeave().getBufferString() + network::magic);
+
+    _world.update();
+
+    while (!_networkClient->_clientTCP.hasMessage())
+        _networkClient->_clientTCP.update();
+
+    _stateMachine->_nextState = "s_menu";
+
+    _world.update();
+
+    checkHeader();
+
+    checkAnswer(200);
+
+    ASSERT_EQ("s_menu", _stateMachine->_currentState);
+}
+
+

@@ -47,6 +47,15 @@ TEST(SimpleClientTest, joinRoom)
 }
 
 
+TEST(SimpleClientTest, RoomLeave)
+{
+    ClientTest client(SERVER_ADDR, SERVER_PORT);
+
+    client.init();
+
+    client.testRoomLeave();
+}
+
 TEST(SimpleClientTest, gameStart)
 {
     ClientTest client(SERVER_ADDR, SERVER_PORT);
