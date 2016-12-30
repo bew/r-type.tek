@@ -79,5 +79,19 @@ namespace logs {
         return this->logLevel(logLevelName);
     }
 
-    Logger logger;
+    static Logger *logger = nullptr;
+
+    Logger& getLogger(void) {
+        if (logger == nullptr)
+            logger = new Logger;
+        return *logger;
+    }
+
+    bool deleteLogger(void) {
+        if (logger != nullptr) {
+            delete logger;
+            return true;
+        }
+        return false;
+    }
 }
