@@ -77,11 +77,7 @@ void ClientTest::testLoginSignup()
     std::cout << "username: " << username << std::endl;
     std::cout << "password: " << pwd << std::endl;
 
-    bson::Document signup = protocol::client::signUp(username, pwd);
-
-    std::string msg(signup.getBufferString() + network::magic);
-
-    _networkClient->_clientTCP.addMessage(msg);
+    _networkClient->_clientTCP.addMessage(protocol::client::signUp(username, pwd).getBufferString() + network::magic);
 
     _world.update();
 
@@ -107,13 +103,9 @@ void ClientTest::testLoginSignup()
     std::cout << "username: " << username << std::endl;
     std::cout << "password: " << pwd << std::endl;
 
-    bson::Document login = protocol::client::login(username, pwd);
-
     _stateMachine->_nextState = "s_menu";
 
-    msg = login.getBufferString() + network::magic;
-
-    _networkClient->_clientTCP.addMessage(msg);
+    _networkClient->_clientTCP.addMessage(protocol::client::login(username, pwd).getBufferString() + network::magic);
 
     _world.update();
 
@@ -180,5 +172,36 @@ void ClientTest::checkAnswer(int codeExpected) const
     ASSERT_EQ(_networkClient->_lastReceived["data"]["code"].getValueType(), bson::INT32);
 
     ASSERT_EQ(_networkClient->_lastReceived["data"]["code"].getValueInt32(), codeExpected);
+}
+
+void ClientTest::testGetAvailableRoom()
+{
+    testLoginSignup();
+
+    _stateMachine->_nextState = "s_menu";
+
+    _networkClient->_clientTCP.addMessage(protocol::client::getAvailableRooms().getBufferString() + network::magic);
+
+    _world.update();
+
+    while (!_networkClient->_clientTCP.hasMessage())
+        _networkClient->_clientTCP.update();
+
+    _world.update();
+
+    checkHeader();
+
+    checkAnswer(200);
+
+    checkAvailableRoom();
+
+    ASSERT_EQ("s_menu", _stateMachine->_currentState);
+}
+
+void ClientTest::checkAvailableRoom() const
+{
+    ASSERT_EQ(_networkClient->_lastReceived["data"]["data"].getValueType(), bson::DOCUMENT);
+
+    std::cout << _networkClient->_lastReceived["data"]["data"].getValueDocument().toJSON() << std::endl;
 }
 

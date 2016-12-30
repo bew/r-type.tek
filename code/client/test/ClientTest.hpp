@@ -22,12 +22,15 @@ public:
 
     void testUnauthorizedRoomJoin();
 
+    void testGetAvailableRoom();
+
 private:
     void initStateMachine();
     void initLogLevels() const;
 
     void checkHeader() const;
     void checkAnswer(int codeExpected) const;
+    void checkAvailableRoom() const;
 
     ECS::World _world;
     ECS::Component::CompNetworkClient* _networkClient;

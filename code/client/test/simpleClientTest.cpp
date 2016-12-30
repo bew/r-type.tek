@@ -26,3 +26,12 @@ TEST(SimpleClientTest, UnauthorizedRoomJoin)
 
     client.testUnauthorizedRoomJoin();
 }
+
+TEST(SimpleClientTest, getAvailableROom)
+{
+    ClientTest client("10.41.175.111", 42402);
+
+    client.init();
+
+    client.testGetAvailableRoom();
+}
