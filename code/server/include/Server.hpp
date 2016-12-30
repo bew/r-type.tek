@@ -72,6 +72,11 @@ protected:
   std::map<std::shared_ptr<network::ClientTCP>, std::shared_ptr<Player>> _players;
 
   /**
+   * Store the association between a username and a Player
+   */
+  std::map<std::string, std::shared_ptr<Player>> _players_by_name;
+
+  /**
    * Store the association between a username and a registered accounts
    * There cannot be 2 account with the same username
    */

@@ -7,7 +7,7 @@
 #ifndef ROOM_HPP_
 # define ROOM_HPP_
 
-#include <vector>
+#include <map>
 #include <stdexcept>
 #include <memory>
 #include "Player.hpp"
@@ -24,7 +24,7 @@ struct Room
    *
    * @param maximumSlots The number of slots available
    */
-  Room(std::string const & name, unsigned int maximumSlots) :
+  Room(std::string const & name, int maximumSlots) :
     name(name),
     maximumSlots(maximumSlots),
     master("")
@@ -45,12 +45,12 @@ struct Room
   /**
    * The maximum number of slot for players
    */
-  unsigned int maximumSlots;
+  int maximumSlots;
 
   /**
-   * The players currently in the room
+   * The players currently in the room, by username
    */
-  std::vector<std::shared_ptr<Player>> players;
+  std::map<std::string, std::shared_ptr<Player>> players;
 
   // ECS ?
   // UDP data socket ? (should be in ECS world)

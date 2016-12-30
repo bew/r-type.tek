@@ -105,7 +105,7 @@ bool ClientRouter::RoomJoinHandler(Request & req)
       if (room.players.size() >= room.maximumSlots)
 	return reply_fail(req, pa::tooManyRequests(getTimestamp(req), "The room '" + roomName + "' is full"));
 
-      room.players.push_back(player);
+      room.players[player->name] = player;
       player->currentRoom = roomName;
       return reply_ok(req);
     }
@@ -118,7 +118,7 @@ bool ClientRouter::RoomJoinHandler(Request & req)
   _server->_rooms.emplace(roomName, Room(roomName, 4));
   Room & room = _server->_rooms.at(roomName);
 
-  room.players.push_back(player);
+  room.players[player->name] = player;
   room.master = player->name;
   player->currentRoom = roomName;
 
@@ -135,14 +135,7 @@ bool ClientRouter::RoomLeaveHandler(Request & req)
 
   rdata["username"] >> username;
 
-  auto const & broadcast_msg = protocol::server::roomLeave(username);
-  for (auto & kv : _server->_players)
-    {
-      std::shared_ptr<Player> & player = kv.second;
-
-      if (player->sock != req.getClient())
-	player->sock->addMessage(broadcast_msg.getBufferString() + network::magic);
-    }
+  send_to_other_players(req, protocol::server::roomLeave(username));
 
   return reply_ok(req);
 }
@@ -226,5 +219,29 @@ bool ClientRouter::reply_ok(Request & req, bson::Document const & message) const
 
 bool ClientRouter::validInput(std::string const & input) const
 {
+  if (input.empty())
+    return false;
   return input.find(network::magic) == std::string::npos;
 }
+
+void ClientRouter::send_to_other_players(Request & req, bson::Document const & broadcast_msg) const
+{
+  for (auto & kv : _server->_players)
+    {
+      std::shared_ptr<Player> & player = kv.second;
+
+      if (player->sock != req.getClient())
+	player->sock->addMessage(broadcast_msg.getBufferString() + network::magic);
+    }
+}
+
+void ClientRouter::send_to_room_players(Request & req, Room & room, bson::Document const & broadcast_msg) const
+{
+  for (auto & kv : room.players)
+    {
+      std::shared_ptr<Player> & player = kv.second;
+
+      player->sock->addMessage(broadcast_msg.getBufferString() + network::magic);
+    }
+}
+

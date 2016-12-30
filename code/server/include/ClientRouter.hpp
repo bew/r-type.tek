@@ -12,6 +12,7 @@ class Server;
 
 #include "Protocol/Answers.hh"
 #include "Router.hpp"
+#include "Room.hpp"
 
 // TODO: doc
 class ClientRouter : public Router
@@ -37,6 +38,8 @@ protected:
   bool reply_ok(Request & req, bson::Document const & message) const;
 
   bool validInput(std::string const & input) const;
+  void send_to_other_players(Request & req, bson::Document const & broadcast_msg) const;
+  void send_to_room_players(Request & req, Room & room, bson::Document const & broadcast_msg) const;
 
 protected:
   Server * _server;
