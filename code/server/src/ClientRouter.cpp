@@ -99,7 +99,7 @@ bool ClientRouter::GameStartHandler(Request &)
 
   // open UDP data socket
 
-  // choose network token for players
+  // choose network auth-token for players
   // send to other players + auth token
   // FIXME: more ?
 }

@@ -17,6 +17,7 @@ class Server;
 # include "Network/ServerTCP.hh"
 # include "ClientRouter.hpp"
 # include "Player.hpp"
+# include "Account.hpp"
 # include "Room.hpp"
 
 /**
@@ -74,13 +75,12 @@ protected:
    * Store the association between a username and a registered accounts
    * There cannot be 2 account with the same username
    */
-  std::map<std::string, std::shared_ptr<Account>> _accounts;
+  std::map<std::string, Account> _accounts;
 
   /**
    * Store the opened rooms
    */
-  std::vector<Room> _rooms;
-  //std::map<std::string, Room> _rooms;
+  std::map<std::string, Room> _rooms;
 
   /**
    * The server name for network identification

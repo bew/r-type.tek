@@ -73,7 +73,7 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
   header["timestamp"] >> timestamp;
   header["action"] >> action;
 
-  ClientCommandsState & state = _players.at(client)->getControlState();
+  ClientCommandsState & state = _players.at(client)->controlState;
 
   logs::logger[logs::SERVER] << "Client " << client << " try action '" << action << "' current state is '" << state.getCurrentState()->getName() << "'" << std::endl;
 
@@ -90,5 +90,4 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
       return;
     }
   logs::logger[logs::SERVER] << "Client state is now '" << state.getCurrentState()->getName() << "'" << std::endl;
-  client;
 }

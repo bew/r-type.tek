@@ -9,66 +9,40 @@
 
 # include <memory>
 # include "Network/ClientTCP.hh"
-# include "Account.hpp"
 # include "ClientCommandsState.hpp"
 
 /**
  * Represent a Player
  */
-class Player
+struct Player
 {
-public:
-  /**
-   * Construct a player
+  /** Construct a player
    *
    * @param sock The client's control socket
    */
-  Player(std::shared_ptr<network::ClientTCP> const & sock);
+  Player(std::shared_ptr<network::ClientTCP> const & sock) :
+    sock(sock)
+  {};
 
   /**
-   * Destructor for a player
+   * The player's username
    */
-  ~Player();
-
-  Player(Player const & other) = delete;
-  Player & operator=(Player const & other) = delete;
-
-public:
-  /**
-   * Get the account associated with a player
-   *
-   * @return a reference on the account for this player
-   */
-  Account const & getAccount() const;
+  std::string name;
 
   /**
-   * Get the account associated with a player
-   *
-   * @return a reference on the account for this player
+   * The player's current room name
    */
-  Account & getAccount();
-
-  /**
-   * Get the control state of the player
-   * It's usually used to change the player state.
-   */
-  ClientCommandsState & getControlState();
-
-protected:
-  /**
-   * Store the player's account
-   */
-  Account _account;
+  std::string currentRoom;
 
   /**
    * Store the player's control socket
    */
-  std::shared_ptr<network::ClientTCP> _sock;
+  std::shared_ptr<network::ClientTCP> sock;
 
   /**
-   * Store the current player state
+   * The player control state machine
    */
-  ClientCommandsState _controlState;
+  ClientCommandsState controlState;
 };
 
 #endif /* !PLAYER_HPP_ */

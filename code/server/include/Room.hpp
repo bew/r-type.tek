@@ -11,62 +11,49 @@
 #include <stdexcept>
 #include <memory>
 #include "Player.hpp"
-//#include "Plugins.hpp"
-
-/**
- * Represents a component flag exception, it's thrown when room error occured
- */
-using RoomException = std::runtime_error;
 
 /**
  * Represent a Room where players can play
  *
  * The room hold a game, where a given number of players can play
- * together on one level, generated from the activated plugins
  */
-class Room
+struct Room
 {
-public:
   /**
-   * Construct an empty room With a given number of slots for players
+   * Construct an empty room with a maximum number of slots
    *
-   * @param nbSlots The number of slots available
+   * @param maximumSlots The number of slots available
    */
-  Room(unsigned int nbSlots);
+  Room(std::string const & name, unsigned int maximumSlots) :
+    name(name),
+    maximumSlots(maximumSlots),
+    master("")
+  {}
 
   /**
-   * Destructor for a room
+   * The room name
    */
-  ~Room();
+  std::string name;
 
-  Room(Room const & other) = delete;
-  Room & operator=(Room const & other) = delete;
-
-public:
   /**
-   * Add a given player to the room
+   * The master player name
    *
-   * @param player The player to add to the room
+   * The master player is the admin of this room
    */
-  void addPlayer(std::shared_ptr<Player> const & player);
+  std::string master;
 
   /**
-   * Check if the Room is full
-   *
-   * @return true if the room is full, else false
+   * The maximum number of slot for players
    */
-  bool isFull() const;
-
-protected:
-  /**
-   * Store the number of slot, representing the maximum number of player for this room
-   */
-  unsigned int _nbSlots;
+  unsigned int maximumSlots;
 
   /**
-   * Store the players currently in the room
+   * The players currently in the room
    */
-  std::vector<std::shared_ptr<Player>> _players;
+  std::vector<std::shared_ptr<Player>> players;
+
+  // ECS ?
+  // UDP data socket ? (should be in ECS world)
 
   /**
    * Store the list of activated plugins for the level of this room
