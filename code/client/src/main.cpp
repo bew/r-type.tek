@@ -99,7 +99,11 @@ int main(int ac, char**av) {
 
   // SERVER EMULATION
   try {
+    #ifdef _WIN32
+    std::shared_ptr<LibraryLoader> module(new LibraryLoader("./generators/fly.dll"));
+    #else
     std::shared_ptr<LibraryLoader> module(new LibraryLoader("./generators/libfly.so"));
+    #endif
     Dependent_ptr<IGenerator, LibraryLoader> generatorRef(module->newInstance(), module);
     generator->generator = generatorRef;
   } catch (const LibraryLoaderException &e) {
