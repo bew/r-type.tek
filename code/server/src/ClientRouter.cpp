@@ -165,9 +165,10 @@ bool ClientRouter::RoomLeaveHandler(Request & req)
   std::shared_ptr<Player> player = _server->_players[req.getClient()];
   Room & room = _server->_rooms.at(player->currentRoom);
 
+  reply_ok(req);
   send_to_room_players(req, room, protocol::server::roomLeave(player->name));
 
-  return reply_ok(req);
+  return true;
 }
 
 bool ClientRouter::RoomKickHandler(Request & req)
