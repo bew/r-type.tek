@@ -40,7 +40,7 @@ namespace ECS
             else if (protocol::answers::checkAnswer(doc)
                      && doc["data"]["code"].getValueInt32() == 200
                      && !stateMachine._nextState.empty()
-                     && stateMachine._sm[stateMachine._currentState]->has(stateMachine._nextState))
+                     && stateMachine._sm[stateMachine._currentState]->canAccessState(stateMachine._nextState))
             {
                 stateMachine._currentState = stateMachine._nextState;
                 stateMachine._nextState.clear();
@@ -52,7 +52,7 @@ namespace ECS
 	      logs::getLogger()[logs::ERRORS] << doc["data"]["msg"].getValueString() << std::endl;
             }
         }
-      
+
         void SysStateMachine::update(ECS::WorldData &world)
         {
             Component::CompNetworkClient *network = dynamic_cast<Component::CompNetworkClient *>(world._systemEntity.getComponent(

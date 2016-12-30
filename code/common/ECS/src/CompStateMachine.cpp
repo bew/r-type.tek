@@ -16,7 +16,7 @@ namespace ECS
 
         CompStateMachine::CompStateMachine(const std::string &initialStateName)
             : AComponent(),
-              _sm(initialStateName), _currentState("initialState")
+              _sm(initialStateName), _currentState(initialStateName)
         {}
 
         CompStateMachine::CompStateMachine(std::shared_ptr<state_machine::State<std::string> > initialState)
