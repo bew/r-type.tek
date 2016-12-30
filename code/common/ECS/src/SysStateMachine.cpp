@@ -24,6 +24,7 @@ namespace ECS
                 {
                     stateMachine._currentState = stateMachine._sm[stateMachine._currentState]->getLink(
                         action);
+                    network._lastReceived = doc;
                     return protocol::answers::ok(doc["header"]["timestamp"].getValueInt64(), bson::Document());
                 }
                 else
@@ -37,6 +38,7 @@ namespace ECS
             {
                 stateMachine._currentState = stateMachine._nextState;
                 stateMachine._nextState.clear();
+                network._lastReceived = doc;
             }
             else
                 logs::logger[logs::ERRORS] << doc["data"]["msg"].getValueString() << std::endl;
@@ -63,7 +65,7 @@ namespace ECS
                     {
                         doc = bson::Document(network->_clientTCP.getMessage());
                     }
-                    catch (bson::BsonException& bsonError)
+                    catch (bson::BsonException &bsonError)
                     {
                         bson::Document answer = protocol::answers::badRequest(-1);
                         network->_clientTCP.addMessage(answer.getBufferString());
@@ -86,7 +88,6 @@ namespace ECS
                     }
                     if (!answer.isEmpty())
                         network->_clientTCP.addMessage(answer.getBufferString());
-                    network->_lastReceived = doc;
                 }
                 catch (network::SocketException &socketError)
                 {
