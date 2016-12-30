@@ -7,6 +7,7 @@
 #include "ECSLogLevel.hh"
 #include "SysStateMachine.hh"
 #include "Protocol/Server.hh"
+#include "../../Network/include/SocketException.hh"
 
 namespace ECS
 {
@@ -55,22 +56,39 @@ namespace ECS
                 network->_clientTCP.update();
                 if (!network->_clientTCP.hasMessage())
                     return;
-                bson::Document doc(network->_clientTCP.getMessage());
-                bson::Document answer;
-
-                if (protocol::checkMessage(doc))
-                    answer = processMessage(doc, *stateMachine, *network);
-                else if (!doc.isEmpty())
+                try
                 {
-                    if (doc.hasKey("header") && doc["header"].getValueDocument().hasKey("timestamp"))
-                        answer = protocol::answers::badRequest(doc["header"]["timestamp"].getValueInt64());
+                    bson::Document doc(network->_clientTCP.getMessage());
+                    network->_lastReceived = doc;
+                    bson::Document answer;
+                    if (protocol::checkMessage(doc))
+                        answer = processMessage(doc, *stateMachine, *network);
                     else
-                        answer = protocol::answers::badRequest(-1);
+                    {
+                        if (doc.hasKey("header") && doc["header"].getValueDocument().hasKey("timestamp"))
+                            answer = protocol::answers::badRequest(doc["header"]["timestamp"].getValueInt64());
+                        else
+                            answer = protocol::answers::badRequest(-1);
+                    }
+                    if (!answer.isEmpty())
+                    {
+                        network->_clientTCP.addMessage(answer.getBufferString());
+                        network->_clientTCP.update();
+                    }
                 }
-                if (!answer.isEmpty())
+                catch (network::SocketException &socketError)
                 {
-                    network->_clientTCP.addMessage(answer.getBufferString());
-                    network->_clientTCP.update();
+                    if (logs::logger.isRegister(logs::ERRORS))
+                        logs::logger[logs::ERRORS] << socketError.what() << std::endl;
+                    else
+                        std::cerr << socketError.what() << std::endl;
+                }
+                catch (bson::BsonException &bsonError)
+                {
+                    if (logs::logger.isRegister(logs::ERRORS))
+                        logs::logger[logs::ERRORS] << bsonError.what() << std::endl;
+                    else
+                        std::cerr << bsonError.what() << std::endl;
                 }
             }
         }
