@@ -67,7 +67,6 @@ namespace ECS
                     {
                         bson::Document answer = protocol::answers::badRequest(-1);
                         network->_clientTCP.addMessage(answer.getBufferString());
-                        network->_clientTCP.update();
                         if (logs::logger.isRegister(logs::ERRORS))
                             logs::logger[logs::ERRORS] << bsonError.what() << std::endl;
                         else
@@ -88,10 +87,7 @@ namespace ECS
                             answer = protocol::answers::badRequest(-1);
                     }
                     if (!answer.isEmpty())
-                    {
                         network->_clientTCP.addMessage(answer.getBufferString());
-                        network->_clientTCP.update();
-                    }
                 }
                 catch (network::SocketException &socketError)
                 {
@@ -104,12 +100,12 @@ namespace ECS
                 {
                     bson::Document answer = protocol::answers::internalServerError(-1);
                     network->_clientTCP.addMessage(answer.getBufferString());
-                    network->_clientTCP.update();
                     if (logs::logger.isRegister(logs::ERRORS))
                         logs::logger[logs::ERRORS] << bsonError.what() << std::endl;
                     else
                         std::cerr << bsonError.what() << std::endl;
                 }
+                network->_clientTCP.update();
             }
         }
     }
