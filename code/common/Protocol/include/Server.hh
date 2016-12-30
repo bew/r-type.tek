@@ -71,9 +71,10 @@ namespace protocol {
         /**
          * Create a message to notify all the players that the game has started
          *
+         * @param token the token that the client need to sent back when opening UDP connection for the game
          * @return the bson Document formatted for the following action
          */
-        bson::Document gameStart(void);
+        bson::Document gameStart(const std::string &token);
 
         /**
          * Check if the given Document is a correct gameStart message
