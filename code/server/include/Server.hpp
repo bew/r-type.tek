@@ -15,8 +15,9 @@
 class Server;
 
 # include "Network/ServerTCP.hh"
-# include "ClientRouter.hpp"
+# include "ServerRouter.hpp"
 # include "Player.hpp"
+# include "Account.hpp"
 # include "Room.hpp"
 
 /**
@@ -71,16 +72,20 @@ protected:
   std::map<std::shared_ptr<network::ClientTCP>, std::shared_ptr<Player>> _players;
 
   /**
+   * Store the association between a username and a Player
+   */
+  std::map<std::string, std::shared_ptr<Player>> _players_by_name;
+
+  /**
    * Store the association between a username and a registered accounts
    * There cannot be 2 account with the same username
    */
-  std::map<std::string, std::shared_ptr<Account>> _accounts;
+  std::map<std::string, Account> _accounts;
 
   /**
    * Store the opened rooms
    */
-  std::vector<Room> _rooms;
-  //std::map<std::string, Room> _rooms;
+  std::map<std::string, Room> _rooms;
 
   /**
    * The server name for network identification
@@ -95,9 +100,9 @@ protected:
   /**
    * The router for client's packets
    */
-  ClientRouter _clientRouter;
+  ServerRouter _clientRouter;
 
-  friend ClientRouter;
+  friend ServerRouter;
 };
 
 #endif /* !SERVER_HPP_ */

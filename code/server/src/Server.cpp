@@ -85,7 +85,7 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
         logs::logger[logs::SERVER] << "New client connected (at:" << client << ")" << std::endl;
     }
 
-  ClientCommandsState & state = _players.at(client)->getControlState();
+  ClientCommandsState & state = _players.at(client)->controlState;
 
   logs::logger[logs::SERVER] << "Client " << client
                              << " try action '" << action

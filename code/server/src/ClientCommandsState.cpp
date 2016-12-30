@@ -48,31 +48,31 @@ std::shared_ptr<state_machine::State<std::string>> ClientCommandsState::getCurre
  * All arrows start on the bottom of
  * a State
  *
- *               +----------+
- *             __| S_NoAuth |____
- *            /  +----------+    \
- *     SignUp \_______/|         |
- *                     |         |
- *                   Login       |
- *                     |         |
- *                +--------+     | Logout
- *            ____| S_Lost |     |
- *           /    +--------+     *
- *           |         |  \_____/|
- *           |         |         |
- *           |      RoomJoin     |
- *           |         |         |
- * RoomLeave |    +---------+    |
- * RoomKick  |   _| S_Lobby |    |
- *           |  / +---------+    *
- *           \__|_____/|  \_____/|
- *              |      |         |
- *              |  GameStart     |
- *              |      |         |
- *    GameLeave | +--------+     |
- *              | | S_Game |     |
- *              | +--------+     |
- *              \__/      \______/
+ *                        +----------+
+ *                      __| S_NoAuth |____
+ *                     /  +----------+    \
+ *              SignUp \_______/|         |
+ *                              |         |
+ *                            Login       |
+ *                              |         |
+ *                         +--------+     | Logout
+ *                    _ ___| S_Lost |     |
+ *                   / /   +--------+     *
+ * GetAvailableRooms \_|______ /|  \_____/|
+ *          ________/  |        |         |
+ *         /           |     RoomJoin     |
+ *         |           |        |         |
+ *         |  RoomLeave|   +---------+    |
+ *         |  RoomKick |  _| S_Lobby |    |
+ *         |           | / +---------+    *
+ *         \__________ \_|_____/|  \_____/|
+ *                       |      |         |
+ *                       |  GameStart     |
+ *                       |      |         |
+ *             GameLeave | +--------+     |
+ *                       | | S_Game |     |
+ *                       | +--------+     |
+ *                       \__/      \______/
  *
  */
 void ClientCommandsState::initStateMachine()
@@ -92,9 +92,11 @@ void ClientCommandsState::initStateMachine()
   no_auth->addLink("Login", *lost);
   no_auth->addLink("SignUp", *no_auth);
 
+  lost->addLink("GetAvailableRooms", *lost);
   lost->addLink("RoomJoin", *lobby);
   lost->addLink("Logout", *no_auth);
 
+  lobby->addLink("GetAvailableRooms", *lobby);
   lobby->addLink("RoomLeave", *lost);
   lobby->addLink("RoomKick", *lost);
   lobby->addLink("GameStart", *game);
