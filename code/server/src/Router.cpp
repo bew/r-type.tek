@@ -39,15 +39,18 @@ Router::Router() :
   _fallbackHandler()
 {}
 
-Router::Router(Router const & other) :
-  _handlers(other._handlers),
-  _fallbackHandler(other._fallbackHandler)
-{}
+Router::Router(Router const & other)
+{
+  *this = other;
+}
 
 Router & Router::operator=(Router const & other)
 {
-  _handlers = other._handlers;
-  _fallbackHandler = other._fallbackHandler;
+  if (this != &other) {
+    _handlers = other._handlers;
+    _fallbackHandler = other._fallbackHandler;
+  }
+  return *this;
 }
 
 Router::~Router()
