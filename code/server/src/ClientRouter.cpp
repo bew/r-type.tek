@@ -154,7 +154,7 @@ bool ClientRouter::RoomJoinHandler(Request & req)
   room_infos << u8"players" << room_players;
   room_infos << u8"generators" << room_generators;
 
-  return reply_ok(req, room_infos);
+  return reply_ok(req, pa::ok(getTimestamp(req), room_infos));
 }
 
 bool ClientRouter::RoomLeaveHandler(Request & req)
