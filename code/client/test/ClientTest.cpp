@@ -66,7 +66,6 @@ void ClientTest::testLoginSignup()
 {
     std::cout << "signup:" << std::endl << "username: ";
 
-
     std::cin >> _username;
 
     std::cout << "password: ";
@@ -74,8 +73,7 @@ void ClientTest::testLoginSignup()
     std::string pwd;
     std::cin >> pwd;
 
-    std::cout << "username: " << _username << std::endl;
-    std::cout << "password: " << pwd << std::endl;
+    std::cout << "signup with username: " << _username << " & password: " << pwd << std::endl;
 
     _networkClient->_clientTCP.addMessage(protocol::client::signUp(_username, pwd).getBufferString() + network::magic);
 
@@ -100,8 +98,7 @@ void ClientTest::testLoginSignup()
 
     std::cin >> pwd;
 
-    std::cout << "username: " << _username << std::endl;
-    std::cout << "password: " << pwd << std::endl;
+    std::cout << "login with username: " << _username << " & password: " << pwd << std::endl;
 
     _stateMachine->_nextState = "s_menu";
 
