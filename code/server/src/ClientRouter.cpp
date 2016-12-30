@@ -26,6 +26,7 @@ ClientRouter::ClientRouter(Server & server) :
   this->addRoute("RoomKick",  BIND_THIS_P1(&ClientRouter::RoomKickHandler));
   this->addRoute("GameStart", BIND_THIS_P1(&ClientRouter::GameStartHandler));
   this->addRoute("GameLeave", BIND_THIS_P1(&ClientRouter::GameLeaveHandler));
+  this->addRoute("GetAvailableRooms", BIND_THIS_P1(&ClientRouter::GetAvailableRoomsHandler));
 }
 
 bool ClientRouter::SignUpHandler(Request & req)
@@ -146,11 +147,27 @@ bool ClientRouter::RoomKickHandler(Request & req)
     return reply_bad_req(req, "The packet for the action 'RoomKick' is not correct.");
 
   bson::Document const & rdata = req.getData();
+  std::string targetName;
 
-  // send to targeted player
+  rdata["username"] >> targetName;
+
+  std::shared_ptr<Player> player = _server->_players[req.getClient()];
+  Room & room = _server->_rooms.at(player->currentRoom);
+
+  if (room.master != player->name)
+    return reply_fail(req, pa::forbidden(getTimestamp(req), "You are not the master of your room"));
+
+  if (!_server->_players_by_name.count(targetName) || !room.players.count(targetName))
+    return reply_fail(req, pa::notFound(getTimestamp(req), "No player named " + targetName));
+
   // remove player from room
+  room.players.erase(targetName);
 
-  // send to other players
+  // send ok to master
+  reply_ok(req);
+
+  // send notif to all players
+  send_to_room_players(req, room, protocol::server::roomKick(targetName));
 
   return true;
 }
@@ -184,6 +201,30 @@ bool ClientRouter::GameLeaveHandler(Request &req)
   // send to other players
 
   return true;
+}
+
+bool ClientRouter::GetAvailableRoomsHandler(Request & req)
+{
+  if (protocol::client::checkGetAvailableRooms(req.getPacket()))
+    return reply_bad_req(req, "The packet for the action 'GetAvailableRooms' is not correct.");
+
+  bson::Document rooms_data;
+  rooms_data << bson::Document::ARRAY_ENABLED;
+  for (auto & kv : _server->_rooms)
+    {
+      Room & room = kv.second;
+      bson::Document room_data;
+
+      room_data << u8"name" << room.name;
+      room_data << u8"master" << room.master;
+      room_data << u8"totalSlots" << room.maximumSlots;
+      room_data << u8"availableSlots" << static_cast<int>(room.maximumSlots - room.players.size());
+
+      rooms_data << room_data;
+    }
+  rooms_data << bson::Document::ARRAY_DISABLED;
+
+  return reply_ok(req, rooms_data);
 }
 
 int64_t ClientRouter::getTimestamp(Request & req) const
