@@ -44,9 +44,9 @@ void Empty::update(ECS::WorldData &world) {
       logs::getLogger().registerBasicsLogLevel();
       
       blueprintsc->blueprints["bloodBurst"] = {
-	new ECS::Component::CompMovement({+135, +38}, 20, {1, 0}),
-	new ECS::Component::CompSprite("projectileRD", {0, 0}, "default"),
-	new ECS::Component::CompHitbox(35, 40),
+	new ECS::Component::CompMovement({+68, +19}, 20, {1, 0}),
+	new ECS::Component::CompSprite("projectileRD", {0, 0}, "default", {0.5, 0.5}),
+	new ECS::Component::CompHitbox(18, 20),
 	new ECS::Component::CompDamage(2),
 	new ECS::Component::CompType(ECS::Component::CompType::PROJECTILE),
 	new ECS::Component::CompSound("pwee")
@@ -120,9 +120,9 @@ void Empty::update(ECS::WorldData &world) {
       for (ECS::Entity::Entity *entity : world._gameEntities) {
 	if (entity->getId() >= 1 && entity->getId() <= 4) {
 	   entity->addComponent(new ECS::Component::CompLife(5, 25));
-	   entity->addComponent(new ECS::Component::CompSprite("wasp"));
+	   entity->addComponent(new ECS::Component::CompSprite("wasp", {0, 0}, "", {0.5, 0.5}));
 	   entity->addComponent(new ECS::Component::CompMovement({100, static_cast<int32_t>(720 / 5 * entity->getId())}));
-	   entity->addComponent(new ECS::Component::CompHitbox(120, 60));
+	   entity->addComponent(new ECS::Component::CompHitbox(60, 30));
 	   entity->addComponent(new ECS::Component::CompProjectile("bloodBurst"));
 	   entity->addComponent(new ECS::Component::CompSuccessor("explosionBig"));
 	   entity->addComponent(new ECS::Component::CompScore(-50));
