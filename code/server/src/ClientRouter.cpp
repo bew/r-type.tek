@@ -99,6 +99,8 @@ bool ClientRouter::RoomJoinHandler(Request & req)
 
   std::shared_ptr<Player> player = _server->_players[req.getClient()];
 
+  Room * room_ptr = nullptr;
+
   // room exists ?
   if (_server->_rooms.count(roomName))
     {
@@ -108,22 +110,52 @@ bool ClientRouter::RoomJoinHandler(Request & req)
 
       room.players[player->name] = player;
       player->currentRoom = roomName;
-      return reply_ok(req);
+      room_ptr = &room;
+    }
+  else
+    {
+      // room name is valid ?
+      if (!validInput(roomName))
+	return reply_fail(req, pa::forbidden(getTimestamp(req), "Room name is not valid"));
+
+      // create room(name, 4)
+      _server->_rooms.emplace(roomName, Room(roomName, 4));
+      Room & room = _server->_rooms.at(roomName);
+
+      room.players[player->name] = player;
+      room.master = player->name;
+      player->currentRoom = roomName;
+      room_ptr = &room;
     }
 
-  // room name is not valid ?
-  if (!validInput(roomName))
-    return reply_fail(req, pa::forbidden(getTimestamp(req), "Room name is not valid"));
+  Room & room = *room_ptr;
 
-  // create room(name, 4)
-  _server->_rooms.emplace(roomName, Room(roomName, 4));
-  Room & room = _server->_rooms.at(roomName);
+  bson::Document room_infos;
+  bson::Document room_players;
+  bson::Document room_generators;
 
-  room.players[player->name] = player;
-  room.master = player->name;
-  player->currentRoom = roomName;
+  // gather room players list
+  room_players << bson::Document::ARRAY_ENABLED;
+  for (auto & kv : room.players)
+    {
+      std::shared_ptr<Player> & player = kv.second;
+      room_players << player->name;
+    }
+  room_players << bson::Document::ARRAY_DISABLED;
 
-  return reply_ok(req);
+  // TODO: gather room generators list
+  room_generators << bson::Document::ARRAY_ENABLED;
+  //for (auto & kv : room.generators)
+  //  {
+  //    std::shared_ptr<Generator> & generator = kv.second;
+  //    room_generators << generator->name;
+  //  }
+  room_generators << bson::Document::ARRAY_DISABLED;
+
+  room_infos << u8"players" << room_players;
+  room_infos << u8"data" << room_generators;
+
+  return reply_ok(req, room_infos);
 }
 
 bool ClientRouter::RoomLeaveHandler(Request & req)
@@ -131,12 +163,10 @@ bool ClientRouter::RoomLeaveHandler(Request & req)
   if (!protocol::client::checkRoomLeave(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'RoomLeave' is not correct.");
 
-  bson::Document const & rdata = req.getData();
-  std::string username;
+  std::shared_ptr<Player> player = _server->_players[req.getClient()];
+  Room & room = _server->_rooms.at(player->currentRoom);
 
-  rdata["username"] >> username;
-
-  send_to_other_players(req, protocol::server::roomLeave(username));
+  send_to_room_players(req, room, protocol::server::roomLeave(player->name));
 
   return reply_ok(req);
 }
