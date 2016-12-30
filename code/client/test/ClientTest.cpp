@@ -329,4 +329,26 @@ void ClientTest::testGameLeave()
     ASSERT_EQ("s_menu", _stateMachine->_currentState);
 }
 
+void ClientTest::testLogout()
+{
+    testLoginSignup();
+
+    _networkClient->_clientTCP.addMessage(protocol::client::logout().getBufferString() + network::magic);
+
+    _world.update();
+
+    while (!_networkClient->_clientTCP.hasMessage())
+        _networkClient->_clientTCP.update();
+
+    _stateMachine->_nextState = "s_auth";
+
+    _world.update();
+
+    checkHeader();
+
+    checkAnswer(200);
+
+    ASSERT_EQ("s_auth", _stateMachine->_currentState);
+}
+
 

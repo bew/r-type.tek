@@ -73,3 +73,13 @@ TEST(SimpleClientTest, GameLeave)
 
     client.testGameLeave();
 }
+
+
+TEST(SimpleClientTest, Logout)
+{
+    ClientTest client(SERVER_ADDR, SERVER_PORT);
+
+    client.init();
+
+    client.testLogout();
+}

@@ -32,6 +32,8 @@ public:
 
     void testGameLeave();
 
+    void testLogout();
+
 private:
     void initStateMachine();
     void initLogLevels() const;
