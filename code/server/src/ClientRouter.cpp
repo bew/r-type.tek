@@ -283,7 +283,7 @@ bool ClientRouter::reply_ok(Request & req, std::string const & message) const
 
 bool ClientRouter::reply_ok(Request & req, bson::Document const & message) const
 {
-  req.getClient()->addMessage(message.getBufferString() + network::magic);
+  req.getClient()->addMessage(pa::ok(getTimestamp(req), message).getBufferString() + network::magic);
   return true;
 }
 
