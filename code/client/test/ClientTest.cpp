@@ -194,7 +194,7 @@ void ClientTest::checkAnswer(int codeExpected) const
 
 void ClientTest::testGetAvailableRoom()
 {
-    testLoginSignup();
+    testLogin();
 
     _stateMachine->_nextState = "s_menu";
 
@@ -219,8 +219,6 @@ void ClientTest::testGetAvailableRoom()
 void ClientTest::checkAvailableRoom() const
 {
     ASSERT_EQ(_networkClient->_lastReceived["data"]["data"].getValueType(), bson::DOCUMENT);
-
-//    std::cout << _networkClient->_lastReceived["data"]["data"].getValueDocument().toJSON() << std::endl;
 }
 
 void ClientTest::testJoinRoom()
@@ -238,8 +236,6 @@ void ClientTest::testJoinRoom()
         _networkClient->_clientTCP.update();
 
     _world.update();
-    std::cout << "[test join room]: last received: " << _networkClient->_lastReceived.toJSON() << std::endl;
-
 
     checkHeader();
 
@@ -329,7 +325,6 @@ void ClientTest::testRoomLeave()
     _stateMachine->_nextState = "s_menu";
 
     _world.update();
-    std::cout << "[test room leave]: last received: " << _networkClient->_lastReceived.toJSON() << std::endl;
 
     checkHeader();
 
@@ -362,7 +357,9 @@ void ClientTest::testGameLeave()
 
 void ClientTest::testLogout()
 {
-    testLoginSignup();
+    testLogin();
+
+    std::cout << "logout with username: " << _username << " & password: " << _password << std::endl;
 
     _networkClient->_clientTCP.addMessage(protocol::client::logout().getBufferString() + network::magic);
 
@@ -374,6 +371,8 @@ void ClientTest::testLogout()
     _stateMachine->_nextState = "s_auth";
 
     _world.update();
+
+//    std::cout << "[test logout]: last received: " << _networkClient->_lastReceived.toJSON() << std::endl;
 
     checkHeader();
 

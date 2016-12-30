@@ -86,7 +86,7 @@ TEST(SimpleClientTest, GameLeave)
     client.testGameLeave();
 }
 
-
+ */
 TEST(SimpleClientTest, Logout)
 {
     ClientTest client(SERVER_ADDR, SERVER_PORT, USERNAME, PASSWORD);
@@ -95,4 +95,3 @@ TEST(SimpleClientTest, Logout)
 
     client.testLogout();
 }
- */
