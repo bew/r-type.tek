@@ -104,7 +104,7 @@ void Empty::update(ECS::WorldData &world) {
 	if (entity->getId() >= 1 && entity->getId() <= 4) {
 	   entity->addComponent(new ECS::Component::CompLife(5, 25));
 	   entity->addComponent(new ECS::Component::CompSprite("wasp"));
-	   entity->addComponent(new ECS::Component::CompMovement({100, 720 / 5 * entity->getId()}));
+	   entity->addComponent(new ECS::Component::CompMovement({100, static_cast<int32_t>(720 / 5 * entity->getId())}));
 	   entity->addComponent(new ECS::Component::CompHitbox(120, 60));
 	   entity->addComponent(new ECS::Component::CompProjectile("bloodBurst"));
 	   entity->addComponent(new ECS::Component::CompSuccessor("explosionBig"));
