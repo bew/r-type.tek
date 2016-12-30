@@ -7,7 +7,7 @@
 #include "ClientTest.hpp"
 
 #define SERVER_ADDR "127.0.0.1"
-#define SERVER_PORT 42402
+#define SERVER_PORT 42403
 #define USERNAME "tookieg"
 #define PASSWORD "lol"
 

@@ -71,6 +71,7 @@ namespace ECS
                     try
                     {
                         doc = bson::Document(network->_clientTCP.getMessage());
+                        std::cout << doc.toJSON() << std::endl;
                     }
                     catch (bson::BsonException &bsonError)
                     {

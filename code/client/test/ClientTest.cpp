@@ -237,8 +237,8 @@ void ClientTest::testJoinRoom()
         _networkClient->_clientTCP.update();
 
     _world.update();
-
     std::cout << _networkClient->_lastReceived.toJSON() << std::endl;
+
 
     checkHeader();
 
