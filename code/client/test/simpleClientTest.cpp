@@ -7,7 +7,7 @@
 #include "ClientTest.hpp"
 
 #define SERVER_ADDR "127.0.0.1"
-#define SERVER_PORT 42403
+#define SERVER_PORT 42402
 
 TEST(SimpleClientTest, LoginSinup)
 {
@@ -19,7 +19,7 @@ TEST(SimpleClientTest, LoginSinup)
 
 }
 
-TEST(SimpleClientTest, UnauthorizedRoomJoin)
+/*TEST(SimpleClientTest, UnauthorizedRoomJoin)
 {
     ClientTest client(SERVER_ADDR, SERVER_PORT);
 
@@ -83,3 +83,4 @@ TEST(SimpleClientTest, Logout)
 
     client.testLogout();
 }
+ */

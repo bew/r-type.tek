@@ -24,6 +24,7 @@ void ClientTest::init()
     _world._world._systemEntity.addComponent(_networkClient);
     initLogLevels();
     initStateMachine();
+    _networkClient->_clientTCP.connect(_networkClient->_clientUDP.getAddr());
 }
 
 void ClientTest::initStateMachine()
@@ -77,12 +78,16 @@ void ClientTest::testLoginSignup()
 
     _networkClient->_clientTCP.addMessage(protocol::client::signUp(_username, pwd).getBufferString() + network::magic);
 
+    std::cout << protocol::client::signUp(_username, pwd).toJSON() << std::endl;
+
     _world.update();
 
     while (!_networkClient->_clientTCP.hasMessage())
         _networkClient->_clientTCP.update();
 
     _world.update();
+
+    std::cout << _networkClient->_lastReceived.toJSON() << std::endl;
 
     checkHeader();
 
