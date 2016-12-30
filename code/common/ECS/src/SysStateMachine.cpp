@@ -58,14 +58,29 @@ namespace ECS
                     return;
                 try
                 {
-                    bson::Document doc(network->_clientTCP.getMessage());
+                    bson::Document doc;
+                    try
+                    {
+                        doc = network->_clientTCP.getMessage());
+                    }
+                    catch (bson::BsonException& bsonError)
+                    {
+                        bson::Document answer = protocol::answers::badRequest(-1);
+                        network->_clientTCP.addMessage(answer.getBufferString());
+                        network->_clientTCP.update();
+                        if (logs::logger.isRegister(logs::ERRORS))
+                            logs::logger[logs::ERRORS] << bsonError.what() << std::endl;
+                        else
+                            std::cerr << bsonError.what() << std::endl;
+                    }
                     network->_lastReceived = doc;
                     bson::Document answer;
                     if (protocol::checkMessage(doc))
                         answer = processMessage(doc, *stateMachine, *network);
                     else
                     {
-                        if (doc.hasKey("header") && doc["header"].getValueDocument().hasKey("timestamp"))
+                        if (doc.hasKey("header") && doc["header"].getValueType() == bson::DOCUMENT &&
+                            protocol::checkTimestamp(doc["header"].getValueDocument()))
                             answer = protocol::answers::badRequest(doc["header"]["timestamp"].getValueInt64());
                         else
                             answer = protocol::answers::badRequest(-1);
@@ -85,6 +100,9 @@ namespace ECS
                 }
                 catch (bson::BsonException &bsonError)
                 {
+                    bson::Document answer = protocol::answers::internalServerError(-1);
+                    network->_clientTCP.addMessage(answer.getBufferString());
+                    network->_clientTCP.update();
                     if (logs::logger.isRegister(logs::ERRORS))
                         logs::logger[logs::ERRORS] << bsonError.what() << std::endl;
                     else
