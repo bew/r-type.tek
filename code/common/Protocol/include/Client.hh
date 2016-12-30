@@ -166,7 +166,7 @@ namespace protocol {
         bool checkGetAvailableRooms(const bson::Document &document);
 
         /**
-         * Create a message to update an entity to a client
+         * Create a message to update an entity to the server
          *
          * @param entity_id the id of the entity to update
          * @param components a Document of components to update
