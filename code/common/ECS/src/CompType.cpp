@@ -16,7 +16,7 @@ namespace ECS
      */
     namespace Component
     {
-        CompType::CompType(CompType::Type type)
+        CompType::CompType(int type)
             : _type(type)
         {
         }
@@ -29,5 +29,9 @@ namespace ECS
         {
             return TYPE;
         }
+
+      AComponent *CompType::clone(void) const {
+	return new CompType(_type);
+      }
     }
 }

@@ -13,15 +13,17 @@ namespace ECS {
 
     const std::string CompSprite::NO_ANIMATION  ="";
     
-    CompSprite::CompSprite(const std::string &pname, coordinates<int> coor, const std::string &animationName) :
+    CompSprite::CompSprite(const std::string &pname, coordinates<int> coor, const std::string &animationName, const coordinates<float> &pscale) :
       AComponent(CLONABLE_MASK),
       name(pname),
       center(coor),
-      animation(animationName)
+      animation(animationName),
+      animationTick(-1),
+      scale(pscale)
     {};
 
     AComponent *CompSprite::clone(void) const {
-      return new CompSprite(name, center, animation);
+      return new CompSprite(name, center, animation, scale);
     }
 
     const std::string &CompSprite::getType() const {
