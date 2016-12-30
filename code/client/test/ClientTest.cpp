@@ -16,7 +16,7 @@ ClientTest::ClientTest(const std::string &ip, unsigned short port) :
 
 ClientTest::~ClientTest()
 {
-    delete (_networkClient);
+
 }
 
 void ClientTest::init()
@@ -208,7 +208,8 @@ void ClientTest::testJoinRoom()
 {
     testGetAvailableRoom();
 
-    _networkClient->_clientTCP.addMessage(protocol::client::roomJoin("Fast rush, fat pl, no noob").getBufferString() + network::magic);
+    _networkClient->_clientTCP.addMessage(
+        protocol::client::roomJoin("Fast rush, fat pl, no noob").getBufferString() + network::magic);
 
     _world.update();
 
@@ -227,7 +228,7 @@ void ClientTest::testJoinRoom()
 
 }
 
-void ClientTest::checkJoinRoom()
+void ClientTest::checkJoinRoom() const
 {
     ASSERT_EQ(_networkClient->_lastReceived["data"]["data"].getValueType(), bson::DOCUMENT);
 
@@ -236,5 +237,54 @@ void ClientTest::checkJoinRoom()
     ASSERT_EQ(_networkClient->_lastReceived["data"]["players"].getValueType(), bson::DOCUMENT);
 
     std::cout << _networkClient->_lastReceived["data"]["players"].getValueDocument().toJSON() << std::endl;
+}
+
+void ClientTest::testGameStart()
+{
+    testJoinRoom();
+
+    if (!_networkClient->_lastReceived["data"]["data"].getValueDocument().isEmpty()
+        && _networkClient->_lastReceived["data"]["data"].getValueDocument().hasKey("0")
+        && _networkClient->_lastReceived["data"]["data"]["0"].getValueType() == bson::STRING)
+    {
+        _networkClient->_clientTCP.addMessage(protocol::client::gameStart(
+            _networkClient->_lastReceived["data"]["data"]["0"].getValueString()).getBufferString() + network::magic);
+
+        _stateMachine->_nextState = "s_game";
+        _world.update();
+
+        while (!_networkClient->_clientTCP.hasMessage())
+            _networkClient->_clientTCP.update();
+
+        _world.update();
+
+        checkGameStart();
+
+        ASSERT_EQ("s_game", _stateMachine->_currentState);
+    }
+    else
+    {
+        _networkClient->_clientTCP.addMessage(protocol::client::gameStart("A").getBufferString() + network::magic);
+        _world.update();
+
+        while (!_networkClient->_clientTCP.hasMessage())
+            _networkClient->_clientTCP.update();
+
+        _stateMachine->_nextState = "s_game";
+
+        _world.update();
+
+        checkHeader();
+        checkAnswer(404);
+
+        ASSERT_EQ("s_wait", _stateMachine->_currentState);
+    }
+}
+
+void ClientTest::checkGameStart() const
+{
+    checkHeader();
+
+    checkAnswer(200);
 }
 

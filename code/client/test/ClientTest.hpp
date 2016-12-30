@@ -26,6 +26,8 @@ public:
 
     void testJoinRoom();
 
+    void testGameStart();
+
 private:
     void initStateMachine();
     void initLogLevels() const;
@@ -33,7 +35,8 @@ private:
     void checkHeader() const;
     void checkAnswer(int codeExpected) const;
     void checkAvailableRoom() const;
-    void checkJoinRoom();
+    void checkJoinRoom() const;
+    void checkGameStart() const;
 
     ECS::World _world;
     ECS::Component::CompNetworkClient* _networkClient;

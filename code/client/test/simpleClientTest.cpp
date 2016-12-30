@@ -2,8 +2,6 @@
 // Created by tookie on 12/30/16.
 //
 
-#include <memory>
-
 #include "gtest/gtest.h"
 
 #include "ClientTest.hpp"
@@ -13,7 +11,7 @@
 
 TEST(SimpleClientTest, LoginSinup)
 {
-    ClientTest client(SERVER_ADDR, 42403);
+    ClientTest client(SERVER_ADDR, SERVER_PORT);
 
     client.init();
 
@@ -23,7 +21,7 @@ TEST(SimpleClientTest, LoginSinup)
 
 TEST(SimpleClientTest, UnauthorizedRoomJoin)
 {
-    ClientTest client(SERVER_ADDR, 42403);
+    ClientTest client(SERVER_ADDR, SERVER_PORT);
 
     client.init();
 
@@ -32,7 +30,7 @@ TEST(SimpleClientTest, UnauthorizedRoomJoin)
 
 TEST(SimpleClientTest, getAvailableROom)
 {
-    ClientTest client(SERVER_ADDR, 42403);
+    ClientTest client(SERVER_ADDR, SERVER_PORT);
 
     client.init();
 
@@ -41,9 +39,19 @@ TEST(SimpleClientTest, getAvailableROom)
 
 TEST(SimpleClientTest, joinRoom)
 {
-    ClientTest client(SERVER_ADDR, 42403);
+    ClientTest client(SERVER_ADDR, SERVER_PORT);
 
     client.init();
 
     client.testJoinRoom();
+}
+
+
+TEST(SimpleClientTest, gameStart)
+{
+    ClientTest client(SERVER_ADDR, SERVER_PORT);
+
+    client.init();
+
+    client.testGameStart();
 }
