@@ -41,7 +41,10 @@ namespace ECS
                 network._lastReceived = doc;
             }
             else
+            {
+                network._lastReceived = doc;
                 logs::logger[logs::ERRORS] << doc["data"]["msg"].getValueString() << std::endl;
+            }
 
             return bson::Document();
         }
