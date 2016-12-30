@@ -69,7 +69,6 @@ bool ClientRouter::LoginHandler(Request & req)
   if (! (account.password == password))
     return reply_fail(req, pa::unauthorized(getTimestamp(req), "Unknown username/password"));
 
-  // TODO: create a player, store association username-player (put this in the room ?)
   return reply_ok(req);
 }
 
