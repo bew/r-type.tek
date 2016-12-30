@@ -6,14 +6,15 @@
 #define GENERATOR_EMPTY_H
 
 #include "LibraryLoader/libraryUtils.hh"
+#include "ECS/AssetLogLevel.hh"
 
 class Empty : public IGenerator {
 public:
   Empty(void);
   virtual const std::string &getName(void) const;
-  virtual std::vector<Entity>process(std::vector<Entity> &, EngineStatus &);
+  virtual void update(ECS::WorldData &world);
 private:
-    std::string _generator_name;
+  std::string _generator_name;
 };
 
 #endif

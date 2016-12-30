@@ -13,6 +13,7 @@
 #include "CompDeath.hh"
 #include "CompLife.hh"
 #include "Logs/Logger.hh"
+#include "CompScore.hh"
 
 namespace ECS {
   namespace System {

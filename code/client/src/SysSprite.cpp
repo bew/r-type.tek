@@ -37,7 +37,7 @@ namespace ECS {
 	      sprite.setTextureRect(animations.frames[(tickc->tick - spritec->animationTick) % (animations.frames.size() * animations.frequency) / animations.frequency]);
 	    }
 	    catch (const std::out_of_range &e) {
-	      logs::logger[logs::ASSET] << "Animation '" << spritec->animation << "' doesn't exist for sprite '" << spritec->name << "'" << std::endl;
+	      logs::getLogger()[logs::ASSET] << "Animation '" << spritec->animation << "' doesn't exist for sprite '" << spritec->name << "'" << std::endl;
 	    }
 	  }
 	  sprite.setScale(spritec->scale._x, spritec->scale._y);
@@ -49,7 +49,7 @@ namespace ECS {
 	  }
 	  windowc->window->draw(sprite);
 	} catch (const graphic::AssetException &e) {
-	  logs::logger[logs::ASSET] << e.what() << std::endl;
+	  logs::getLogger()[logs::ASSET] << e.what() << std::endl;
 	}
       }
     }

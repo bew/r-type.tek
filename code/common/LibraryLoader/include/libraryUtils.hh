@@ -11,29 +11,10 @@
 #include <vector>
 
 #include "ALibraryLoader.hh"
-
-/**
- * Placeholder class for entity
- */
-class Entity {};
-
-/**
- * Placeholder class for storing game status
- */
-class EngineStatus {
-  /*
-    TO UPDATE
-    Hold informations like time since begining of level,
-    choosen difficulty (idk)
-    frame counter,
-    maybe the server log ... things like that
-  */
-};
+#include "ECS/World.hh"
 
 /**
  * Base interface from which every dynamically loaded class must inherit
- *
- * THS NEED TO BE REFACTORED, DO NOT USE YET
  */
 class IGenerator {
 public:
@@ -48,14 +29,11 @@ public:
   virtual const std::string &getName(void) const = 0;
   
   /**
-   * This take the current entity, and return a list of new entity to add.
-   * The pupose is to generate a whole level. It should be called each n frame. 
-   * It should not add or edit player entity.
+   * Update method
    *
-   * @return Vector of new entity to add
-   * @param entities Vector of current entiter
+   * @param world The world to update
    */
-  virtual std::vector<Entity>process(std::vector<Entity> &entities, EngineStatus &) = 0;
+  virtual void update(ECS::WorldData &world) = 0;
 };
 
 /**

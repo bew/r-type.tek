@@ -1,9 +1,9 @@
 #include "Logs/Logger.hh"
 
 int main(void) {
-  logs::logger.registerBasicsLogLevel();
+  logs::getLogger().registerBasicsLogLevel();
 
-  logs::logger[logs::DEBUG] << "test";
+  logs::getLogger()[logs::DEBUG] << "test";
 
   return 0;
 }

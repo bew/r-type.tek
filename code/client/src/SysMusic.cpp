@@ -23,7 +23,7 @@ namespace ECS {
 	  }
 	}
 	catch (const graphic::AssetException &e) {
-	  logs::logger[logs::ASSET] << e.what() << std::endl;
+	  logs::getLogger()[logs::ASSET] << e.what() << std::endl;
 	}
       }
     }

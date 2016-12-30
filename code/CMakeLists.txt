@@ -4,6 +4,7 @@ project("r-type")
 
 set (CMAKE_CXX_STANDARD 11)
 add_definitions (-DSFML_STATIC)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # utility function
 # it allows to set a variable, then add some fields easily

@@ -75,6 +75,12 @@ namespace ECS
              */
             virtual const std::string	&getType() const;
 
+	  /**
+	   * @return A pointer to a new CompLife with a state similar to this
+	   */
+	  virtual AComponent *clone(void) const;
+
+
         public:
             /**
              * Current life of the entity

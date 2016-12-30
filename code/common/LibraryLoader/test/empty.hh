@@ -11,7 +11,7 @@ class Empty : public IGenerator {
 public:
   Empty(void);
   virtual const std::string &getName(void) const;
-  virtual std::vector<Entity>process(std::vector<Entity> &, EngineStatus &);
+  virtual void update(ECS::WorldData &world);
 private:
     std::string _generator_name;
 };

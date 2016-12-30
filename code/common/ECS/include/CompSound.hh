@@ -7,6 +7,8 @@
 #pragma once
 
 #include "AComponent.hh"
+// See sound member
+#include "SFML/Audio/Sound.hpp"
 
 namespace ECS {
   namespace Component {
@@ -36,6 +38,14 @@ namespace ECS {
        * has the sound be played (should be repaced by removing the component ?)
        */
       bool played;
+
+      /**
+       * The sfml sound.
+       * For tesing, once geenrator are not loaeded client side anymore, this should be removed.
+       * This only work as a placeholder.
+       */
+      sf::Sound sound;
+
 
       /**
        * @return A pointer to a new CompSound with a state similar to this
