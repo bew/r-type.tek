@@ -31,7 +31,7 @@ ClientRouter::ClientRouter(Server & server) :
 
 bool ClientRouter::SignUpHandler(Request & req)
 {
-  if (protocol::client::checkSignUp(req.getPacket()))
+  if (!protocol::client::checkSignUp(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'SignUp' is not correct.");
 
   bson::Document const & rdata = req.getData();
@@ -53,7 +53,7 @@ bool ClientRouter::SignUpHandler(Request & req)
 
 bool ClientRouter::LoginHandler(Request & req)
 {
-  if (protocol::client::checkLogin(req.getPacket()))
+  if (!protocol::client::checkLogin(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'Login' is not correct.");
 
   bson::Document const & rdata = req.getData();
@@ -75,7 +75,7 @@ bool ClientRouter::LoginHandler(Request & req)
 
 bool ClientRouter::LogoutHandler(Request & req)
 {
-  if (protocol::client::checkLogout(req.getPacket()))
+  if (!protocol::client::checkLogout(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'Logout' is not correct.");
 
   bson::Document const & rdata = req.getData();
@@ -89,7 +89,7 @@ bool ClientRouter::LogoutHandler(Request & req)
 
 bool ClientRouter::RoomJoinHandler(Request & req)
 {
-  if (protocol::client::checkRoomJoin(req.getPacket()))
+  if (!protocol::client::checkRoomJoin(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'RoomJoin' is not correct.");
 
   bson::Document const & rdata = req.getData();
@@ -128,7 +128,7 @@ bool ClientRouter::RoomJoinHandler(Request & req)
 
 bool ClientRouter::RoomLeaveHandler(Request & req)
 {
-  if (protocol::client::checkRoomLeave(req.getPacket()))
+  if (!protocol::client::checkRoomLeave(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'RoomLeave' is not correct.");
 
   bson::Document const & rdata = req.getData();
@@ -143,7 +143,7 @@ bool ClientRouter::RoomLeaveHandler(Request & req)
 
 bool ClientRouter::RoomKickHandler(Request & req)
 {
-  if (protocol::client::checkRoomKick(req.getPacket()))
+  if (!protocol::client::checkRoomKick(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'RoomKick' is not correct.");
 
   bson::Document const & rdata = req.getData();
@@ -174,7 +174,7 @@ bool ClientRouter::RoomKickHandler(Request & req)
 
 bool ClientRouter::GameStartHandler(Request & req)
 {
-  if (protocol::client::checkGameStart(req.getPacket()))
+  if (!protocol::client::checkGameStart(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'GameStart' is not correct.");
 
   bson::Document const & rdata = req.getData();
@@ -193,7 +193,7 @@ bool ClientRouter::GameStartHandler(Request & req)
 
 bool ClientRouter::GameLeaveHandler(Request &req)
 {
-  if (protocol::client::checkGameLeave(req.getPacket()))
+  if (!protocol::client::checkGameLeave(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'GameLeave' is not correct.");
 
   bson::Document const & rdata = req.getData();
@@ -205,7 +205,7 @@ bool ClientRouter::GameLeaveHandler(Request &req)
 
 bool ClientRouter::GetAvailableRoomsHandler(Request & req)
 {
-  if (protocol::client::checkGetAvailableRooms(req.getPacket()))
+  if (!protocol::client::checkGetAvailableRooms(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'GetAvailableRooms' is not correct.");
 
   bson::Document rooms_data;
