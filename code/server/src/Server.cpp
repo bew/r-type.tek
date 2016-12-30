@@ -37,7 +37,8 @@ unsigned short Server::initNetwork(unsigned short port)
   return addr.getPort();
 }
 
-void Server::run() {
+void Server::run()
+{
     while (true)
     {
         _serverSock.update();
