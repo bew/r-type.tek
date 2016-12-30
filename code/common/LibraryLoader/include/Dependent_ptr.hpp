@@ -65,6 +65,7 @@ public:
     delete _dependence;
     _target = tmp_target;
     _dependence = tmp_dependence;
+    return *this;
   }
 
   /**
