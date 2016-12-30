@@ -6,7 +6,7 @@
 
 #include "ClientTest.hpp"
 
-#define SERVER_ADDR "127.0. 0.1"
+#define SERVER_ADDR "127.0.0.1"
 #define SERVER_PORT 42403
 
 TEST(SimpleClientTest, LoginSinup)
