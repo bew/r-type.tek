@@ -56,9 +56,9 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
     try {
         packet = bson::Document(raw_packet);
     }
-    catch (const bson::BsonException &) {
+    catch (const bson::BsonException &e) {
         client->addMessage(protocol::answers::badRequest(-1, "Can't deserialize packet").getBufferString());
-        logs::logger[logs::SERVER] << "Received a packet but can't deserialize it." << std::endl;
+        logs::logger[logs::SERVER] << "Received a packet but can't deserialize it. " << e.what() << std::endl;
         return;
     }
 
@@ -84,7 +84,9 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
 
   ClientCommandsState & state = _players.at(client)->getControlState();
 
-  logs::logger[logs::SERVER] << "Client " << client << " try action '" << action << "' current state is '" << state.getCurrentState()->getName() << "'" << std::endl;
+  logs::logger[logs::SERVER] << "Client " << client
+                             << " try action '" << action
+                             << "' current state is '" << state.getCurrentState()->getName() << "'" << std::endl;
 
   if (!state.gotoNextStateVia(action))
     {
@@ -99,5 +101,4 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
       return;
     }
   logs::logger[logs::SERVER] << "Client state is now '" << state.getCurrentState()->getName() << "'" << std::endl;
-  client;
 }
