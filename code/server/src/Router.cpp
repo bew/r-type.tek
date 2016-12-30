@@ -10,12 +10,18 @@
 
 Request::Request(bson::Document const & packet, std::shared_ptr<network::ClientTCP> fromClient) :
   _client(fromClient),
+  _packet(packet),
   _header(packet["header"].getValueDocument()),
   _data(packet["data"].getValueDocument())
 {}
 
 Request::~Request()
 {}
+
+bson::Document const & Request::getPacket() const
+{
+  return _packet;
+}
 
 bson::Document const & Request::getHeader() const
 {
