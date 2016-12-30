@@ -1,13 +1,13 @@
 /**
- * @file ClientRouter.cpp
+ * @file ServerRouter.cpp
  * @author Benoit de Chezelles
- * @brief Implementation for the ClientRouter
+ * @brief Implementation for the ServerRouter
  */
 
 #include "Logs/Logger.hh"
 #include "Protocol/Server.hh"
 
-#include "ClientRouter.hpp"
+#include "ServerRouter.hpp"
 #include "ServerLogLevel.hh"
 #include "Server.hpp"
 
@@ -15,21 +15,21 @@
 
 namespace pa = protocol::answers;
 
-ClientRouter::ClientRouter(Server & server) :
+ServerRouter::ServerRouter(Server & server) :
   _server(&server)
 {
-  this->addRoute("SignUp",    BIND_THIS_P1(&ClientRouter::SignUpHandler));
-  this->addRoute("Login",     BIND_THIS_P1(&ClientRouter::LoginHandler));
-  this->addRoute("Logout",    BIND_THIS_P1(&ClientRouter::LogoutHandler));
-  this->addRoute("RoomJoin",  BIND_THIS_P1(&ClientRouter::RoomJoinHandler));
-  this->addRoute("RoomLeave", BIND_THIS_P1(&ClientRouter::RoomLeaveHandler));
-  this->addRoute("RoomKick",  BIND_THIS_P1(&ClientRouter::RoomKickHandler));
-  this->addRoute("GameStart", BIND_THIS_P1(&ClientRouter::GameStartHandler));
-  this->addRoute("GameLeave", BIND_THIS_P1(&ClientRouter::GameLeaveHandler));
-  this->addRoute("GetAvailableRooms", BIND_THIS_P1(&ClientRouter::GetAvailableRoomsHandler));
+  this->addRoute("SignUp",    BIND_THIS_P1(&ServerRouter::SignUpHandler));
+  this->addRoute("Login",     BIND_THIS_P1(&ServerRouter::LoginHandler));
+  this->addRoute("Logout",    BIND_THIS_P1(&ServerRouter::LogoutHandler));
+  this->addRoute("RoomJoin",  BIND_THIS_P1(&ServerRouter::RoomJoinHandler));
+  this->addRoute("RoomLeave", BIND_THIS_P1(&ServerRouter::RoomLeaveHandler));
+  this->addRoute("RoomKick",  BIND_THIS_P1(&ServerRouter::RoomKickHandler));
+  this->addRoute("GameStart", BIND_THIS_P1(&ServerRouter::GameStartHandler));
+  this->addRoute("GameLeave", BIND_THIS_P1(&ServerRouter::GameLeaveHandler));
+  this->addRoute("GetAvailableRooms", BIND_THIS_P1(&ServerRouter::GetAvailableRoomsHandler));
 }
 
-bool ClientRouter::SignUpHandler(Request & req)
+bool ServerRouter::SignUpHandler(Request & req)
 {
   if (!protocol::client::checkSignUp(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'SignUp' is not correct.");
@@ -51,7 +51,7 @@ bool ClientRouter::SignUpHandler(Request & req)
   return reply_ok(req);
 }
 
-bool ClientRouter::LoginHandler(Request & req)
+bool ServerRouter::LoginHandler(Request & req)
 {
   if (!protocol::client::checkLogin(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'Login' is not correct.");
@@ -69,10 +69,12 @@ bool ClientRouter::LoginHandler(Request & req)
   if (! (account.password == password))
     return reply_fail(req, pa::unauthorized(getTimestamp(req), "Unknown username/password"));
 
+  std::shared_ptr<Player> player = _server->_players[req.getClient()];
+  player->name = username;
   return reply_ok(req);
 }
 
-bool ClientRouter::LogoutHandler(Request & req)
+bool ServerRouter::LogoutHandler(Request & req)
 {
   if (!protocol::client::checkLogout(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'Logout' is not correct.");
@@ -86,7 +88,7 @@ bool ClientRouter::LogoutHandler(Request & req)
   return reply_ok(req);
 }
 
-bool ClientRouter::RoomJoinHandler(Request & req)
+bool ServerRouter::RoomJoinHandler(Request & req)
 {
   if (!protocol::client::checkRoomJoin(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'RoomJoin' is not correct.");
@@ -157,7 +159,7 @@ bool ClientRouter::RoomJoinHandler(Request & req)
   return reply_ok(req, room_infos);
 }
 
-bool ClientRouter::RoomLeaveHandler(Request & req)
+bool ServerRouter::RoomLeaveHandler(Request & req)
 {
   if (!protocol::client::checkRoomLeave(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'RoomLeave' is not correct.");
@@ -166,12 +168,12 @@ bool ClientRouter::RoomLeaveHandler(Request & req)
   Room & room = _server->_rooms.at(player->currentRoom);
 
   reply_ok(req);
-  send_to_room_players(req, room, protocol::server::roomLeave(player->name));
+  send_to_room_players(room, protocol::server::roomLeave(player->name));
 
   return true;
 }
 
-bool ClientRouter::RoomKickHandler(Request & req)
+bool ServerRouter::RoomKickHandler(Request & req)
 {
   if (!protocol::client::checkRoomKick(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'RoomKick' is not correct.");
@@ -197,12 +199,12 @@ bool ClientRouter::RoomKickHandler(Request & req)
   reply_ok(req);
 
   // send notif to all players
-  send_to_room_players(req, room, protocol::server::roomKick(targetName));
+  send_to_room_players(room, protocol::server::roomKick(targetName));
 
   return true;
 }
 
-bool ClientRouter::GameStartHandler(Request & req)
+bool ServerRouter::GameStartHandler(Request & req)
 {
   if (!protocol::client::checkGameStart(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'GameStart' is not correct.");
@@ -221,7 +223,7 @@ bool ClientRouter::GameStartHandler(Request & req)
   return true;
 }
 
-bool ClientRouter::GameLeaveHandler(Request &req)
+bool ServerRouter::GameLeaveHandler(Request &req)
 {
   if (!protocol::client::checkGameLeave(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'GameLeave' is not correct.");
@@ -233,7 +235,7 @@ bool ClientRouter::GameLeaveHandler(Request &req)
   return true;
 }
 
-bool ClientRouter::GetAvailableRoomsHandler(Request & req)
+bool ServerRouter::GetAvailableRoomsHandler(Request & req)
 {
   if (!protocol::client::checkGetAvailableRooms(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'GetAvailableRooms' is not correct.");
@@ -257,47 +259,39 @@ bool ClientRouter::GetAvailableRoomsHandler(Request & req)
   return reply_ok(req, rooms_data);
 }
 
-int64_t ClientRouter::getTimestamp(Request & req) const
+int64_t ServerRouter::getTimestamp(Request & req) const
 {
   return req.getHeader()["timestamp"].getValueInt64();
 }
 
-bool ClientRouter::reply_bad_req(Request & req, std::string const & message) const
+bool ServerRouter::reply_bad_req(Request & req, std::string const & message) const
 {
   logs::logger[logs::SERVER] << message << std::endl;
   return reply_fail(req, protocol::answers::badRequest(getTimestamp(req), message));
 }
 
-bool ClientRouter::reply_fail(Request & req, bson::Document const & message) const
+bool ServerRouter::reply_fail(Request & req, bson::Document const & message) const
 {
   req.getClient()->addMessage(message.getBufferString() + network::magic);
   return false;
 }
 
-bool ClientRouter::reply_ok(Request & req, std::string const & message) const
+bool ServerRouter::reply_ok(Request & req, bson::Document const & ok_data) const
 {
-  if (message.empty())
-    return reply_ok(req, pa::ok(getTimestamp(req)));
-  else
-    return reply_ok(req, pa::ok(getTimestamp(req), message));
-}
-
-bool ClientRouter::reply_ok(Request & req, bson::Document const & message) const
-{
-  req.getClient()->addMessage(pa::ok(getTimestamp(req), message).getBufferString() + network::magic);
+  req.getClient()->addMessage(pa::ok(getTimestamp(req), ok_data).getBufferString() + network::magic);
   return true;
 }
 
-bool ClientRouter::validInput(std::string const & input) const
+bool ServerRouter::validInput(std::string const & input) const
 {
   if (input.empty())
     return false;
   return input.find(network::magic) == std::string::npos;
 }
 
-void ClientRouter::send_to_other_players(Request & req, bson::Document const & broadcast_msg) const
+void ServerRouter::send_to_room_other_players(Request & req, Room & room, bson::Document const & broadcast_msg) const
 {
-  for (auto & kv : _server->_players)
+  for (auto & kv : room.players)
     {
       std::shared_ptr<Player> & player = kv.second;
 
@@ -306,7 +300,7 @@ void ClientRouter::send_to_other_players(Request & req, bson::Document const & b
     }
 }
 
-void ClientRouter::send_to_room_players(Request & req, Room & room, bson::Document const & broadcast_msg) const
+void ServerRouter::send_to_room_players(Room & room, bson::Document const & broadcast_msg) const
 {
   for (auto & kv : room.players)
     {

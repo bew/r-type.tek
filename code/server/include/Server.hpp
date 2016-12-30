@@ -15,7 +15,7 @@
 class Server;
 
 # include "Network/ServerTCP.hh"
-# include "ClientRouter.hpp"
+# include "ServerRouter.hpp"
 # include "Player.hpp"
 # include "Account.hpp"
 # include "Room.hpp"
@@ -100,9 +100,9 @@ protected:
   /**
    * The router for client's packets
    */
-  ClientRouter _clientRouter;
+  ServerRouter _clientRouter;
 
-  friend ClientRouter;
+  friend ServerRouter;
 };
 
 #endif /* !SERVER_HPP_ */
