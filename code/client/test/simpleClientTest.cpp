@@ -8,9 +8,12 @@
 
 #include "ClientTest.hpp"
 
+#define SERVER_ADDR "127.0.0.1"
+#define SERVER_PORT 42403
+
 TEST(SimpleClientTest, LoginSinup)
 {
-    ClientTest client("10.41.175.111", 42402);
+    ClientTest client(SERVER_ADDR, 42403);
 
     client.init();
 
@@ -20,7 +23,7 @@ TEST(SimpleClientTest, LoginSinup)
 
 TEST(SimpleClientTest, UnauthorizedRoomJoin)
 {
-    ClientTest client("10.41.175.111", 42402);
+    ClientTest client(SERVER_ADDR, 42403);
 
     client.init();
 
@@ -29,9 +32,18 @@ TEST(SimpleClientTest, UnauthorizedRoomJoin)
 
 TEST(SimpleClientTest, getAvailableROom)
 {
-    ClientTest client("10.41.175.111", 42402);
+    ClientTest client(SERVER_ADDR, 42403);
 
     client.init();
 
     client.testGetAvailableRoom();
+}
+
+TEST(SimpleClientTest, joinRoom)
+{
+    ClientTest client(SERVER_ADDR, 42403);
+
+    client.init();
+
+    client.testJoinRoom();
 }

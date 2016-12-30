@@ -66,18 +66,18 @@ void ClientTest::testLoginSignup()
 {
     std::cout << "signup:" << std::endl << "username: ";
 
-    std::string username;
-    std::cin >> username;
+
+    std::cin >> _username;
 
     std::cout << "password: ";
 
     std::string pwd;
     std::cin >> pwd;
 
-    std::cout << "username: " << username << std::endl;
+    std::cout << "username: " << _username << std::endl;
     std::cout << "password: " << pwd << std::endl;
 
-    _networkClient->_clientTCP.addMessage(protocol::client::signUp(username, pwd).getBufferString() + network::magic);
+    _networkClient->_clientTCP.addMessage(protocol::client::signUp(_username, pwd).getBufferString() + network::magic);
 
     _world.update();
 
@@ -94,18 +94,18 @@ void ClientTest::testLoginSignup()
 
     std::cout << "login:" << std::endl << "username: ";
 
-    std::cin >> username;
+    std::cin >> _username;
 
     std::cout << "password: ";
 
     std::cin >> pwd;
 
-    std::cout << "username: " << username << std::endl;
+    std::cout << "username: " << _username << std::endl;
     std::cout << "password: " << pwd << std::endl;
 
     _stateMachine->_nextState = "s_menu";
 
-    _networkClient->_clientTCP.addMessage(protocol::client::login(username, pwd).getBufferString() + network::magic);
+    _networkClient->_clientTCP.addMessage(protocol::client::login(_username, pwd).getBufferString() + network::magic);
 
     _world.update();
 
@@ -125,12 +125,11 @@ void ClientTest::initLogLevels() const
 {
     logs::logger.registerBasicsLogLevel();
     logs::logger.registerLogLevel(&logs::ecsLogLevel);
-    logs::logger.registerLogLevel(&logs::ecsLogLevel);
 }
 
 void ClientTest::testUnauthorizedRoomJoin()
 {
-    bson::Document roomJoin(protocol::server::roomJoin("tookie"));
+    bson::Document roomJoin(protocol::client::roomJoin("tookie"));
 
     std::string msg(roomJoin.getBufferString() + network::magic);
 
@@ -203,5 +202,39 @@ void ClientTest::checkAvailableRoom() const
     ASSERT_EQ(_networkClient->_lastReceived["data"]["data"].getValueType(), bson::DOCUMENT);
 
     std::cout << _networkClient->_lastReceived["data"]["data"].getValueDocument().toJSON() << std::endl;
+}
+
+void ClientTest::testJoinRoom()
+{
+    testGetAvailableRoom();
+
+    _networkClient->_clientTCP.addMessage(protocol::client::roomJoin("Fast rush, fat pl, no noob").getBufferString() + network::magic);
+
+    _world.update();
+
+    while (!_networkClient->_clientTCP.hasMessage())
+        _networkClient->_clientTCP.update();
+
+    _world.update();
+
+    checkHeader();
+
+    checkAnswer(200);
+
+    checkJoinRoom();
+
+    ASSERT_EQ("s_room_wait", _stateMachine->_currentState);
+
+}
+
+void ClientTest::checkJoinRoom()
+{
+    ASSERT_EQ(_networkClient->_lastReceived["data"]["data"].getValueType(), bson::DOCUMENT);
+
+    std::cout << _networkClient->_lastReceived["data"]["data"].getValueDocument().toJSON() << std::endl;
+
+    ASSERT_EQ(_networkClient->_lastReceived["data"]["players"].getValueType(), bson::DOCUMENT);
+
+    std::cout << _networkClient->_lastReceived["data"]["players"].getValueDocument().toJSON() << std::endl;
 }
 

@@ -24,6 +24,8 @@ public:
 
     void testGetAvailableRoom();
 
+    void testJoinRoom();
+
 private:
     void initStateMachine();
     void initLogLevels() const;
@@ -31,9 +33,11 @@ private:
     void checkHeader() const;
     void checkAnswer(int codeExpected) const;
     void checkAvailableRoom() const;
+    void checkJoinRoom();
 
     ECS::World _world;
     ECS::Component::CompNetworkClient* _networkClient;
     ECS::Component::CompStateMachine *_stateMachine;
+    std::string _username;
 
 };
