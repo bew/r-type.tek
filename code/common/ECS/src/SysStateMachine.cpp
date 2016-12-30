@@ -13,9 +13,8 @@ namespace ECS
 {
     namespace System
     {
-        bson::Document
-        SysStateMachine::processMessage(const bson::Document &doc, Component::CompStateMachine &stateMachine,
-                                        const Component::CompNetworkClient &network)
+        void SysStateMachine::processMessage(const bson::Document &doc, Component::CompStateMachine &stateMachine,
+                                             Component::CompNetworkClient &network)
         {
             if (network.isValidActionTcp(doc["header"]["action"].getValueString()))
             {
@@ -25,14 +24,21 @@ namespace ECS
                     stateMachine._currentState = stateMachine._sm[stateMachine._currentState]->getLink(
                         action);
                     network._lastReceived = doc;
-                    return protocol::answers::ok(doc["header"]["timestamp"].getValueInt64(), bson::Document());
+                    network._clientTCP.addMessage(protocol::answers::ok(doc["header"]["timestamp"].getValueInt64(),
+                                                                        bson::Document()).getBufferString() +
+                                                  network::magic);
                 }
                 else
-                    return protocol::answers::unauthorized(doc["header"]["timestamp"].getValueInt64());
+                    network._clientTCP.addMessage(
+                        protocol::answers::unauthorized(doc["header"]["timestamp"].getValueInt64()).getBufferString() +
+                        network::magic);
             }
             else if (doc["header"]["action"].getValueString() != "Answer")
-                return protocol::answers::notFound(doc["header"]["timestamp"].getValueInt64());
-            else if (doc["data"]["code"].getValueInt32() == 200
+                network._clientTCP.addMessage(
+                    protocol::answers::notFound(doc["header"]["timestamp"].getValueInt64()).getBufferString() +
+                    network::magic);
+            else if (protocol::answers::checkAnswer(doc)
+                     && doc["data"]["code"].getValueInt32() == 200
                      && !stateMachine._nextState.empty()
                      && stateMachine._sm[stateMachine._currentState]->has(stateMachine._nextState))
             {
@@ -45,8 +51,6 @@ namespace ECS
                 network._lastReceived = doc;
                 logs::logger[logs::ERRORS] << doc["data"]["msg"].getValueString() << std::endl;
             }
-
-            return bson::Document();
         }
 
         void SysStateMachine::update(ECS::WorldData &world)
@@ -70,27 +74,29 @@ namespace ECS
                     }
                     catch (bson::BsonException &bsonError)
                     {
-                        bson::Document answer = protocol::answers::badRequest(-1);
-                        network->_clientTCP.addMessage(answer.getBufferString());
+                        network->_clientTCP.addMessage(
+                            protocol::answers::badRequest(-1).getBufferString() + network::magic);
                         if (logs::logger.isRegister(logs::ERRORS))
                             logs::logger[logs::ERRORS] << bsonError.what() << std::endl;
                         else
                             std::cerr << bsonError.what() << std::endl;
                         return;
                     }
-                    bson::Document answer;
                     if (protocol::checkMessage(doc))
-                        answer = processMessage(doc, *stateMachine, *network);
+                        processMessage(doc, *stateMachine, *network);
                     else
                     {
                         if (doc.hasKey("header") && doc["header"].getValueType() == bson::DOCUMENT &&
                             protocol::checkTimestamp(doc["header"].getValueDocument()))
-                            answer = protocol::answers::badRequest(doc["header"]["timestamp"].getValueInt64());
+                            network->_clientTCP.addMessage(
+                                protocol::answers::badRequest(
+                                    doc["header"]["timestamp"].getValueInt64()).getBufferString() +
+                                network::magic);
                         else
-                            answer = protocol::answers::badRequest(-1);
+                            network->_clientTCP.addMessage(
+                                protocol::answers::badRequest(-1).getBufferString() +
+                                network::magic);
                     }
-                    if (!answer.isEmpty())
-                        network->_clientTCP.addMessage(answer.getBufferString());
                 }
                 catch (network::SocketException &socketError)
                 {
@@ -102,8 +108,8 @@ namespace ECS
                 }
                 catch (bson::BsonException &bsonError)
                 {
-                    bson::Document answer = protocol::answers::internalServerError(-1);
-                    network->_clientTCP.addMessage(answer.getBufferString());
+                    network->_clientTCP.addMessage(
+                        protocol::answers::internalServerError(-1).getBufferString() + network::magic);
                     if (logs::logger.isRegister(logs::ERRORS))
                         logs::logger[logs::ERRORS] << bsonError.what() << std::endl;
                     else
