@@ -73,6 +73,8 @@ namespace ECS
                         else
                             std::cerr << bsonError.what() << std::endl;
                     }
+                    if (doc.isEmpty())
+                        return;
                     network->_lastReceived = doc;
                     bson::Document answer;
                     if (protocol::checkMessage(doc))
