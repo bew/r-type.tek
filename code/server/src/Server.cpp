@@ -37,41 +37,50 @@ unsigned short Server::initNetwork(unsigned short port)
   return addr.getPort();
 }
 
-void Server::run()
-{
-  while (true)
-    {
-      _serverSock.update();
+void Server::run() {
+    while (true) {
+        _serverSock.update();
 
-      std::shared_ptr<network::ClientTCP> cl = _serverSock.getFirstClientWithMessage();
-      while (cl)
-	{
-	  processMessage(cl);
-	  cl = _serverSock.getFirstClientWithMessage();
-	}
+        std::shared_ptr<network::ClientTCP> cl = _serverSock.getFirstClientWithMessage();
+        while (cl) {
+            processMessage(cl);
+            cl = _serverSock.getFirstClientWithMessage();
+        }
     }
 }
 
 void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
 {
   std::string const & raw_packet = client->getMessage();
-  bson::Document packet(std::vector<unsigned char>(raw_packet.begin(), raw_packet.end()));
-  logs::logger[logs::SERVER] << "Received packet :" << std::endl << packet.toJSON(2) << std::endl;
-
-  // TODO: check packet header
-
-  if (! _players.count(client)) // this is a new client
-    {
-      _players[client] = std::make_shared<Player>(client);
-      logs::logger[logs::SERVER] << "New client connected (at:" << client << ")" << std::endl;
+    bson::Document packet;
+    try {
+        packet = bson::Document(raw_packet);
+    }
+    catch (const bson::BsonException &) {
+        client->addMessage(protocol::answers::badRequest(-1, "Can't deserialize packet").getBufferString());
+        logs::logger[logs::SERVER] << "Received a packet but can't deserialize it." << std::endl;
+        return;
     }
 
-  int64_t timestamp;
-  std::string action;
+    if (!protocol::checkMessage(packet)) {
+        client->addMessage(protocol::answers::badRequest(-1, "Wrong packet format").getBufferString());
+        logs::logger[logs::SERVER] << "Received a packet but wrong format : " << packet.toJSON(2) << std::endl;
+        return;
+    }
+    logs::logger[logs::SERVER] << "Received a valid packet :" << std::endl << packet.toJSON(2) << std::endl;
 
-  bson::Document const & header = packet["header"].getValueDocument();
-  header["timestamp"] >> timestamp;
-  header["action"] >> action;
+    int64_t timestamp;
+    std::string action;
+
+    bson::Document const & header = packet["header"].getValueDocument();
+    header["timestamp"] >> timestamp;
+    header["action"] >> action;
+
+    if (! _players.count(client)) // this is a new client
+    {
+        _players[client] = std::make_shared<Player>(client);
+        logs::logger[logs::SERVER] << "New client connected (at:" << client << ")" << std::endl;
+    }
 
   ClientCommandsState & state = _players.at(client)->getControlState();
 

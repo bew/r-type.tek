@@ -5,6 +5,8 @@
  */
 
 #include "ClientRouter.hpp"
+#include "Logs/Logger.hh"
+#include "ServerLogLevel.hh"
 
 #include "Server.hpp"
 
@@ -25,6 +27,13 @@ ClientRouter::ClientRouter(Server & server) :
 bool ClientRouter::SignUpHandler(Request & req)
 {
   bson::Document const & rdata = req.getData();
+
+  if (protocol::client::checkSignUp(rdata)) {
+    //TODO: return 400 to client
+    logs::logger[logs::SERVER] << "The packet for the action 'SignUp' is not correct." << std::endl;
+    return false;
+  }
+
   std::string username, password;
 
   rdata["username"] >> username;
@@ -47,6 +56,13 @@ bool ClientRouter::SignUpHandler(Request & req)
 bool ClientRouter::LoginHandler(Request & req)
 {
   bson::Document const & rdata = req.getData();
+
+  if (protocol::client::checkLogin(rdata)) {
+    //TODO: return 400 to client
+    logs::logger[logs::SERVER] << "The packet for the action 'Login' is not correct." << std::endl;
+    return false;
+  }
+
   std::string username, password;
 
   rdata["username"] >> username;
@@ -72,28 +88,66 @@ bool ClientRouter::LoginHandler(Request & req)
   return true;
 }
 
-bool ClientRouter::LogoutHandler(Request &)
+bool ClientRouter::LogoutHandler(Request &req)
 {
+  bson::Document const & rdata = req.getData();
+
+  if (protocol::client::checkLogout(rdata)) {
+    //TODO: return 400 to client
+    logs::logger[logs::SERVER] << "The packet for the action 'Logout' is not correct." << std::endl;
+    return false;
+  }
+
   // send to other players : (cumulative message ?)
   // if client was in game => send game leave
   // if client was in room => send room leave
+
+  return true;
 }
 
-bool ClientRouter::RoomLeaveHandler(Request &)
+bool ClientRouter::RoomLeaveHandler(Request &req)
 {
+  bson::Document const & rdata = req.getData();
+
+  if (protocol::client::checkLogout(rdata)) {
+    //TODO: return 400 to client
+    logs::logger[logs::SERVER] << "The packet for the action 'Logout' is not correct." << std::endl;
+    return false;
+  }
+
   // send to other players
+
+  return true;
 }
 
-bool ClientRouter::RoomKickHandler(Request &)
+bool ClientRouter::RoomKickHandler(Request &req)
 {
+  bson::Document const & rdata = req.getData();
+
+  if (protocol::client::checkLogout(rdata)) {
+    //TODO: return 400 to client
+    logs::logger[logs::SERVER] << "The packet for the action 'Logout' is not correct." << std::endl;
+    return false;
+  }
+
   // send to targeted player
   // remove player from room
 
   // send to other players
+
+  return true;
 }
 
-bool ClientRouter::GameStartHandler(Request &)
+bool ClientRouter::GameStartHandler(Request &req)
 {
+  bson::Document const & rdata = req.getData();
+
+  if (protocol::client::checkLogout(rdata)) {
+    //TODO: return 400 to client
+    logs::logger[logs::SERVER] << "The packet for the action 'Logout' is not correct." << std::endl;
+    return false;
+  }
+
   // prepare thread
   // prepare ECS ...
 
@@ -102,11 +156,23 @@ bool ClientRouter::GameStartHandler(Request &)
   // choose network token for players
   // send to other players + auth token
   // FIXME: more ?
+
+  return true;
 }
 
-bool ClientRouter::GameLeaveHandler(Request &)
+bool ClientRouter::GameLeaveHandler(Request &req)
 {
+  bson::Document const & rdata = req.getData();
+
+  if (protocol::client::checkLogout(rdata)) {
+    //TODO: return 400 to client
+    logs::logger[logs::SERVER] << "The packet for the action 'Logout' is not correct." << std::endl;
+    return false;
+  }
+
   // send to other players
+
+  return true;
 }
 
 int64_t ClientRouter::getTimestamp(Request & req) const
