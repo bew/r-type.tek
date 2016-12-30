@@ -7,9 +7,10 @@
 #include "Protocol/Client.hh"
 #include "ECS/ECSLogLevel.hh"
 
-ClientTest::ClientTest(const std::string &ip, unsigned short port) :
+ClientTest::ClientTest(const std::string &ip, unsigned short port, const std::string &username,
+                       const std::string &password) :
     _world(), _networkClient(new ECS::Component::CompNetworkClient(ip, port)),
-    _stateMachine(new ECS::Component::CompStateMachine)
+    _stateMachine(new ECS::Component::CompStateMachine), _username(username), _password(password)
 {
 
 }
@@ -63,22 +64,13 @@ void ClientTest::initStateMachine()
 
 }
 
-void ClientTest::testLoginSignup()
+
+void ClientTest::testSignup()
 {
-    std::cout << "signup:" << std::endl << "username: ";
+    std::cout << "signup with username: " << _username << " & password: " << _password << std::endl;
 
-    std::cin >> _username;
-
-    std::cout << "password: ";
-
-    std::string pwd;
-    std::cin >> pwd;
-
-    std::cout << "signup with username: " << _username << " & password: " << pwd << std::endl;
-
-    _networkClient->_clientTCP.addMessage(protocol::client::signUp(_username, pwd).getBufferString() + network::magic);
-
-    std::cout << protocol::client::signUp(_username, pwd).toJSON() << std::endl;
+    _networkClient->_clientTCP.addMessage(
+        protocol::client::signUp(_username, _password).getBufferString() + network::magic);
 
     _world.update();
 
@@ -87,27 +79,44 @@ void ClientTest::testLoginSignup()
 
     _world.update();
 
-    std::cout << _networkClient->_lastReceived.toJSON() << std::endl;
-
     checkHeader();
 
     checkAnswer(200);
 
     ASSERT_EQ("s_auth", _stateMachine->_currentState);
 
-    std::cout << "login:" << std::endl << "username: ";
+}
 
-    std::cin >> _username;
+void ClientTest::testBadLogin()
+{
+    _stateMachine->_nextState = "s_auth";
 
-    std::cout << "password: ";
+    _networkClient->_clientTCP.addMessage(
+        protocol::client::login("blarp", "").getBufferString() + network::magic);
 
-    std::cin >> pwd;
+    _world.update();
 
-    std::cout << "login with username: " << _username << " & password: " << pwd << std::endl;
+    while (!_networkClient->_clientTCP.hasMessage())
+        _networkClient->_clientTCP.update();
+
+    _world.update();
+
+    checkHeader();
+
+    checkAnswer(400);
+
+    ASSERT_EQ("s_auth", _stateMachine->_currentState);
+}
+
+
+void ClientTest::testLogin()
+{
+    std::cout << "login with username: " << _username << " & password: " << _password << std::endl;
 
     _stateMachine->_nextState = "s_menu";
 
-    _networkClient->_clientTCP.addMessage(protocol::client::login(_username, pwd).getBufferString() + network::magic);
+    _networkClient->_clientTCP.addMessage(
+        protocol::client::login(_username, _password).getBufferString() + network::magic);
 
     _world.update();
 
@@ -121,6 +130,13 @@ void ClientTest::testLoginSignup()
     checkAnswer(200);
 
     ASSERT_EQ("s_menu", _stateMachine->_currentState);
+}
+
+void ClientTest::testLoginSignup()
+{
+    testSignup();
+
+    testLogin();
 }
 
 void ClientTest::initLogLevels() const
@@ -144,7 +160,7 @@ void ClientTest::testUnauthorizedRoomJoin()
 
     checkHeader();
 
-    checkAnswer(403);
+    checkAnswer(401);
 }
 
 void ClientTest::checkHeader() const
@@ -203,15 +219,17 @@ void ClientTest::checkAvailableRoom() const
 {
     ASSERT_EQ(_networkClient->_lastReceived["data"]["data"].getValueType(), bson::DOCUMENT);
 
-    std::cout << _networkClient->_lastReceived["data"]["data"].getValueDocument().toJSON() << std::endl;
+//    std::cout << _networkClient->_lastReceived["data"]["data"].getValueDocument().toJSON() << std::endl;
 }
 
 void ClientTest::testJoinRoom()
 {
-    testGetAvailableRoom();
+    testLogin();
 
     _networkClient->_clientTCP.addMessage(
         protocol::client::roomJoin("Fast rush, fat pl, no noob").getBufferString() + network::magic);
+
+    _stateMachine->_nextState = "s_room_wait";
 
     _world.update();
 
@@ -219,6 +237,8 @@ void ClientTest::testJoinRoom()
         _networkClient->_clientTCP.update();
 
     _world.update();
+
+    std::cout << _networkClient->_lastReceived.toJSON() << std::endl;
 
     checkHeader();
 
@@ -232,13 +252,17 @@ void ClientTest::testJoinRoom()
 
 void ClientTest::checkJoinRoom() const
 {
+    ASSERT_TRUE(_networkClient->_lastReceived["data"].getValueDocument().hasKey("data"));
+
     ASSERT_EQ(_networkClient->_lastReceived["data"]["data"].getValueType(), bson::DOCUMENT);
 
     std::cout << _networkClient->_lastReceived["data"]["data"].getValueDocument().toJSON() << std::endl;
 
-    ASSERT_EQ(_networkClient->_lastReceived["data"]["players"].getValueType(), bson::DOCUMENT);
+//    ASSERT_TRUE(_networkClient->_lastReceived["data"].getValueDocument().hasKey("players"));
 
-    std::cout << _networkClient->_lastReceived["data"]["players"].getValueDocument().toJSON() << std::endl;
+    //  ASSERT_EQ(_networkClient->_lastReceived["data"]["players"].getValueType(), bson::DOCUMENT);
+
+    //std::cout << _networkClient->_lastReceived["data"]["players"].getValueDocument().toJSON() << std::endl;
 }
 
 void ClientTest::testGameStart()

@@ -8,10 +8,12 @@
 
 #define SERVER_ADDR "127.0.0.1"
 #define SERVER_PORT 42402
+#define USERNAME "tookieg"
+#define PASSWORD "lol"
 
 TEST(SimpleClientTest, LoginSinup)
 {
-    ClientTest client(SERVER_ADDR, SERVER_PORT);
+    ClientTest client(SERVER_ADDR, SERVER_PORT, USERNAME, PASSWORD);
 
     client.init();
 
@@ -19,46 +21,56 @@ TEST(SimpleClientTest, LoginSinup)
 
 }
 
-/*TEST(SimpleClientTest, UnauthorizedRoomJoin)
+TEST(SimpleClientTest, BadLogin)
 {
-    ClientTest client(SERVER_ADDR, SERVER_PORT);
+    ClientTest client(SERVER_ADDR, SERVER_PORT, USERNAME, PASSWORD);
+
+    client.init();
+
+    client.testBadLogin();
+}
+
+
+TEST(SimpleClientTest, UnauthorizedRoomJoin)
+{
+    ClientTest client(SERVER_ADDR, SERVER_PORT, USERNAME, PASSWORD);
 
     client.init();
 
     client.testUnauthorizedRoomJoin();
 }
 
-TEST(SimpleClientTest, getAvailableROom)
+/*TEST(SimpleClientTest, getAvailableROom)
 {
-    ClientTest client(SERVER_ADDR, SERVER_PORT);
+    ClientTest client(SERVER_ADDR, SERVER_PORT, USERNAME, PASSWORD);
 
     client.init();
 
     client.testGetAvailableRoom();
 }
+*/
 
-TEST(SimpleClientTest, joinRoom)
+ TEST(SimpleClientTest, joinRoom)
 {
-    ClientTest client(SERVER_ADDR, SERVER_PORT);
+    ClientTest client(SERVER_ADDR, SERVER_PORT, USERNAME, PASSWORD);
 
     client.init();
 
     client.testJoinRoom();
 }
 
-
 TEST(SimpleClientTest, RoomLeave)
 {
-    ClientTest client(SERVER_ADDR, SERVER_PORT);
+    ClientTest client(SERVER_ADDR, SERVER_PORT, USERNAME, PASSWORD);
 
     client.init();
 
     client.testRoomLeave();
 }
-
+/*
 TEST(SimpleClientTest, GameStart)
 {
-    ClientTest client(SERVER_ADDR, SERVER_PORT);
+    ClientTest client(SERVER_ADDR, SERVER_PORT, USERNAME, PASSWORD);
 
     client.init();
 
@@ -67,7 +79,7 @@ TEST(SimpleClientTest, GameStart)
 
 TEST(SimpleClientTest, GameLeave)
 {
-    ClientTest client(SERVER_ADDR, SERVER_PORT);
+    ClientTest client(SERVER_ADDR, SERVER_PORT, USERNAME, PASSWORD);
 
     client.init();
 
@@ -77,7 +89,7 @@ TEST(SimpleClientTest, GameLeave)
 
 TEST(SimpleClientTest, Logout)
 {
-    ClientTest client(SERVER_ADDR, SERVER_PORT);
+    ClientTest client(SERVER_ADDR, SERVER_PORT, USERNAME, PASSWORD);
 
     client.init();
 
