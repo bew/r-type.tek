@@ -198,7 +198,7 @@ int64_t ClientRouter::getTimestamp(Request & req) const
   return req.getHeader()["timestamp"].getValueInt64();
 }
 
-bool ClientRoute::reply_bad_req(Request & req, std::string const & message) const
+bool ClientRouter::reply_bad_req(Request & req, std::string const & message) const
 {
   logs::logger[logs::SERVER] << message << std::endl;
   return reply_fail(req, protocol::answers::badRequest(getTimestamp(req), message));
