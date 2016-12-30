@@ -38,11 +38,13 @@ unsigned short Server::initNetwork(unsigned short port)
 }
 
 void Server::run() {
-    while (true) {
+    while (true)
+    {
         _serverSock.update();
 
         std::shared_ptr<network::ClientTCP> cl = _serverSock.getFirstClientWithMessage();
-        while (cl) {
+        while (cl)
+        {
             processMessage(cl);
             cl = _serverSock.getFirstClientWithMessage();
         }
