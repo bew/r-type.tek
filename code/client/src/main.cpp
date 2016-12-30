@@ -16,7 +16,9 @@
 #include "CompOptions.hh"
 #include "SysKeyboard.hh"
 #include "SysOptions.hh"
+#include "SysGui.hh"
 
+#include "ECS/CompScore.hh"
 #include "ECS/CompMusic.hh"
 #include "ECS/CompSprite.hh"
 #include "ECS/CompCollision.hh"
@@ -64,7 +66,7 @@ int main(int ac, char**av) {
   // open, reopen, clear and display window. Should be initilized before running system that draw things
   world.addSystem(new ECS::System::SysWindow());
   // transform input to data(up, down, fire, left, right)
-  world.addSystem(new ECS::System::SysKeyboard());  // CLIENT
+  world.addSystem(new ECS::System::SysKeyboard());   // CLIENT
   // transform data to movement (speed, direction)
   world.addSystem(new ECS::System::SysController());
   // update movement speed, direction for computer controlled entity 
@@ -81,6 +83,8 @@ int main(int ac, char**av) {
   world.addSystem(new ECS::System::SysSound());      // CLIENT
   // put sprite onto window surface
   world.addSystem(new ECS::System::SysSprite());     // CLIENT
+   // put gui onto window surface
+  world.addSystem(new ECS::System::SysGui());        // CLIENT
   // process collision and apply damage
   world.addSystem(new ECS::System::SysDamage());
    // process life and apply death
@@ -118,10 +122,11 @@ int main(int ac, char**av) {
   world.addSystemEntityComponent(new ECS::Component::CompOptions());
   world.addSystemEntityComponent(new ECS::Component::CompAsset());
   world.addSystemEntityComponent(new ECS::Component::CompCollision());
+  world.addSystemEntityComponent(new ECS::Component::CompScore(0));
 
   ///////////////////////// INITIALIZE PLAYER (id 1 to 4 are reserved to players)
 
-  ECS::Entity::Entity *entity = new ECS::Entity::Entity(1);
+  ECS::Entity::Entity *entity = new ECS::Entity::Entity(1); //Server emulation here, we don't what will be our id
   entity->addComponent(new ECS::Component::CompController());
   entity->addComponent(new ECS::Component::CompType(ECS::Component::CompType::PLAYER | ECS::Component::CompType::CHARACTER));
 

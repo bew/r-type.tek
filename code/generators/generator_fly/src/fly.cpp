@@ -24,6 +24,7 @@
 #include "ECS/CompSuccessor.hh"
 #include "ECS/CompDeath.hh"
 #include "ECS/CompIA.hh"
+#include "ECS/CompScore.hh"
 
 const std::string &Empty::getName(void) const {
   return _generator_name;
@@ -81,7 +82,19 @@ void Empty::update(ECS::WorldData &world) {
 	new ECS::Component::CompHitbox(50, 50),
 	new ECS::Component::CompType(ECS::Component::CompType::ENEMY | ECS::Component::CompType::CHARACTER),
 	new ECS::Component::CompSuccessor("explosion"),
-	new ECS::Component::CompIA("sin")
+	new ECS::Component::CompIA("sin"),
+	new ECS::Component::CompScore(5),
+      };
+      blueprintsc->blueprints["flyBig"] = {
+        new ECS::Component::CompLife(16, 20),
+        new ECS::Component::CompDamage(2),
+        new ECS::Component::CompSprite("fly", {0, 0}, "default", {2.5, 2.5}),
+        new ECS::Component::CompMovement({1450, 360}),
+        new ECS::Component::CompHitbox(125, 125),
+        new ECS::Component::CompType(ECS::Component::CompType::ENEMY | ECS::Component::CompType::CHARACTER),
+        new ECS::Component::CompSuccessor("explosionBig"),
+        new ECS::Component::CompIA("sin"),
+	new ECS::Component::CompScore(25)	
       };
       
       world._systemEntity.addComponent(new ECS::Component::CompSprite("desert", {1280/2, 720/2}));
@@ -95,6 +108,7 @@ void Empty::update(ECS::WorldData &world) {
 	   entity->addComponent(new ECS::Component::CompHitbox(120, 60));
 	   entity->addComponent(new ECS::Component::CompProjectile("bloodBurst"));
 	   entity->addComponent(new ECS::Component::CompSuccessor("explosionBig"));
+	   entity->addComponent(new ECS::Component::CompScore(-50));
 	}
       }
     }
@@ -104,6 +118,14 @@ void Empty::update(ECS::WorldData &world) {
       }
       catch (const ECS::Component::ComponentFlagException &e) {
 	logs::getLogger()[logs::ERRORS] << "Cannot clone '" << "fly" << "' : '" << e.what() << "'" << std::endl;
+      }
+    }
+    if (!(tickc->tick % 500)) {
+      try {
+        world._gameEntities.push_back(blueprintsc->spawn("flyBig"));
+      }
+      catch (const ECS::Component::ComponentFlagException &e) {
+        logs::getLogger()[logs::ERRORS] << "Cannot clone '" << "flyBig" << "' : '" << e.what() << "'" << std::endl;
       }
     }
   }

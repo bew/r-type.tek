@@ -15,6 +15,7 @@
 #include "CompSuccessor.hh"
 #include "CompBlueprint.hh"
 #include "CompMovement.hh"
+#include "CompScore.hh"
 #include "Logs/Logger.hh"
 
 namespace ECS {
