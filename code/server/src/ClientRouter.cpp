@@ -4,9 +4,11 @@
  * @brief Implementation for the ClientRouter
  */
 
-#include "ClientRouter.hpp"
-
+#include "Logs/Logger.hh"
 #include "Protocol/Server.hh"
+
+#include "ClientRouter.hpp"
+#include "ServerLogLevel.hh"
 #include "Server.hpp"
 
 #define BIND_THIS_P1(HANDLER) std::bind(HANDLER, this, std::placeholders::_1)
@@ -28,6 +30,9 @@ ClientRouter::ClientRouter(Server & server) :
 
 bool ClientRouter::SignUpHandler(Request & req)
 {
+  if (protocol::client::checkSignUp(req.getPacket()))
+    return reply_bad_req(req, "The packet for the action 'SignUp' is not correct.");
+
   bson::Document const & rdata = req.getData();
   std::string username, password;
 
@@ -47,6 +52,9 @@ bool ClientRouter::SignUpHandler(Request & req)
 
 bool ClientRouter::LoginHandler(Request & req)
 {
+  if (protocol::client::checkLogin(req.getPacket()))
+    return reply_bad_req(req, "The packet for the action 'Login' is not correct.");
+
   bson::Document const & rdata = req.getData();
   std::string username, password;
 
@@ -60,12 +68,17 @@ bool ClientRouter::LoginHandler(Request & req)
   if (! (account.password == password))
     return reply_fail(req, pa::unauthorized(getTimestamp(req), "Unknown username/password"));
 
-  // TODO: create a player, store association username-player
+  // TODO: create a player, store association username-player (put this in the room ?)
   return reply_ok(req);
 }
 
 bool ClientRouter::LogoutHandler(Request & req)
 {
+  if (protocol::client::checkLogout(req.getPacket()))
+    return reply_bad_req(req, "The packet for the action 'Logout' is not correct.");
+
+  bson::Document const & rdata = req.getData();
+
   // send to other players : (cumulative message ?)
   // if client was in game => send game leave
   // if client was in room => send room leave
@@ -75,6 +88,9 @@ bool ClientRouter::LogoutHandler(Request & req)
 
 bool ClientRouter::RoomJoinHandler(Request & req)
 {
+  if (protocol::client::checkRoomJoin(req.getPacket()))
+    return reply_bad_req(req, "The packet for the action 'RoomJoin' is not correct.");
+
   bson::Document const & rdata = req.getData();
   std::string roomName;
 
@@ -111,6 +127,9 @@ bool ClientRouter::RoomJoinHandler(Request & req)
 
 bool ClientRouter::RoomLeaveHandler(Request & req)
 {
+  if (protocol::client::checkRoomLeave(req.getPacket()))
+    return reply_bad_req(req, "The packet for the action 'RoomLeave' is not correct.");
+
   bson::Document const & rdata = req.getData();
   std::string username;
 
@@ -128,16 +147,28 @@ bool ClientRouter::RoomLeaveHandler(Request & req)
   return reply_ok(req);
 }
 
-bool ClientRouter::RoomKickHandler(Request &)
+bool ClientRouter::RoomKickHandler(Request & req)
 {
+  if (protocol::client::checkRoomKick(req.getPacket()))
+    return reply_bad_req(req, "The packet for the action 'RoomKick' is not correct.");
+
+  bson::Document const & rdata = req.getData();
+
   // send to targeted player
   // remove player from room
 
   // send to other players
+
+  return true;
 }
 
-bool ClientRouter::GameStartHandler(Request &)
+bool ClientRouter::GameStartHandler(Request & req)
 {
+  if (protocol::client::checkGameStart(req.getPacket()))
+    return reply_bad_req(req, "The packet for the action 'GameStart' is not correct.");
+
+  bson::Document const & rdata = req.getData();
+
   // prepare thread
   // prepare ECS ...
 
@@ -146,16 +177,31 @@ bool ClientRouter::GameStartHandler(Request &)
   // choose network auth-token for players
   // send to other players + auth token
   // FIXME: more ?
+
+  return true;
 }
 
-bool ClientRouter::GameLeaveHandler(Request &)
+bool ClientRouter::GameLeaveHandler(Request &req)
 {
+  if (protocol::client::checkGameLeave(req.getPacket()))
+    return reply_bad_req(req, "The packet for the action 'GameLeave' is not correct.");
+
+  bson::Document const & rdata = req.getData();
+
   // send to other players
+
+  return true;
 }
 
 int64_t ClientRouter::getTimestamp(Request & req) const
 {
   return req.getHeader()["timestamp"].getValueInt64();
+}
+
+bool ClientRoute::reply_bad_req(Request & req, std::string const & message) const
+{
+  logs::logger[logs::SERVER] << message << std::endl;
+  return reply_fail(req, protocol::answers::badRequest(getTimestamp(req), message));
 }
 
 bool ClientRouter::reply_fail(Request & req, bson::Document const & message) const

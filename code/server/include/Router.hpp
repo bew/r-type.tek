@@ -47,6 +47,13 @@ public:
   Request & operator=(Request const & other) = delete;
 
 public:
+    /**
+     * Get the entire packet of the request
+     *
+     * @return a Document to the entire packet of the request
+     */
+    bson::Document const & getPacket() const;
+
   /**
    * Get the header of the request
    *
@@ -69,6 +76,11 @@ public:
   std::shared_ptr<network::ClientTCP> getClient() const;
 
 protected:
+    /**
+     * The entire packet
+     */
+    bson::Document _packet;
+
   /**
    * The packet header
    */
