@@ -76,6 +76,5 @@ namespace ECS
              */
             std::vector<std::string> _clientTokens;
         };
-
     }
 }
