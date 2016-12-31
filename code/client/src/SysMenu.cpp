@@ -23,7 +23,6 @@ namespace ECS {
             {
 
             }
-            sf::RenderWindow window(sf::VideoMode(1280, 720), "MENU DU CUL!");
             sf::Event event;
             SysMenu menu(window.getSize().x, window.getSize().y);
 
@@ -226,17 +225,16 @@ namespace ECS {
             _signUp[1].setPosition(sf::Vector2f(_w / 2 - 75, _h - _h + 250));
         }
 
-        SysMenu::~SysMenu()
-        {}
-
-        void SysMenu::drawRoomMenu(sf::RenderWindow &window) {
+        void SysMenu::drawRoomMenu(sf::RenderWindow &window) const
+        {
             window.draw(_inputLogin[0]);
             for (int i = 0; i < NB_ITEMS; i++) {
                 window.draw(_menu[i]);
             }
         }
 
-        void SysMenu::drawSignMenu(sf::RenderWindow &window) {
+        void SysMenu::drawSignMenu(sf::RenderWindow &window) const
+        {
             for (int i = 0; i < NB_ITEMS; i++) {
                 window.draw(_signUp[i]);
             }
