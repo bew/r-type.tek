@@ -266,7 +266,13 @@ bool ServerRouter::GameStartHandler(Request & req)
   for (auto & kv : room.players)
     kv.second->isPlaying = true;
 
-  return reply_ok(req);
+  reply_ok(req);
+
+  for (const auto& kv : room.players) {
+    bson::Document message;
+    message << u8"port" << 4242;
+    kv.second->sock->addMessage(protocol::server::gameStart(4242, kv.second->token, "serverToken").getBufferString() + network::magic);
+  }
 }
 
 bool ServerRouter::GameLeaveHandler(Request &req)
