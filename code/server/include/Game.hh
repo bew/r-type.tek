@@ -83,14 +83,4 @@ public:
     void initECS();
     void runECS();
     int getServerUdpPort();
-
-protected:
-    /**
-     * Get the generator lib name, according to OS lib path format
-     *
-     * @param folder The folder containing generators
-     * @param genName the generator name (ex: "fly")
-     * @return The generator lib name
-     */
-    std::string getGenLibName(std::string const & folder, std::string const & genName);
 };

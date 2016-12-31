@@ -68,12 +68,14 @@ void Game::initECS() {
 
     ECS::Component::CompGenerator *generator = new ECS::Component::CompGenerator();
 
-    try {
-        std::shared_ptr<LibraryLoader> module(new LibraryLoader(getGenLibName("./generators", _generatorName)));
-        Dependent_ptr <IGenerator, LibraryLoader> generatorRef(module->newInstance(), module);
-        generator->generator = generatorRef;
-    } catch (const LibraryLoaderException &e) {
-        logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
+    if (generator != nullptr) {
+        try {
+            std::shared_ptr<LibraryLoader> module(new LibraryLoader("./generators/" + _generatorName));
+            Dependent_ptr<IGenerator, LibraryLoader> generatorRef(module->newInstance(), module);
+            generator->generator = generatorRef;
+        } catch (const LibraryLoaderException &e) {
+            logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
+        }
     }
 
     _world.addSystemEntityComponent(generator);
@@ -107,13 +109,4 @@ void Game::runECS() {
 void Game::execLoop() {
     this->runECS();
     _done = true;
-}
-
-std::string Game::getGenLibName(std::string const & folder, std::string const & genName)
-{
-#ifdef _WIN32
-    return folder + '/' + genName + ".dll";
-#else
-    return folder + "/lib" + genName + ".so";
-#endif
 }
