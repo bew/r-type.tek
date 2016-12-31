@@ -38,9 +38,20 @@ namespace ECS {
        */
       virtual void update(ECS::WorldData &world);
 
-      void serialize(WorldData &world, Entity::Entity *entity);
+        /**
+         * Serialize the given entity
+         *
+         * @param world All the data about the world
+         * @param entity the entity to serialize
+         */
+      void serialize(WorldData &world, const Entity::Entity *entity) const;
 
-      void unserialize(WorldData &world);
+        /**
+         * Unserialize and update the world
+         *
+         * @param world All the data about the world
+         */
+      void unserialize(WorldData &world) const;
     };
   }
 }

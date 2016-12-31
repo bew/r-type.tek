@@ -4,7 +4,7 @@
  * @brief Implementation of Component for musics. May diesapear.
  */
 
-#include "CompSound.hh"
+#include "../../common/ECS/include/CompSound.hh"
 
 namespace ECS {
   namespace Component {
