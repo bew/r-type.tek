@@ -42,15 +42,12 @@ namespace ECS {
                                     case sf::Keyboard::Return:
                                         switch (this->GetPressedItem()) {
                                             case 0:
-                                                std::cout << "Play button has been pressed" << std::endl;
-                                                break;
-                                            case 1:
                                                 std::cout << "Room button has been pressed" << std::endl;
                                                 break;
-                                            case 2:
+                                            case 1:
                                                 std::cout << "Option button has been pressed" << std::endl;
                                                 break;
-                                            case 3:
+                                            case 2:
                                                 windowc->window->close();
                                                 break;
                                         }
