@@ -11,8 +11,19 @@ namespace network
 
     SockAddr::SockAddr(unsigned short port, const std::string &addr)
     {
+        struct hostent *host;
+        const char *ip;
+
         _addr.sin_family = AF_INET;
-        inet_pton(AF_INET, addr.c_str(), &(_addr.sin_addr));
+        if ((host = gethostbyname(addr.c_str())))
+        {
+            struct in_addr **addr_list = static_cast<struct in_addr **>(host->h_addr_list);
+            ip = inet_ntoa(*addr_list[0]);
+        }
+        else
+            ip = addr.c_str();
+
+        inet_pton(AF_INET, ip, &(_addr.sin_addr));
         if (port > 0)
             _addr.sin_port = htons(port);
         else
