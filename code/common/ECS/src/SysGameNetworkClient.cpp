@@ -21,6 +21,8 @@ namespace ECS
             if (network)
             {
                 network->_clientUDP.update();
+                if (!network->_clientUDP.hasMessage())
+                    return;
                 bson::Document doc(network->_clientUDP.getMessage());
                 if (protocol::server::checkEntityUpdate(doc))
                 {

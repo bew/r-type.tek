@@ -13,7 +13,8 @@
 class ClientTest
 {
 public:
-    ClientTest(const std::string& ip, unsigned short port, const std::string& username, const std::string& password);
+    ClientTest(const std::string &ip, unsigned short port, const std::string &username, const std::string &password);
+
     ~ClientTest();
 
     void init();
@@ -37,20 +38,24 @@ public:
     void testLogout();
 
 private:
-    void initStateMachine();
     void initLogLevels() const;
 
     void testLogin();
+
     void testSignup();
 
     void checkHeader() const;
+
     void checkAnswer(int codeExpected) const;
+
     void checkAvailableRoom() const;
+
     void checkJoinRoom() const;
+
     void checkGameStart() const;
 
     ECS::World _world;
-    ECS::Component::CompNetworkClient* _networkClient;
+    ECS::Component::CompNetworkClient *_networkClient;
     ECS::Component::CompStateMachine *_stateMachine;
     std::string _username;
     std::string _password;
