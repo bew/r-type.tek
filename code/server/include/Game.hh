@@ -63,7 +63,7 @@ public:
      * @param serverToken that need to match for all the UDP request
      * @param clientTokens the tokens of the clients of the game
      */
-    Game(Room & room, const std::string& generatorName, int32_t port, const std::string& serverToken, const std::vector<std::string>& clientTokens);
+    Game(Room & room, const std::string& generatorName, const std::string& serverToken, const std::vector<std::string>& clientTokens);
 
     Game(const Game& game) = delete;
 
@@ -81,6 +81,7 @@ public:
 
     // TODO: doc
     void initECS();
+    void runECS();
     int getServerUdpPort();
 
 protected:

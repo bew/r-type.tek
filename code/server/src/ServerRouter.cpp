@@ -270,17 +270,25 @@ bool ServerRouter::GameStartHandler(Request & req)
     }
   }
 
+  //  Check the generator name
+  bson::Document const & rdata = req.getData();
+  std::string generatorName = rdata["generator"].getValueString();
+  std::vector<std::string> generators = this->getAvailableGenerators();
+  if (std::find(generators.begin(), generators.end(), generatorName) == generators.end()) {
+    this->sendMessageToRequester(req, pa::notFound(timestamp, "Unknow generator '" + generatorName + "'"));
+    logs::getLogger()[logs::SERVER] << player->name << " try to launch a game with unknow generator '" << generatorName << "'" << std::endl;
+    // TODO: Return the available generators with command
+    return false;
+  }
+
   // Get the clients tokens
   std::vector<std::string> clientsTokens;
   for (const auto& kv : room.players)
     clientsTokens.push_back(kv.second->token);
 
-  //  Get the generator name
-  bson::Document const & rdata = req.getData();
-  std::string generatorName = rdata["generator"].getValueString();
 
   // Launch the Game
-  room.game = new Game(room, generatorName, 9560, _server->_serverToken, clientsTokens);
+  room.game = new Game(room, generatorName, _server->_serverToken, clientsTokens);
     try {
         room.game->initECS();
         room.game->launch();
@@ -405,4 +413,26 @@ void ServerRouter::send_to_room_players(Room & room, bson::Document const & broa
 
 void ServerRouter::sendMessageToRequester(const Request& request, const bson::Document &document) const {
   request.getClient()->addMessage(document.getBufferString() + network::magic);
+}
+
+std::vector<std::string> ServerRouter::getAvailableGenerators() const {
+  std::vector<std::string> generators;
+  std::string folder = "./generators/";
+  FileSystemWatcher watcher(folder);
+
+  for (const auto &i : watcher.processEvents()) {
+    if (i.second == AFileSystemWatcher::Event::Add) {
+      try {
+        std::shared_ptr<LibraryLoader> module(new LibraryLoader(folder+i.first));
+        Dependent_ptr<IGenerator, LibraryLoader> instance(module->newInstance(), module);
+        generators.push_back(instance->getName());
+      } catch (const LibraryLoaderException &e) {
+        std::string errorMessage = std::string("Can't get the library name: ") + e.what();
+        std::cerr << errorMessage << std::endl;
+        logs::getLogger()[logs::SERVER] << errorMessage << std::endl;
+      }
+    }
+  }
+
+  return generators;
 }

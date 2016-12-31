@@ -35,33 +35,12 @@
 #include "LibraryLoader/SysGenerator.hh"
 
 Game::Game(Room & room, const std::string& generatorName, const std::string &serverToken, const std::vector<std::string>& clientTokens) :
-    _generatorName(generatorName), _serverToken(serverToken), _clientTokens(clientTokens), _room(&room)
+        _room(&room), _generatorName(generatorName), _serverToken(serverToken), _clientTokens(clientTokens)
 {}
 
 Game::~Game() {}
 
 void Game::initECS() {
-    // init Network component (TODO: make sure the bind is done, to have a valid unused port)
-    // init ECS
-
-    // can throw ? => yes
-}
-
-int Game::getServerUdpPort() {
-    // return port of UDP server for this game
-    // see Server#initNetwork() for exemple
-}
-
-int Game::runECS() {
-    // run ECS
-
-    // (wait for players first connection ? maybe not needed)
-}
-
-void Game::execLoop() {
-
-    // TODO: move this in initECS
-
     ////////////////////////// ADD SYSTEMS TO WORLD
 
     // control time, Has absolute priority over any other system
@@ -76,7 +55,6 @@ void Game::execLoop() {
     _world.addSystem(new ECS::System::SysMovement());
     // Analyze collision, fill compCollision
     _world.addSystem(new ECS::System::SysCollision());
-
     // process collision and apply damage
     _world.addSystem(new ECS::System::SysDamage());
     // process life and apply death
@@ -89,9 +67,6 @@ void Game::execLoop() {
     ///////////////////////// ADD UNIQUE COMPONENTS TO WORLD
 
     ECS::Component::CompGenerator *generator = new ECS::Component::CompGenerator();
-    ECS::Component::CompBlueprint *blueprints = new ECS::Component::CompBlueprint();
-    ECS::Component::CompTick *tick = new ECS::Component::CompTick();
-    ECS::Component::CompEvent *event = new ECS::Component::CompEvent();
 
     try {
         std::shared_ptr<LibraryLoader> module(new LibraryLoader(getGenLibName("./generators", _generatorName)));
@@ -100,28 +75,29 @@ void Game::execLoop() {
     } catch (const LibraryLoaderException &e) {
         logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
     }
+
     _world.addSystemEntityComponent(generator);
-    _world.addSystemEntityComponent(blueprints);
-    //
-    _world.addSystemEntityComponent(tick);
-    _world.addSystemEntityComponent(event);
+    _world.addSystemEntityComponent(new ECS::Component::CompBlueprint());
+    _world.addSystemEntityComponent(new ECS::Component::CompTick());
+    _world.addSystemEntityComponent(new ECS::Component::CompEvent());
     _world.addSystemEntityComponent(new ECS::Component::CompCollision());
     _world.addSystemEntityComponent(new ECS::Component::CompScore(0));
 
-    ///////////////////////// Run the world :)
+}
 
-    // TODO: move this in runECS
-    while (!tick->kill) {
-        _world.update();
-    }
+int Game::getServerUdpPort() {
+    return 9670;
+}
 
+void Game::runECS() {
+//    while (!tick->kill) {
+//        _world.update();
+//    }
+}
+
+void Game::execLoop() {
+    this->runECS();
     _done = true;
-
-
-
-    // NOTE: in execLoop :
-    // -> runECS()
-    // -> _done = true
 }
 
 std::string Game::getGenLibName(std::string const & folder, std::string const & genName)
