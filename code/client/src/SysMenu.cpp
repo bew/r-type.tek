@@ -11,7 +11,7 @@ namespace ECS {
         SysMenu::SysMenu()
                 : _userlogged(false), _userSignup(false), _pwdSignup(false), _userpwd(false), _selectedItemIndex(0),
                   _w(1280), _h(720) {
-            if (!_font.loadFromFile("SIXTY.ttf")) {
+            if (!_font.loadFromFile("gui.ttf")) {
                 // handle error
             }
         }
@@ -26,8 +26,10 @@ namespace ECS {
             while (windowc->window->isOpen()) {
                 if (!this->isUserLogged())
                     this->login(*windowc->window);
-                else if (!this->isPwdCorrect())
+                else if (!this->isPwdCorrect()) {
                     this->pwd(*windowc->window);
+                    this->menu_room();
+                }
                 else {
                     while (windowc->window->pollEvent(event)) {
                         switch (event.type) {
@@ -59,6 +61,7 @@ namespace ECS {
                                 break;
                         }
                         windowc->window->clear();
+                        this->drawRoomMenu(*windowc->window);
                         windowc->window->display();
                     }
                 }
