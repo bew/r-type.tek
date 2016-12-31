@@ -82,6 +82,12 @@ void Game::initECS() {
     _world.addSystemEntityComponent(new ECS::Component::CompEvent());
     _world.addSystemEntityComponent(new ECS::Component::CompCollision());
     _world.addSystemEntityComponent(new ECS::Component::CompScore(0));
+
+    size_t playerNumber = 1;
+    for (const auto& player : _room->players) {
+        _world._world._gameEntities.push_back(new ECS::Entity::Entity(playerNumber));
+        ++playerNumber;
+    }
 }
 
 int Game::getServerUdpPort() {
