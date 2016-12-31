@@ -289,7 +289,7 @@ int64_t ServerRouter::getTimestamp(Request & req) const
 
 bool ServerRouter::reply_bad_req(Request & req, std::string const & message) const
 {
-  logs::logger[logs::SERVER] << message << std::endl;
+  logs::getLogger()[logs::SERVER] << message << std::endl;
   return reply_fail(req, protocol::answers::badRequest(getTimestamp(req), message));
 }
 
