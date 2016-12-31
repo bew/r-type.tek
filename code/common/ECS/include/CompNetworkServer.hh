@@ -7,6 +7,7 @@
 #pragma once
 
 #include <list>
+#include <vector>
 #include "AComponent.hh"
 #include "Network/ServerUDP.hh"
 
@@ -64,7 +65,12 @@ namespace ECS
             /**
              * contains the server's token
              */
-            std::string _token;
+            std::string _serverToken;
+
+            /**
+             * Stores the clients' tokens
+             */
+            std::vector<std::string> _clientTokens;
         };
 
     }

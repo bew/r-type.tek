@@ -99,7 +99,12 @@ namespace ECS
             /**
              * contains the client's token
              */
-             std::string _token;
+             std::string _clientToken;
+
+            /**
+             * contains the server's token
+             */
+             std::string _serverToken;
         };
     }
 }
