@@ -97,6 +97,8 @@ protected:
    */
   void send_to_room_players(Room & room, bson::Document const & broadcast_msg) const;
 
+    void sendMessageToRequester(const Request& request, const bson::Document& document) const;
+
 protected:
   Server * _server;
 };

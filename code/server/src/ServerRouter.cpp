@@ -236,31 +236,53 @@ bool ServerRouter::RoomKickHandler(Request & req)
 
 bool ServerRouter::GameStartHandler(Request & req)
 {
+  // Check the request
   if (!protocol::client::checkGameStart(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'GameStart' is not correct.");
 
-  bson::Document const & rdata = req.getData();
-  std::string generatorName = "fly";
+  int64_t timestamp = getTimestamp(req);
 
   std::shared_ptr<Player> player = _server->_players[req.getClient()];
+  // Check if player is in the room
+  if (_server->_rooms.count(player->currentRoom)) {
+    this->sendMessageToRequester(req, pa::forbidden(timestamp, "Can't launch game, you are not in any room."));
+    logs::getLogger()[logs::SERVER] << player->name << " try to launch a game but wasn't in a room" << std::endl;
+    return false;
+  }
+
   Room & room = _server->_rooms.at(player->currentRoom);
+  // Check if player is the master
+  if (room.master == player->name) {
+    this->sendMessageToRequester(req, pa::forbidden(timestamp, "Can't launch game, you are not the room master."));
+    logs::getLogger()[logs::SERVER] << player->name << " try to launch a game but wasn't the room master" << std::endl;
+    return false;
+  }
 
-    if (room.game != nullptr) {
-      if (!room.game->isDone()) {
-        //TODO : handle if the game is already start
-        // return that the game already running ?
-      }
-      else
-        delete room.game;
+  // Check if the game is not already started or done
+  if (room.game != nullptr) {
+    if (!room.game->isDone()) {
+      this->sendMessageToRequester(req, pa::forbidden(timestamp, "The game is already started."));
+      logs::getLogger()[logs::SERVER] << player->name << " try to launch a game but it was already started" << std::endl;
+      return false;
     }
+      else {
+      delete room.game;
+    }
+  }
 
-    std::vector<std::string> clientTokens;
-    for (const auto& kv : room.players)
-      clientTokens.push_back(kv.second->token);
+  // Get the clients tokens
+  std::vector<std::string> clientsTokens;
+  for (const auto& kv : room.players)
+    clientsTokens.push_back(kv.second->token);
 
-    room.game = new Game(room, generatorName, 4242, _server->_serverToken, clientTokens);
+  //  Get the generator name
+  bson::Document const & rdata = req.getData();
+  std::string generatorName = rdata["generator"].getValueString();
+
+  // Launch the Game
+  room.game = new Game(room, generatorName, 9560, _server->_serverToken, clientsTokens);
     try {
-        room.game.initECS();
+        room.game->initECS();
         room.game->launch();
     }
     catch (const std::exception &e) {
@@ -268,6 +290,9 @@ bool ServerRouter::GameStartHandler(Request & req)
       std::string errorMessage = "Error while launching the game of the room with owner '" + room.master + "': " + e.what();
       std::cerr << errorMessage << std::endl;
       logs::getLogger()[logs::SERVER] << errorMessage << std::endl;
+
+      this->sendMessageToRequester(req, pa::internalServerError(timestamp, "Can't launch the game.").getBufferString() + network::magic);
+      return false;
     }
     // After this point, we assume that startup went well and the game is now started
     room.game->detach();
@@ -279,13 +304,10 @@ bool ServerRouter::GameStartHandler(Request & req)
   reply_ok(req);
 
   // send GameStart to all players
-  int serverPort = room.game.getServerUdpPort();
-  for (const auto& kv : room.players) {
-    // FIXME: il sert à quoi ce doc ?
-    bson::Document message;
-    message << u8"port" << serverPort;
-    kv.second->sock->addMessage(protocol::server::gameStart(serverPort, kv.second->token, _server->_serverToken).getBufferString() + network::magic);
-  }
+  for (const auto& kv : room.players)
+    kv.second->sock->addMessage(protocol::server::gameStart(room.game->getServerUdpPort(),
+                                                            kv.second->token,
+                                                            _server->_serverToken).getBufferString() + network::magic);
 }
 
 bool ServerRouter::GameLeaveHandler(Request &req)
@@ -381,3 +403,6 @@ void ServerRouter::send_to_room_players(Room & room, bson::Document const & broa
     }
 }
 
+void ServerRouter::sendMessageToRequester(const Request& request, const bson::Document &document) const {
+  request.getClient()->addMessage(document.getBufferString() + network::magic);
+}
