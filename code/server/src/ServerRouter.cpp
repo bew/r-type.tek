@@ -269,15 +269,15 @@ bool ServerRouter::GameStartHandler(Request & req)
         }
     }
 
-  //  Check the generator name
-  bson::Document const & rdata = req.getData();
-  std::string generatorName = rdata["generator"].getValueString();
-  std::vector<std::string> generators = this->getAvailableGenerators();
-  if (std::find(generators.begin(), generators.end(), generatorName) == generators.end()) {
-    this->sendMessageToRequester(req, pa::notFound(timestamp, "Unknow generator '" + generatorName + "'"));
-    logs::getLogger()[logs::SERVER] << player->name << " try to launch a game with unknow generator '" << generatorName << "'" << std::endl;
-    return false;
-  }
+    //  Check the generator name
+    bson::Document const &rdata = req.getData();
+    std::string generatorName = rdata["generator"].getValueString();
+    std::vector<std::string> generators = this->getAvailableGenerators();
+    if (std::find(generators.begin(), generators.end(), generatorName) == generators.end()) {
+        this->sendMessageToRequester(req, pa::notFound(timestamp, "Unknow generator '" + generatorName + "'"));
+        logs::getLogger()[logs::SERVER] << player->name << " try to launch a game with unknow generator '" << generatorName << "'" << std::endl;
+        return false;
+    }
 
     // Get the clients tokens
     std::vector<std::string> clientsTokens;
