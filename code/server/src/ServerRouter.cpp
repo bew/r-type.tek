@@ -277,7 +277,6 @@ bool ServerRouter::GameStartHandler(Request & req)
   if (std::find(generators.begin(), generators.end(), generatorName) == generators.end()) {
     this->sendMessageToRequester(req, pa::notFound(timestamp, "Unknow generator '" + generatorName + "'"));
     logs::getLogger()[logs::SERVER] << player->name << " try to launch a game with unknow generator '" << generatorName << "'" << std::endl;
-    // TODO: Return the available generators with command
     return false;
   }
 
