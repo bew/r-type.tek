@@ -258,7 +258,7 @@ bool ServerRouter::GameStartHandler(Request & req)
     for (const auto& kv : room.players)
       clientTokens.push_back(kv.second->token);
 
-    room.game = new Game(generatorName, 4242, _server->_serverToken, clientTokens);
+    room.game = new Game(room, generatorName, 4242, _server->_serverToken, clientTokens);
     try {
       room.game->launch();
     }

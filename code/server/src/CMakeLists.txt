@@ -3,6 +3,7 @@ cmake_minimum_required(VERSION 3.1)
 set(SRV_SOURCE)
 
 add(SRV_SOURCE ServerLogLevel.cpp)
+add(SRV_SOURCE Room.cpp)
 add(SRV_SOURCE Router.cpp)
 add(SRV_SOURCE Server.cpp)
 add(SRV_SOURCE main.cpp)

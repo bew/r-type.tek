@@ -33,15 +33,7 @@ struct Room
     game(nullptr)
   {}
 
-  ~Room() {
-    if (game != nullptr) {
-      if (!game->isDone()) {
-        //TODO : handle if the game is already start ? Possible ?
-      }
-      else
-        delete game;
-    }
-  }
+  ~Room();
 
   /**
    * The room name
@@ -65,10 +57,11 @@ struct Room
    */
   std::map<std::string, std::shared_ptr<Player>> players;
 
-    /**
-     * The Game of the room
-     */
-    Game *game;
+  /**
+   * The Game of the room
+   */
+  Game *game;
+
+  friend Game;
 };
 
-#endif /* !ROOM_HPP_ */

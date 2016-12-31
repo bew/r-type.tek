@@ -46,16 +46,23 @@ private:
      * World of the game
      */
     ECS::World _world;
+
+    /**
+     * The parent Room which contain this game
+     */
+    Room * _room;
+
 public:
     /**
      * Ctor
      *
+     * @param room The room which contain this game
      * @param generatorName the generator's name to use
      * @param port the port to use for the UDP connection
      * @param serverToken that need to match for all the UDP request
      * @param clientTokens the tokens of the clients of the game
      */
-    Game(const std::string& generatorName, int32_t port, const std::string& serverToken, const std::vector<std::string>& clientTokens);
+    Game(Room & room, const std::string& generatorName, int32_t port, const std::string& serverToken, const std::vector<std::string>& clientTokens);
 
     Game(const Game& game) = delete;
 
@@ -70,4 +77,14 @@ public:
      * Function calls by launch method, his execution is in the thread attribute
      */
     virtual void execLoop(void);
+
+protected:
+    /**
+     * Get the generator lib name, according to OS lib path format
+     *
+     * @param folder The folder containing generators
+     * @param genName the generator name (ex: "fly")
+     * @return The generator lib name
+     */
+    std::string getGenLibName(std::string const & folder, std::string const & genName);
 };
