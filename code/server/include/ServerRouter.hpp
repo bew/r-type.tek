@@ -25,7 +25,7 @@ private:
   handler_t SignUpHandler, LoginHandler, LogoutHandler;
   handler_t RoomJoinHandler, RoomLeaveHandler, RoomKickHandler;
   handler_t GameStartHandler, GameLeaveHandler;
-  handler_t GetAvailableRoomsHandler;
+  handler_t GetAvailableRoomsHandler, GetAvailableGenerators;
 
 public:
   /**

@@ -21,15 +21,16 @@ namespace pa = protocol::answers;
 ServerRouter::ServerRouter(Server & server) :
   _server(&server)
 {
-  this->addRoute("SignUp",    BIND_THIS_P1(&ServerRouter::SignUpHandler));
-  this->addRoute("Login",     BIND_THIS_P1(&ServerRouter::LoginHandler));
-  this->addRoute("Logout",    BIND_THIS_P1(&ServerRouter::LogoutHandler));
-  this->addRoute("RoomJoin",  BIND_THIS_P1(&ServerRouter::RoomJoinHandler));
-  this->addRoute("RoomLeave", BIND_THIS_P1(&ServerRouter::RoomLeaveHandler));
-  this->addRoute("RoomKick",  BIND_THIS_P1(&ServerRouter::RoomKickHandler));
-  this->addRoute("GameStart", BIND_THIS_P1(&ServerRouter::GameStartHandler));
-  this->addRoute("GameLeave", BIND_THIS_P1(&ServerRouter::GameLeaveHandler));
-  this->addRoute("GetAvailableRooms", BIND_THIS_P1(&ServerRouter::GetAvailableRoomsHandler));
+    this->addRoute("SignUp", BIND_THIS_P1(&ServerRouter::SignUpHandler));
+    this->addRoute("Login", BIND_THIS_P1(&ServerRouter::LoginHandler));
+    this->addRoute("Logout", BIND_THIS_P1(&ServerRouter::LogoutHandler));
+    this->addRoute("RoomJoin", BIND_THIS_P1(&ServerRouter::RoomJoinHandler));
+    this->addRoute("RoomLeave", BIND_THIS_P1(&ServerRouter::RoomLeaveHandler));
+    this->addRoute("RoomKick", BIND_THIS_P1(&ServerRouter::RoomKickHandler));
+    this->addRoute("GameStart", BIND_THIS_P1(&ServerRouter::GameStartHandler));
+    this->addRoute("GameLeave", BIND_THIS_P1(&ServerRouter::GameLeaveHandler));
+    this->addRoute("GetAvailableRooms", BIND_THIS_P1(&ServerRouter::GetAvailableRoomsHandler));
+    this->addRoute("GetAvailableGenerators", BIND_THIS_P1(&ServerRouter::GetAvailableGenerators));
 }
 
 bool ServerRouter::SignUpHandler(Request & req)
@@ -357,6 +358,10 @@ bool ServerRouter::GetAvailableRoomsHandler(Request & req)
   rooms_data << bson::Document::ARRAY_DISABLED;
 
   return reply_ok(req, rooms_data);
+}
+
+bool ServerRouter::GetAvailableGenerators(Request & req) {
+    return true;
 }
 
 int64_t ServerRouter::getTimestamp(Request & req) const
