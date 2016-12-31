@@ -126,6 +126,8 @@ void Empty::update(ECS::WorldData &world) {
 	   entity->addComponent(new ECS::Component::CompProjectile("bloodBurst"));
 	   entity->addComponent(new ECS::Component::CompSuccessor("explosionBig"));
 	   entity->addComponent(new ECS::Component::CompScore(-50));
+	   entity->addComponent(new ECS::Component::CompType(ECS::Component::CompType::PLAYER | ECS::Component::CompType::CHARACTER));
+	   entity->addComponent(new ECS::Component::CompController());  
 	}
       }
     }
