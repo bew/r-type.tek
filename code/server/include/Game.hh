@@ -21,21 +21,22 @@ private:
     std::string _serverToken;
 
     /**
-     * World of the game
-     */
-    ECS::World _world;
-
-    /**
      * UDP server that will handle the game
      */
     network::ServerUDP _server;
+
+    /**
+     * World of the game
+     */
+    ECS::World _world;
 public:
     /**
      * Ctor
      *
+     * @param port the port to use for the UDP connection
      * @param serverToken that need to match for all the UDP request
      */
-    Game(const std::string& serverToken);
+    Game(int32_t port, const std::string& serverToken);
 
     Game(const Game& game) = delete;
 
@@ -44,7 +45,7 @@ public:
     /**
      * Dtor
      */
-    ~Game();
+    virtual ~Game();
 
     /**
      * Function calls by launch method, his execution is in the thread attribute
