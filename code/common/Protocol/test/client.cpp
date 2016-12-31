@@ -197,6 +197,25 @@ TEST(Client, GetAvailableRooms) {
 }
 
 /**
+ * Check if the message GetAvailableGenerators build correctly
+ */
+TEST(Client, GetAvailableGenerators) {
+    bson::Document message = protocol::client::getAvailableGenerators();
+
+    bson::Document header = message["header"].getValueDocument();
+    EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
+    EXPECT_EQ(header["timestamp"].getValueType(), bson::INT64);
+    EXPECT_EQ(header["action"].getValueString(), "GetAvailableGenerators");
+    EXPECT_EQ(header["version"].getValueString(), protocol::version);
+
+
+    bson::Document data = message["data"].getValueDocument();
+    EXPECT_EQ(data.isEmpty(), true);
+
+    EXPECT_EQ(protocol::client::checkGetAvailableGenerators(message), true);
+}
+
+/**
  * Check if the message EntityUpdate build correctly
  */
 TEST(Client, EntityUpdate) {
