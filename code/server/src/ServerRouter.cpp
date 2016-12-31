@@ -6,6 +6,8 @@
 
 #include "Logs/Logger.hh"
 #include "Protocol/Server.hh"
+#include "FSWatcher/AFileSystemWatcher.hh"
+#include "LibraryLoader/libraryUtils.hh"
 
 #include "ServerRouter.hpp"
 #include "ServerLogLevel.hh"
@@ -159,14 +161,23 @@ bool ServerRouter::RoomJoinHandler(Request & req)
     }
   room_players << bson::Document::ARRAY_DISABLED;
 
-  // TODO: gather room generators list
-  room_generators << bson::Document::ARRAY_ENABLED;
-  //for (auto & kv : room.generators)
-  //  {
-  //    std::shared_ptr<Generator> & generator = kv.second;
-  //    room_generators << generator->name;
-  //  }
-  room_generators << bson::Document::ARRAY_DISABLED;
+    room_generators << bson::Document::ARRAY_ENABLED;
+    std::string folder = "./generators/";
+    FileSystemWatcher watcher(folder);
+    for (const auto &i : watcher.processEvents()) {
+        if (i.second == AFileSystemWatcher::Event::Add) {
+            try {
+                std::shared_ptr<LibraryLoader> module(new LibraryLoader(folder+i.first));
+                Dependent_ptr<IGenerator, LibraryLoader> instance(module->newInstance(), module);
+                room_generators << instance->getName();
+            } catch (const LibraryLoaderException &e) {
+                std::string errorMessage = std::string("Can't get the library name: ") + e.what();
+                std::cerr << errorMessage << std::endl;
+                logs::getLogger()[logs::SERVER] << errorMessage << std::endl;
+            }
+        }
+    }
+    room_generators << bson::Document::ARRAY_DISABLED;
 
   room_infos << u8"players" << room_players;
   room_infos << u8"generators" << room_generators;
