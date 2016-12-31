@@ -17,7 +17,7 @@ namespace network
         _addr.sin_family = AF_INET;
         if ((host = gethostbyname(addr.c_str())))
         {
-            struct in_addr **addr_list = static_cast<struct in_addr **>(host->h_addr_list);
+            struct in_addr **addr_list = reinterpret_cast<struct in_addr **>(host->h_addr_list);
             ip = inet_ntoa(*addr_list[0]);
         }
         else
