@@ -3,51 +3,44 @@
 //
 
 #include "SysMenu.hh"
+#include "ECS/World.hh"
 
 namespace ECS {
     namespace System {
 
         SysMenu::SysMenu()
-                : _userlogged(false), _userSignup(false), _pwdSignup(false), _userpwd(false), _selectedItemIndex(0), _w(1280), _h(720)
-        {
-            if (!_font.loadFromFile("SIXTY.ttf"))
-            {
+                : _userlogged(false), _userSignup(false), _pwdSignup(false), _userpwd(false), _selectedItemIndex(0),
+                  _w(1280), _h(720) {
+            if (!_font.loadFromFile("SIXTY.ttf")) {
                 // handle error
             }
         }
 
-        void SysSprite::update(WorldData &world) {
+        void SysMenu::update(WorldData &world) {
             Component::CompWindow *windowc = dynamic_cast<Component::CompWindow *>(world._systemEntity.getComponent(ECS::Component::WINDOW));
+            if (!windowc || !windowc->window)
+                return;
 
-            if (windowc && windowc->window)
-            {
-
-            }
             sf::Event event;
-            SysMenu menu(window.getSize().x, window.getSize().y);
 
-            while (window.isOpen())
-            {
-                if (!menu.isUserLogged())
-                    menu.login(window);
-                else if (!menu.isPwdCorrect())
-                {
-                    menu.pwd(window);
-                    menu.draw_menu();
-                }
+            while (windowc->window->isOpen()) {
+                if (!this->isUserLogged())
+                    this->login(*windowc->window);
+                else if (!this->isPwdCorrect())
+                    this->pwd(*windowc->window);
                 else {
-                    while (window.pollEvent(event)) {
+                    while (windowc->window->pollEvent(event)) {
                         switch (event.type) {
                             case sf::Event::KeyReleased:
                                 switch (event.key.code) {
                                     case sf::Keyboard::Up:
-                                        menu.MoveUp();
+                                        this->MoveUp();
                                         break;
                                     case sf::Keyboard::Down:
-                                        menu.MoveDown();
+                                        this->MoveDown();
                                         break;
                                     case sf::Keyboard::Return:
-                                        switch (menu.GetPressedItem()) {
+                                        switch (this->GetPressedItem()) {
                                             case 0:
                                                 std::cout << "Play button has been pressed" << std::endl;
                                                 break;
@@ -58,19 +51,18 @@ namespace ECS {
                                                 std::cout << "Option button has been pressed" << std::endl;
                                                 break;
                                             case 3:
-                                                window.close();
+                                                windowc->window->close();
                                                 break;
                                         }
                                         break;
                                 }
                                 break;
                             case sf::Event::Closed:
-                                window.close();
+                                windowc->window->close();
                                 break;
                         }
-                        window.clear();
-                        menu.draw(window);
-                        window.display();
+                        windowc->window->clear();
+                        windowc->window->display();
                     }
                 }
             }
@@ -210,8 +202,7 @@ namespace ECS {
             _menu[2].setPosition(sf::Vector2f(_w / 2 - 75, _h - _h + 300));
         }
 
-        void SysMenu::menu_signup()
-        {
+        void SysMenu::menu_signup() {
             _signUp[0].setFont(_font);
             _signUp[0].setFillColor(sf::Color::Red);
             _signUp[0].setString("Signup");
@@ -225,16 +216,14 @@ namespace ECS {
             _signUp[1].setPosition(sf::Vector2f(_w / 2 - 75, _h - _h + 250));
         }
 
-        void SysMenu::drawRoomMenu(sf::RenderWindow &window) const
-        {
+        void SysMenu::drawRoomMenu(sf::RenderWindow &window) const {
             window.draw(_inputLogin[0]);
             for (int i = 0; i < NB_ITEMS; i++) {
                 window.draw(_menu[i]);
             }
         }
 
-        void SysMenu::drawSignMenu(sf::RenderWindow &window) const
-        {
+        void SysMenu::drawSignMenu(sf::RenderWindow &window) const {
             for (int i = 0; i < NB_ITEMS; i++) {
                 window.draw(_signUp[i]);
             }
