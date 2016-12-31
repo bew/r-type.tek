@@ -8,6 +8,9 @@ add(SRV_SOURCE Server.cpp)
 add(SRV_SOURCE main.cpp)
 add(SRV_SOURCE ClientCommandsState.cpp)
 add(SRV_SOURCE ServerRouter.cpp)
+add(SRV_SOURCE CompSound.cpp)
+add(SRV_SOURCE CompNetworkServer.cpp)
+add(SRV_SOURCE SysSerialisation.cpp)
 
 set(DEPENDENCIES ${RT_COMMON_NAMES})
 

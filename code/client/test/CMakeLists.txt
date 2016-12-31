@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(SOURCES main.cpp simpleClientTest.cpp ClientTest.cpp)
+set(SOURCES main.cpp simpleClientTest.cpp ClientTest.cpp
+  ../src/CompNetworkClient.cpp
+  ../src/CompStateMachine.cpp
+  ../src/SysStateMachine.cpp
+  )
+
 set(DEPENDENCIES)
 
 if(WIN32)

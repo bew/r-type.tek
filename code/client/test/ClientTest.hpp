@@ -6,9 +6,9 @@
 #pragma once
 
 #include "ECS/World.hh"
-#include "ECS/CompStateMachine.hh"
-#include "ECS/CompNetworkClient.hh"
-#include "ECS/SysStateMachine.hh"
+#include "CompStateMachine.hh"
+#include "CompNetworkClient.hh"
+#include "SysStateMachine.hh"
 
 class ClientTest
 {

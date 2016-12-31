@@ -17,6 +17,7 @@
 #include "SysKeyboard.hh"
 #include "SysOptions.hh"
 #include "SysGui.hh"
+#include "SysSerialisation.hh"
 
 #include "ECS/CompScore.hh"
 #include "ECS/CompMusic.hh"
@@ -49,7 +50,11 @@
 #include "LibraryLoader/SysGenerator.hh"
 
 int main(int ac, char**av) {
-
+  
+  ECS::System::SysSerialisation::builders[ECS::Component::MOVEMENT] = &ECS::Component::AComponent::factory<ECS::Component::CompMovement>;
+  ECS::System::SysSerialisation::builders[ECS::Component::SPRITE] = &ECS::Component::AComponent::factory<ECS::Component::CompSprite>;
+  ECS::System::SysSerialisation::builders[ECS::Component::CONTROLLER] = &ECS::Component::AComponent::factory<ECS::Component::CompController>;
+  
   ECS::World world;
   
   logs::getLogger().registerLogLevel(&logs::assetLogLevel);
@@ -62,11 +67,13 @@ int main(int ac, char**av) {
   // control time, Has absolut priority over any other system /////////// SERVER EMULATION
   world.addSystem(new ECS::System::SysGenerator());
   // process options (read/write/events). Should be initilized before system that use options to avoid doing the same things multiple things
-  world.addSystem(new ECS::System::SysOptions());
+  world.addSystem(new ECS::System::SysOptions());      // CLIENT
   // open, reopen, clear and display window. Should be initilized before running system that draw things
-  world.addSystem(new ECS::System::SysWindow());
+  world.addSystem(new ECS::System::SysWindow());        // CLIENT
   // transform input to data(up, down, fire, left, right)
-  world.addSystem(new ECS::System::SysKeyboard());   // CLIENT
+  world.addSystem(new ECS::System::SysKeyboard());	// CLIENT
+   // serialize and unserilize data to/from server
+  world.addSystem(new ECS::System::SysSerialisation());	// CLIENT, but there is a server version
   // transform data to movement (speed, direction)
   world.addSystem(new ECS::System::SysController());
   // update movement speed, direction for computer controlled entity 
@@ -123,13 +130,12 @@ int main(int ac, char**av) {
   world.addSystemEntityComponent(new ECS::Component::CompAsset());
   world.addSystemEntityComponent(new ECS::Component::CompCollision());
   world.addSystemEntityComponent(new ECS::Component::CompScore(0));
+  world.addSystemEntityComponent(new ECS::Component::CompNetworkClient("127.0.0.1", 1337));
 
   ///////////////////////// INITIALIZE PLAYER (id 1 to 4 are reserved to players)
 
-  ECS::Entity::Entity *entity = new ECS::Entity::Entity(1); //Server emulation here, we don't what will be our id
+  ECS::Entity::Entity *entity = new ECS::Entity::Entity(1); //Server emulation here, the player is serilized by server and sent
   entity->addComponent(new ECS::Component::CompController());
-  entity->addComponent(new ECS::Component::CompType(ECS::Component::CompType::PLAYER | ECS::Component::CompType::CHARACTER));
-
   world._world._gameEntities.push_back(entity);
 
   //////////////////////// RUN THE WORLD

@@ -8,7 +8,7 @@
 
 #include <list>
 #include <vector>
-#include "AComponent.hh"
+#include "ECS/AComponent.hh"
 #include "Network/ServerUDP.hh"
 
 /**
@@ -76,6 +76,5 @@ namespace ECS
              */
             std::vector<std::string> _clientTokens;
         };
-
     }
 }

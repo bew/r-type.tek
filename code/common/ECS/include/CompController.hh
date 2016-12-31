@@ -21,6 +21,11 @@ namespace ECS {
      */
     class CompController : public AComponent {
     public:
+
+      /**
+       * default ctor
+       */
+      CompController(void);
       
       /**
        * @return ECS::Cmponent::CONTROLLER
@@ -55,6 +60,17 @@ namespace ECS {
        * Is the left button down
        */
       bool left;
+
+      /**
+       * @return a document describing the component state
+       */
+      virtual bson::Document serialize() const;
+
+      /**
+       * @param document State to write into the component
+       */
+      virtual void deserialize(const bson::Document& document);
+      
 
       /**
        * Default virtual destructor
