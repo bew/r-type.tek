@@ -75,6 +75,11 @@ namespace ECS
              * Stores the clients' tokens
              */
             std::vector<std::string> _clientTokens;
+
+            /**
+             * Store the port on which the UDP server run
+             */
+            short port;
         };
     }
 }

@@ -15,6 +15,7 @@ namespace ECS
         {
             network::SockAddr addr(port);
             _server.bind(addr);
+            port = addr.getPort();
         }
 
         CompNetworkServer::~CompNetworkServer()
