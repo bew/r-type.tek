@@ -74,7 +74,6 @@ void Game::execLoop() {
     ECS::Component::CompTick *tick = new ECS::Component::CompTick();
     ECS::Component::CompEvent *event = new ECS::Component::CompEvent();
 
-    // TODO: Use _generatorName
     try {
         std::shared_ptr<LibraryLoader> module(new LibraryLoader(getGenLibName("./generators", _generatorName)));
         Dependent_ptr <IGenerator, LibraryLoader> generatorRef(module->newInstance(), module);
