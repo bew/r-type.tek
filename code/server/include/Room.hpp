@@ -4,8 +4,9 @@
  * @brief Class for a Room
  */
 
-#ifndef ROOM_HPP_
-# define ROOM_HPP_
+#pragma once
+
+class Room;
 
 #include <map>
 #include <stdexcept>

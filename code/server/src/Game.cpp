@@ -5,10 +5,37 @@
  */
 
 #include "Game.hh"
+
+#include "ECS/CompBlueprint.hh"
+#include "ECS/CompCollision.hh"
+#include "ECS/CompController.hh"
+#include "ECS/CompDamage.hh"
+#include "ECS/CompEvent.hh"
+#include "ECS/CompHitbox.hh"
+#include "ECS/CompLife.hh"
+#include "ECS/CompMovement.hh"
+#include "ECS/CompMusic.hh"
+#include "ECS/CompProjectile.hh"
+#include "ECS/CompScore.hh"
+#include "ECS/CompSprite.hh"
+#include "ECS/CompSuccessor.hh"
+#include "ECS/CompTick.hh"
+#include "ECS/CompType.hh"
+#include "ECS/SysCollision.hh"
+#include "ECS/SysController.hh"
+#include "ECS/SysDamage.hh"
+#include "ECS/SysDeath.hh"
+#include "ECS/SysEvent.hh"
+#include "ECS/SysIA.hh"
+#include "ECS/SysLife.hh"
+#include "ECS/SysMovement.hh"
 #include "ECS/SysTick.hh"
 
-Game::Game(const std::string& generatorName, int32_t port, const std::string &serverToken, const std::vector<std::string>& clientTokens) :
-    _generatorName(generatorName), _port(port), _serverToken(serverToken), _clientTokens(clientTokens), _done(false), _room(&room)
+#include "LibraryLoader/CompGenerator.hh"
+#include "LibraryLoader/SysGenerator.hh"
+
+Game::Game(Room & room, const std::string& generatorName, int32_t port, const std::string &serverToken, const std::vector<std::string>& clientTokens) :
+    _generatorName(generatorName), _port(port), _serverToken(serverToken), _clientTokens(clientTokens), _room(&room)
 {}
 
 Game::~Game() {}

@@ -7,7 +7,8 @@
 #include "Logs/Logger.hh"
 #include "Protocol/Server.hh"
 #include "FSWatcher/AFileSystemWatcher.hh"
-#include "LibraryLoader/libraryUtils.hh"
+#include "LibraryLoader/ALibraryLoader.hh"
+#include "LibraryLoader/Dependent_ptr.hpp"
 
 #include "ServerRouter.hpp"
 #include "ServerLogLevel.hh"
