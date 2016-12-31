@@ -7,14 +7,14 @@
 #include "ECSLogLevel.hh"
 #include "SysStateMachine.hh"
 #include "Protocol/Server.hh"
+#include "Network/SocketException.hh"
 
 namespace ECS
 {
     namespace System
     {
-        bson::Document
-        SysStateMachine::processMessage(const bson::Document &doc, Component::CompStateMachine &stateMachine,
-                                        const Component::CompNetworkClient &network)
+        void SysStateMachine::processMessage(const bson::Document &doc, Component::CompStateMachine &stateMachine,
+                                             Component::CompNetworkClient &network)
         {
             if (network.isValidActionTcp(doc["header"]["action"].getValueString()))
             {
@@ -23,24 +23,34 @@ namespace ECS
                 {
                     stateMachine._currentState = stateMachine._sm[stateMachine._currentState]->getLink(
                         action);
-                    return protocol::answers::ok(doc["header"]["timestamp"].getValueInt64(), bson::Document());
+                    network._lastReceived = doc;
+                    network._clientTCP.addMessage(protocol::answers::ok(doc["header"]["timestamp"].getValueInt64(),
+                                                                        bson::Document()).getBufferString() +
+                                                  network::magic);
                 }
                 else
-                    return protocol::answers::unauthorized(doc["header"]["timestamp"].getValueInt64());
+                    network._clientTCP.addMessage(
+                        protocol::answers::unauthorized(doc["header"]["timestamp"].getValueInt64()).getBufferString() +
+                        network::magic);
             }
             else if (doc["header"]["action"].getValueString() != "Answer")
-                return protocol::answers::notFound(doc["header"]["timestamp"].getValueInt64());
-            else if (doc["data"]["code"].getValueInt32() == 200
+                network._clientTCP.addMessage(
+                    protocol::answers::notFound(doc["header"]["timestamp"].getValueInt64()).getBufferString() +
+                    network::magic);
+            else if (protocol::answers::checkAnswer(doc)
+                     && doc["data"]["code"].getValueInt32() == 200
                      && !stateMachine._nextState.empty()
-                     && stateMachine._sm[stateMachine._currentState]->has(stateMachine._nextState))
+                     && stateMachine._sm[stateMachine._currentState]->canAccessState(stateMachine._nextState))
             {
                 stateMachine._currentState = stateMachine._nextState;
                 stateMachine._nextState.clear();
+                network._lastReceived = doc;
             }
             else
-                logs::logger[logs::ERRORS] << doc["data"]["msg"].getValueString() << std::endl;
-
-            return bson::Document();
+            {
+	      network._lastReceived = doc;
+	      logs::getLogger()[logs::ERRORS] << doc["data"]["msg"].getValueString() << std::endl;
+            }
         }
 
         void SysStateMachine::update(ECS::WorldData &world)
@@ -55,23 +65,57 @@ namespace ECS
                 network->_clientTCP.update();
                 if (!network->_clientTCP.hasMessage())
                     return;
-                bson::Document doc(network->_clientTCP.getMessage());
-                bson::Document answer;
-
-                if (protocol::checkMessage(doc))
-                    answer = processMessage(doc, *stateMachine, *network);
-                else if (!doc.isEmpty())
+                try
                 {
-                    if (doc.hasKey("header") && doc["header"].getValueDocument().hasKey("timestamp"))
-                        answer = protocol::answers::badRequest(doc["header"]["timestamp"].getValueInt64());
+                    bson::Document doc;
+                    try
+                    {
+                        doc = bson::Document(network->_clientTCP.getMessage());
+                    }
+                    catch (bson::BsonException &bsonError)
+                    {
+                        network->_clientTCP.addMessage(
+                            protocol::answers::badRequest(-1).getBufferString() + network::magic);
+                        if (logs::getLogger().isRegister(logs::ERRORS))
+			  logs::getLogger()[logs::ERRORS] << bsonError.what() << std::endl;
+                        else
+                            std::cerr << bsonError.what() << std::endl;
+                        return;
+                    }
+                    if (protocol::checkMessage(doc))
+                        processMessage(doc, *stateMachine, *network);
                     else
-                        answer = protocol::answers::badRequest(-1);
+                    {
+                        if (doc.hasKey("header") && doc["header"].getValueType() == bson::DOCUMENT &&
+                            protocol::checkTimestamp(doc["header"].getValueDocument()))
+                            network->_clientTCP.addMessage(
+                                protocol::answers::badRequest(
+                                    doc["header"]["timestamp"].getValueInt64()).getBufferString() +
+                                network::magic);
+                        else
+                            network->_clientTCP.addMessage(
+                                protocol::answers::badRequest(-1).getBufferString() +
+                                network::magic);
+                    }
                 }
-                if (!answer.isEmpty())
+                catch (network::SocketException &socketError)
                 {
-                    network->_clientTCP.addMessage(answer.getBufferString());
-                    network->_clientTCP.update();
+		  if (logs::getLogger().isRegister(logs::ERRORS))
+		    logs::getLogger()[logs::ERRORS] << socketError.what() << std::endl;
+                    else
+                        std::cerr << socketError.what() << std::endl;
+                    return;
                 }
+                catch (bson::BsonException &bsonError)
+                {
+                    network->_clientTCP.addMessage(
+                        protocol::answers::internalServerError(-1).getBufferString() + network::magic);
+                    if (logs::getLogger().isRegister(logs::ERRORS))
+		      logs::getLogger()[logs::ERRORS] << bsonError.what() << std::endl;
+                    else
+                        std::cerr << bsonError.what() << std::endl;
+                }
+                network->_clientTCP.update();
             }
         }
     }

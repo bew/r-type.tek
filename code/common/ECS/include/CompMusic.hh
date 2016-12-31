@@ -23,9 +23,9 @@ namespace ECS {
     public:
 
       /**
-       * Default contructor, build a music 'reference' equal to "".
+       * @param name The name of the music
        */
-      CompMusic(void);
+      CompMusic(const std::string &name);
 
       /**
        * @return The music name

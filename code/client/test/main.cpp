@@ -1,4 +1,3 @@
-#include <memory>
 #include "gtest/gtest.h"
 #include "ECS/World.hh"
 #include "ECS/ECSLogLevel.hh"
@@ -9,9 +8,9 @@
 
 TEST(clientTest, loginSinup)
 {
-    logs::logger.registerBasicsLogLevel();
-    logs::logger.registerLogLevel(&logs::ecsLogLevel);
-    logs::logger.registerLogLevel(&logs::ecsLogLevel);
+    logs::getLogger().registerBasicsLogLevel();
+    logs::getLogger().registerLogLevel(&logs::ecsLogLevel);
+    logs::getLogger().registerLogLevel(&logs::ecsLogLevel);
 
     ECS::World world;
     ECS::Component::CompNetworkClient* networkClient = new ECS::Component::CompNetworkClient("10.41.175.111", 42402);
@@ -64,8 +63,7 @@ TEST(clientTest, loginSinup)
     bson::Document signup = protocol::client::signUp(username, pwd);
 
     std::string msg(signup.getBufferString());
-    msg +=  network::CR;
-    msg +=  network::LF;
+    msg +=  network::magic;
 
     std::cout << msg << std::endl;
     std::cout << signup.toJSON() << std::endl;
@@ -97,8 +95,7 @@ TEST(clientTest, loginSinup)
     stateMachine->_nextState = sMenu->getName();
 
     msg = login.getBufferString();
-    msg +=  network::CR;
-    msg +=  network::LF;
+    msg +=  network::magic;
 
     networkClient->_clientTCP.addMessage(msg);
 

@@ -10,6 +10,7 @@
 #include "AComponent.hh"
 #include "Network/ClientUDP.hh"
 #include "Network/ClientTCP.hh"
+#include "BSON/Document.hh"
 
 /**
  * Namespace of ECS.
@@ -89,6 +90,21 @@ namespace ECS
              * represents one client tcp
              */
             network::ClientTCP _clientTCP;
+
+            /**
+             * Store the last packet received
+             */
+            bson::Document _lastReceived;
+
+            /**
+             * contains the client's token
+             */
+             std::string _clientToken;
+
+            /**
+             * contains the server's token
+             */
+             std::string _serverToken;
         };
     }
 }

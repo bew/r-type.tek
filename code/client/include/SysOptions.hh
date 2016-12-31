@@ -46,23 +46,23 @@ namespace ECS {
       static bool READ_CONFIG_FILE(ECS::Component::CompEvent::IEvent *event, ECS::WorldData &world) {
 	Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
 
-	logs::logger[logs::INFO] << "Loading configuration file '" << SysOptions::CONFIG_FILE  << "'" << std::endl;
+	logs::getLogger()[logs::INFO] << "Loading configuration file '" << SysOptions::CONFIG_FILE  << "'" << std::endl;
 	
 	try {
 	  bson::Document document;
 	  document.readFromFile(SysOptions::CONFIG_FILE, true);
 	  optionsc->setLocale(document["locale"].getValueString());
-	  optionsc->setMusicVolume(static_cast<float>(document["effect"].getValueDouble()));
-	  optionsc->setSoundEffectVolume(static_cast<float>(document["music"].getValueDouble()));
+	  optionsc->setMusicVolume(static_cast<float>(document["music"].getValueDouble()));
+	  optionsc->setSoundEffectVolume(static_cast<float>(document["effect"].getValueDouble()));
           optionsc->setFullscreen(document["fullscreen"].getValueBool());
-          optionsc->setWidth(document["width"].getValueInt32());
-          optionsc->setHeight(document["height"].getValueInt32());
-          optionsc->setAAliasing(document["aaliasing"].getValueInt32());
+          optionsc->setWidth(document["width"].getValueInt64());
+          optionsc->setHeight(document["height"].getValueInt64());
+          optionsc->setAAliasing(document["aaliasing"].getValueInt64());
           optionsc->setTitle(document["title"].getValueString());	  
 	  return repeat;
 	}
 	catch (const bson::BsonException &e) {
-	  logs::logger[logs::ERRORS] << "Cannot load from configuration file (file is corrupted or absent)'" << e.what() << "'" << std::endl;
+	  logs::getLogger()[logs::ERRORS] << "Cannot load from configuration file (file is corrupted or absent)'" << e.what() << "'" << std::endl;
 	  WRITE_CONFIG_FILE<false>(nullptr, world);
 	  return repeat;
 	}
@@ -77,14 +77,14 @@ namespace ECS {
       static bool WRITE_CONFIG_FILE(ECS::Component::CompEvent::IEvent *event, ECS::WorldData &world) {
 	Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions*>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
 
-	logs::logger[logs::INFO] << "Updating configuration file '" << SysOptions::CONFIG_FILE  << "'" << std::endl;
+	logs::getLogger()[logs::INFO] << "Updating configuration file '" << SysOptions::CONFIG_FILE  << "'" << std::endl;
 	
 	try {
 	  bson::Document options;
 	  if (optionsc) {
 	    options << "locale" << optionsc->getLocale();
-	    options << "effect" << optionsc->getMusicVolume();
-	    options << "music" << optionsc->getSoundEffectVolume();
+	    options << "music" << optionsc->getMusicVolume();
+	    options << "effect" << optionsc->getSoundEffectVolume();
 	    options << "fullscreen" << optionsc->getFullscreen();
 	    options << "width" << static_cast<int>(optionsc->getWidth());
 	    options << "height" << static_cast<int>(optionsc->getHeight());
@@ -94,7 +94,7 @@ namespace ECS {
 	  }
 	}
 	catch (const bson::BsonException &e) {
-          logs::logger[logs::ERRORS] << "Cannot update configuration file '" << e.what() << "'" << std::endl;
+          logs::getLogger()[logs::ERRORS] << "Cannot update configuration file '" << e.what() << "'" << std::endl;
           return repeat;
         }
 	return repeat;

@@ -14,14 +14,9 @@
 namespace network {
 
     /**
-     * Carriage return
+     * Magic to delimit binary buffer
      */
-    static const char CR = '\r';
-
-    /**
-     * Line feed
-     */
-    static const char LF = '\n';
+    static const std::string magic = "Th!T^nZM";
 
     /**
      * Buffer size of the buffers
@@ -69,6 +64,13 @@ namespace network {
          * initiall all bytes of buffer to -1
          */
         void initBuffer();
+
+        /**
+         * Allow to check if the magic is the next byte to process into the buffer
+         *
+         * @return true if the magic is the next byte to proccess into the buffer, else false
+         */
+        bool checkMagic(size_t readPosition) const;
 
         /**
          * buffer used to add and get messages

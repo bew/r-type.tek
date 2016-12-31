@@ -27,9 +27,9 @@ namespace ECS {
       /**
        * Constructor
        *
-       * @param name The name of the projectile bluprint, default to ""
+       * @param name The name of the projectile bluprint
        */
-      CompProjectile(const std::string &pname = "");
+      CompProjectile(const std::string &pname);
 
       /**
        * Name of the projectile entity blueprint

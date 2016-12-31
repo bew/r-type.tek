@@ -142,7 +142,9 @@ TEST(Client, RoomKick) {
  * Check if the message GameStart build correctly
  */
 TEST(Client, GameStart) {
-    bson::Document message = protocol::client::gameStart();
+    std::string generator("Generator A");
+
+    bson::Document message = protocol::client::gameStart(generator);
 
     bson::Document header = message["header"].getValueDocument();
     EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
@@ -151,7 +153,7 @@ TEST(Client, GameStart) {
     EXPECT_EQ(header["version"].getValueString(), protocol::version);
 
     bson::Document data = message["data"].getValueDocument();
-    EXPECT_EQ(data.isEmpty(), true);
+    EXPECT_EQ(data["generator"].getValueString(), generator);
 
     EXPECT_EQ(protocol::client::checkGameStart(message), true);
 }
@@ -198,6 +200,7 @@ TEST(Client, GetAvailableRooms) {
  * Check if the message EntityUpdate build correctly
  */
 TEST(Client, EntityUpdate) {
+    std::string token("aToken");
     int64_t entity_id = 4242;
     bson::Document componentTest;
     bson::Document componentData;
@@ -208,7 +211,7 @@ TEST(Client, EntityUpdate) {
     bson::Document components;
     components << "test" << componentTest;
 
-    bson::Document message = protocol::client::entityUpdate(entity_id, components);
+    bson::Document message = protocol::server::entityUpdate(token, entity_id, components);
 
     bson::Document header = message["header"].getValueDocument();
     EXPECT_EQ(header["magic"].getValueInt32(), protocol::magic);
@@ -218,6 +221,7 @@ TEST(Client, EntityUpdate) {
 
 
     bson::Document data = message["data"].getValueDocument();
+    EXPECT_EQ(data["token"].getValueString(), token);
     EXPECT_EQ(data["entity_id"].getValueInt64(), entity_id);
     EXPECT_EQ(data["components"]["test"].getValueDocument(), componentTest);
 

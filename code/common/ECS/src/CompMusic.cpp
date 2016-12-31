@@ -9,8 +9,8 @@
 namespace ECS {
   namespace Component {
 
-    CompMusic::CompMusic(void) :
-      _name("")
+    CompMusic::CompMusic(const std::string &name) :
+      _name(name)
     {};
 
     const std::string &CompMusic::getMusic(void) const {

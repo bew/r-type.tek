@@ -71,9 +71,10 @@ namespace protocol {
         /**
          * Create a message to notify all the players that the game has started
          *
+         * @param token the token that the client need to send back when opening UDP connection for the game
          * @return the bson Document formatted for the following action
          */
-        bson::Document gameStart(void);
+        bson::Document gameStart(const std::string &token);
 
         /**
          * Check if the given Document is a correct gameStart message
@@ -102,11 +103,12 @@ namespace protocol {
         /**
          * Create a message to update an entity to a client
          *
+         * @param token the token send into the request to identify the sender
          * @param entity_id the id of the entity to update
          * @param components a Document of components to update
          * @return the bson Document formatted for the following action
          */
-        bson::Document entityUpdate(int64_t entity_id, const bson::Document &components);
+        bson::Document entityUpdate(const std::string &token, int64_t entity_id, const bson::Document &components);
 
         /**
          * Check if the given Document is a correct entityUpdate message

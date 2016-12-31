@@ -7,13 +7,14 @@
 #include <iostream>
 #include "ServerTCP.hh"
 #include "SocketException.hh"
+#include "Logs/Logger.hh"
+#include "Logs/ErrorLogLevel.hh"
 
 namespace network
 {
 
     ServerTCP::ServerTCP() : _socketServer()
-    {
-    }
+    {}
 
     ServerTCP::~ServerTCP()
     {
@@ -42,39 +43,50 @@ namespace network
             _selector.select(&timer);
             if (_selector.isReadable(_socketServer.getSocket()))
                 accept();
-
-            for (auto client = _clients.begin(); client != _clients.end(); ++client)
-            {
-                if (_selector.isReadable((*client)->getSocket().getSocket()))
-                {
-                    std::string msg = (*client)->getSocket().recv();
-                    (*client)->getReadBuffer().fill(msg);
-                    if ((*client)->isClose())
-                    {
-                        client = _clients.erase(client);
-                        if (client == _clients.end())
-                            break;
-                    }
-                }
-                if (_selector.isWritable((*client)->getSocket().getSocket()))
-                {
-                    std::string msg;
-                    if (!(msg = (*client)->getWriteBuffer().get()).empty())
-                    {
-                        msg += network::CR;
-                        msg += network::LF;
-                        size_t nbBytesSend = (*client)->getSocket().send(msg);
-                        (*client)->getWriteBuffer().updatePosition(nbBytesSend);
-
-                        if ((*client)->getWriteBuffer().get().empty())
-                            _selector.unmonitor((*client)->getSocket().getSocket(), NetworkSelect::WRITE);
-                    }
-                }
-            }
         }
         catch (SocketException &e)
         {
-            throw e;
+            deleteClosedConnections();
+            if (logs::getLogger().isRegister(logs::ERRORS))
+                logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
+            else
+                std::cerr << e.what() << std::endl;
+        }
+        for (auto client = _clients.begin(); client != _clients.end(); ++client)
+        {
+            try
+            {
+                (*client)->update(ms);
+                if ((*client)->isClose())
+                {
+                    client = _clients.erase(client);
+                    if (client == _clients.end())
+                        break;
+                }
+            }
+            catch (SocketException &e)
+            {
+                client = _clients.erase(client);
+                if (client == _clients.end())
+                    break;
+                if (logs::getLogger().isRegister(logs::ERRORS))
+                    logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
+                else
+                    std::cerr << e.what() << std::endl;
+            }
+        }
+    }
+
+    void ServerTCP::deleteClosedConnections()
+    {
+        for (auto client = _clients.begin(); client != _clients.end(); ++client)
+        {
+            if ((*client)->isClose())
+            {
+                client = _clients.erase(client);
+                if (client == _clients.end())
+                    return;
+            }
         }
     }
 
@@ -92,8 +104,9 @@ namespace network
     void ServerTCP::accept()
     {
         Socket_t newConnection = _socketServer.accept();
-        _selector.monitor(newConnection, NetworkSelect::READ);
-        _clients.push_back(std::shared_ptr<ClientTCP>(new ClientTCP(newConnection)));
+        std::shared_ptr<ClientTCP> newClient = std::make_shared<ClientTCP>(newConnection);
+        newClient->getSelector().monitor(newConnection, NetworkSelect::READ);
+        _clients.push_back(newClient);
     }
 
     std::string ServerTCP::getMessage(const std::shared_ptr<ClientTCP> client)
@@ -104,8 +117,6 @@ namespace network
     void ServerTCP::addMessage(const std::shared_ptr<ClientTCP> client, const std::string &message)
     {
         client->addMessage(message);
-        if (*(--message.end()) == network::CR || *(--message.end()) == network::LF)
-            _selector.monitor(client->getSocket().getSocket(), NetworkSelect::WRITE);
     }
 
     const std::vector<std::shared_ptr<ClientTCP>> &ServerTCP::getConnections() const

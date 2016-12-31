@@ -9,7 +9,6 @@
 
 namespace network
 {
-
     NetworkBuffer::NetworkBuffer() :
         _readPosition(0), _writePosition(0)
     {
@@ -38,19 +37,19 @@ namespace network
 
         while (i < length)
         {
-            if (_buffer[_readPosition] == network::CR || _buffer[_readPosition] == network::LF ||
-                _buffer[_readPosition] == 0)
-                _buffer[_readPosition] = -1;
+            _buffer[_readPosition] = -1;
             ++_readPosition;
             if (_readPosition == network::BUFFER_SIZE)
                 _readPosition = 0;
             ++i;
         }
-        if (_buffer[_readPosition] == network::CR || _buffer[_readPosition] == network::LF ||
-            _buffer[_readPosition] == 0)
-        {
-            _buffer[_readPosition] = -1;
-            updatePosition(1);
+        if (this->checkMagic(_readPosition)) {
+            for (size_t j = 0; j < 8; ++j) {
+                _buffer[_readPosition] = -1;
+                ++_readPosition;
+                if (_readPosition == network::BUFFER_SIZE)
+                    _readPosition = 0;
+            }
         }
     }
 
@@ -61,7 +60,7 @@ namespace network
         size_t readPosition = _readPosition;
         while (i < network::BUFFER_SIZE)
         {
-            if (_buffer[readPosition] == network::CR || _buffer[readPosition] == network::LF)
+            if (this->checkMagic(readPosition))
             {
                 std::string msg;
                 size_t beg = _readPosition;
@@ -80,6 +79,20 @@ namespace network
             ++i;
         }
         return "";
+    }
+
+    bool NetworkBuffer::checkMagic(size_t readPosition) const
+    {
+        for (size_t i = 0; i < 8; i++)
+        {
+            if (_buffer[readPosition] != network::magic[i])
+                return false;
+            ++readPosition;
+            if (readPosition == network::BUFFER_SIZE)
+                readPosition = 0;
+        }
+
+        return true;
     }
 
     void NetworkBuffer::initBuffer()

@@ -66,7 +66,7 @@ void graphic::GroupedAssetStore::loadRessource<graphic::AnimatedSpriteAsset>(std
 					      )
 			);
       } catch(const graphic::AssetException &e) {
-	logs::logger[logs::ERRORS] << "Could not load animation : '" << e.what() << "'" << std::endl;
+	logs::getLogger()[logs::ERRORS] << "Could not load animation : '" << e.what() << "'" << std::endl;
       }
     }
   }
@@ -209,7 +209,7 @@ const std::string graphic::AssetStore::MUSIC_EXTENSION = ".ogg";
 
 const std::string graphic::AssetStore::SOUND_EXTENSION = ".ogg";
 
-const std::string graphic::AssetStore::SPRITE_EXTENSION = ".bmp";
+const std::string graphic::AssetStore::SPRITE_EXTENSION = ".png";
 
 const std::string graphic::AssetStore::ANIMATED_EXTENSION = ".anim";
 

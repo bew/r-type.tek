@@ -41,8 +41,9 @@ namespace ECS {
        * @param x X center offset of the sprite Default to 0
        * @param y Y center offset of the sprite Defautl to 0
        * @param animated Default to false.
+       * @param scale The scale of the sprite
        */
-      CompSprite(const std::string &pname = "", coordinates<int> coor = {0, 0}, const std::string &animated = NO_ANIMATION);
+      CompSprite(const std::string &pname = "", coordinates<int> coor = {0, 0}, const std::string &animated = NO_ANIMATION, const coordinates<float> &pscale = {1.0, 1.0});
       
       /**
        * The name of the sprite, as reference to asset store.
@@ -58,6 +59,16 @@ namespace ECS {
        * Is the sprite an animated sprites
        */
       std::string animation;
+
+      /**
+       * The tick at which animation cycle begun. -1 If unknown
+       */
+      int animationTick;
+      
+      /**
+       * The scale of the sprite
+       */
+      coordinates<float> scale;
 
       /**
        * @return A pointer to a new CompSprite with a state similar to this

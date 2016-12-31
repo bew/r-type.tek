@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(LIB_SOURCES)
-set(LIB_DEPEDENCIES)
+set(LIB_SOURCES CompGenerator.cpp SysGenerator.cpp)
+set(LIB_DEPEDENCIES ECS)
 
 if(UNIX)
   set(LIB_SOURCES ${LIB_SOURCES} linuxLibraryLoader.cpp)

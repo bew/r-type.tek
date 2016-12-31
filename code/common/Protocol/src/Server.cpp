@@ -74,9 +74,11 @@ namespace protocol {
                    protocol::checkString(data, "username");
         }
 
-        bson::Document gameStart(void) {
+        bson::Document gameStart(const std::string &token) {
             bson::Document document;
             bson::Document message;
+
+            message << u8"token" << token;
 
             document << u8"header" << protocol::createHeader("GameStart");
             document << u8"data" << message;
@@ -89,7 +91,8 @@ namespace protocol {
                 document[u8"header"][u8"action"].getValueString() != u8"GameStart")
                 return false;
             bson::Document data = document[u8"data"].getValueDocument();
-            return data.isEmpty();
+            return data.elementsCount() == 1 &&
+                   protocol::checkString(data, u8"token");
         }
 
         bson::Document gameLeave(const std::string &username) {
@@ -113,10 +116,11 @@ namespace protocol {
                    protocol::checkString(data, "username");
         }
 
-        bson::Document entityUpdate(int64_t entity_id, const bson::Document &components) {
+        bson::Document entityUpdate(const std::string &token, int64_t entity_id, const bson::Document &components) {
             bson::Document document;
             bson::Document message;
 
+            message << u8"token" << token;
             message << u8"entity_id" << entity_id;
             message << u8"components" << components;
 
@@ -131,7 +135,8 @@ namespace protocol {
                 document[u8"header"][u8"action"].getValueString() != u8"EntityUpdate")
                 return false;
             bson::Document data = document[u8"data"].getValueDocument();
-            return data.elementsCount() == 2 &&
+            return data.elementsCount() == 3 &&
+                   protocol::checkString(data, u8"token") &&
                    data.hasKey(u8"entity_id") && data[u8"entity_id"].getValueType() == bson::INT64 &&
                    data.hasKey(u8"components") && data[u8"components"].getValueType() == bson::DOCUMENT;
         }

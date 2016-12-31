@@ -9,3 +9,6 @@ project(${LIB_NAME})
 include_directories(${LIB_INCLUDE})
 
 add_subdirectory(test)
+
+# ${LIB_NAME} is not a target, using the TEST as trigger
+# see test's CMakeLists for more

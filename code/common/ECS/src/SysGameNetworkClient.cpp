@@ -21,10 +21,12 @@ namespace ECS
             if (network)
             {
                 network->_clientUDP.update();
+                if (!network->_clientUDP.hasMessage())
+                    return;
                 bson::Document doc(network->_clientUDP.getMessage());
                 if (protocol::server::checkEntityUpdate(doc))
                 {
-                    logs::logger[logs::ECS] << doc.toJSON() << std::endl;
+                    logs::getLogger()[logs::ECS] << doc.toJSON() << std::endl;
 
                     if (Component::CompNetworkClient::isValidActionUdp(doc["header"]["action"].getValueString()))
                     {
@@ -43,7 +45,7 @@ namespace ECS
                                 }
                                 catch (Component::ComponentFlagException &e)
                                 {
-                                    logs::logger[logs::ERRORS] << e.what() << std::endl;
+                                    logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
                                 }
                             }
                         }
