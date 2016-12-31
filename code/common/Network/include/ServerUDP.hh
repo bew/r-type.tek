@@ -57,7 +57,7 @@ namespace network
          * @param ms timeout in milliseconds
          * @throw SocketException if select, recv or send failed
          */
-        virtual void update(unsigned long ms = 1000);
+        virtual void update(unsigned long ms = 0);
 
         /**
          * append a message to the client write buffer

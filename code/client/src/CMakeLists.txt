@@ -1,6 +1,26 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(SOURCES main.cpp SysWindow.cpp CompWindow.cpp SysMusic.cpp SysKeyboard.cpp SysSprite.cpp CompOptions.cpp SysOptions.cpp SysAsset.cpp CompAsset.cpp SysSound.cpp CompSound.cpp SysGui.cpp SysMenu.cpp)
+set(SOURCES
+  SysWindow.cpp
+  CompWindow.cpp 
+  SysMusic.cpp
+  SysKeyboard.cpp
+  SysSprite.cpp
+  CompOptions.cpp
+  SysOptions.cpp
+  SysAsset.cpp
+  CompAsset.cpp
+  SysSound.cpp
+  CompSound.cpp
+  SysGui.cpp
+  CompNetworkClient.cpp
+  CompStateMachine.cpp
+  SysStateMachine.cpp
+  SysSerialisation.cpp
+  SysMenu.cpp
+  main.cpp
+  )
+
 set(DEPENDENCIES ${RT_COMMON_NAMES})
 
 if(WIN32)

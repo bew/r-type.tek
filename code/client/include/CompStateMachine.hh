@@ -7,7 +7,7 @@
 #pragma once
 
 #include <string>
-#include "AComponent.hh"
+#include "ECS/AComponent.hh"
 #include "StateMachine/StateMachine.hpp"
 
 /**

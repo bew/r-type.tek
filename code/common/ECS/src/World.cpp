@@ -49,12 +49,13 @@ namespace ECS
 
     Entity::Entity *WorldData::getEntityById(int64_t id)
     {
-        for (Entity::Entity *entity : _gameEntities)
-        {
-            if (entity->getId() == id)
-                return entity;
-        }
-        return nullptr;
+      if (_systemEntity.getId() == id)
+	return &_systemEntity;
+      for (Entity::Entity *entity : _gameEntities) {
+	if (entity->getId() == id)
+	  return entity;
+      }
+      return nullptr;
     }
 
 }

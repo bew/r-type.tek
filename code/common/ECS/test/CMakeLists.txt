@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
-set(SOURCES main.cpp flags.cpp)
+set(SOURCES main.cpp)
 set(DEPENDENCIES Network BSON Logs Graphic)
 
 add_executable(${TEST_EXE} ${SOURCES})

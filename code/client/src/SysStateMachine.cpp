@@ -4,7 +4,7 @@
  * @brief implementation of System for State Machine.
  */
 
-#include "ECSLogLevel.hh"
+#include "ECS/ECSLogLevel.hh"
 #include "SysStateMachine.hh"
 #include "Protocol/Server.hh"
 #include "Network/SocketException.hh"
