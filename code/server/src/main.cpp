@@ -13,18 +13,18 @@
 
 int main()
 {
-  logs::logger.registerBasicsLogLevel();
-  logs::logger.registerLogLevel(new logs::ServerLogLevel());
+  logs::getLogger().registerBasicsLogLevel();
+  logs::getLogger().registerLogLevel(new logs::ServerLogLevel());
 
   Server server("my_little_server");
 
   unsigned short port = server.initNetwork(42403);
   if (port == 0)
     {
-      logs::logger[logs::ERRORS] << "There was an error while initializing server network" << std::endl;
+      logs::getLogger()[logs::ERRORS] << "There was an error while initializing server network" << std::endl;
       return EXIT_FAILURE;
     }
-  logs::logger[logs::INFO] << "The server is running on port " << port << "." << std::endl;
+  logs::getLogger()[logs::INFO] << "The server is running on port " << port << "." << std::endl;
 
   server.run();
   return (0);

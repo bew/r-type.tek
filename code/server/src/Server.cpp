@@ -31,7 +31,7 @@ unsigned short Server::initNetwork(unsigned short port)
   catch (network::SocketException const & e)
     {
       std::cerr << "server:init: " << e.what() << std::endl;
-      logs::logger[logs::SERVER] << "init network error: " << e.what() << std::endl;
+      logs::getLogger()[logs::SERVER] << "init network error: " << e.what() << std::endl;
       return 0;
     }
   return addr.getPort();
@@ -61,16 +61,16 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
     }
     catch (const bson::BsonException &e) {
         client->addMessage(protocol::answers::badRequest(-1, "Can't deserialize packet").getBufferString() + network::magic);
-        logs::logger[logs::SERVER] << "Received a packet but can't deserialize it. " << e.what() << std::endl;
+        logs::getLogger()[logs::SERVER] << "Received a packet but can't deserialize it. " << e.what() << std::endl;
         return;
     }
 
     if (!protocol::checkMessage(packet)) {
         client->addMessage(protocol::answers::badRequest(-1, "Wrong packet format").getBufferString() + network::magic);
-        logs::logger[logs::SERVER] << "Received a packet but wrong format : " << packet.toJSON(2) << std::endl;
+        logs::getLogger()[logs::SERVER] << "Received a packet but wrong format : " << packet.toJSON(2) << std::endl;
         return;
     }
-    logs::logger[logs::SERVER] << "Received a valid packet :" << std::endl << packet.toJSON(2) << std::endl;
+    logs::getLogger()[logs::SERVER] << "Received a valid packet :" << std::endl << packet.toJSON(2) << std::endl;
 
     int64_t timestamp;
     std::string action;
@@ -82,18 +82,18 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
     if (! _players.count(client)) // this is a new client
     {
         _players[client] = std::make_shared<Player>(client);
-        logs::logger[logs::SERVER] << "New client connected (at:" << client << ")" << std::endl;
+        logs::getLogger()[logs::SERVER] << "New client connected (at:" << client << ")" << std::endl;
     }
 
   ClientCommandsState & state = _players.at(client)->controlState;
 
-  logs::logger[logs::SERVER] << "Client " << client
+  logs::getLogger()[logs::SERVER] << "Client " << client
                              << " try action '" << action
                              << "' current state is '" << state.getCurrentState()->getName() << "'" << std::endl;
 
   if (!state.gotoNextStateVia(action))
     {
-      logs::logger[logs::SERVER] << "Unauthorized action '" << action << "'" << std::endl;
+      logs::getLogger()[logs::SERVER] << "Unauthorized action '" << action << "'" << std::endl;
       client->addMessage(protocol::answers::unauthorized(timestamp).getBufferString() + network::magic);
       return;
     }
@@ -103,5 +103,5 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
       state.revertToPreviousState();
       return;
     }
-  logs::logger[logs::SERVER] << "Client state is now '" << state.getCurrentState()->getName() << "'" << std::endl;
+  logs::getLogger()[logs::SERVER] << "Client state is now '" << state.getCurrentState()->getName() << "'" << std::endl;
 }
