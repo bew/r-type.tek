@@ -79,8 +79,20 @@ public:
      */
     virtual void execLoop(void);
 
-    // TODO: doc
+    /**
+     * Init all the ECS
+     */
     void initECS();
+
+    /**
+     * Launch the loop of the ECS
+     */
     void runECS();
-    int getServerUdpPort();
+
+    /**
+     * Get the port on which the UDP server run
+     *
+     * @return the port if everything went right, else -1
+     */
+    short getServerUdpPort();
 };

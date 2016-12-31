@@ -301,6 +301,16 @@ bool ServerRouter::GameStartHandler(Request & req)
         this->sendMessageToRequester(req, pa::internalServerError(timestamp, "Can't launch the game.").getBufferString() + network::magic);
         return false;
     }
+    if (room.game->getServerUdpPort() == -1) {
+        delete room.game;
+        std::string errorMessage = "Error while launching the game of the room with owner '" + room.master + "': can't get the port";
+        std::cerr << errorMessage << std::endl;
+        logs::getLogger()[logs::SERVER] << errorMessage << std::endl;
+
+        this->sendMessageToRequester(req, pa::internalServerError(timestamp, "Can't launch the game.").getBufferString() + network::magic);
+        return false;
+    }
+
     // After this point, we assume that startup went well and the game is now started
     room.game->detach();
 
