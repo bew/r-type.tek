@@ -7,7 +7,7 @@
 #pragma once
 
 #include <list>
-#include "AComponent.hh"
+#include "ECS/AComponent.hh"
 #include "Network/ServerUDP.hh"
 
 /**

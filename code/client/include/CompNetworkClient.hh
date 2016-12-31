@@ -7,7 +7,7 @@
 #pragma once
 
 #include <list>
-#include "AComponent.hh"
+#include "ECS/AComponent.hh"
 #include "Network/ClientUDP.hh"
 #include "Network/ClientTCP.hh"
 #include "BSON/Document.hh"
@@ -30,12 +30,20 @@ namespace ECS
         /**
          * list of action received from server on protocol UDP
          */
-        static const std::list<std::string> ACTIONS_FROM_SERVER_UDP = {"EntityUpdate"};
+        static const std::list<std::string> ACTIONS_FROM_SERVER_UDP = {
+	  "EntityUpdate"
+	};
 
         /**
          * list of action received from server on protocol TCP
          */
-        static const std::list<std::string> ACTIONS_FROM_SERVER_TCP = {"RoomJoin", "RoomLeave", "RoomKick", "GameStart", "GameLeave"};
+        static const std::list<std::string> ACTIONS_FROM_SERVER_TCP = {
+	  "RoomJoin",
+	  "RoomLeave",
+	  "RoomKick",
+	  "GameStart",
+	  "GameLeave"
+	};
 
         /**
          * representation of a component network for clients

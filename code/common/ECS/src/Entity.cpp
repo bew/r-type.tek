@@ -35,6 +35,11 @@ namespace ECS {
 	    return component;
 	}
 
+      std::map<const std::string, Component::AComponent *> &Entity::getComponents(void) const {
+	return _components;
+      }
+
+
         int64_t        Entity::getId() const
         {
             return _id;
