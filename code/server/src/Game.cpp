@@ -72,14 +72,12 @@ void Game::initECS() {
 
     ECS::Component::CompGenerator *generator = new ECS::Component::CompGenerator();
 
-    if (generator != nullptr) {
-        try {
-            std::shared_ptr<LibraryLoader> module(new LibraryLoader("./generators/" + _generatorName));
-            Dependent_ptr<IGenerator, LibraryLoader> generatorRef(module->newInstance(), module);
-            generator->generator = generatorRef;
-        } catch (const LibraryLoaderException &e) {
-            logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
-        }
+    try {
+        std::shared_ptr<LibraryLoader> module(new LibraryLoader("./generators/" + _generatorName));
+        Dependent_ptr<IGenerator, LibraryLoader> generatorRef(module->newInstance(), module);
+        generator->generator = generatorRef;
+    } catch (const LibraryLoaderException &e) {
+        logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
     }
 
     _world.addSystemEntityComponent(generator);
