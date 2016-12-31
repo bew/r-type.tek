@@ -36,8 +36,12 @@ namespace ECS
         public:
             /**
              * Constructor of CompNetworkServer
+             *
+             * @param port port use by server
+             * @param serverToken server's token
+             * @param clientsToken all clients' token
              */
-            CompNetworkServer(unsigned short port, const std::string& token);
+            CompNetworkServer(unsigned short port, const std::string& serverToken, const std::vector<std::string>& clientsToken);
 
             /**
              * Destructor of CompNetworkServer

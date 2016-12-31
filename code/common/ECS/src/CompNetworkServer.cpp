@@ -10,8 +10,8 @@ namespace ECS
 {
     namespace Component
     {
-        CompNetworkServer::CompNetworkServer(unsigned short port, const std::string& token):
-            _serverToken(token)
+        CompNetworkServer::CompNetworkServer(unsigned short port, const std::string& serverToken, const std::vector<std::string>& clientsToken):
+            _serverToken(serverToken), _clientTokens(clientsToken)
         {
             network::SockAddr addr(port);
             _server.bind(addr);
