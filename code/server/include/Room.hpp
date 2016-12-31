@@ -32,6 +32,16 @@ struct Room
     game(nullptr)
   {}
 
+  ~Room() {
+    if (game != nullptr) {
+      if (!game->isDone()) {
+        //TODO : handle if the game is already start ? Possible ?
+      }
+      else
+        delete game;
+    }
+  }
+
   /**
    * The room name
    */

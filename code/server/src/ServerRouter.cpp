@@ -255,7 +255,7 @@ bool ServerRouter::GameStartHandler(Request & req)
     }
     catch (const std::exception &e) {
       delete room.game;
-      std::string errorMessage = std::string("Error while launching the game of the room with owner '") + room.master + std::string("': ") + e.what();
+      std::string errorMessage = "Error while launching the game of the room with owner '" + room.master + "': " + e.what();
       std::cerr << errorMessage << std::endl;
       logs::getLogger()[logs::SERVER] << errorMessage << std::endl;
     }
