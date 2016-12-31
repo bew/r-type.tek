@@ -46,6 +46,11 @@
 class Game : public concurrency::ATask {
 private:
     /**
+     * Generator's name to use
+     */
+    std::string _generatorName;
+
+    /**
      * Port to use for the UDP connection
      */
     int32_t _port;
@@ -68,10 +73,11 @@ public:
     /**
      * Ctor
      *
+     * @param generatorName the generator's name to use
      * @param port the port to use for the UDP connection
      * @param serverToken that need to match for all the UDP request
      */
-    Game(int32_t port, const std::string& serverToken);
+    Game(const std::string& generatorName, int32_t port, const std::string& serverToken);
 
     Game(const Game& game) = delete;
 

@@ -230,14 +230,13 @@ bool ServerRouter::GameStartHandler(Request & req)
   std::shared_ptr<Player> player = _server->_players[req.getClient()];
   Room & room = _server->_rooms.at(player->currentRoom);
 
-  // prepare thread
-  // prepare ECS ...
 
-  // open UDP data socket
+    // choose network auth-token for players
+    // send to other players + auth token
 
-  // choose network auth-token for players
-  // send to other players + auth token
-  // FIXME: more ?
+    room.game = new Game("generatorName", 4242, "serverToken");
+    room.game->launch();
+    room.game->detach();
 
   // set players as playing
   for (auto & kv : room.players)

@@ -11,6 +11,7 @@
 #include <stdexcept>
 #include <memory>
 #include "Player.hpp"
+#include "Game.hh"
 
 /**
  * Represent a Room where players can play
@@ -52,15 +53,10 @@ struct Room
    */
   std::map<std::string, std::shared_ptr<Player>> players;
 
-  // ECS ?
-  // UDP data socket ? (should be in ECS world)
-
-  /**
-   * Store the list of activated plugins for the level of this room
-   *
-   * TODO: see how to activate plugins for a given room ctor ? methods ?
-   */
-  //std::vector<std::shared_ptr<Plugin>> _activatedPlugins;
+    /**
+     * The Game of the room
+     */
+    Game *game;
 };
 
 #endif /* !ROOM_HPP_ */
