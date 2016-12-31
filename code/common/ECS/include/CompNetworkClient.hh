@@ -95,6 +95,11 @@ namespace ECS
              * Store the last packet received
              */
             bson::Document _lastReceived;
+
+            /**
+             * contains the client's token
+             */
+             std::string _token;
         };
     }
 }

@@ -36,7 +36,7 @@ namespace ECS
             /**
              * Constructor of CompNetworkServer
              */
-            CompNetworkServer();
+            CompNetworkServer(unsigned short port, const std::string& token);
 
             /**
              * Destructor of CompNetworkServer
@@ -60,6 +60,11 @@ namespace ECS
              * represents the server UDP
              */
             network::ServerUDP _server;
+
+            /**
+             * contains the server's token
+             */
+            std::string _token;
         };
 
     }

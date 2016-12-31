@@ -10,8 +10,12 @@ namespace ECS
 {
     namespace Component
     {
-        CompNetworkServer::CompNetworkServer()
-        {}
+        CompNetworkServer::CompNetworkServer(unsigned short port, const std::string& token):
+            _token(token)
+        {
+            network::SockAddr addr(port);
+            _server.bind(addr);
+        }
 
         CompNetworkServer::~CompNetworkServer()
         {}
