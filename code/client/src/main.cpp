@@ -126,7 +126,7 @@ int main(int ac, char**av) {
 
   ///////////////////////// INITIALIZE PLAYER (id 1 to 4 are reserved to players)
 
-  ECS::Entity::Entity *entity = new ECS::Entity::Entity(1); //Server emulation here, we don't what will be our id
+  ECS::Entity::Entity *entity = new ECS::Entity::Entity(1); //Server emulation here, the player is serilized by server and sent
   entity->addComponent(new ECS::Component::CompController());
   entity->addComponent(new ECS::Component::CompType(ECS::Component::CompType::PLAYER | ECS::Component::CompType::CHARACTER));
 
