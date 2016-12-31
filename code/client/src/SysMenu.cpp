@@ -11,14 +11,22 @@ namespace ECS {
         SysMenu::SysMenu()
                 : _userlogged(false), _userSignup(false), _pwdSignup(false), _userpwd(false), _selectedItemIndex(0),
                   _w(1280), _h(720) {
+            _stateFunc.insert(std::make_pair("s_auth", &SysMenu::menuSignup));
+            _stateFunc.insert(std::make_pair("s_menu", SysMenu::menuRoom()));
+            _stateFunc.insert(std::make_pair("s_room_wait", SysMenu::menuSignup()));
+
             if (!_font.loadFromFile("gui.ttf")) {
                 // handle error
             }
         }
 
         void SysMenu::update(WorldData &world) {
-            Component::CompWindow *windowc = dynamic_cast<Component::CompWindow *>(world._systemEntity.getComponent(ECS::Component::WINDOW));
-            if (!windowc || !windowc->window)
+
+            Component::CompWindow* windowc = dynamic_cast<Component::CompWindow *>(world._systemEntity.getComponent(ECS::Component::WINDOW));
+            Component::CompStateMachine* stateMachine = dynamic_cast<Component::CompStateMachine *>(world._systemEntity.getComponent(ECS::Component::STATE_MACHINE));
+            Component::CompNetworkClient* network = dynamic_cast<Component::CompNetworkClient *>(world._systemEntity.getComponent(ECS::Component::NETWORK_CLIENT));
+
+            if (!windowc || !windowc->window || !stateMachine || !network)
                 return;
 
             sf::Event event;
@@ -52,13 +60,21 @@ namespace ECS {
                                             case 2:
                                                 windowc->window->close();
                                                 break;
+
+                                            default:
+                                                break;
                                         }
+                                        break;
+                                    default:
                                         break;
                                 }
                                 break;
                             case sf::Event::Closed:
                                 windowc->window->close();
                                 break;
+                            default:
+                                break;
+
                         }
                         windowc->window->clear();
                         this->drawRoomMenu(*windowc->window);
@@ -68,7 +84,7 @@ namespace ECS {
             }
         }
 
-        void SysMenu::login(sf::RenderWindow &window) {
+        void SysMenu::login(sf::RenderWindow &window, Component::CompStateMachine &state, Component::CompNetworkClient & network) {
             sf::Event event;
             while (window.pollEvent(event) && !_userlogged) {
                 if (event.type == sf::Event::TextEntered) {
@@ -93,7 +109,7 @@ namespace ECS {
             window.display();
         }
 
-        void SysMenu::signUpLogin(sf::RenderWindow &window) {
+        void SysMenu::signUpLogin(sf::RenderWindow &window, Component::CompStateMachine &state, Component::CompNetworkClient & network) {
             sf::Event event;
             while (window.pollEvent(event) && !_userSignup) {
                 if (event.type == sf::Event::TextEntered) {
@@ -118,7 +134,7 @@ namespace ECS {
             window.display();
         }
 
-        void SysMenu::pwd(sf::RenderWindow &window) {
+        void SysMenu::pwd(sf::RenderWindow &window, Component::CompStateMachine &state, Component::CompNetworkClient & network) {
             sf::Event event;
             while (window.pollEvent(event) && !_userpwd) {
                 if (event.type == sf::Event::TextEntered) {
@@ -147,7 +163,7 @@ namespace ECS {
             window.display();
         }
 
-        void SysMenu::pwdSignUp(sf::RenderWindow &window) {
+        void SysMenu::pwdSignUp(sf::RenderWindow &window, Component::CompStateMachine &state, Component::CompNetworkClient & network) {
             sf::Event event;
             while (window.pollEvent(event) && !_pwdSignup) {
                 if (event.type == sf::Event::TextEntered) {
@@ -176,7 +192,7 @@ namespace ECS {
             window.display();
         }
 
-        void SysMenu::menuRoom() {
+        void SysMenu::menuRoom(sf::RenderWindow &window, Component::CompStateMachine &state, Component::CompNetworkClient & network) {
             _inputLogin[0].setFont(_font);
             _inputLogin[0].setFillColor(sf::Color::Green);
             _inputLogin[0].setString("Hello " + _user);
@@ -200,9 +216,14 @@ namespace ECS {
             _menu[2].setString("Exit");
             _menu[2].setCharacterSize(35);
             _menu[2].setPosition(sf::Vector2f(_w / 2 - 75, _h - _h + 300));
+
+            window.draw(_inputLogin[0]);
+            for (int i = 0; i < NB_ITEMS; i++) {
+                window.draw(_menu[i]);
+            }
         }
 
-        void SysMenu::menuSignup() {
+        void SysMenu::menuSignup(sf::RenderWindow &window, Component::CompStateMachine &state, Component::CompNetworkClient & network) {
             _signUp[0].setFont(_font);
             _signUp[0].setFillColor(sf::Color::Red);
             _signUp[0].setString("Signup");
@@ -214,17 +235,8 @@ namespace ECS {
             _signUp[1].setString("Login");
             _signUp[1].setCharacterSize(35);
             _signUp[1].setPosition(sf::Vector2f(_w / 2 - 75, _h - _h + 250));
-        }
 
-        void SysMenu::drawRoomMenu(sf::RenderWindow &window) const {
-            window.draw(_inputLogin[0]);
-            for (int i = 0; i < NB_ITEMS; i++) {
-                window.draw(_menu[i]);
-            }
-        }
-
-        void SysMenu::drawSignMenu(sf::RenderWindow &window) const {
-            for (int i = 0; i < NB_ITEMS; i++) {
+            for (int i = 0; i < 2; i++) {
                 window.draw(_signUp[i]);
             }
         }

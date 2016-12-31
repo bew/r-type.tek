@@ -22,6 +22,8 @@
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics.hpp"
 #include "SysWindow.hh"
+#include "ECS/CompStateMachine.hh"
+#include "ECS/CompNetworkClient.hh"
 #include <iostream>
 
 #define NB_ITEMS 3
@@ -42,14 +44,12 @@ namespace ECS {
              * @param world All the data about the world
              */
             virtual void update(ECS::WorldData &world);
-            void drawRoomMenu(sf::RenderWindow &window) const;
-            void drawSignMenu(sf::RenderWindow &window) const;
-            void login(sf::RenderWindow &window);
-            void signUpLogin(sf::RenderWindow &window);
-            void pwd(sf::RenderWindow &window);
-            void pwdSignUp(sf::RenderWindow &window);
-            void menuSignup();
-            void menuRoom();
+            void login(sf::RenderWindow &window, Component::CompStateMachine &state, Component::CompNetworkClient & network);
+            void signUpLogin(sf::RenderWindow &window, Component::CompStateMachine &state, Component::CompNetworkClient & network);
+            void pwd(sf::RenderWindow &window, Component::CompStateMachine &state, Component::CompNetworkClient & network);
+            void pwdSignUp(sf::RenderWindow &window, Component::CompStateMachine &state, Component::CompNetworkClient & network);
+            void menuSignup(sf::RenderWindow &window, Component::CompStateMachine &state, Component::CompNetworkClient & network);
+            void menuRoom(sf::RenderWindow &window, Component::CompStateMachine &state, Component::CompNetworkClient & network);
             void MoveUp();
             void MoveUpSign();
             void MoveDown();
@@ -59,6 +59,8 @@ namespace ECS {
             bool isPwdCorrect() const;
             const std::string & getCryptedPwd() const;
             const std::string & getLogin() const;
+
+            typedef void(SysMenu::*MenuFunc)(sf::RenderWindow &, Component::CompStateMachine &state, Component::CompNetworkClient & network);
 
         private:
             float _w;
@@ -75,6 +77,7 @@ namespace ECS {
             sf::Text _menu[NB_ITEMS];
             sf::Text _inputLogin[2];
             sf::Text _signUp[2];
+            std::map<std::string, MenuFunc> _stateFunc;
         };
     }
 }
