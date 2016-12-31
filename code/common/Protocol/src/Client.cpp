@@ -199,6 +199,24 @@ namespace protocol {
             return data.isEmpty();
         }
 
+        bson::Document getAvailableGenerators(void) {
+            bson::Document document;
+            bson::Document message;
+
+            document << u8"header" << protocol::createHeader("GetAvailableGenerators");
+            document << u8"data" << message;
+
+            return document;
+        }
+
+        bool checkGetAvailableGenerators(const bson::Document &document) {
+            if (!protocol::checkMessage(document) ||
+                document[u8"header"][u8"action"].getValueString() != u8"GetAvailableGenerators")
+                return false;
+            bson::Document data = document[u8"data"].getValueDocument();
+            return data.isEmpty();
+        }
+
         bson::Document entityUpdate(const std::string &token, int64_t entity_id, const bson::Document &components) {
             bson::Document document;
             bson::Document message;
