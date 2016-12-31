@@ -30,6 +30,8 @@
 #include "ECS/SysLife.hh"
 #include "ECS/SysMovement.hh"
 #include "ECS/SysTick.hh"
+#include "SysSerialisation.hh"
+#include "CompNetworkServer.hh"
 
 #include "LibraryLoader/CompGenerator.hh"
 #include "LibraryLoader/SysGenerator.hh"
@@ -63,6 +65,8 @@ void Game::initECS() {
     _world.addSystem(new ECS::System::SysDeath());
     // process events that happen in the tick
     _world.addSystem(new ECS::System::SysEvent());
+    // process serialization/unserialization of entity
+    _world.addSystem(new ECS::System::SysSerialisation);
 
     ///////////////////////// ADD UNIQUE COMPONENTS TO WORLD
 
@@ -84,6 +88,7 @@ void Game::initECS() {
     _world.addSystemEntityComponent(new ECS::Component::CompEvent());
     _world.addSystemEntityComponent(new ECS::Component::CompCollision());
     _world.addSystemEntityComponent(new ECS::Component::CompScore(0));
+    _world.addSystemEntityComponent(new ECS::Component::CompNetworkServer(0, _serverToken, _clientTokens));
 
     size_t playerNumber = 1;
     for (const auto& player : _room->players) {

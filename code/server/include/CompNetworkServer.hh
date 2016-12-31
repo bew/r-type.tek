@@ -31,7 +31,7 @@ namespace ECS
          */
         static const std::list<std::string> ACTIONS_FROM_CLIENTS_UDP = {"EntityUpdate"};
 
-        class CompNetworkServer
+        class CompNetworkServer : public AComponent
         {
         public:
             /**
