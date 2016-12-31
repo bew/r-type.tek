@@ -24,6 +24,8 @@ namespace ECS
                 network->_server.update();
                 for (auto &client: network->_server.getConnections())
                 {
+                    if (!client->hasMessage())
+                        continue;
                     bson::Document doc(network->_server.getMessage(client));
                     if (protocol::client::checkEntityUpdate(doc))
                     {
