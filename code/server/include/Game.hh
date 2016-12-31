@@ -29,6 +29,7 @@ private:
 
     /**
      * Port to use for the UDP connection
+     * FIXME: is this needed ? as it's stored in the network Component...
      */
     int32_t _port;
 
@@ -77,6 +78,10 @@ public:
      * Function calls by launch method, his execution is in the thread attribute
      */
     virtual void execLoop(void);
+
+    // TODO: doc
+    void initECS();
+    int getServerUdpPort();
 
 protected:
     /**

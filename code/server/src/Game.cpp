@@ -34,20 +34,39 @@
 #include "LibraryLoader/CompGenerator.hh"
 #include "LibraryLoader/SysGenerator.hh"
 
-Game::Game(Room & room, const std::string& generatorName, int32_t port, const std::string &serverToken, const std::vector<std::string>& clientTokens) :
-    _generatorName(generatorName), _port(port), _serverToken(serverToken), _clientTokens(clientTokens), _room(&room)
+Game::Game(Room & room, const std::string& generatorName, const std::string &serverToken, const std::vector<std::string>& clientTokens) :
+    _generatorName(generatorName), _serverToken(serverToken), _clientTokens(clientTokens), _room(&room)
 {}
 
 Game::~Game() {}
 
+void Game::initECS() {
+    // init Network component (TODO: make sure the bind is done, to have a valid unused port)
+    // init ECS
+
+    // can throw ? => yes
+}
+
+int Game::getServerUdpPort() {
+    // return port of UDP server for this game
+    // see Server#initNetwork() for exemple
+}
+
+int Game::runECS() {
+    // run ECS
+
+    // (wait for players first connection ? maybe not needed)
+}
+
 void Game::execLoop() {
-    // TODO: Get the UDP players
+
+    // TODO: move this in initECS
 
     ////////////////////////// ADD SYSTEMS TO WORLD
 
-    // control time, Has absolut priority over any other system
+    // control time, Has absolute priority over any other system
     _world.addSystem(new ECS::System::SysTick());
-    // control time, Has absolut priority over any other system
+    // control time, Has absolute priority over any other system
     _world.addSystem(new ECS::System::SysGenerator());
     // transform data to movement (speed, direction)
     _world.addSystem(new ECS::System::SysController());
@@ -91,11 +110,18 @@ void Game::execLoop() {
 
     ///////////////////////// Run the world :)
 
+    // TODO: move this in runECS
     while (!tick->kill) {
         _world.update();
     }
 
     _done = true;
+
+
+
+    // NOTE: in execLoop :
+    // -> runECS()
+    // -> _done = true
 }
 
 std::string Game::getGenLibName(std::string const & folder, std::string const & genName)

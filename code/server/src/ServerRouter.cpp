@@ -260,7 +260,8 @@ bool ServerRouter::GameStartHandler(Request & req)
 
     room.game = new Game(room, generatorName, 4242, _server->_serverToken, clientTokens);
     try {
-      room.game->launch();
+        room.game.initECS();
+        room.game->launch();
     }
     catch (const std::exception &e) {
       delete room.game;
@@ -277,10 +278,13 @@ bool ServerRouter::GameStartHandler(Request & req)
 
   reply_ok(req);
 
+  // send GameStart to all players
+  int serverPort = room.game.getServerUdpPort();
   for (const auto& kv : room.players) {
+    // FIXME: il sert à quoi ce doc ?
     bson::Document message;
-    message << u8"port" << 4242;
-    kv.second->sock->addMessage(protocol::server::gameStart(4242, kv.second->token, _server->_serverToken).getBufferString() + network::magic);
+    message << u8"port" << serverPort;
+    kv.second->sock->addMessage(protocol::server::gameStart(serverPort, kv.second->token, _server->_serverToken).getBufferString() + network::magic);
   }
 }
 
