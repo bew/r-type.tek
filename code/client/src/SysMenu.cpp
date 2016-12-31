@@ -12,8 +12,8 @@ namespace ECS {
                 : _userlogged(false), _userSignup(false), _pwdSignup(false), _userpwd(false), _selectedItemIndex(0),
                   _w(1280), _h(720) {
             _stateFunc.insert(std::make_pair("s_auth", &SysMenu::menuSignup));
-            _stateFunc.insert(std::make_pair("s_menu", SysMenu::menuRoom()));
-            _stateFunc.insert(std::make_pair("s_room_wait", SysMenu::menuSignup()));
+//            _stateFunc.insert(std::make_pair("s_menu", &SysMenu::menuRoom()));
+//            _stateFunc.insert(std::make_pair("s_room_wait", &SysMenu::menuSignup()));
 
             if (!_font.loadFromFile("gui.ttf")) {
                 // handle error
@@ -31,57 +31,57 @@ namespace ECS {
 
             sf::Event event;
 
-            while (windowc->window->isOpen()) {
-                if (!this->isUserLogged())
-                    this->login(*windowc->window);
-                else if (!this->isPwdCorrect()) {
-                    this->pwd(*windowc->window);
-                    this->menuRoom();
-                }
-                else {
-                    while (windowc->window->pollEvent(event)) {
-                        switch (event.type) {
-                            case sf::Event::KeyReleased:
-                                switch (event.key.code) {
-                                    case sf::Keyboard::Up:
-                                        this->MoveUp();
-                                        break;
-                                    case sf::Keyboard::Down:
-                                        this->MoveDown();
-                                        break;
-                                    case sf::Keyboard::Return:
-                                        switch (this->GetPressedItem()) {
-                                            case 0:
-                                                std::cout << "Room button has been pressed" << std::endl;
-                                                break;
-                                            case 1:
-                                                std::cout << "Option button has been pressed" << std::endl;
-                                                break;
-                                            case 2:
-                                                windowc->window->close();
-                                                break;
-
-                                            default:
-                                                break;
-                                        }
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                break;
-                            case sf::Event::Closed:
-                                windowc->window->close();
-                                break;
-                            default:
-                                break;
-
-                        }
-                        windowc->window->clear();
-                        this->drawRoomMenu(*windowc->window);
-                        windowc->window->display();
-                    }
-                }
-            }
+//            while (windowc->window->isOpen()) {
+//                if (!this->isUserLogged())
+//                    this->login(*windowc->window);
+//                else if (!this->isPwdCorrect()) {
+//                    this->pwd(*windowc->window);
+//                    this->menuRoom();
+//                }
+//                else {
+//                    while (windowc->window->pollEvent(event)) {
+//                        switch (event.type) {
+//                            case sf::Event::KeyReleased:
+//                                switch (event.key.code) {
+//                                    case sf::Keyboard::Up:
+//                                        this->MoveUp();
+//                                        break;
+//                                    case sf::Keyboard::Down:
+//                                        this->MoveDown();
+//                                        break;
+//                                    case sf::Keyboard::Return:
+//                                        switch (this->GetPressedItem()) {
+//                                            case 0:
+//                                                std::cout << "Room button has been pressed" << std::endl;
+//                                                break;
+//                                            case 1:
+//                                                std::cout << "Option button has been pressed" << std::endl;
+//                                                break;
+//                                            case 2:
+//                                                windowc->window->close();
+//                                                break;
+//
+//                                            default:
+//                                                break;
+//                                        }
+//                                        break;
+//                                    default:
+//                                        break;
+//                                }
+//                                break;
+//                            case sf::Event::Closed:
+//                                windowc->window->close();
+//                                break;
+//                            default:
+//                                break;
+//
+//                        }
+//                        windowc->window->clear();
+//                        this->drawRoomMenu(*windowc->window);
+//                        windowc->window->display();
+//                    }
+//                }
+//            }
         }
 
         void SysMenu::login(sf::RenderWindow &window, Component::CompStateMachine &state, Component::CompNetworkClient & network) {
