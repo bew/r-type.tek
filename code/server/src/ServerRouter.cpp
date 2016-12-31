@@ -124,7 +124,7 @@ bool ServerRouter::RoomJoinHandler(Request & req)
     {
       Room & room = _server->_rooms.at(roomName);
       if (room.players.size() >= room.maximumSlots)
-	return reply_fail(req, pa::tooManyRequests(getTimestamp(req), "The room '" + roomName + "' is full"));
+          return reply_fail(req, pa::tooManyRequests(getTimestamp(req), "The room '" + roomName + "' is full"));
 
       room.players[player->name] = player;
       player->currentRoom = roomName;
@@ -281,14 +281,20 @@ bool ServerRouter::GameStartHandler(Request & req)
 
 bool ServerRouter::GameLeaveHandler(Request &req)
 {
-  if (!protocol::client::checkGameLeave(req.getPacket()))
-    return reply_bad_req(req, "The packet for the action 'GameLeave' is not correct.");
+    if (!protocol::client::checkGameLeave(req.getPacket()))
+        return reply_bad_req(req, "The packet for the action 'GameLeave' is not correct.");
 
-  bson::Document const & rdata = req.getData();
+    std::shared_ptr<Player> player = _server->_players[req.getClient()];
+    Room & room = _server->_rooms.at(player->currentRoom);
 
-  // send to other players
+    if (room.players.count(player->name))
+    {
+        if (player->isPlaying)
+            send_to_room_other_players(req, room, protocol::server::gameLeave(player->name));
+        player->isPlaying = false;
+    }
 
-  return true;
+    return true;
 }
 
 bool ServerRouter::GetAvailableRoomsHandler(Request & req)
@@ -323,7 +329,7 @@ int64_t ServerRouter::getTimestamp(Request & req) const
 bool ServerRouter::reply_bad_req(Request & req, std::string const & message) const
 {
   logs::getLogger()[logs::SERVER] << message << std::endl;
-  return reply_fail(req, protocol::answers::badRequest(getTimestamp(req), message));
+  return reply_fail(req, pa::badRequest(getTimestamp(req), message));
 }
 
 bool ServerRouter::reply_fail(Request & req, bson::Document const & message) const
