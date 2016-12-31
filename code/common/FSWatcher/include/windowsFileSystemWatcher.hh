@@ -6,6 +6,7 @@
 
 #pragma once
 
+#define _WINSOCKAPI_
 #include <windows.h>
 #include <winbase.h>
 #include <stdio.h>

@@ -7,6 +7,7 @@
 #pragma once
 
 #include <string>
+#define _WINSOCKAPI_
 #include <windows.h>
 #include <stdexcept>
 
