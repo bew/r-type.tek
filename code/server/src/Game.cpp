@@ -49,11 +49,7 @@ void Game::execLoop() {
 
     // TODO: Use _generatorName
     try {
-#ifdef _WIN32
-        std::shared_ptr<LibraryLoader> module(new LibraryLoader("./generators/fly.dll"));
-#else
-        std::shared_ptr <LibraryLoader> module(new LibraryLoader("./generators/libfly.so"));
-#endif
+        std::shared_ptr<LibraryLoader> module(new LibraryLoader(getGenLibName("./generators", _generatorName)));
         Dependent_ptr <IGenerator, LibraryLoader> generatorRef(module->newInstance(), module);
         generator->generator = generatorRef;
     } catch (const LibraryLoaderException &e) {
@@ -67,9 +63,20 @@ void Game::execLoop() {
     _world.addSystemEntityComponent(new ECS::Component::CompCollision());
     _world.addSystemEntityComponent(new ECS::Component::CompScore(0));
 
+    ///////////////////////// Run the world :)
+
     while (!tick->kill) {
         _world.update();
     }
 
     _done = true;
+}
+
+std::string Game::getGenLibName(std::string const & folder, std::string const & genName)
+{
+#ifdef _WIN32
+    return folder + '/' + genName + ".dll";
+#else
+    return folder + "/lib" + genName + ".so";
+#endif
 }

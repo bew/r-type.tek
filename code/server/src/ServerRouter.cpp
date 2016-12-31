@@ -238,6 +238,9 @@ bool ServerRouter::GameStartHandler(Request & req)
   if (!protocol::client::checkGameStart(req.getPacket()))
     return reply_bad_req(req, "The packet for the action 'GameStart' is not correct.");
 
+  bson::Document const & rdata = req.getData();
+  std::string generatorName = "fly";
+
   std::shared_ptr<Player> player = _server->_players[req.getClient()];
   Room & room = _server->_rooms.at(player->currentRoom);
 
@@ -254,7 +257,7 @@ bool ServerRouter::GameStartHandler(Request & req)
     for (const auto& kv : room.players)
       clientTokens.push_back(kv.second->token);
 
-    room.game = new Game("generatorName", 4242, _server->_serverToken, clientTokens);
+    room.game = new Game(generatorName, 4242, _server->_serverToken, clientTokens);
     try {
       room.game->launch();
     }
