@@ -82,7 +82,6 @@ void Game::initECS() {
     _world.addSystemEntityComponent(new ECS::Component::CompEvent());
     _world.addSystemEntityComponent(new ECS::Component::CompCollision());
     _world.addSystemEntityComponent(new ECS::Component::CompScore(0));
-
 }
 
 int Game::getServerUdpPort() {
@@ -90,9 +89,13 @@ int Game::getServerUdpPort() {
 }
 
 void Game::runECS() {
-//    while (!tick->kill) {
-//        _world.update();
-//    }
+    ECS::Component::CompTick *compTick = dynamic_cast<ECS::Component::CompTick *>(_world._world._systemEntity.getComponent(ECS::Component::TICK));
+    if (compTick) {
+        // FIXME: Should it be an error ? Is it possible ?
+        while (!compTick->kill) {
+            _world.update();
+        }
+    }
 }
 
 void Game::execLoop() {
