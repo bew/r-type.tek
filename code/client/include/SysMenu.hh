@@ -48,8 +48,8 @@ namespace ECS {
             void signUpLogin(sf::RenderWindow &window);
             void pwd(sf::RenderWindow &window);
             void pwdSignUp(sf::RenderWindow &window);
-            void menu_signup();
-            void menu_room();
+            void menuSignup();
+            void menuRoom();
             void MoveUp();
             void MoveUpSign();
             void MoveDown();

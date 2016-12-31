@@ -28,7 +28,7 @@ namespace ECS {
                     this->login(*windowc->window);
                 else if (!this->isPwdCorrect()) {
                     this->pwd(*windowc->window);
-                    this->menu_room();
+                    this->menuRoom();
                 }
                 else {
                     while (windowc->window->pollEvent(event)) {
@@ -176,7 +176,7 @@ namespace ECS {
             window.display();
         }
 
-        void SysMenu::menu_room() {
+        void SysMenu::menuRoom() {
             _inputLogin[0].setFont(_font);
             _inputLogin[0].setFillColor(sf::Color::Green);
             _inputLogin[0].setString("Hello " + _user);
@@ -202,7 +202,7 @@ namespace ECS {
             _menu[2].setPosition(sf::Vector2f(_w / 2 - 75, _h - _h + 300));
         }
 
-        void SysMenu::menu_signup() {
+        void SysMenu::menuSignup() {
             _signUp[0].setFont(_font);
             _signUp[0].setFillColor(sf::Color::Red);
             _signUp[0].setString("Signup");
