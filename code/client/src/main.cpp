@@ -17,6 +17,7 @@
 #include "SysKeyboard.hh"
 #include "SysOptions.hh"
 #include "SysGui.hh"
+#include "SysSerialisation.hh"
 
 #include "ECS/CompScore.hh"
 #include "ECS/CompMusic.hh"
@@ -49,7 +50,11 @@
 #include "LibraryLoader/SysGenerator.hh"
 
 int main(int ac, char**av) {
-
+  
+  ECS::System::SysSerialisation::builders[ECS::Component::MOVEMENT] = &ECS::Component::AComponent::factory<ECS::Component::CompMovement>;
+  ECS::System::SysSerialisation::builders[ECS::Component::SPRITE] = &ECS::Component::AComponent::factory<ECS::Component::CompSprite>;
+  ECS::System::SysSerialisation::builders[ECS::Component::CONTROLLER] = &ECS::Component::AComponent::factory<ECS::Component::CompController>;
+  
   ECS::World world;
   
   logs::getLogger().registerLogLevel(&logs::assetLogLevel);
@@ -66,7 +71,9 @@ int main(int ac, char**av) {
   // open, reopen, clear and display window. Should be initilized before running system that draw things
   world.addSystem(new ECS::System::SysWindow());
   // transform input to data(up, down, fire, left, right)
-  world.addSystem(new ECS::System::SysKeyboard());   // CLIENT
+  world.addSystem(new ECS::System::SysKeyboard());	// CLIENT
+   // serialize and unserilize data to/from server
+  world.addSystem(new ECS::System::SysSerialisation());	// CLIENT
   // transform data to movement (speed, direction)
   world.addSystem(new ECS::System::SysController());
   // update movement speed, direction for computer controlled entity 
@@ -123,6 +130,7 @@ int main(int ac, char**av) {
   world.addSystemEntityComponent(new ECS::Component::CompAsset());
   world.addSystemEntityComponent(new ECS::Component::CompCollision());
   world.addSystemEntityComponent(new ECS::Component::CompScore(0));
+  world.addSystemEntityComponent(new ECS::Component::CompNetworkClient("127.0.0.1", 1337));
 
   ///////////////////////// INITIALIZE PLAYER (id 1 to 4 are reserved to players)
 

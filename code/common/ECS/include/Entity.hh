@@ -70,7 +70,7 @@ namespace ECS
 	  /**
 	   * @return Components
 	   */
-	  std::map<const std::string, Component::AComponent *> &getComponents(void) const;
+	  const std::map<const std::string, Component::AComponent *> &getComponents(void) const;
 
         private:
             /**

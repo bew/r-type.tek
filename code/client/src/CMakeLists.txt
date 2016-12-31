@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.1)
 
 set(SOURCES
-  main.cpp
   SysWindow.cpp
   CompWindow.cpp 
   SysMusic.cpp
@@ -18,6 +17,8 @@ set(SOURCES
   CompStateMachine.cpp
   SysStateMachine.cpp
   SysSerialisation.cpp
+  SysMenu.cpp
+  main.cpp
   )
 
 set(DEPENDENCIES ${RT_COMMON_NAMES})

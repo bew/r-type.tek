@@ -24,47 +24,10 @@ void ClientTest::init()
 {
     _world._world._systemEntity.addComponent(_networkClient);
     initLogLevels();
-    initStateMachine();
-    _networkClient->_clientTCP.connect(_networkClient->_clientUDP.getAddr());
-}
-
-void ClientTest::initStateMachine()
-{
-    std::shared_ptr<state_machine::State<std::string>> sAuth = std::make_shared<state_machine::State<std::string>>(
-        "s_auth");
-    std::shared_ptr<state_machine::State<std::string>> sMenu = std::make_shared<state_machine::State<std::string>>(
-        "s_menu");
-    std::shared_ptr<state_machine::State<std::string>> sRoom = std::make_shared<state_machine::State<std::string>>(
-        "s_room_wait");
-    std::shared_ptr<state_machine::State<std::string>> sGame = std::make_shared<state_machine::State<std::string>>(
-        "s_game");
-
-    sAuth->addLink("login", sMenu->getName());
-    sAuth->addLink("signup", sAuth->getName());
-
-    sMenu->addLink("roomJoin", sRoom->getName());
-    sMenu->addLink("logout", sAuth->getName());
-
-    sRoom->addLink("roomKick", sMenu->getName());
-    sRoom->addLink("gameStart", sGame->getName());
-    sRoom->addLink("RoomLeave", sMenu->getName());
-
-    sGame->addLink("gameLeave", sMenu->getName());
-    sGame->addLink("logout", sAuth->getName());
-
-    _stateMachine->_sm.addState(sAuth);
-    _stateMachine->_sm.addState(sMenu);
-    _stateMachine->_sm.addState(sRoom);
-    _stateMachine->_sm.addState(sGame);
-
-    _stateMachine->_currentState = sAuth->getName();
-    _stateMachine->_nextState = sAuth->getName();
-
     _world._world._systemEntity.addComponent(_stateMachine);
     _world.addSystem(new ECS::System::SysStateMachine);
-
+    _networkClient->_clientTCP.connect(_networkClient->_clientUDP.getAddr());
 }
-
 
 void ClientTest::testSignup()
 {

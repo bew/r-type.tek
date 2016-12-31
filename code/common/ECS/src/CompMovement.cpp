@@ -41,6 +41,8 @@ namespace ECS
       return Component::MOVEMENT;
     }
 
+    
+
     bson::Document CompMovement::serialize() const {
       bson::Document doc;
       doc << "coo_x" << _coo._x;

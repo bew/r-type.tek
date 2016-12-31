@@ -7,6 +7,7 @@
 #pragma once
 
 #include <list>
+#include <vector>
 #include "ECS/AComponent.hh"
 #include "Network/ServerUDP.hh"
 
@@ -35,8 +36,12 @@ namespace ECS
         public:
             /**
              * Constructor of CompNetworkServer
+             *
+             * @param port port use by server
+             * @param serverToken server's token
+             * @param clientsToken all clients' token
              */
-            CompNetworkServer();
+            CompNetworkServer(unsigned short port, const std::string& serverToken, const std::vector<std::string>& clientsToken);
 
             /**
              * Destructor of CompNetworkServer
@@ -60,6 +65,16 @@ namespace ECS
              * represents the server UDP
              */
             network::ServerUDP _server;
+
+            /**
+             * contains the server's token
+             */
+            std::string _serverToken;
+
+            /**
+             * Stores the clients' tokens
+             */
+            std::vector<std::string> _clientTokens;
         };
 
     }

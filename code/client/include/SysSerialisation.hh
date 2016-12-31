@@ -7,6 +7,8 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
+#include <functional>
 
 #include "ECS/World.hh"
 #include "ECS/Entity.hh"
@@ -16,6 +18,8 @@
 #include "ECS/AssetLogLevel.hh"
 #include "CompNetworkClient.hh"
 #include "Network/SocketException.hh"
+#include "Protocol/Client.hh"
+#include "Protocol/Server.hh"
 
 namespace ECS {
   namespace System {
@@ -31,6 +35,12 @@ namespace ECS {
        * @param world All the data about the world
        */
       virtual void update(ECS::WorldData &world);
+
+      void serialize(WorldData &world, Entity::Entity *entity);
+
+      void unserialize(WorldData &world);
+
+      static std::unordered_map<std::string, std::function<Component::AComponent*(const bson::Document &)>> builders;
     };
   }
 }

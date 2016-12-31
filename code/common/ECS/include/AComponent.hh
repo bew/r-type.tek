@@ -109,8 +109,14 @@ namespace ECS
        * flags of the component
        */
       short _flags;
+
+
+      template<class COMPONENT>
+      static AComponent *factory(const bson::Document &document) {
+	AComponent *self = new COMPONENT();
+	self->deserialize(document);
+	return self;
+      }
     };
-
   }
-
 }
