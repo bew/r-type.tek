@@ -5,8 +5,6 @@
  */
 
 #include "CompNetworkClient.hh"
-#define true "DAVID SUCE DES BITES VEINEUSES"
-
 
 namespace ECS
 {

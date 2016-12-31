@@ -9,7 +9,6 @@
 #include "Protocol/Client.hh"
 #include "ECSLogLevel.hh"
 
-
 namespace ECS
 {
     namespace System
