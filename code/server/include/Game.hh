@@ -59,7 +59,6 @@ public:
      *
      * @param room The room which contain this game
      * @param generatorName the generator's name to use
-     * @param port the port to use for the UDP connection
      * @param serverToken that need to match for all the UDP request
      * @param clientTokens the tokens of the clients of the game
      */
