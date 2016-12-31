@@ -8,6 +8,7 @@
 # define PLAYER_HPP_
 
 # include <memory>
+# include <sstream>
 # include "Network/ClientTCP.hh"
 # include "ClientCommandsState.hpp"
 
@@ -24,7 +25,11 @@ struct Player
     sock(sock),
     isPlaying(false),
     name("")
-  {};
+  {
+      std::stringstream ss;
+      ss << this;
+      token = ss.str();
+  };
 
   /**
    * The player's username
@@ -50,6 +55,11 @@ struct Player
    * The player control state machine
    */
   ClientCommandsState controlState;
+
+    /**
+     * The token to use for UDP requests
+     */
+    std::string token;
 };
 
 #endif /* !PLAYER_HPP_ */

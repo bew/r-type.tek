@@ -25,7 +25,7 @@ private:
   handler_t SignUpHandler, LoginHandler, LogoutHandler;
   handler_t RoomJoinHandler, RoomLeaveHandler, RoomKickHandler;
   handler_t GameStartHandler, GameLeaveHandler;
-  handler_t GetAvailableRoomsHandler;
+  handler_t GetAvailableRoomsHandler, GetAvailableGenerators;
 
 public:
   /**
@@ -96,6 +96,10 @@ protected:
    * @param broadcast_msg The command to send
    */
   void send_to_room_players(Room & room, bson::Document const & broadcast_msg) const;
+
+    void sendMessageToRequester(const Request& request, const bson::Document& document) const;
+
+    std::vector<std::string> getAvailableGenerators(void) const;
 
 protected:
   Server * _server;

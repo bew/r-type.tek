@@ -12,8 +12,8 @@
 #include "ServerLogLevel.hh"
 #include "Server.hpp"
 
-Server::Server(std::string const & name) :
-  _serverName(name),
+Server::Server(std::string const & token) :
+  _serverToken(token),
   _clientRouter(*this)
 {}
 
