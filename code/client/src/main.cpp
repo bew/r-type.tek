@@ -30,10 +30,11 @@
 #include "ECS/CompBlueprint.hh"
 #include "ECS/CompProjectile.hh"
 #include "Graphic/AssetStore.hpp"
+#include "SysMenu.hh"
 
 int main(int ac, char**av) {
 
-  ECS::World world;  
+    ECS::World world;
   logs::logger.registerLogLevel(&logs::assetLogLevel);
   logs::logger.registerBasicsLogLevel();
   
