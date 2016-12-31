@@ -249,7 +249,11 @@ bool ServerRouter::GameStartHandler(Request & req)
         delete room.game;
     }
 
-    room.game = new Game("generatorName", 4242, "serverToken");
+    std::vector<std::string> clientTokens;
+    for (const auto& kv : room.players)
+      clientTokens.push_back(kv.second->token);
+
+    room.game = new Game("generatorName", 4242, "serverToken", clientTokens);
     try {
       room.game->launch();
     }

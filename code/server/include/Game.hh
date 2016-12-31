@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include <vector>
+
 #include "Concurrency/ATask.hh"
 #include "Network/ServerUDP.hh"
 
@@ -61,6 +63,11 @@ private:
     std::string _serverToken;
 
     /**
+     * Store the tokens of the client of the game
+     */
+     std::vector<std::string> _clientTokens;
+
+    /**
      * World of the game
      */
     ECS::World _world;
@@ -71,8 +78,9 @@ public:
      * @param generatorName the generator's name to use
      * @param port the port to use for the UDP connection
      * @param serverToken that need to match for all the UDP request
+     * @param clientTokens the tokens of the clients of the game
      */
-    Game(const std::string& generatorName, int32_t port, const std::string& serverToken);
+    Game(const std::string& generatorName, int32_t port, const std::string& serverToken, const std::vector<std::string>& clientTokens);
 
     Game(const Game& game) = delete;
 

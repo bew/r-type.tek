@@ -7,8 +7,8 @@
 #include "Game.hh"
 #include "ECS/SysTick.hh"
 
-Game::Game(const std::string& generatorName, int32_t port, const std::string &serverToken) :
-        _generatorName(generatorName), _port(port), _serverToken(serverToken) {}
+Game::Game(const std::string& generatorName, int32_t port, const std::string &serverToken, const std::vector<std::string>& clientTokens) :
+        _generatorName(generatorName), _port(port), _serverToken(serverToken), _clientTokens(clientTokens) {}
 
 Game::~Game() {}
 
