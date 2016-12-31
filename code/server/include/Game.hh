@@ -61,11 +61,6 @@ private:
     std::string _serverToken;
 
     /**
-     * UDP server that will handle the game
-     */
-    network::ServerUDP _server;
-
-    /**
      * World of the game
      */
     ECS::World _world;

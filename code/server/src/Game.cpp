@@ -13,12 +13,6 @@ Game::Game(const std::string& generatorName, int32_t port, const std::string &se
 Game::~Game() {}
 
 void Game::execLoop() {
-    // This object contains all informations to connect multiple clients to our server
-    network::SockAddr serverAddr(_port);
-
-    // this function bind the server's socket
-    _server.bind(serverAddr);
-
     // TODO: Get the UDP players
 
     ////////////////////////// ADD SYSTEMS TO WORLD
@@ -75,4 +69,6 @@ void Game::execLoop() {
     while (!tick->kill) {
         _world.update();
     }
+
+    _done = true;
 }

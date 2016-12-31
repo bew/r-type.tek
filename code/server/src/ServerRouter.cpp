@@ -241,12 +241,25 @@ bool ServerRouter::GameStartHandler(Request & req)
   std::shared_ptr<Player> player = _server->_players[req.getClient()];
   Room & room = _server->_rooms.at(player->currentRoom);
 
-
-    // choose network auth-token for players
-    // send to other players + auth token
+    if (room.game != nullptr) {
+      if (!room.game->isDone()) {
+        //TODO : handle if the game is already start
+      }
+      else
+        delete room.game;
+    }
 
     room.game = new Game("generatorName", 4242, "serverToken");
-    room.game->launch();
+    try {
+      room.game->launch();
+    }
+    catch (const std::exception &e) {
+      delete room.game;
+      std::string errorMessage = std::string("Error while launching the game of the room with owner '") + room.master + std::string("': ") + e.what();
+      std::cerr << errorMessage << std::endl;
+      logs::getLogger()[logs::SERVER] << errorMessage << std::endl;
+    }
+    // After this point, we assume that startup went well and the game is now started
     room.game->detach();
 
   // set players as playing

@@ -28,7 +28,8 @@ struct Room
   Room(std::string const & name, int maximumSlots) :
     name(name),
     maximumSlots(maximumSlots),
-    master("")
+    master(""),
+    game(nullptr)
   {}
 
   /**
