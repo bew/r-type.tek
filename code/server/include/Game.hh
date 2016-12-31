@@ -7,14 +7,49 @@
 #pragma once
 
 #include "Concurrency/ATask.hh"
-#include "ECS/World.hh"
 #include "Network/ServerUDP.hh"
+
+#include "ECS/World.hh"
+#include "ECS/CompScore.hh"
+#include "ECS/CompMusic.hh"
+#include "ECS/CompSprite.hh"
+#include "ECS/CompCollision.hh"
+#include "ECS/SysController.hh"
+#include "ECS/SysCollision.hh"
+#include "ECS/CompCollision.hh"
+#include "ECS/CompController.hh"
+#include "ECS/CompEvent.hh"
+#include "ECS/SysEvent.hh"
+#include "ECS/CompTick.hh"
+#include "ECS/SysTick.hh"
+#include "ECS/CompMovement.hh"
+#include "ECS/SysMovement.hh"
+#include "ECS/SysCollision.hh"
+#include "ECS/CompHitbox.hh"
+#include "ECS/CompBlueprint.hh"
+#include "ECS/CompProjectile.hh"
+#include "ECS/CompDamage.hh"
+#include "ECS/CompLife.hh"
+#include "ECS/SysDeath.hh"
+#include "ECS/SysLife.hh"
+#include "ECS/SysDamage.hh"
+#include "ECS/CompType.hh"
+#include "ECS/CompSuccessor.hh"
+#include "ECS/SysIA.hh"
+
+#include "LibraryLoader/CompGenerator.hh"
+#include "LibraryLoader/SysGenerator.hh"
 
 /**
  * Class that will handle the all game when game is started
  */
-class Game : public ATask {
+class Game : public concurrency::ATask {
 private:
+    /**
+     * Port to use for the UDP connection
+     */
+    int32_t _port;
+
     /**
      * Store the server token that need to match for all the UDP request
      */
