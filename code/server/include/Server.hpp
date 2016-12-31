@@ -29,9 +29,9 @@ public:
   /**
    * Construct a server instance
    *
-   * @param name The name of the server used for identification on the network
+   * @param token The server token used for identification on the network
    */
-  Server(std::string const & name);
+  Server(std::string const & token);
 
   /**
    * Destruct the server
@@ -90,7 +90,7 @@ protected:
   /**
    * The server name for network identification
    */
-  std::string _serverName;
+  std::string _serverToken;
 
   /**
    * The server socket

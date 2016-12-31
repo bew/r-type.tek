@@ -244,6 +244,7 @@ bool ServerRouter::GameStartHandler(Request & req)
     if (room.game != nullptr) {
       if (!room.game->isDone()) {
         //TODO : handle if the game is already start
+        // return that the game already running ?
       }
       else
         delete room.game;
@@ -253,7 +254,7 @@ bool ServerRouter::GameStartHandler(Request & req)
     for (const auto& kv : room.players)
       clientTokens.push_back(kv.second->token);
 
-    room.game = new Game("generatorName", 4242, "serverToken", clientTokens);
+    room.game = new Game("generatorName", 4242, _server->_serverToken, clientTokens);
     try {
       room.game->launch();
     }
@@ -275,7 +276,7 @@ bool ServerRouter::GameStartHandler(Request & req)
   for (const auto& kv : room.players) {
     bson::Document message;
     message << u8"port" << 4242;
-    kv.second->sock->addMessage(protocol::server::gameStart(4242, kv.second->token, "serverToken").getBufferString() + network::magic);
+    kv.second->sock->addMessage(protocol::server::gameStart(4242, kv.second->token, _server->_serverToken).getBufferString() + network::magic);
   }
 }
 

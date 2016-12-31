@@ -8,7 +8,8 @@
 #include "ECS/SysTick.hh"
 
 Game::Game(const std::string& generatorName, int32_t port, const std::string &serverToken, const std::vector<std::string>& clientTokens) :
-        _generatorName(generatorName), _port(port), _serverToken(serverToken), _clientTokens(clientTokens) {}
+    _generatorName(generatorName), _port(port), _serverToken(serverToken), _clientTokens(clientTokens), _done(false), _room(&room)
+{}
 
 Game::~Game() {}
 
