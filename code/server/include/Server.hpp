@@ -29,12 +29,12 @@ public:
     /**
      * The token that will be used to auth the server in UDP requests
      */
-    static const std::string SERVER_TOKEN = "Jarvis";
+    static const std::string SERVER_TOKEN;
 
     /**
      * Default port to use if non is provided
      */
-    static const unsigned short PORT = 42403;
+    static const unsigned short PORT;
 
     /**
      * Construct a server instance
@@ -66,6 +66,15 @@ public:
      * Run the main server logic
      */
     void run();
+
+private:
+    /**
+     * Allow to get a preformatted string about client information (ip and port)
+     *
+     * @param client the client on which to get the information
+     * @return a preformatted string about client information (ip and port)
+     */
+    std::string getClientInformation(const std::shared_ptr<network::ClientTCP> client);
 
 protected:
     /**
