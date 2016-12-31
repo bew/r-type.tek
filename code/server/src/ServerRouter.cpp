@@ -152,33 +152,21 @@ bool ServerRouter::RoomJoinHandler(Request & req)
 
   bson::Document room_infos;
   bson::Document room_players;
-  bson::Document room_generators;
 
-  // gather room players list
-  room_players << bson::Document::ARRAY_ENABLED;
-  for (auto & kv : room.players)
+    // gather room players list
+    room_players << bson::Document::ARRAY_ENABLED;
+    for (auto & kv : room.players)
     {
-      std::shared_ptr<Player> & player = kv.second;
-      room_players << player->name;
+        std::shared_ptr<Player> & player = kv.second;
+        room_players << player->name;
     }
-  room_players << bson::Document::ARRAY_DISABLED;
+    room_players << bson::Document::ARRAY_DISABLED;
 
+    bson::Document room_generators;
     room_generators << bson::Document::ARRAY_ENABLED;
-    std::string folder = "./generators/";
-    FileSystemWatcher watcher(folder);
-    for (const auto &i : watcher.processEvents()) {
-        if (i.second == AFileSystemWatcher::Event::Add) {
-            try {
-                std::shared_ptr<LibraryLoader> module(new LibraryLoader(folder+i.first));
-                Dependent_ptr<IGenerator, LibraryLoader> instance(module->newInstance(), module);
-                room_generators << instance->getName();
-            } catch (const LibraryLoaderException &e) {
-                std::string errorMessage = std::string("Can't get the library name: ") + e.what();
-                std::cerr << errorMessage << std::endl;
-                logs::getLogger()[logs::SERVER] << errorMessage << std::endl;
-            }
-        }
-    }
+    std::vector<std::string> generators = this->getAvailableGenerators();
+    for (const auto& generator : generators)
+        room_generators << generator;
     room_generators << bson::Document::ARRAY_DISABLED;
 
   room_infos << u8"players" << room_players;
@@ -372,7 +360,20 @@ bool ServerRouter::GetAvailableRoomsHandler(Request & req)
 }
 
 bool ServerRouter::GetAvailableGenerators(Request & req) {
-    return true;
+    // Check the packet
+    if (!protocol::client::checkGetAvailableGenerators(req.getPacket()))
+        return reply_bad_req(req, "The packet for the action 'RoomJoin' is not correct.");
+
+    // Get the available generators
+    bson::Document generatorsDocument;
+    generatorsDocument << bson::Document::ARRAY_ENABLED;
+    std::vector<std::string> generators = this->getAvailableGenerators();
+    for (const auto& generator : generators)
+        generatorsDocument << generator;
+    generatorsDocument << bson::Document::ARRAY_DISABLED;
+
+    // Return the answer with the generators
+    return reply_ok(req, generatorsDocument);
 }
 
 int64_t ServerRouter::getTimestamp(Request & req) const
