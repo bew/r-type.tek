@@ -260,5 +260,25 @@ namespace ECS {
                 _signUp[_selectedItemIndex].setFillColor(sf::Color::Red);
             }
         }
+
+        int SysMenu::GetPressedItem() const {
+            return _selectedItemIndex;
+        }
+
+        bool SysMenu::isUserLogged() const {
+            return _userlogged;
+        }
+
+        bool SysMenu::isPwdCorrect() const {
+            return _userpwd;
+        }
+
+        const std::string& SysMenu::getCryptedPwd() const {
+            return _cryptedPwd;
+        }
+
+        const std::string& SysMenu::getLogin() const {
+            return _user;
+        }
     }
 }

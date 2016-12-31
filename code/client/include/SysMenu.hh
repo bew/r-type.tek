@@ -54,11 +54,11 @@ namespace ECS {
             void MoveUpSign();
             void MoveDown();
             void MoveDownSign();
-            int GetPressedItem() const {return _selectedItemIndex;}
-            bool isUserLogged() const {return _userlogged;}
-            bool isPwdCorrect() const {return _userpwd;}
-            const std::string & getCryptedPwd() const {return _cryptedPwd;}
-            const std::string & getLogin() const {return _user;}
+            int GetPressedItem() const;
+            bool isUserLogged() const;
+            bool isPwdCorrect() const;
+            const std::string & getCryptedPwd() const;
+            const std::string & getLogin() const;
 
         private:
             float _w;
