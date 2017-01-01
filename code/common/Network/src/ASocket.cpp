@@ -25,8 +25,10 @@ namespace network
     unsigned short ASocket::getPort() const {
         struct sockaddr_in addr;
         socklen_t len = sizeof(addr);
-        getsockname(_socket, reinterpret_cast<struct sockaddr *>(&addr), &len);
-        return addr.sin_port;
+        if (!getsockname(_socket, reinterpret_cast<struct sockaddr *>(&addr), &len))
+            return addr.sin_port;
+        else
+            return static_cast<unsigned short>(-1);
     }
 
 }
