@@ -19,6 +19,16 @@ namespace ECS {
       return Component::IA;
     }
 
+      bson::Document  CompIA::serialize() const {
+          bson::Document doc;
+          doc << u8"name" << name;
+          return doc;
+      };
+
+      void  CompIA::deserialize(const bson::Document& document) {
+          document[u8"name"] >> name;
+      }
+
     AComponent *CompIA::clone(void) const {
       return new CompIA(name);
     }
