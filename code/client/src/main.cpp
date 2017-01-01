@@ -63,7 +63,7 @@ int main(int ac, char**av) {
   ECS::System::SysSerialisation::builders[ECS::Component::SCORE] = &ECS::Component::AComponent::factory<ECS::Component::CompScore>;
   ECS::System::SysSerialisation::builders[ECS::Component::TYPE] = &ECS::Component::AComponent::factory<ECS::Component::CompType>;
   ECS::System::SysSerialisation::builders[ECS::Component::HITBOX] = &ECS::Component::AComponent::factory<ECS::Component::CompHitbox>;
-
+  ECS::System::SysSerialisation::builders[ECS::Component::DEATH] = &ECS::Component::AComponent::factory<ECS::Component::CompDeath>;
   
   ECS::World world;
   
