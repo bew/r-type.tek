@@ -382,6 +382,7 @@ bool ServerRouter::GameStartHandler(Request & req)
                                                                 kv.second->token,
                                                                 _server->_serverToken).getBufferString() +
                                     network::magic);
+    logs::getLogger()[logs::SERVER] << "Has GameStart." << _server->getClientInformation(req.getClient()) << std::endl;
 }
 
 bool ServerRouter::GameLeaveHandler(Request &req)
@@ -411,6 +412,7 @@ bool ServerRouter::GameLeaveHandler(Request &req)
 
     player->isPlaying = false;
     sendToRoomOtherPlayers(req, room, protocol::server::gameLeave(player->name));
+    logs::getLogger()[logs::SERVER] << "Has GameLeave." << _server->getClientInformation(req.getClient()) << std::endl;
     return replyOk(req);
 }
 
@@ -445,6 +447,7 @@ bool ServerRouter::GetAvailableRoomsHandler(Request & req)
     }
     rooms << bson::Document::ARRAY_DISABLED;
 
+    logs::getLogger()[logs::SERVER] << "Has GetAvailableRooms." << _server->getClientInformation(req.getClient()) << std::endl;
     return replyOk(req, rooms);
 }
 
@@ -471,6 +474,7 @@ bool ServerRouter::GetAvailableGenerators(Request & req) {
         generatorsDocument << generator;
     generatorsDocument << bson::Document::ARRAY_DISABLED;
 
+    logs::getLogger()[logs::SERVER] << "Has GetAvailableGenerators." << _server->getClientInformation(req.getClient()) << std::endl;
     // Return the answer with the generators
     return replyOk(req, generatorsDocument);
 }
