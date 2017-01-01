@@ -9,7 +9,7 @@
 namespace ECS {
   namespace Component {
     CompDeath::CompDeath(int delay) :
-      AComponent(CLONABLE_MASK),
+      AComponent(CLONABLE_MASK | SERVER_SERIALIZABLE_MASK),
       _delay(delay)
     {}
     
@@ -20,6 +20,16 @@ namespace ECS {
     AComponent *CompDeath::clone(void) const {
       return new CompDeath(_delay);
     }
+
+      bson::Document  CompDeath::serialize() const {
+          bson::Document doc;
+          doc << u8"delay" << _delay;
+          return doc;
+      };
+
+      void  CompDeath::deserialize(const bson::Document& document) {
+          document[u8"delay"] >> _delay;
+      }
 
   }
 }

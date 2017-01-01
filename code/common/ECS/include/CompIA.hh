@@ -42,6 +42,16 @@ namespace ECS {
        */
       virtual const std::string &getType() const;
 
+        /**
+         * @return a document describing the component state
+         */
+        virtual bson::Document serialize() const;
+
+        /**
+         * @param document State to write into the component
+         */
+        virtual void deserialize(const bson::Document& document);
+
       /**
        * clone
        */

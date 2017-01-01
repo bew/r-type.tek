@@ -9,7 +9,7 @@
 namespace ECS {
   namespace Component {
     CompScore::CompScore(int pscore) :
-      AComponent(CLONABLE_MASK),
+      AComponent(CLONABLE_MASK | SERVER_SERIALIZABLE_MASK),
       score(pscore)
     {}
 
@@ -20,6 +20,16 @@ namespace ECS {
     AComponent *CompScore::clone(void) const {
       return new CompScore(score);
     }
+
+      bson::Document  CompScore::serialize() const {
+          bson::Document doc;
+          doc << u8"score" << score;
+          return doc;
+      };
+
+      void  CompScore::deserialize(const bson::Document& document) {
+          document[u8"score"] >> score;
+      }
 
   }
 }
