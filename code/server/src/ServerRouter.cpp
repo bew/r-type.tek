@@ -523,7 +523,6 @@ std::vector<std::string> ServerRouter::getAvailableGenerators() {
             try {
                 std::shared_ptr<LibraryLoader> module(new LibraryLoader(folder + i.first));
                 Dependent_ptr<IGenerator, LibraryLoader> instance(module->newInstance(), module);
-                generators.push_back(instance->getName());
                 _generators[instance->getName()] = instance;
             } catch (const LibraryLoaderException &e) {
                 std::string errorMessage = std::string("Can't get the library name: ") + e.what();
@@ -531,6 +530,9 @@ std::vector<std::string> ServerRouter::getAvailableGenerators() {
             }
         }
     }
+
+    for (const auto& generator : _generators)
+        generators.push_back(generator.first);
 
     return generators;
 }
