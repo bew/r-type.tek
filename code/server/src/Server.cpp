@@ -140,9 +140,12 @@ void Server::processDisconnectedClients()
         disClients.push_back(kv.first);
 
     // remove all still connected clients
-    disClients.erase(std::remove_if(disClients.begin(), disClients.end(), [&](std::shared_ptr<network::ClientTCP> const & client) {
-                                    return std::find(stillConnected.begin(), stillConnected.end(), client) != stillConnected.end();
-                                 }));
+    for (auto & client : stillConnected)
+    {
+        auto it = std::find(disClients.begin(), disClients.end(), client);
+        if (it != disClients.end())
+            disClients.erase(it);
+    }
 
     for (auto & client : disClients)
         disconnectClient(client, true);
@@ -175,4 +178,20 @@ void Server::disconnectClient(std::shared_ptr<network::ClientTCP> client, bool s
     else
         logs::getLogger()[logs::SERVER] << "Anonymous player force disconnected" << std::endl;
 
+    cleanupEmptyRooms();
+}
+
+void Server::cleanupEmptyRooms()
+{
+    typedef decltype(_rooms)::iterator RoomIt;
+    for (RoomIt it = _rooms.begin(); it != _rooms.end();)
+    {
+        Room & room = it->second;
+        if (room.players.size() == 0)
+        {
+            it = _rooms.erase(it);
+        }
+        else
+            ++it;
+    }
 }

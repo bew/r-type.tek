@@ -103,6 +103,11 @@ protected:
      */
     void disconnectClient(std::shared_ptr<network::ClientTCP> client, bool sendOther = false);
 
+    /**
+     * Remove empty rooms (with no players)
+     */
+    void cleanupEmptyRooms();
+
 protected:
     /**
      * Store the association between a client socket and a Player

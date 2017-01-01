@@ -106,13 +106,17 @@ bool ServerRouter::LogoutHandler(Request & req)
 
     // Check if player connected
     if (!this->isPlayerConnected(req))
+    {
+        _server->disconnectClient(req.getClient(), true);
         return false;
+    }
 
     std::shared_ptr<Player> player = _server->_players[req.getClient()];
 
     replyOk(req);
 
     _server->disconnectClient(req.getClient(), true);
+    _server->cleanupEmptyRooms();
 
     logs::getLogger()[logs::SERVER] << "Has Logout." << _server->getClientInformation(req.getClient()) << std::endl;
     return true;
