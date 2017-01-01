@@ -21,5 +21,15 @@ namespace ECS {
       return new CompScore(score);
     }
 
+      bson::Document  CompScore::serialize() const {
+          bson::Document doc;
+          doc << u8"score" << score;
+          return doc;
+      };
+
+      void  CompScore::deserialize(const bson::Document& document) {
+          document[u8"score"] >> score;
+      }
+
   }
 }
