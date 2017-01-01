@@ -16,8 +16,12 @@ add(SRV_SOURCE SysSerialisation.cpp)
 
 set(DEPENDENCIES ${RT_COMMON_NAMES})
 
+if(WIN32)
+    set(DEPENDENCIES ${DEPENDENCIES} ws2_32)
+endif()
+
 add_executable(${EXEC_NAME} ${SRV_SOURCE})
-target_link_libraries(${EXEC_NAME} ${RT_COMMON_NAMES})
+target_link_libraries(${EXEC_NAME} ${DEPENDENCIES})
 
 install(TARGETS ${EXEC_NAME} DESTINATION bin)
 

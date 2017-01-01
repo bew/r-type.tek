@@ -116,6 +116,8 @@ void Empty::update(ECS::WorldData &world) {
       
       world._systemEntity.addComponent(new ECS::Component::CompSprite("desert", {1280/2, 720/2}));
       world._systemEntity.addComponent(new ECS::Component::CompMusic("MilkyWay"));
+      world._systemEntity.addComponent(new ECS::Component::CompCollision());
+      world._systemEntity.addComponent(new ECS::Component::CompScore(0));
       
       for (ECS::Entity::Entity *entity : world._gameEntities) {
 	if (entity->getId() >= 1 && entity->getId() <= 4) {

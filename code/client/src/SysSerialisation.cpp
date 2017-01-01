@@ -15,7 +15,7 @@ namespace ECS {
       Component::CompNetworkClient *clientc = dynamic_cast<Component::CompNetworkClient*>(world._systemEntity.getComponent(ECS::Component::NETWORK_CLIENT));
 
       bson::Document components;
-      if (clientc) {
+      if (clientc && clientc->_clientUDP) {
 	for (auto componentEntry : entity->getComponents()) {
 	  if (componentEntry.second->hasFlag(Component::CLIENT_SERIALIZABLE_MASK)) {
 	    try {
@@ -26,8 +26,8 @@ namespace ECS {
 	    }
 	  }
 	}
-      clientc->_clientUDP.addMessage(protocol::client::entityUpdate(clientc->_clientToken, entity->getId(), components).getBufferString() + network::magic);
-      clientc->_clientUDP.update();
+      clientc->_clientUDP->addMessage(protocol::client::entityUpdate(clientc->_clientToken, entity->getId(), components).getBufferString() + network::magic);
+      clientc->_clientUDP->update();
       }
     }
 
@@ -42,15 +42,15 @@ namespace ECS {
 
       Component::CompNetworkClient *clientc = dynamic_cast<Component::CompNetworkClient*>(world._systemEntity.getComponent(ECS::Component::NETWORK_CLIENT));
 
-      if (clientc) {
+      if (clientc && clientc->_clientUDP) {
 	try {
-	  clientc->_clientUDP.update();
+	  clientc->_clientUDP->update();
 	}
 	catch (const network::SocketException &e) {
 	  logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
 	}
 	std::string message;
-	while (!(message = clientc->_clientUDP.getMessage()).empty()) {
+	while (!(message = clientc->_clientUDP->getMessage()).empty()) {
 	  try {
 	    bson::Document document(message);
 	    if (!protocol::server::checkEntityUpdate(document))

@@ -15,7 +15,7 @@ TEST(clientTest, loginSinup)
     ECS::World world;
     ECS::Component::CompNetworkClient* networkClient = new ECS::Component::CompNetworkClient("10.41.175.111", 42402);
     world._world._systemEntity.addComponent(networkClient);
-    networkClient->_clientTCP.connect(networkClient->_clientUDP.getAddr());
+    networkClient->_clientTCP.connect(networkClient->_clientUDP->getAddr());
     ECS::Component::CompStateMachine *stateMachine = new ECS::Component::CompStateMachine;
     std::shared_ptr<state_machine::State<std::string>> sAuth = std::make_shared<state_machine::State<std::string>>(
         "s_auth");
