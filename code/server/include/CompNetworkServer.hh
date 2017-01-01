@@ -8,7 +8,7 @@
 
 #include <list>
 #include <vector>
-#include "AComponent.hh"
+#include "ECS/AComponent.hh"
 #include "Network/ServerUDP.hh"
 
 /**
@@ -31,7 +31,7 @@ namespace ECS
          */
         static const std::list<std::string> ACTIONS_FROM_CLIENTS_UDP = {"EntityUpdate"};
 
-        class CompNetworkServer
+        class CompNetworkServer : public AComponent
         {
         public:
             /**
@@ -75,7 +75,11 @@ namespace ECS
              * Stores the clients' tokens
              */
             std::vector<std::string> _clientTokens;
-        };
 
+            /**
+             * Store the port on which the UDP server run
+             */
+            short port;
+        };
     }
 }

@@ -1,9 +1,9 @@
 #include "gtest/gtest.h"
 #include "ECS/World.hh"
 #include "ECS/ECSLogLevel.hh"
-#include "ECS/CompStateMachine.hh"
-#include "ECS/CompNetworkClient.hh"
-#include "ECS/SysStateMachine.hh"
+#include "CompStateMachine.hh"
+#include "CompNetworkClient.hh"
+#include "SysStateMachine.hh"
 #include "Protocol/Client.hh"
 
 TEST(clientTest, loginSinup)

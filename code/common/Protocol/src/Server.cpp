@@ -74,11 +74,13 @@ namespace protocol {
                    protocol::checkString(data, "username");
         }
 
-        bson::Document gameStart(const std::string &token) {
+        bson::Document gameStart(int32_t port, const std::string& clientToken, const std::string& serverToken) {
             bson::Document document;
             bson::Document message;
 
-            message << u8"token" << token;
+            message << u8"port" << port;
+            message << u8"clientToken" << clientToken;
+            message << u8"serverToken" << serverToken;
 
             document << u8"header" << protocol::createHeader("GameStart");
             document << u8"data" << message;
@@ -91,8 +93,10 @@ namespace protocol {
                 document[u8"header"][u8"action"].getValueString() != u8"GameStart")
                 return false;
             bson::Document data = document[u8"data"].getValueDocument();
-            return data.elementsCount() == 1 &&
-                   protocol::checkString(data, u8"token");
+            return data.elementsCount() == 3 &&
+                   data.hasKey(u8"port") && data[u8"port"].getValueType() == bson::INT32 &&
+                   protocol::checkString(data, u8"clientToken") &&
+                   protocol::checkString(data, u8"serverToken");
         }
 
         bson::Document gameLeave(const std::string &username) {

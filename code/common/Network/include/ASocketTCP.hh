@@ -35,6 +35,23 @@ namespace network
         ASocketTCP(Socket_t socket);
 
         /**
+         * Type of the requested info
+         */
+        enum infoType {
+            CURRENT,
+            PEER
+        };
+
+        /**
+         * Allow to retrieve the host data into something readable
+         *
+         * @param type The type of information we want to get (current or peer)
+         * @param[out] ip The ip of the requested info
+         * @param port The port of the requested info
+         */
+        void getInfos(infoType type, std::string& ip, short& port);
+
+        /**
          * encapsulation of listen system call who marks socket as a passive socket
          */
         virtual void listen() = 0;

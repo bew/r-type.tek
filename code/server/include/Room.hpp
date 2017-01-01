@@ -4,13 +4,15 @@
  * @brief Class for a Room
  */
 
-#ifndef ROOM_HPP_
-# define ROOM_HPP_
+#pragma once
+
+class Room;
 
 #include <map>
 #include <stdexcept>
 #include <memory>
 #include "Player.hpp"
+#include "Game.hh"
 
 /**
  * Represent a Room where players can play
@@ -27,8 +29,11 @@ struct Room
   Room(std::string const & name, int maximumSlots) :
     name(name),
     maximumSlots(maximumSlots),
-    master("")
+    master(""),
+    game(nullptr)
   {}
+
+  ~Room();
 
   /**
    * The room name
@@ -52,15 +57,11 @@ struct Room
    */
   std::map<std::string, std::shared_ptr<Player>> players;
 
-  // ECS ?
-  // UDP data socket ? (should be in ECS world)
-
   /**
-   * Store the list of activated plugins for the level of this room
-   *
-   * TODO: see how to activate plugins for a given room ctor ? methods ?
+   * The Game of the room
    */
-  //std::vector<std::shared_ptr<Plugin>> _activatedPlugins;
+  Game *game;
+
+  friend Game;
 };
 
-#endif /* !ROOM_HPP_ */
