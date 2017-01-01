@@ -10,4 +10,4 @@ project(${LIB_NAME})
 include_directories(${LIB_INCLUDE})
 
 add_subdirectory(src)
-add_subdirectory(test)
+#add_subdirectory(test)

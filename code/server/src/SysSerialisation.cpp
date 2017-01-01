@@ -27,7 +27,7 @@ namespace ECS {
                             serverc->_server.addMessage
                                     (serverc->_server.getConnections()[entity->getId() - 1],
                                      protocol::client::entityUpdate(serverc->_serverToken, entity->getId(),
-                                                                    controller).getBufferString() + network::magic);
+                                                                    controller).getBufferString());
                         } else
                             components << componentEntry.second->getType() << componentEntry.second->serialize();
                     }
@@ -38,24 +38,24 @@ namespace ECS {
             }
 
             for (auto connected : serverc->_server.getConnections()) {
-                bson::Document message = protocol::client::entityUpdate(serverc->_serverToken, entity->getId(), components);
-                serverc->_server.addMessage(connected, message.getBufferString() + network::magic);
-	    }
-	    try {
-	      serverc->_server.update();
-	    }
-	    catch (const network::SocketException &e) {
-	      logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
-	      return;
-	    }
+                bson::Document message = protocol::server::entityUpdate(serverc->_serverToken, entity->getId(), components);
+                serverc->_server.addMessage(connected, message.getBufferString());
+	        }
+
+            try {
+                serverc->_server.update();
+            }
+            catch (const network::SocketException &e) {
+                logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
+                return;
+            }
         }
-      
+
         void SysSerialisation::update(WorldData &world) {
-	  Component::CompNetworkServer *serverc = dynamic_cast<Component::CompNetworkServer *>(world._systemEntity.getComponent(ECS::Component::NETWORK_SERVER));
-	  unserialize(world);
-	  serialize(world, &world._systemEntity);
-	  for (const Entity::Entity *entity : world._gameEntities)
-	    serialize(world, entity);	 
+            unserialize(world);
+            serialize(world, &world._systemEntity);
+            for (const Entity::Entity *entity : world._gameEntities)
+                serialize(world, entity);
         }
 
         void SysSerialisation::unserialize(WorldData &world) const {

@@ -12,16 +12,10 @@
  * namespace that contains all network abstraction
  */
 namespace network {
-
-    /**
-     * Magic to delimit binary buffer
-     */
-    static const std::string magic = "Th!T^nZM";
-
     /**
      * Buffer size of the buffers
      */
-    static const size_t BUFFER_SIZE = 215654;
+    static const size_t BUFFER_SIZE = 1000000;
 
     /**
      * Representation of socket abstraction
@@ -57,21 +51,9 @@ namespace network {
          *
          * @return message or empty string
          */
-        std::string get() const;
+        std::string get();
 
     private:
-        /**
-         * initiall all bytes of buffer to -1
-         */
-        void initBuffer();
-
-        /**
-         * Allow to check if the magic is the next byte to process into the buffer
-         *
-         * @return true if the magic is the next byte to proccess into the buffer, else false
-         */
-        bool checkMagic(size_t readPosition) const;
-
         /**
          * buffer used to add and get messages
          */
@@ -86,6 +68,11 @@ namespace network {
           * index of write position, used to fill message in the buffer
           */
         size_t _writePosition;
+
+        /**
+         * Index of packet's end
+         */
+        int _marker;
     };
 
 }

@@ -34,7 +34,7 @@ void ClientTest::testSignup()
     std::cout << "signup with username: " << _username << " & password: " << _password << std::endl;
 
     _networkClient->_clientTCP.addMessage(
-        protocol::client::signUp(_username, _password).getBufferString() + network::magic);
+        protocol::client::signUp(_username, _password).getBufferString());
 
     _world.update();
 
@@ -56,7 +56,7 @@ void ClientTest::testBadLogin()
     _stateMachine->_nextState = "s_auth";
 
     _networkClient->_clientTCP.addMessage(
-        protocol::client::login("blarp", "").getBufferString() + network::magic);
+        protocol::client::login("blarp", "").getBufferString());
 
     _world.update();
 
@@ -80,7 +80,7 @@ void ClientTest::testLogin()
     _stateMachine->_nextState = "s_menu";
 
     _networkClient->_clientTCP.addMessage(
-        protocol::client::login(_username, _password).getBufferString() + network::magic);
+        protocol::client::login(_username, _password).getBufferString());
 
     _world.update();
 
@@ -113,7 +113,7 @@ void ClientTest::testUnauthorizedRoomJoin()
 {
     bson::Document roomJoin(protocol::client::roomJoin("tookie"));
 
-    std::string msg(roomJoin.getBufferString() + network::magic);
+    std::string msg(roomJoin.getBufferString());
 
     _networkClient->_clientTCP.addMessage(msg);
 
@@ -161,7 +161,7 @@ void ClientTest::testGetAvailableRoom()
 
     _stateMachine->_nextState = "s_menu";
 
-    _networkClient->_clientTCP.addMessage(protocol::client::getAvailableRooms().getBufferString() + network::magic);
+    _networkClient->_clientTCP.addMessage(protocol::client::getAvailableRooms().getBufferString());
 
     _world.update();
 
@@ -189,7 +189,7 @@ void ClientTest::testJoinRoom()
     testLogin();
 
     _networkClient->_clientTCP.addMessage(
-        protocol::client::roomJoin("Fast rush, fat pl, no noob").getBufferString() + network::magic);
+        protocol::client::roomJoin("Fast rush, fat pl, no noob").getBufferString());
 
     _stateMachine->_nextState = "s_room_wait";
 
@@ -234,7 +234,7 @@ void ClientTest::testGameStart()
         && _networkClient->_lastReceived["data"]["data"]["0"].getValueType() == bson::STRING)
     {
         _networkClient->_clientTCP.addMessage(protocol::client::gameStart(
-            _networkClient->_lastReceived["data"]["data"]["0"].getValueString()).getBufferString() + network::magic);
+            _networkClient->_lastReceived["data"]["data"]["0"].getValueString()).getBufferString());
 
         _stateMachine->_nextState = "s_game";
         _world.update();
@@ -250,7 +250,7 @@ void ClientTest::testGameStart()
     }
     else
     {
-        _networkClient->_clientTCP.addMessage(protocol::client::gameStart("A").getBufferString() + network::magic);
+        _networkClient->_clientTCP.addMessage(protocol::client::gameStart("A").getBufferString());
         _world.update();
 
         while (!_networkClient->_clientTCP.hasMessage())
@@ -278,7 +278,7 @@ void ClientTest::testRoomLeave()
 {
     testJoinRoom();
 
-    _networkClient->_clientTCP.addMessage(protocol::client::roomLeave().getBufferString() + network::magic);
+    _networkClient->_clientTCP.addMessage(protocol::client::roomLeave().getBufferString());
 
     _world.update();
 
@@ -300,7 +300,7 @@ void ClientTest::testGameLeave()
 {
     testGameStart();
 
-    _networkClient->_clientTCP.addMessage(protocol::client::gameLeave().getBufferString() + network::magic);
+    _networkClient->_clientTCP.addMessage(protocol::client::gameLeave().getBufferString());
 
     _world.update();
 
@@ -324,7 +324,7 @@ void ClientTest::testLogout()
 
     std::cout << "logout with username: " << _username << " & password: " << _password << std::endl;
 
-    _networkClient->_clientTCP.addMessage(protocol::client::logout().getBufferString() + network::magic);
+    _networkClient->_clientTCP.addMessage(protocol::client::logout().getBufferString());
 
     _world.update();
 

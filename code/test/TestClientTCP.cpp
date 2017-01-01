@@ -28,8 +28,6 @@ void ClientTCP::execLoop()
 
     _client.connect(_serverInfos);
 
-    messageSerialized += network::magic;
-
     _client.addMessage(messageSerialized);
 
     _client.update(0);
