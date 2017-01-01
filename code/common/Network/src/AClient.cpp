@@ -21,7 +21,7 @@ namespace network
         return msg;
     }
 
-    bool AClient::hasMessage() const
+    bool AClient::hasMessage()
     {
         return (!_readBuffer.get().empty());
     }

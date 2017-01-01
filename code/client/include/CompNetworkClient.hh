@@ -53,10 +53,8 @@ namespace ECS
         public:
             /**
              * Constructor of CompNetworkClient
-             * @param ip ip use to create client
-             * @param port port use to create client
              */
-            CompNetworkClient(const std::string& ip, unsigned short port);
+            CompNetworkClient(void);
 
             /**
              * Constructor of CompNetworkClient
@@ -68,6 +66,13 @@ namespace ECS
              * Destructor of CompNetworkClient
              */
             ~CompNetworkClient();
+
+	  /**
+	   * @throw SocketException
+	   * @param ip ip use to create client                                                                                                                                               
+	   * @param port port use to create client 
+	   */
+	  void connectTCP(const std::string& ip, unsigned short port);
 
             /**
              * get the type of component
@@ -114,10 +119,6 @@ namespace ECS
              */
              std::string _serverToken;
 
-	  /**
-	   * The server address
-	   */
-	  std::string _address;
         };
     }
 }

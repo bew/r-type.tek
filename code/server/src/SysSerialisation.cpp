@@ -27,8 +27,7 @@ namespace ECS {
                             serverc->_server.addMessage
                                     (serverc->_server.getConnections()[entity->getId() - 1],
                                      protocol::client::entityUpdate(serverc->_serverToken, entity->getId(),
-                                                                    controller).getBufferString() +
-                                     network::magic);
+                                                                    controller).getBufferString());
                         } else
                             components << componentEntry.second->getType() << componentEntry.second->serialize();
                     }
@@ -39,10 +38,17 @@ namespace ECS {
             }
 
             for (auto connected : serverc->_server.getConnections()) {
-                bson::Document message = protocol::client::entityUpdate(serverc->_serverToken, entity->getId(), components);
-                serverc->_server.addMessage(connected, message.getBufferString() + network::magic);
+                bson::Document message = protocol::server::entityUpdate(serverc->_serverToken, entity->getId(), components);
+                serverc->_server.addMessage(connected, message.getBufferString());
+	        }
+
+            try {
+                serverc->_server.update();
             }
-            serverc->_server.update();
+            catch (const network::SocketException &e) {
+                logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
+                return;
+            }
         }
 
         void SysSerialisation::update(WorldData &world) {
@@ -57,13 +63,6 @@ namespace ECS {
             if (!serverc)
                 return;
 
-            try {
-                serverc->_server.update();
-            }
-            catch (const network::SocketException &e) {
-                logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
-                return;
-            }
             std::string message;
             for (const auto &connected : serverc->_server.getConnections()) {
                 while (!(message = serverc->_server.getMessage(connected)).empty()) {

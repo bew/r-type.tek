@@ -39,8 +39,6 @@ public:
    */
   virtual std::vector<std::pair<std::string, AFileSystemWatcher::Event>> processEvents(void);
 
-private:
-  
   /**
    * list the current files in the watcher directory
    */

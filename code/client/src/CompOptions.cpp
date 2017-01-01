@@ -22,7 +22,9 @@ namespace ECS {
       _aaliasing(0),
       _title("Aru Taipu"),
       _windowChanged(false),
-      loaded(false)
+      loaded(false),
+      _serverUrl(""),
+      _serverPort(0)
     {};
 
     const std::string &CompOptions::getType() const {

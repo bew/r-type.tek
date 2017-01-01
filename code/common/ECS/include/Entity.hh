@@ -63,9 +63,10 @@ namespace ECS
 
             /**
     	     * add a component.
-	         * @param comp the component.
-	         */
-            void addComponent(ECS::Component::AComponent *comp);
+	     *
+	     * @param comp the component.
+	     */
+            void addComponent(ECS::Component::AComponent *comp);	  
 
 	  /**
 	   * @return Components

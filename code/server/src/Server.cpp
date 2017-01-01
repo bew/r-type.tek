@@ -68,14 +68,14 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
         packet = bson::Document(raw_packet);
     }
     catch (const bson::BsonException &e) {
-        client->addMessage(protocol::answers::badRequest(-1, "Can't deserialize packet").getBufferString() + network::magic);
+        client->addMessage(protocol::answers::badRequest(-1, "Can't deserialize packet").getBufferString());
         logs::getLogger()[logs::SERVER] << "Received a packet but can't deserialize it. " << e.what() << " " << this->getClientInformation(client) << std::endl;
         return;
     }
 
     // Check the integrity of the packet received
     if (!protocol::checkMessage(packet)) {
-        client->addMessage(protocol::answers::badRequest(-1, "Wrong packet format").getBufferString() + network::magic);
+        client->addMessage(protocol::answers::badRequest(-1, "Wrong packet format").getBufferString());
         logs::getLogger()[logs::SERVER] << "Received a packet but wrong format : " << packet.toJSON(2) << std::endl << this->getClientInformation(client) << std::endl;
         return;
     }
@@ -94,7 +94,7 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
 
     if (!state.gotoNextStateVia(action)) {
         logs::getLogger()[logs::SERVER] << "Unauthorized action '" << action << "' " << this->getClientInformation(client) << std::endl;
-        client->addMessage(protocol::answers::unauthorized(timestamp).getBufferString() + network::magic);
+        client->addMessage(protocol::answers::unauthorized(timestamp).getBufferString());
         return;
     }
 

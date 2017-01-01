@@ -34,8 +34,6 @@ public:
    * @return A vector of pair filename / event
    */
   virtual std::vector<std::pair<std::string, AFileSystemWatcher::Event>> processEvents(void);
-  
-private:
 
   /**
    * list the current files in the watcher directory

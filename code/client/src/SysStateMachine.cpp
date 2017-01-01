@@ -23,17 +23,14 @@ namespace ECS
 	  stateMachine._currentState = stateMachine._sm[stateMachine._currentState]->getLink(action);
 	  network._lastReceived = doc;
 	  network._clientTCP.addMessage(protocol::answers::ok(doc["header"]["timestamp"].getValueInt64(),
-							      bson::Document()).getBufferString() +
-					network::magic);
+							      bson::Document()).getBufferString());
 	}
 	else {
-	  network._clientTCP.addMessage(protocol::answers::unauthorized(doc["header"]["timestamp"].getValueInt64()).getBufferString() +
-					network::magic);
+	  network._clientTCP.addMessage(protocol::answers::unauthorized(doc["header"]["timestamp"].getValueInt64()).getBufferString());
 	}
       }
       else if (doc["header"]["action"].getValueString() != "Answer")
-	network._clientTCP.addMessage(protocol::answers::notFound(doc["header"]["timestamp"].getValueInt64()).getBufferString() +
-				      network::magic);
+	network._clientTCP.addMessage(protocol::answers::notFound(doc["header"]["timestamp"].getValueInt64()).getBufferString());
       else if (protocol::answers::checkAnswer(doc)
 	       && doc["data"]["code"].getValueInt32() == 200
 	       && !stateMachine._nextState.empty()
@@ -63,7 +60,7 @@ namespace ECS
 	  }
 	  catch (bson::BsonException &bsonError) {
 	    network->_clientTCP.addMessage(
-					   protocol::answers::badRequest(-1).getBufferString() + network::magic);
+					   protocol::answers::badRequest(-1).getBufferString());
 	    if (logs::getLogger().isRegister(logs::ERRORS))
 	      logs::getLogger()[logs::ERRORS] << bsonError.what() << std::endl;
 	    else
@@ -77,12 +74,10 @@ namespace ECS
 		protocol::checkTimestamp(doc["header"].getValueDocument()))
 	      network->_clientTCP.addMessage(
 					     protocol::answers::badRequest(
-									   doc["header"]["timestamp"].getValueInt64()).getBufferString() +
-					     network::magic);
+									   doc["header"]["timestamp"].getValueInt64()).getBufferString());
 	    else
 	      network->_clientTCP.addMessage(
-					     protocol::answers::badRequest(-1).getBufferString() +
-					     network::magic);
+					     protocol::answers::badRequest(-1).getBufferString());
 	  }
 	}
 	catch (network::SocketException &socketError){
@@ -94,7 +89,7 @@ namespace ECS
 	}
 	catch (bson::BsonException &bsonError){
 	  network->_clientTCP.addMessage(
-					 protocol::answers::internalServerError(-1).getBufferString() + network::magic);
+					 protocol::answers::internalServerError(-1).getBufferString());
 	  if (logs::getLogger().isRegister(logs::ERRORS))
 	    logs::getLogger()[logs::ERRORS] << bsonError.what() << std::endl;
 	  else

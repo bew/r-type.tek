@@ -284,7 +284,7 @@ namespace bson {
             throw BsonException("Can't unserialize while having incomplete an Document (next input should be a key)");
 
         if (buffer.size() < 4)
-            throw BsonException("The given document is invalid");
+            throw BsonException("The given document is invalid : can't get size");
 
         union {
             int32_t integer;
@@ -297,10 +297,13 @@ namespace bson {
             size.integer = swap_endian<int32_t >(size.integer);
 
         if (size.integer != buffer.size())
-            throw BsonException("The given document is invalid");
+            throw BsonException("The given document is invalid : wrong total size");
 
         size_t bufferIndex = 4;
         while (bufferIndex < (buffer.size() - 1)) {
+            if (!codesTypes.count(buffer.at(bufferIndex)))
+                throw BsonException("The given document is invalid : unknow type => " + std::to_string(buffer.at(bufferIndex)));
+
             bson::type valueType = codesTypes.at(buffer.at(bufferIndex));
             ++bufferIndex;
 
