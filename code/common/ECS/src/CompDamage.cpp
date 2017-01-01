@@ -9,7 +9,7 @@
 namespace ECS {
   namespace Component {
     CompDamage::CompDamage(int amount) :
-      AComponent(CLONABLE_MASK),
+      AComponent(CLONABLE_MASK | SERVER_SERIALIZABLE_MASK),
       damage(amount) {
     }
 

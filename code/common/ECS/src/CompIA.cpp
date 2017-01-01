@@ -10,7 +10,7 @@ namespace ECS {
   namespace Component {
 
     CompIA::CompIA(const std::string &pname) :
-      AComponent(CLONABLE_MASK),
+      AComponent(CLONABLE_MASK | SERVER_SERIALIZABLE_MASK),
       name(pname),
       born(-1) {
     }

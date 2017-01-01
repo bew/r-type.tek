@@ -9,7 +9,7 @@
 namespace ECS {
   namespace Component {
     CompScore::CompScore(int pscore) :
-      AComponent(CLONABLE_MASK),
+      AComponent(CLONABLE_MASK | SERVER_SERIALIZABLE_MASK),
       score(pscore)
     {}
 

@@ -14,7 +14,7 @@ namespace ECS
   {
     
     CompHitbox::CompHitbox(int mid_width, int mid_height)
-      : AComponent(CLONABLE_MASK), _midWidth(mid_width), _midHeight(mid_height)
+      : AComponent(CLONABLE_MASK | SERVER_SERIALIZABLE_MASK), _midWidth(mid_width), _midHeight(mid_height)
     {
     }
     
