@@ -9,9 +9,10 @@
 
 
 #ifdef __linux__
-#include <arpa/inet.h>
 
+#include <arpa/inet.h>
 #include <netinet/in.h>
+#include <netdb.h>
 
 #elif defined _WIN32
 
