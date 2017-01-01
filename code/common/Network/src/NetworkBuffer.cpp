@@ -37,7 +37,6 @@ namespace network
 
         while (i < length)
         {
-            _buffer[_readPosition] = -1;
             ++_readPosition;
             if (_readPosition == network::BUFFER_SIZE)
                 _readPosition = 0;
@@ -55,7 +54,10 @@ namespace network
 
     std::string NetworkBuffer::get() const
     {
-        int i = 0;
+        if (_readPosition == _writePosition)
+            return "";
+
+        size_t i = 0;
 
         size_t readPosition = _readPosition;
         while (i < network::BUFFER_SIZE)
@@ -97,7 +99,7 @@ namespace network
 
     void NetworkBuffer::initBuffer()
     {
-        for (int i = 0; i < network::BUFFER_SIZE; ++i)
+        for (size_t i = 0; i < network::BUFFER_SIZE; ++i)
             _buffer[i] = -1;
     }
 
