@@ -261,7 +261,7 @@ namespace ECS {
 
 	  if (validate) {
 	    networkc->_clientTCP.addMessage(protocol::client::gameStart(loginc->generators[index % loginc->generators.size()]).getBufferString() + network::magic);
-	    stateMachine->_nextState = "s_game";
+	    stateMachine->_nextState = "s_room_wait";
 	  }
 	  
 	  try {
@@ -281,6 +281,24 @@ namespace ECS {
       Component::CompAsset *assetc = dynamic_cast<Component::CompAsset*>(world._systemEntity.getComponent(ECS::Component::STANDARD_ASSET));
       Component::CompWindow *windowc = dynamic_cast<Component::CompWindow*>(world._systemEntity.getComponent(ECS::Component::WINDOW));
       Component::CompScore *scorec = dynamic_cast<Component::CompScore*>(world._systemEntity.getComponent(ECS::Component::SCORE));
+      Component::CompNetworkClient* networkc = dynamic_cast<Component::CompNetworkClient *>(world._systemEntity.getComponent(ECS::Component::NETWORK_CLIENT));
+
+      if (networkc && !networkc->_clientUDP) {
+	try {
+	  networkc->_clientUDP = new network::ClientUDP(networkc->_address, static_cast<short>(networkc->_lastReceived["data"]["port"].getValueInt32()));
+	  networkc->_serverToken = networkc->_lastReceived["data"]["serverToken"].getValueString();
+	  networkc->_clientToken = networkc->_lastReceived["data"]["clientToken"].getValueString();
+	}
+	catch (const bson::BsonException &e) {
+	  logs::getLogger()[logs::ERRORS] << "Cannot create udp connection : '" << e.what() << "'" << std::endl;
+	  return ;
+	}
+	catch (const network::SocketException &e) {
+          logs::getLogger()[logs::ERRORS] << "Cannot create udp connection : '" << e.what() << "'" << std::endl;
+          return ;
+	}
+      }
+
       
       if (windowc && windowc->window && assetc && scorec) {
         try {

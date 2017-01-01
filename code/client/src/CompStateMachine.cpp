@@ -20,18 +20,15 @@ namespace ECS
             std::shared_ptr<state_machine::State<std::string>> sRoom = std::make_shared<state_machine::State<std::string>>("s_room_wait");
             std::shared_ptr<state_machine::State<std::string>> sGame = std::make_shared<state_machine::State<std::string>>("s_game");
 
-            sAuth->addLink("login", sMenu->getName());
-            sAuth->addLink("signup", sAuth->getName());
-
-            sMenu->addLink("roomJoin", sRoom->getName());
-            sMenu->addLink("logout", sAuth->getName());
-
-            sRoom->addLink("roomKick", sMenu->getName());
-            sRoom->addLink("gameStart", sGame->getName());
-            sRoom->addLink("RoomLeave", sMenu->getName());
-
-            sGame->addLink("gameLeave", sMenu->getName());
-            sGame->addLink("logout", sAuth->getName());
+            sAuth->addLink("Login", sMenu->getName());
+            sAuth->addLink("Signup", sAuth->getName());
+            sMenu->addLink("RoomJoin", sRoom->getName());
+            sMenu->addLink("Logout", sAuth->getName());
+            sRoom->addLink("RoomKick", sMenu->getName());
+            sRoom->addLink("GameStart", sGame->getName());
+	    sRoom->addLink("RoomLeave", sMenu->getName());
+            sGame->addLink("GameLeave", sMenu->getName());
+            sGame->addLink("Logout", sAuth->getName());
 
             _sm.addState(sAuth);
             _sm.addState(sMenu);

@@ -24,6 +24,7 @@
 #include "Protocol/Client.hh"
 #include "ECS/CompScore.hh"
 #include "ECS/CompLife.hh"
+#include "Network/SocketException.hh"
 
 #include "SysWindow.hh"
 #include "CompStateMachine.hh"

@@ -114,8 +114,6 @@ int main(int ac, char**av) {
   world.addSystemEntityComponent(new ECS::Component::CompEvent());
   world.addSystemEntityComponent(new ECS::Component::CompOptions());
   world.addSystemEntityComponent(new ECS::Component::CompAsset());
-  world.addSystemEntityComponent(new ECS::Component::CompCollision());
-  world.addSystemEntityComponent(new ECS::Component::CompScore(0));
   world.addSystemEntityComponent(new ECS::Component::CompStateMachine());
   world.addSystemEntityComponent(new ECS::Component::CompLogin());
   try {

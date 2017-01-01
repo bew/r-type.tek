@@ -26,7 +26,7 @@ void ClientTest::init()
     initLogLevels();
     _world._world._systemEntity.addComponent(_stateMachine);
     _world.addSystem(new ECS::System::SysStateMachine);
-    _networkClient->_clientTCP.connect(_networkClient->_clientUDP.getAddr());
+    _networkClient->_clientTCP.connect(_networkClient->_clientUDP->getAddr());
 }
 
 void ClientTest::testSignup()

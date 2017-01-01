@@ -13,8 +13,10 @@ namespace ECS
 {
   namespace System
   {
-    void SysStateMachine::processMessage(const bson::Document &doc, Component::CompStateMachine &stateMachine,
+    void SysStateMachine::processMessage(const bson::Document &doc,
+					 Component::CompStateMachine &stateMachine,
 					 Component::CompNetworkClient &network) {
+      
       if (network.isValidActionTcp(doc["header"]["action"].getValueString())) {
 	const std::string &action = doc["header"]["action"].getValueString();
 	if (stateMachine._sm[stateMachine._currentState]->has(action)) {
@@ -24,9 +26,10 @@ namespace ECS
 							      bson::Document()).getBufferString() +
 					network::magic);
 	}
-	else
+	else {
 	  network._clientTCP.addMessage(protocol::answers::unauthorized(doc["header"]["timestamp"].getValueInt64()).getBufferString() +
 					network::magic);
+	}
       }
       else if (doc["header"]["action"].getValueString() != "Answer")
 	network._clientTCP.addMessage(protocol::answers::notFound(doc["header"]["timestamp"].getValueInt64()).getBufferString() +
@@ -41,7 +44,6 @@ namespace ECS
       }
       else {
 	network._lastReceived = doc;
-	logs::getLogger()[logs::ERRORS] << doc["data"]["msg"].getValueString() << std::endl;
       }
     }
 

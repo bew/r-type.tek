@@ -92,7 +92,7 @@ namespace ECS
             /**
              * represents one client udp
              */
-            network::ClientUDP _clientUDP;
+            network::ClientUDP *_clientUDP;
 
             /**
              * represents one client tcp
@@ -113,6 +113,11 @@ namespace ECS
              * contains the server's token
              */
              std::string _serverToken;
+
+	  /**
+	   * The server address
+	   */
+	  std::string _address;
         };
     }
 }
