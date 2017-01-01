@@ -38,7 +38,8 @@ namespace ECS
 	  static const int PROJECTILE = 0b0 << 1;//kill on pv < 0
 	  static const int CHARACTER = 0b1 << 1;//kill on contact
 	  
-	  
+
+	  CompType(void);
 	  
             /**
              * Constructor.

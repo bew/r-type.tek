@@ -16,6 +16,9 @@ namespace ECS
      */
     namespace Component
     {
+
+      CompType::CompType(void) {};
+      
         CompType::CompType(int type)
             : AComponent(CLONABLE_MASK | SERVER_SERIALIZABLE_MASK), _type(type)
         {

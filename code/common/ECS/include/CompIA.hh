@@ -20,8 +20,7 @@ namespace ECS {
     class CompIA : public AComponent {
     public:
 
-      CompIA(void) = delete;
-
+      CompIA();
       /**
        * @param damage The damage
        */

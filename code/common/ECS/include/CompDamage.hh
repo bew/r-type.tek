@@ -21,7 +21,7 @@ namespace ECS {
     class CompDamage : public AComponent {
     public:
 
-      CompDamage(void) = delete;
+      CompDamage(void);
 
       /**
        * @param damage The damage

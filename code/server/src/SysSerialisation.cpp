@@ -21,7 +21,7 @@ namespace ECS {
                         if (componentEntry.second->getType() == Component::CONTROLLER &&
                             entity->getId() >= 1 && entity->getId() <= 4 &&
                             entity->getId() <= serverc->_server.getConnections().size()) {
-                            bson::Document controller;
+			  bson::Document controller;
                             controller << Component::CONTROLLER << componentEntry.second->serialize();
                             serverc->_server.addMessage
                                     (serverc->_server.getConnections()[entity->getId() - 1],

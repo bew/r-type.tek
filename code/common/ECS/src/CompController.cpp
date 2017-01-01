@@ -9,7 +9,7 @@
 namespace ECS {
   namespace Component {
     CompController::CompController(void) :
-      AComponent(CLIENT_SERIALIZABLE_MASK) {
+      AComponent(CLIENT_SERIALIZABLE_MASK | SERVER_SERIALIZABLE_MASK) {
     };
     
     const std::string &CompController::getType() const {

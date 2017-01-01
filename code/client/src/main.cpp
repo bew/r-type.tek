@@ -58,6 +58,12 @@ int main(int ac, char**av) {
   ECS::System::SysSerialisation::builders[ECS::Component::MOVEMENT] = &ECS::Component::AComponent::factory<ECS::Component::CompMovement>;
   ECS::System::SysSerialisation::builders[ECS::Component::SPRITE] = &ECS::Component::AComponent::factory<ECS::Component::CompSprite>;
   ECS::System::SysSerialisation::builders[ECS::Component::CONTROLLER] = &ECS::Component::AComponent::factory<ECS::Component::CompController>;
+  ECS::System::SysSerialisation::builders[ECS::Component::DAMAGE] = &ECS::Component::AComponent::factory<ECS::Component::CompDamage>;
+  ECS::System::SysSerialisation::builders[ECS::Component::IA] = &ECS::Component::AComponent::factory<ECS::Component::CompIA>;
+  ECS::System::SysSerialisation::builders[ECS::Component::SCORE] = &ECS::Component::AComponent::factory<ECS::Component::CompScore>;
+  ECS::System::SysSerialisation::builders[ECS::Component::TYPE] = &ECS::Component::AComponent::factory<ECS::Component::CompType>;
+  ECS::System::SysSerialisation::builders[ECS::Component::HITBOX] = &ECS::Component::AComponent::factory<ECS::Component::CompHitbox>;
+
   
   ECS::World world;
   

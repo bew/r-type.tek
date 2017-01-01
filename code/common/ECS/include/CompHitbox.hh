@@ -33,6 +33,9 @@ namespace ECS {
 	class CompHitbox : public AComponent
 	{
 	public:
+
+	  CompHitbox(void);
+	  
 	    /**
 	     * Constructor
 	     * @param mid_width Half the width of the hitbox.

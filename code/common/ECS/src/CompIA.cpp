@@ -9,6 +9,8 @@
 namespace ECS {
   namespace Component {
 
+    CompIA::CompIA() {};
+
     CompIA::CompIA(const std::string &pname) :
       AComponent(CLONABLE_MASK | SERVER_SERIALIZABLE_MASK),
       name(pname),
