@@ -39,9 +39,7 @@ namespace protocol {
         int64_t now = std::chrono::duration_cast<std::chrono::seconds>(
                 std::chrono::high_resolution_clock::now().time_since_epoch()).count();
         return document.hasKey(u8"timestamp") &&
-               document[u8"timestamp"].getValueType() == bson::INT64 &&
-               document[u8"timestamp"].getValueInt64() >= (now - (protocol::latency + 86400)) &&
-               document[u8"timestamp"].getValueInt64() <= (now + (protocol::latency + 86400)); // We never know
+               document[u8"timestamp"].getValueType() == bson::INT64;
     }
 
     bool checkAction(const bson::Document &document) {
