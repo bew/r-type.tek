@@ -80,7 +80,7 @@ void Game::initECS() {
     _world.addSystemEntityComponent(new ECS::Component::CompEvent());
     _world.addSystemEntityComponent(new ECS::Component::CompCollision());
     _world.addSystemEntityComponent(new ECS::Component::CompScore(0));
-    _world.addSystemEntityComponent(new ECS::Component::CompNetworkServer(0, _serverToken, _clientTokens));
+    _world.addSystemEntityComponent(new ECS::Component::CompNetworkServer(65235, _serverToken, _clientTokens));
 
     size_t playerNumber = 1;
     for (const auto& player : _room->players) {

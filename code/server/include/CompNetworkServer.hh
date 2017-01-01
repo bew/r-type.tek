@@ -79,7 +79,7 @@ namespace ECS
             /**
              * Store the port on which the UDP server run
              */
-            short _port;
+            unsigned short _port;
         };
     }
 }
