@@ -92,7 +92,7 @@ void Game::initECS() {
 short Game::getServerUdpPort() {
     ECS::Component::CompNetworkServer *compNetworkServer =
             dynamic_cast<ECS::Component::CompNetworkServer*>(_world._world._systemEntity.getComponent(ECS::Component::NETWORK_SERVER));
-    return (compNetworkServer ? compNetworkServer->port : static_cast<short>(-1));
+    return (compNetworkServer ? compNetworkServer->_port : static_cast<short>(-1));
 }
 
 void Game::runECS() {
