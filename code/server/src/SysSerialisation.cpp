@@ -5,6 +5,7 @@
  */
 
 #include "SysSerialisation.hh"
+#include "ECS/World.hh"
 
 namespace ECS {
     namespace System {
