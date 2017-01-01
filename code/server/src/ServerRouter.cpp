@@ -380,7 +380,7 @@ bool ServerRouter::GameStartHandler(Request & req)
                                                                 kv.second->token,
                                                                 _server->_serverToken).getBufferString() +
                                     network::magic);
-    logs::getLogger()[logs::SERVER] << "Has GameStart. (on port: " << port << ")" << _server->getClientInformation(req.getClient()) << std::endl;
+    logs::getLogger()[logs::SERVER] << "Has GameStart. (on port: " << static_cast<unsigned short>(port) << ")" << _server->getClientInformation(req.getClient()) << std::endl;
 }
 
 bool ServerRouter::GameLeaveHandler(Request &req)
