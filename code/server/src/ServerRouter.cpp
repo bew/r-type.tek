@@ -261,7 +261,7 @@ bool ServerRouter::RoomKickHandler(Request & req)
     Room &room = _server->_rooms.at(player->currentRoom);
 
     // Check if player is the room's master
-    if (this->isPlayerRoomMaster(req, player, room))
+    if (!this->isPlayerRoomMaster(req, player, room))
         return false;
 
     bson::Document const &rdata = req.getData();
@@ -318,7 +318,7 @@ bool ServerRouter::GameStartHandler(Request & req)
     Room &room = _server->_rooms.at(player->currentRoom);
 
     // Check if player is the room's master
-    if (this->isPlayerRoomMaster(req, player, room))
+    if (!this->isPlayerRoomMaster(req, player, room))
         return false;
 
     // Check if the game is not already started or done
