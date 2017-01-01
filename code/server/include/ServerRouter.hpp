@@ -37,6 +37,32 @@ public:
      */
     ServerRouter(Server &server);
 
+    /**
+     * Send a command to all players of a Room except the sender
+     *
+     * @param req The request, used to get the sender
+     * @param room The room
+     * @param broadcast_msg The command to send
+     */
+    void sendToRoomOtherPlayers(Request &req, Room &room, bson::Document const &broadcast_msg) const;
+
+    /**
+     * Send a command to all players of a Room except the sender
+     *
+     * @param client The client to ignore (usually the current)
+     * @param room The room
+     * @param broadcast_msg The command to send
+     */
+    void sendToRoomOtherPlayers(std::shared_ptr<network::ClientTCP> client, Room &room, bson::Document const &broadcast_msg) const;
+
+    /**
+     * Send a command to all players of a Room
+     *
+     * @param room The room
+     * @param broadcast_msg The command to send
+     */
+    void sendToRoomPlayers(Room &room, bson::Document const &broadcast_msg) const;
+
 protected:
     /**
      * Extract the timestamp from a Request
@@ -64,23 +90,6 @@ protected:
      * @return true
      */
     bool replyOk(Request &req, bson::Document const &ok_data = bson::Document()) const;
-
-    /**
-     * Send a command to all players of a Room except the sender
-     *
-     * @param req The request, used to get the sender
-     * @param room The room
-     * @param broadcast_msg The command to send
-     */
-    void sendToRoomOtherPlayers(Request &req, Room &room, bson::Document const &broadcast_msg) const;
-
-    /**
-     * Send a command to all players of a Room
-     *
-     * @param room The room
-     * @param broadcast_msg The command to send
-     */
-    void sendToRoomPlayers(Room &room, bson::Document const &broadcast_msg) const;
 
     /**
      * Allow to get the list of all available generators on the server

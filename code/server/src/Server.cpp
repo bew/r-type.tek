@@ -5,6 +5,8 @@
  */
 
 #include <iostream>
+#include <algorithm>
+
 #include "BSON/Document.hh"
 #include "Protocol/Answers.hh"
 #include "Network/SocketException.hh"
@@ -17,7 +19,7 @@ const unsigned short Server::PORT = 42403;
 
 Server::Server(std::string const & token) :
   _serverToken(token),
-  _clientRouter(*this)
+  _router(*this)
 {}
 
 Server::~Server()
@@ -44,6 +46,8 @@ void Server::run()
     while (true)
     {
         _serverSock.update();
+        processNewClients();
+        processDisconnectedClients();
 
         std::shared_ptr<network::ClientTCP> cl = _serverSock.getFirstClientWithMessage();
         while (cl)
@@ -82,13 +86,6 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
     int64_t timestamp = header["timestamp"].getValueInt64();
     std::string action = header["action"].getValueString();
 
-    // This is a new client
-    if (!_players.count(client))
-    {
-        _players[client] = std::make_shared<Player>(client);
-        logs::getLogger()[logs::SERVER] << "New client connected (at:" << client << ") " << this->getClientInformation(client) << std::endl;
-    }
-
     ClientCommandsState &state = _players.at(client)->controlState;
 
     logs::getLogger()[logs::SERVER] << "Client " << client << " " << this->getClientInformation(client)
@@ -101,7 +98,7 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
         return;
     }
 
-    if (!_clientRouter.routePacket(packet, client)) {
+    if (!_router.routePacket(packet, client)) {
         state.revertToPreviousState();
         return;
     }
@@ -115,4 +112,67 @@ std::string Server::getClientInformation(const std::shared_ptr<network::ClientTC
     client->getSocket().getInfos(network::ASocketTCP::PEER, ip, port);
 
     return std::string("(ip: " + ip + ", port: " + std::to_string(port) + ")");
+}
+
+void Server::processNewClients()
+{
+    for (auto & client : _serverSock.getConnections())
+    {
+        if (_players.count(client))
+            continue;
+
+        _players[client] = std::make_shared<Player>(client);
+        logs::getLogger()[logs::SERVER] << "New client connected (at:" << client << ") " << this->getClientInformation(client) << std::endl;
+    }
+}
+
+void Server::processDisconnectedClients()
+{
+    std::vector<std::shared_ptr<network::ClientTCP>> const & stillConnected = _serverSock.getConnections();
+
+    if (_players.size() == 0 || _players.size() == stillConnected.size())
+        return;
+
+    std::vector<std::shared_ptr<network::ClientTCP>> disClients;
+
+    // fill with known clients
+    for (auto & client : stillConnected)
+        disClients.push_back(kv.first);
+
+    // remove all still connected clients
+    disClients.erase(std::remove_if(disClients.begin(), disClients.end(), [&](std::shared_ptr<network::ClientTCP> const & client) {
+                                    return std::find(stillConnected.begin(), stillConnected.end(), client) != stillConnected.end();
+                                 }));
+
+    for (auto & client : disClients)
+        disconnectClient(client, true);
+}
+
+void Server::disconnectClient(std::shared_ptr<network::ClientTCP> client, bool sendOther)
+{
+    std::shared_ptr<Player> player = _players.at(client);
+
+    if (!player->currentRoom.empty() && _rooms.count(player->currentRoom)) {
+        Room & room = _rooms.at(player->currentRoom);
+        if (player->isPlaying) {
+            if (sendOther)
+                _router.sendToRoomOtherPlayers(client, room, protocol::server::gameLeave(player->name));
+            player->isPlaying = false;
+        }
+        if (sendOther)
+            _router.sendToRoomOtherPlayers(client, room, protocol::server::roomLeave(player->name));
+
+        room.players.erase(player->name);
+        player->currentRoom.clear();
+    }
+
+    _players.erase(client);
+    if (! player->name.empty())
+    {
+        _players_by_name.erase(player->name);
+        logs::getLogger()[logs::SERVER] << "Player '" << player->name << "' force disconnected" << std::endl;
+    }
+    else
+        logs::getLogger()[logs::SERVER] << "Anonymous player force disconnected" << std::endl;
+
 }

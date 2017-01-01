@@ -108,23 +108,11 @@ bool ServerRouter::LogoutHandler(Request & req)
     if (!this->isPlayerConnected(req))
         return false;
 
-    int64_t timestamp = getTimestamp(req);
     std::shared_ptr<Player> player = _server->_players[req.getClient()];
 
     replyOk(req);
 
-    if (!player->currentRoom.empty() && _server->_rooms.count(player->currentRoom)) {
-        Room &room = _server->_rooms.at(player->currentRoom);
-        if (player->isPlaying) {
-            sendToRoomOtherPlayers(req, room, protocol::server::gameLeave(player->name));
-            player->isPlaying = false;
-        }
-        sendToRoomOtherPlayers(req, room, protocol::server::roomLeave(player->name));
-
-        room.players.erase(player->name);
-        player->currentRoom.clear();
-    }
-    _server->_players.erase(req.getClient());
+    _server->disconnectClient(req.getClient(), true);
 
     logs::getLogger()[logs::SERVER] << "Has Logout." << _server->getClientInformation(req.getClient()) << std::endl;
     return true;
@@ -397,8 +385,6 @@ bool ServerRouter::GameLeaveHandler(Request &req)
         return false;
     std::shared_ptr<Player> player = _server->_players[req.getClient()];
 
-    int64_t timestamp = getTimestamp(req);
-
     // Check if player is in a room
     if (!this->isPlayerInARoom(req, player))
         return false;
@@ -427,8 +413,6 @@ bool ServerRouter::GetAvailableRoomsHandler(Request & req)
     if (!this->isPlayerConnected(req))
         return false;
     std::shared_ptr<Player> player = _server->_players[req.getClient()];
-
-    int64_t timestamp = getTimestamp(req);
 
     bson::Document rooms;
     rooms << bson::Document::ARRAY_ENABLED;
@@ -462,8 +446,6 @@ bool ServerRouter::GetAvailableGenerators(Request & req) {
         return false;
     std::shared_ptr<Player> player = _server->_players[req.getClient()];
 
-    int64_t timestamp = getTimestamp(req);
-
     // Get the available generators
     bson::Document generatorsDocument;
     generatorsDocument << bson::Document::ARRAY_ENABLED;
@@ -496,10 +478,15 @@ bool ServerRouter::replyOk(Request &req, bson::Document const &ok_data) const
 
 void ServerRouter::sendToRoomOtherPlayers(Request &req, Room &room, bson::Document const &broadcast_msg) const
 {
+    sendToRoomOtherPlayers(req.getClient(), room, broadcast_msg);
+}
+
+void ServerRouter::sendToRoomOtherPlayers(std::shared_ptr<network::ClientTCP> client, Room &room, bson::Document const &broadcast_msg) const
+{
     for (auto &kv : room.players) {
         std::shared_ptr<Player> &player = kv.second;
 
-        if (player->sock != req.getClient())
+        if (player->sock != client)
             player->sock->addMessage(broadcast_msg.getBufferString() + network::magic);
     }
 }

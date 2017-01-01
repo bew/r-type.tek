@@ -84,6 +84,25 @@ protected:
      */
     void processMessage(std::shared_ptr<network::ClientTCP> client);
 
+    /**
+     * Check if any client disconnected, if so, disconnect it properly
+     * and send logout messages to other players in room if any
+     */
+    void processDisconnectedClients();
+
+    /**
+     * Check if a new client connected, and do whatever needs to be done
+     */
+    void processNewClients();
+
+    /**
+     * Disconnect the given client (from room, etc)
+     *
+     * @param client The client to disconnect
+     * @param sendOther If true, send commands to other players in room if any
+     */
+    void disconnectClient(std::shared_ptr<network::ClientTCP> client, bool sendOther = false);
+
 protected:
     /**
      * Store the association between a client socket and a Player
@@ -120,7 +139,7 @@ protected:
     /**
      * The router for client's packets
      */
-    ServerRouter _clientRouter;
+    ServerRouter _router;
 
     friend ServerRouter;
 };
