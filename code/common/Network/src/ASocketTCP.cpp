@@ -19,7 +19,7 @@ namespace network
 
     }
 
-    void ASocketTCP::getInfos(infoType type, std::string& ip, short& port) {
+    void ASocketTCP::getInfos(infoType type, std::string& ip, unsigned short& port) {
         struct sockaddr_in tmp;
         socklen_t size;
 

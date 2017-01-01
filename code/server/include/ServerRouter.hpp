@@ -10,6 +10,9 @@ class ServerRouter;
 
 class Server;
 
+#include "LibraryLoader/ALibraryLoader.hh"
+#include "LibraryLoader/Dependent_ptr.hpp"
+
 #include "Protocol/Answers.hh"
 #include "Router.hpp"
 #include "Room.hpp"
@@ -84,7 +87,7 @@ protected:
      *
      * @return the list of all available generators on the server
      */
-    std::vector<std::string> getAvailableGenerators(void) const;
+    std::vector<std::string> getAvailableGenerators(void);
 
     /**
      * Allow to check if a Player is connected
@@ -131,4 +134,9 @@ protected:
      * Pointer on the server
      */
     Server *_server;
+
+    /**
+     * Map of the generators available
+     */
+    std::map<std::string, Dependent_ptr<IGenerator, LibraryLoader>> _generators;
 };

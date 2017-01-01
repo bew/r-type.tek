@@ -169,4 +169,8 @@ namespace network
             }
         }
     }
+
+    const SocketUDP& ServerUDP::getSocket() const {
+        return _socket;
+    }
 }
