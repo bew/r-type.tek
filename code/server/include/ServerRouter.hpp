@@ -91,9 +91,29 @@ protected:
      * If not, send the correct message
      *
      * @param request The request, used to get the client
-     * @return true if it's connected, else false
+     * @return true if he is connected, else false
      */
     bool isPlayerConnected(Request &request) const;
+
+    /**
+     * Allow to check if a Player is in a Room
+     * If not, send the correct message
+     *
+     * @param request the request, used to get the client
+     * @param player the player to check
+     * @return true if he is in a Room, else false
+     */
+    bool isPlayerInARoom(Request &request, const std::shared_ptr<Player>& player);
+
+    /**
+     * Allow to check if a Player is the room's master of the Room
+     *
+     * @param request the request, used to get the client
+     * @param player the player to check
+     * @param room  the room to check
+     * @return true if he is the room's master, else false
+     */
+    bool isPlayerRoomMaster(Request &request, const std::shared_ptr<Player>& player, const Room& room);
 
 protected:
     /**

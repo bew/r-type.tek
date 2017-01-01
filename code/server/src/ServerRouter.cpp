@@ -223,11 +223,8 @@ bool ServerRouter::RoomLeaveHandler(Request & req)
     int64_t timestamp = getTimestamp(req);
 
     // Check if player is in a room
-    if (!_server->_rooms.count(player->currentRoom)) {
-        std::string errorMessage = "Not in any room.";
-        logs::getLogger()[logs::SERVER] << errorMessage << _server->getClientInformation(req.getClient()) << std::endl;
-        return replyFail(req, pa::forbidden(timestamp, errorMessage));
-    }
+    if (!this->isPlayerInARoom(req, player))
+        return false;
     Room &room = _server->_rooms.at(player->currentRoom);
 
     replyOk(req);
@@ -257,19 +254,13 @@ bool ServerRouter::RoomKickHandler(Request & req)
     int64_t timestamp = getTimestamp(req);
 
     // Check if player is in a room
-    if (!_server->_rooms.count(player->currentRoom)) {
-        std::string errorMessage = "Not in any room.";
-        logs::getLogger()[logs::SERVER] << errorMessage << _server->getClientInformation(req.getClient()) << std::endl;
-        return replyFail(req, pa::forbidden(timestamp, errorMessage));
-    }
+    if (!this->isPlayerInARoom(req, player))
+        return false;
     Room &room = _server->_rooms.at(player->currentRoom);
 
     // Check if player is the room's master
-    if (room.master != player->name) {
-        std::string errorMessage = "You are not the room's master.";
-        logs::getLogger()[logs::SERVER] << errorMessage << _server->getClientInformation(req.getClient()) << std::endl;
-        return replyFail(req, pa::forbidden(timestamp, errorMessage));
-    }
+    if (this->isPlayerRoomMaster(req, player, room))
+        return false;
 
     bson::Document const &rdata = req.getData();
     std::string targetName;
@@ -313,19 +304,13 @@ bool ServerRouter::GameStartHandler(Request & req)
     int64_t timestamp = getTimestamp(req);
 
     // Check if player is in a room
-    if (!_server->_rooms.count(player->currentRoom)) {
-        std::string errorMessage = "Not in any room.";
-        logs::getLogger()[logs::SERVER] << errorMessage << _server->getClientInformation(req.getClient()) << std::endl;
-        return replyFail(req, pa::forbidden(timestamp, errorMessage));
-    }
+    if (!this->isPlayerInARoom(req, player))
+        return false;
     Room &room = _server->_rooms.at(player->currentRoom);
 
     // Check if player is the room's master
-    if (room.master != player->name) {
-        std::string errorMessage = "You are not the room's master.";
-        logs::getLogger()[logs::SERVER] << errorMessage << _server->getClientInformation(req.getClient()) << std::endl;
-        return replyFail(req, pa::forbidden(timestamp, errorMessage));
-    }
+    if (this->isPlayerRoomMaster(req, player, room))
+        return false;
 
     // Check if the game is not already started or done
     if (room.game != nullptr) {
@@ -407,11 +392,8 @@ bool ServerRouter::GameLeaveHandler(Request &req)
     int64_t timestamp = getTimestamp(req);
 
     // Check if player is in a room
-    if (!_server->_rooms.count(player->currentRoom)) {
-        std::string errorMessage = "Not in any room.";
-        logs::getLogger()[logs::SERVER] << errorMessage << _server->getClientInformation(req.getClient()) << std::endl;
-        return replyFail(req, pa::forbidden(timestamp, errorMessage));
-    }
+    if (!this->isPlayerInARoom(req, player))
+        return false;
     Room &room = _server->_rooms.at(player->currentRoom);
 
     // Check if Player is playing
@@ -549,6 +531,24 @@ bool ServerRouter::isPlayerConnected(Request& request) const {
         std::string errorMessage = "Not connected.";
         logs::getLogger()[logs::SERVER] << errorMessage << _server->getClientInformation(request.getClient()) << std::endl;
         return replyFail(request, pa::unauthorized(getTimestamp(request), errorMessage));
+    }
+    return true;
+}
+
+bool ServerRouter::isPlayerInARoom(Request &request, const std::shared_ptr<Player> &player) {
+    if (!_server->_rooms.count(player->currentRoom)) {
+        std::string errorMessage = "Not in any room.";
+        logs::getLogger()[logs::SERVER] << errorMessage << _server->getClientInformation(request.getClient()) << std::endl;
+        return replyFail(request, pa::forbidden(getTimestamp(request), errorMessage));
+    }
+    return true;
+}
+
+bool ServerRouter::isPlayerRoomMaster(Request &request, const std::shared_ptr<Player> &player, const Room &room) {
+    if (room.master != player->name) {
+        std::string errorMessage = "You are not the room's master.";
+        logs::getLogger()[logs::SERVER] << errorMessage << _server->getClientInformation(request.getClient()) << std::endl;
+        return replyFail(request, pa::forbidden(getTimestamp(request), errorMessage));
     }
     return true;
 }
