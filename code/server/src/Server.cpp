@@ -136,7 +136,7 @@ void Server::processDisconnectedClients()
     std::vector<std::shared_ptr<network::ClientTCP>> disClients;
 
     // fill with known clients
-    for (auto & client : stillConnected)
+    for (auto & kv : _players)
         disClients.push_back(kv.first);
 
     // remove all still connected clients
