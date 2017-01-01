@@ -378,8 +378,7 @@ bool ServerRouter::GameStartHandler(Request & req)
     for (const auto &kv : room.players)
         kv.second->sock->addMessage(protocol::server::gameStart(port,
                                                                 kv.second->token,
-                                                                _server->_serverToken).getBufferString() +
-                                    network::magic);
+                                                                _server->_serverToken).getBufferString());
     logs::getLogger()[logs::SERVER] << "Has GameStart. (on port: " << static_cast<unsigned short>(port) << ")" << _server->getClientInformation(req.getClient()) << std::endl;
 }
 
@@ -484,13 +483,13 @@ int64_t ServerRouter::getTimestamp(const Request & req) const
 
 bool ServerRouter::replyFail(Request &req, bson::Document const &message) const
 {
-    req.getClient()->addMessage(message.getBufferString() + network::magic);
+    req.getClient()->addMessage(message.getBufferString());
     return false;
 }
 
 bool ServerRouter::replyOk(Request &req, bson::Document const &ok_data) const
 {
-    req.getClient()->addMessage(pa::ok(getTimestamp(req), ok_data).getBufferString() + network::magic);
+    req.getClient()->addMessage(pa::ok(getTimestamp(req), ok_data).getBufferString());
     return true;
 }
 
@@ -500,7 +499,7 @@ void ServerRouter::sendToRoomOtherPlayers(Request &req, Room &room, bson::Docume
         std::shared_ptr<Player> &player = kv.second;
 
         if (player->sock != req.getClient())
-            player->sock->addMessage(broadcast_msg.getBufferString() + network::magic);
+            player->sock->addMessage(broadcast_msg.getBufferString());
     }
 }
 
@@ -509,7 +508,7 @@ void ServerRouter::sendToRoomPlayers(Room &room, bson::Document const &broadcast
     for (auto &kv : room.players) {
         std::shared_ptr<Player> &player = kv.second;
 
-        player->sock->addMessage(broadcast_msg.getBufferString() + network::magic);
+        player->sock->addMessage(broadcast_msg.getBufferString());
     }
 }
 

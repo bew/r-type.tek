@@ -63,7 +63,6 @@ TEST(clientTest, loginSinup)
     bson::Document signup = protocol::client::signUp(username, pwd);
 
     std::string msg(signup.getBufferString());
-    msg +=  network::magic;
 
     std::cout << msg << std::endl;
     std::cout << signup.toJSON() << std::endl;
@@ -95,7 +94,6 @@ TEST(clientTest, loginSinup)
     stateMachine->_nextState = sMenu->getName();
 
     msg = login.getBufferString();
-    msg +=  network::magic;
 
     networkClient->_clientTCP.addMessage(msg);
 
