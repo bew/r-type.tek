@@ -19,6 +19,7 @@ set(LIB_SOURCES ${LIB_SOURCES} CompType.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompIA.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} SysIA.cpp)
 set(LIB_SOURCES ${LIB_SOURCES} CompScore.cpp)
+set(LIB_SOURCES ${LIB_SOURCES} CompSound.cpp)
 
 set(LIB_DEPENDENCIES Network BSON Logs Graphic Protocol)
 

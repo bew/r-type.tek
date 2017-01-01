@@ -6,7 +6,7 @@
 
 #pragma once
 
-#include "ECS/AComponent.hh"
+#include "AComponent.hh"
 // See sound member
 #include "SFML/Audio/Sound.hpp"
 
