@@ -49,7 +49,7 @@ namespace network
          * @param[out] ip The ip of the requested info
          * @param port The port of the requested info
          */
-        void getInfos(infoType type, std::string& ip, short& port);
+        void getInfos(infoType type, std::string& ip, unsigned short& port);
 
         /**
          * encapsulation of listen system call who marks socket as a passive socket
