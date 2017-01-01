@@ -22,4 +22,11 @@ namespace network
         return _socket;
     }
 
+    unsigned short ASocket::getPort() const {
+        struct sockaddr_in addr;
+        socklen_t len = sizeof(addr);
+        getsockname(_socket, reinterpret_cast<struct sockaddr *>(&addr), &len);
+        return addr.sin_port;
+    }
+
 }
