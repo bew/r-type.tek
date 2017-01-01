@@ -107,6 +107,7 @@ protected:
 
     /**
      * Allow to check if a Player is the room's master of the Room
+     * If not, send the correct message
      *
      * @param request the request, used to get the client
      * @param player the player to check
@@ -114,6 +115,16 @@ protected:
      * @return true if he is the room's master, else false
      */
     bool isPlayerRoomMaster(Request &request, const std::shared_ptr<Player>& player, const Room& room);
+
+    /**
+     * Allow to check if a Player is playing
+     * If not, send the correct message
+     *
+     * @param request the request, used to get the client
+     * @param player the player to check
+     * @return true if he is playing, else false
+     */
+    bool isPlayerPlaying(Request &request, const std::shared_ptr<Player>& player);
 
 protected:
     /**

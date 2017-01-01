@@ -107,7 +107,7 @@ bool ServerRouter::LogoutHandler(Request & req)
     }
 
     // Check if player connected
-    if (this->isPlayerConnected(req))
+    if (!this->isPlayerConnected(req))
         return false;
 
     int64_t timestamp = getTimestamp(req);
@@ -145,7 +145,7 @@ bool ServerRouter::RoomJoinHandler(Request & req)
     }
 
     // Check if player connected
-    if (this->isPlayerConnected(req))
+    if (!this->isPlayerConnected(req))
         return false;
     std::shared_ptr<Player> player = _server->_players[req.getClient()];
 
@@ -216,7 +216,7 @@ bool ServerRouter::RoomLeaveHandler(Request & req)
     }
 
     // Check if player connected
-    if (this->isPlayerConnected(req))
+    if (!this->isPlayerConnected(req))
         return false;
     std::shared_ptr<Player> player = _server->_players[req.getClient()];
 
@@ -247,7 +247,7 @@ bool ServerRouter::RoomKickHandler(Request & req)
     }
 
     // Check if player connected
-    if (this->isPlayerConnected(req))
+    if (!this->isPlayerConnected(req))
         return false;
     std::shared_ptr<Player> player = _server->_players[req.getClient()];
 
@@ -297,7 +297,7 @@ bool ServerRouter::GameStartHandler(Request & req)
     }
 
     // Check if player connected
-    if (this->isPlayerConnected(req))
+    if (!this->isPlayerConnected(req))
         return false;
     std::shared_ptr<Player> player = _server->_players[req.getClient()];
 
@@ -385,7 +385,7 @@ bool ServerRouter::GameLeaveHandler(Request &req)
     }
 
     // Check if player connected
-    if (this->isPlayerConnected(req))
+    if (!this->isPlayerConnected(req))
         return false;
     std::shared_ptr<Player> player = _server->_players[req.getClient()];
 
@@ -397,11 +397,8 @@ bool ServerRouter::GameLeaveHandler(Request &req)
     Room &room = _server->_rooms.at(player->currentRoom);
 
     // Check if Player is playing
-    if (!player->isPlaying) {
-        std::string errorMessage = "Not playing.";
-        logs::getLogger()[logs::SERVER] << errorMessage << _server->getClientInformation(req.getClient()) << std::endl;
-        return replyFail(req, pa::forbidden(timestamp, errorMessage));
-    }
+    if (!this->isPlayerPlaying(req, player))
+        return false;
 
     player->isPlaying = false;
     sendToRoomOtherPlayers(req, room, protocol::server::gameLeave(player->name));
@@ -418,7 +415,7 @@ bool ServerRouter::GetAvailableRoomsHandler(Request & req)
     }
 
     // Check if player connected
-    if (this->isPlayerConnected(req))
+    if (!this->isPlayerConnected(req))
         return false;
     std::shared_ptr<Player> player = _server->_players[req.getClient()];
 
@@ -547,6 +544,15 @@ bool ServerRouter::isPlayerInARoom(Request &request, const std::shared_ptr<Playe
 bool ServerRouter::isPlayerRoomMaster(Request &request, const std::shared_ptr<Player> &player, const Room &room) {
     if (room.master != player->name) {
         std::string errorMessage = "You are not the room's master.";
+        logs::getLogger()[logs::SERVER] << errorMessage << _server->getClientInformation(request.getClient()) << std::endl;
+        return replyFail(request, pa::forbidden(getTimestamp(request), errorMessage));
+    }
+    return true;
+}
+
+bool ServerRouter::isPlayerPlaying(Request &request, const std::shared_ptr<Player> &player) {
+    if (!player->isPlaying) {
+        std::string errorMessage = "Not playing.";
         logs::getLogger()[logs::SERVER] << errorMessage << _server->getClientInformation(request.getClient()) << std::endl;
         return replyFail(request, pa::forbidden(getTimestamp(request), errorMessage));
     }
