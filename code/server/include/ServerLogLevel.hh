@@ -25,11 +25,6 @@ namespace logs
     static const std::string SERVER = "server";
 
     /**
-     * represents a server log, he's throw when log error occured
-     */
-    using ServerLogException = std::runtime_error;
-
-    /**
      * Server log level class for Logger
      */
     class ServerLogLevel : public ALogLevel
@@ -58,12 +53,6 @@ namespace logs
          * @return the stream of the log level to know where to write
          */
         virtual std::ostream &getLogLevelStream();
-
-    private:
-        /**
-         * represents the file stream for log inside
-         */
-        std::ofstream _file;
     };
 
 }
