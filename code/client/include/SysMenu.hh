@@ -27,6 +27,8 @@
 #include "Network/SocketException.hh"
 #include "LibraryLoader/CompGenerator.hh"
 #include "ECS/CompBlueprint.hh"
+#include "ECS/CompSprite.hh"
+#include "ECS/CompMusic.hh"
 
 #include "SysWindow.hh"
 #include "CompStateMachine.hh"
@@ -34,6 +36,7 @@
 #include "CompAsset.hh"
 #include "CompWindow.hh"
 #include "CompLogin.hh"
+#include "CompOptions.hh"
 
 namespace ECS {
   namespace System {
@@ -52,14 +55,55 @@ namespace ECS {
        */
       virtual void update(ECS::WorldData &world);
 
-      // Menu functions
+
+      /**
+       * Draw the main menu
+       *
+       * @param world All the data about the world
+       */      
       void menuSignup(ECS::WorldData &world);
+
+      /**
+       * Draw the room choose menu. Multi only
+       *
+       * @param world All the data about the world
+       */            
       void menuRoomChoose(ECS::WorldData &world);
+
+      /**
+       * Draw the menu for waiting game beginning
+       *
+       * @param world All the data about the world
+       */
       void menuGameLaunch(ECS::WorldData &world);
+
+      /**
+       * Draw the game gui
+       *
+       * @param world All the data about the world
+       */
       void running(ECS::WorldData &world);
 
-      // Management functions:
+      
+      /**
+       * Draw the game end menu
+       *
+       * @param world All the data about the world
+       */
+      void menuEnd(ECS::WorldData &world);
+
+      /**
+       * Fill login components with generators, and determine room ownership
+       *
+       * @param world All the data about the world
+       */
       void getGenerators(ECS::WorldData &world);
+
+      /**
+       * Add player entity with id 1, and emulate server by loading a generator and a blueprints component
+       *
+       * @param world All the data about the world
+       */      
       void beginSolo(ECS::WorldData &world);
       
       typedef void(SysMenu::*Menu)(ECS::WorldData &world);

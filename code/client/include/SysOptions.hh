@@ -58,7 +58,9 @@ namespace ECS {
           optionsc->setWidth(document["width"].getValueInt64());
           optionsc->setHeight(document["height"].getValueInt64());
           optionsc->setAAliasing(document["aaliasing"].getValueInt64());
-          optionsc->setTitle(document["title"].getValueString());	  
+          optionsc->setTitle(document["title"].getValueString());
+	  optionsc->_serverUrl = document["url"].getValueString();
+	  optionsc->_serverPort = document["port"].getValueInt64();
 	  return repeat;
 	}
 	catch (const bson::BsonException &e) {
@@ -90,6 +92,8 @@ namespace ECS {
 	    options << "height" << static_cast<int>(optionsc->getHeight());
 	    options << "aaliasing" << static_cast<int>(optionsc->getAAliasing());
 	    options << "title" << optionsc->getTitle();
+	    options << "url" << optionsc->_serverUrl;
+	    options << "port" << static_cast<int>(optionsc->_serverPort);
 	    options.writeToFile(SysOptions::CONFIG_FILE, true);
 	  }
 	}

@@ -177,6 +177,16 @@ namespace ECS {
 
     public:
       /**
+       * The server url
+       */
+      std::string _serverUrl;
+
+      /**
+       * The server port
+       */
+      short _serverPort;
+
+      /**
        * @return ECS::Cmponent::OPTION
        */
       virtual const std::string &getType() const;

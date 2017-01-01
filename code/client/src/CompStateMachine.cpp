@@ -19,6 +19,7 @@ namespace ECS
             std::shared_ptr<state_machine::State<std::string>> sMenu = std::make_shared<state_machine::State<std::string>>("s_menu");
             std::shared_ptr<state_machine::State<std::string>> sRoom = std::make_shared<state_machine::State<std::string>>("s_room_wait");
             std::shared_ptr<state_machine::State<std::string>> sGame = std::make_shared<state_machine::State<std::string>>("s_game");
+	    std::shared_ptr<state_machine::State<std::string>> sEnd = std::make_shared<state_machine::State<std::string>>("s_end");
 
             sAuth->addLink("Login", sMenu->getName());
             sAuth->addLink("Signup", sAuth->getName());
@@ -27,13 +28,14 @@ namespace ECS
             sRoom->addLink("RoomKick", sMenu->getName());
             sRoom->addLink("GameStart", sGame->getName());
 	    sRoom->addLink("RoomLeave", sMenu->getName());
-            sGame->addLink("GameLeave", sMenu->getName());
+            sGame->addLink("GameLeave", sMenu->getName()); //sEnd pour afficher l'ecran de fin ?
             sGame->addLink("Logout", sAuth->getName());
 
             _sm.addState(sAuth);
             _sm.addState(sMenu);
             _sm.addState(sRoom);
             _sm.addState(sGame);
+	    _sm.addState(sEnd);
 
             _currentState = sAuth->getName();
         }

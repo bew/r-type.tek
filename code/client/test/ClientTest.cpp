@@ -9,7 +9,7 @@
 
 ClientTest::ClientTest(const std::string &ip, unsigned short port, const std::string &username,
                        const std::string &password) :
-    _world(), _networkClient(new ECS::Component::CompNetworkClient(ip, port)),
+    _world(), _networkClient(new ECS::Component::CompNetworkClient()),
     _stateMachine(new ECS::Component::CompStateMachine), _username(username), _password(password)
 {
 

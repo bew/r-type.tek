@@ -18,6 +18,7 @@ namespace ECS {
       _reactions["s_menu"] = &SysMenu::menuRoomChoose;
       _reactions["s_room_wait"] = &SysMenu::menuGameLaunch;
       _reactions["s_game"] = &SysMenu::running;
+      _reactions["s_end"] = &SysMenu::menuEnd;
     }
 
     void SysMenu::update(WorldData &world) {
@@ -95,6 +96,7 @@ namespace ECS {
       Component::CompLogin* loginc = dynamic_cast<Component::CompLogin *>(world._systemEntity.getComponent(ECS::Component::LOGIN));
       Component::CompNetworkClient* networkc = dynamic_cast<Component::CompNetworkClient *>(world._systemEntity.getComponent(ECS::Component::NETWORK_CLIENT));
       Component::CompStateMachine* stateMachine = dynamic_cast<Component::CompStateMachine *>(world._systemEntity.getComponent(ECS::Component::STATE_MACHINE));
+      Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions *>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
       sf::Text connect;
       sf::Text create;
       sf::Text loginDesc;
@@ -122,9 +124,9 @@ namespace ECS {
 
       else if (index % 5 == 2) {
 	connect.setFillColor(sf::Color::Green);
-        if (validate) {
+        if (validate && optionsc) {
 	  try {
-	    networkc->connectTCP();
+	    networkc->connectTCP(optionsc->_serverUrl, optionsc->_serverPort);
 	    networkc->_clientTCP.addMessage(protocol::client::login(loginc->login, loginc->password).getBufferString() + network::magic);
 	    stateMachine->_nextState = "s_menu";
 	  }
@@ -136,9 +138,9 @@ namespace ECS {
       
       else if (index % 5 == 3) {
         create.setFillColor(sf::Color::Green);
-        if (validate) {
+        if (validate && optionsc) {
 	    try {
-	      networkc->connectTCP();
+	      networkc->connectTCP(optionsc->_serverUrl, optionsc->_serverPort);
 	      networkc->_clientTCP.addMessage(protocol::client::signUp(loginc->login, loginc->password).getBufferString() + network::magic);
 	      stateMachine->_nextState = "s_auth";
 	    }
@@ -308,10 +310,12 @@ namespace ECS {
       Component::CompScore *scorec = dynamic_cast<Component::CompScore*>(world._systemEntity.getComponent(ECS::Component::SCORE));
       Component::CompLogin* loginc = dynamic_cast<Component::CompLogin *>(world._systemEntity.getComponent(ECS::Component::LOGIN));
       Component::CompNetworkClient* networkc = dynamic_cast<Component::CompNetworkClient *>(world._systemEntity.getComponent(ECS::Component::NETWORK_CLIENT));
+      Component::CompStateMachine* stateMachine = dynamic_cast<Component::CompStateMachine *>(world._systemEntity.getComponent(ECS::Component::STATE_MACHINE));
+      Component::CompOptions *optionsc = dynamic_cast<Component::CompOptions *>(world._systemEntity.getComponent(ECS::Component::OPTIONS));
       
-      if (loginc && !loginc->solo && networkc && !networkc->_clientUDP) {
+      if (loginc && !loginc->solo && networkc && !networkc->_clientUDP && optionsc) {
 	try {
-	  networkc->_clientUDP = new network::ClientUDP(networkc->_address, static_cast<short>(networkc->_lastReceived["data"]["port"].getValueInt32()));
+	  networkc->_clientUDP = new network::ClientUDP(optionsc->_serverUrl, static_cast<short>(networkc->_lastReceived["data"]["port"].getValueInt32()));
 	  networkc->_serverToken = networkc->_lastReceived["data"]["serverToken"].getValueString();
 	  networkc->_clientToken = networkc->_lastReceived["data"]["clientToken"].getValueString();
 	}
@@ -326,9 +330,7 @@ namespace ECS {
       }
       
       if (windowc && windowc->window && assetc && scorec) {
-
 	Component::CompLogin* loginc = dynamic_cast<Component::CompLogin *>(world._systemEntity.getComponent(ECS::Component::LOGIN));
-	
         try {
           std::string scoreString = assetc->store.getText("scoregui").getText() + std::to_string(scorec->score);
 
@@ -346,20 +348,53 @@ namespace ECS {
           logs::getLogger()[logs::ASSET] << e.what() << std::endl;
         }
       }
+
+      if (loginc && loginc->solo && !world.getEntityById(1)) {
+	stateMachine->_currentState = "s_end";
+	return ;	
+      }
+    }
+
+    void SysMenu::menuEnd(ECS::WorldData &world) {
+      Component::CompTick *tickc = dynamic_cast<Component::CompTick*>(world._systemEntity.getComponent(ECS::Component::TICK));
+      Component::CompAsset *assetc = dynamic_cast<Component::CompAsset*>(world._systemEntity.getComponent(ECS::Component::STANDARD_ASSET));
+      Component::CompWindow *windowc = dynamic_cast<Component::CompWindow*>(world._systemEntity.getComponent(ECS::Component::WINDOW));
+      Component::CompScore *scorec = dynamic_cast<Component::CompScore*>(world._systemEntity.getComponent(ECS::Component::SCORE));
+      Component::CompLogin* loginc = dynamic_cast<Component::CompLogin *>(world._systemEntity.getComponent(ECS::Component::LOGIN));
+      Component::CompNetworkClient* networkc = dynamic_cast<Component::CompNetworkClient *>(world._systemEntity.getComponent(ECS::Component::NETWORK_CLIENT));
+      Component::CompStateMachine* stateMachine = dynamic_cast<Component::CompStateMachine *>(world._systemEntity.getComponent(ECS::Component::STATE_MACHINE));	    
+      sf::Text quit;
+      
+      if (!windowc || !assetc || !loginc || !networkc)
+        return ;
+
+      if (validate && tickc)
+	tickc->kill = true;
+      
+      try {
+	quit.setFont(assetc->store.getFont("gui").getLowLevelFont());
+        quit.setString(assetc->store.getText("quit").getText());
+        quit.setPosition(500, 360);
+        windowc->window->draw(quit);
+      } catch (const graphic::AssetException &e) {
+	logs::getLogger()[logs::ASSET] << e.what() << std::endl;
+      }
+
     }
     
     void SysMenu::getGenerators(ECS::WorldData &world) {
       Component::CompLogin* loginc = dynamic_cast<Component::CompLogin *>(world._systemEntity.getComponent(ECS::Component::LOGIN));
       Component::CompNetworkClient* networkc = dynamic_cast<Component::CompNetworkClient *>(world._systemEntity.getComponent(ECS::Component::NETWORK_CLIENT));
 
-      if (!loginc->solo) {	
+      loginc->generators.clear();
+      if (!loginc->solo) {
 	try {
 	  loginc->isOwner = networkc->_lastReceived["data"]["data"]["players"].getValueDocument().elementsCount() == 1;
 	  for (auto i :  networkc->_lastReceived["data"]["data"]["generators"].getValueDocument().getKeys())
 	    loginc->generators.push_back(networkc->_lastReceived["data"]["data"]["generators"][i].getValueString());
 	}
 	catch (const bson::BsonException &e) {
-	  logs::getLogger()[logs::ERRORS] << "Cannot check for room ownership : '" << e.what() << "'" << std::endl;
+	  //logs::getLogger()[logs::ERRORS] << "Cannot check for room ownership : '" << e.what() << "'" << std::endl;
 	  return ;
 	}
       }
@@ -367,21 +402,20 @@ namespace ECS {
 	loginc->isOwner = true;
 	std::string folder = "./generators/";
 	FileSystemWatcher watcher(folder);
-	
-	for (const auto &i : watcher.processEvents()) {
-	  if (i.second == AFileSystemWatcher::Event::Add) {
-            try {
-	      std::shared_ptr<LibraryLoader> module(new LibraryLoader(folder + i.first));
-	      Dependent_ptr<IGenerator, LibraryLoader> instance(module->newInstance(), module);
-	      loginc->generators.push_back(instance->getName());
-            } catch (const LibraryLoaderException &e) {
-	      logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
-            }
+
+	watcher.processEvents();
+	for (const auto &i : watcher._files) {
+	  try {
+	    std::shared_ptr<LibraryLoader> module(new LibraryLoader(folder + i));
+	    Dependent_ptr<IGenerator, LibraryLoader> instance(module->newInstance(), module);
+	    loginc->generators.push_back(instance->getName());
+	  } catch (const LibraryLoaderException &e) {
+	    logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
 	  }
 	}
       }
     }
-    
+
     void SysMenu::beginSolo(ECS::WorldData &world) {
       Component::CompLogin* loginc = dynamic_cast<Component::CompLogin *>(world._systemEntity.getComponent(ECS::Component::LOGIN));
       Component::CompStateMachine* stateMachine = dynamic_cast<Component::CompStateMachine *>(world._systemEntity.getComponent(ECS::Component::STATE_MACHINE));

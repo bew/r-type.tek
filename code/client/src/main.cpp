@@ -99,7 +99,7 @@ int main(int ac, char**av) {
   world.addSystemEntityComponent(new ECS::Component::CompAsset());
   world.addSystemEntityComponent(new ECS::Component::CompStateMachine());
   world.addSystemEntityComponent(new ECS::Component::CompLogin());
-  world.addSystemEntityComponent(new ECS::Component::CompNetworkClient("127.0.0.1", 42403));
+  world.addSystemEntityComponent(new ECS::Component::CompNetworkClient());
   
   while (!tick->kill) {
     world.update();

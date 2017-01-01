@@ -13,7 +13,7 @@ TEST(clientTest, loginSinup)
     logs::getLogger().registerLogLevel(&logs::ecsLogLevel);
 
     ECS::World world;
-    ECS::Component::CompNetworkClient* networkClient = new ECS::Component::CompNetworkClient("10.41.175.111", 42402);
+    ECS::Component::CompNetworkClient* networkClient = new ECS::Component::CompNetworkClient();
     world._world._systemEntity.addComponent(networkClient);
     networkClient->_clientTCP.connect(networkClient->_clientUDP->getAddr());
     ECS::Component::CompStateMachine *stateMachine = new ECS::Component::CompStateMachine;
