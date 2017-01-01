@@ -17,7 +17,7 @@ namespace ECS
     namespace Component
     {
         CompType::CompType(int type)
-            : _type(type)
+            : AComponent(CLONABLE_MASK | SERVER_SERIALIZABLE_MASK), _type(type)
         {
         }
 
@@ -30,8 +30,18 @@ namespace ECS
             return TYPE;
         }
 
-      AComponent *CompType::clone(void) const {
-	return new CompType(_type);
-      }
+        AComponent *CompType::clone(void) const {
+	        return new CompType(_type);
+        }
+
+        bson::Document CompType::serialize() const {
+            bson::Document doc;
+            doc << u8"type" << _type;
+            return doc;
+        };
+
+        void  CompType::deserialize(const bson::Document& document) {
+            document[u8"type"] >> _type;
+        }
     }
 }
