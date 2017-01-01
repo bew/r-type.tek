@@ -22,6 +22,8 @@
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics.hpp"
 #include "Protocol/Client.hh"
+#include "ECS/CompScore.hh"
+#include "ECS/CompLife.hh"
 
 #include "SysWindow.hh"
 #include "CompStateMachine.hh"
@@ -29,8 +31,6 @@
 #include "CompAsset.hh"
 #include "CompWindow.hh"
 #include "CompLogin.hh"
-
-#define NB_ITEMS 3
 
 namespace ECS {
   namespace System {
@@ -50,7 +50,9 @@ namespace ECS {
       virtual void update(ECS::WorldData &world);
 
       void menuSignup(ECS::WorldData &world);
-      //void menuRoomChoose(ECS::WorldData &world);
+      void menuRoomChoose(ECS::WorldData &world);
+      void menuGameLaunch(ECS::WorldData &world);
+      void running(ECS::WorldData &world);
 
       typedef void(SysMenu::*Menu)(ECS::WorldData &world);
 

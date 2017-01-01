@@ -12,7 +12,6 @@ set(SOURCES
   CompAsset.cpp
   SysSound.cpp
   CompSound.cpp
-  SysGui.cpp
   CompNetworkClient.cpp
   CompStateMachine.cpp
   SysStateMachine.cpp

@@ -15,6 +15,9 @@ namespace ECS {
       validate(false)
     {
       _reactions["s_auth"] = &SysMenu::menuSignup;
+      _reactions["s_menu"] = &SysMenu::menuRoomChoose;
+      _reactions["s_room_wait"] = &SysMenu::menuGameLaunch;
+      _reactions["s_game"] = &SysMenu::running;
     }
 
     void SysMenu::update(WorldData &world) {
@@ -100,11 +103,6 @@ namespace ECS {
       if (!windowc || !assetc || !loginc || !networkc)
 	return ;
 
-      connect.setFont(assetc->store.getFont("gui").getLowLevelFont());
-      create.setFont(assetc->store.getFont("gui").getLowLevelFont());
-      loginDesc.setFont(assetc->store.getFont("gui").getLowLevelFont());
-      passwordDesc.setFont(assetc->store.getFont("gui").getLowLevelFont());
-      
       if (index % 4 == 0) {
 	loginDesc.setFillColor(sf::Color::Green);
 	if (up || down)
@@ -138,10 +136,14 @@ namespace ECS {
       }
         
       try {
+	connect.setFont(assetc->store.getFont("gui").getLowLevelFont());
+	create.setFont(assetc->store.getFont("gui").getLowLevelFont());
+	loginDesc.setFont(assetc->store.getFont("gui").getLowLevelFont());
+	passwordDesc.setFont(assetc->store.getFont("gui").getLowLevelFont());
 	connect.setString(assetc->store.getText("loginin").getText());
 	create.setString(assetc->store.getText("subscribe").getText());
 	loginDesc.setString(assetc->store.getText("login").getText() + loginc->login);
-        passwordDesc.setString(assetc->store.getText("password").getText() + loginc->password);
+        passwordDesc.setString(assetc->store.getText("password").getText() + std::string(loginc->password.size(), '*'));
         loginDesc.setPosition(500, 200);
         passwordDesc.setPosition(500, 300);
 	connect.setPosition(500, 400);
@@ -154,5 +156,150 @@ namespace ECS {
 	logs::getLogger()[logs::ASSET] << e.what() << std::endl;
       }
     }
+
+    void SysMenu::menuRoomChoose(ECS::WorldData &world) {
+      Component::CompWindow* windowc = dynamic_cast<Component::CompWindow *>(world._systemEntity.getComponent(ECS::Component::WINDOW));
+      Component::CompAsset* assetc = dynamic_cast<Component::CompAsset *>(world._systemEntity.getComponent(ECS::Component::STANDARD_ASSET));
+      Component::CompLogin* loginc = dynamic_cast<Component::CompLogin *>(world._systemEntity.getComponent(ECS::Component::LOGIN));
+      Component::CompNetworkClient* networkc = dynamic_cast<Component::CompNetworkClient *>(world._systemEntity.getComponent(ECS::Component::NETWORK_CLIENT));
+      Component::CompStateMachine* stateMachine = dynamic_cast<Component::CompStateMachine *>(world._systemEntity.getComponent(ECS::Component::STATE_MACHINE));
+      sf::Text join;
+      sf::Text password;
+      sf::Text go;
+
+      if (!windowc || !assetc || !loginc || !networkc)
+	return ;
+      
+      if (index % 3 == 2) {
+        join.setFillColor(sf::Color::Green);
+	if (up || down)
+          text_input = loginc->room;
+        else
+          loginc->room = text_input;
+      }
+
+      else if (index % 3 == 1) {
+        password.setFillColor(sf::Color::Green);
+	if (up || down)
+          text_input = loginc->roomPassword;
+        else
+          loginc->roomPassword = text_input;
+      }
+      else if (index % 3 == 0) {
+	go.setFillColor(sf::Color::Green);
+	if (validate) {
+	  networkc->_clientTCP.addMessage(protocol::client::roomJoin(loginc->room, loginc->roomPassword).getBufferString() + network::magic);
+	  stateMachine->_nextState = "s_room_wait";
+	}
+      }
+
+      try {
+	password.setFont(assetc->store.getFont("gui").getLowLevelFont());
+	join.setFont(assetc->store.getFont("gui").getLowLevelFont());
+	go.setFont(assetc->store.getFont("gui").getLowLevelFont());
+	go.setString(assetc->store.getText("roomvalidate").getText());
+        go.setPosition(500, 500);
+	password.setString(assetc->store.getText("roompassword").getText() + std::string(loginc->roomPassword.size(), '*'));
+	password.setPosition(500, 300);
+        join.setString(assetc->store.getText("joinroom").getText() + loginc->room);
+	join.setPosition(500, 400);
+        windowc->window->draw(join);
+	windowc->window->draw(password);
+        windowc->window->draw(go);
+      } catch (const graphic::AssetException &e) {
+        logs::getLogger()[logs::ASSET] << e.what() << std::endl;
+      }
+    }
+
+    void SysMenu::menuGameLaunch(ECS::WorldData &world) {
+      Component::CompWindow* windowc = dynamic_cast<Component::CompWindow *>(world._systemEntity.getComponent(ECS::Component::WINDOW));
+      Component::CompAsset* assetc = dynamic_cast<Component::CompAsset *>(world._systemEntity.getComponent(ECS::Component::STANDARD_ASSET));
+      Component::CompLogin* loginc = dynamic_cast<Component::CompLogin *>(world._systemEntity.getComponent(ECS::Component::LOGIN));
+      Component::CompNetworkClient* networkc = dynamic_cast<Component::CompNetworkClient *>(world._systemEntity.getComponent(ECS::Component::NETWORK_CLIENT));
+      Component::CompStateMachine* stateMachine = dynamic_cast<Component::CompStateMachine *>(world._systemEntity.getComponent(ECS::Component::STATE_MACHINE));
+
+      if (!windowc || !assetc || !loginc || !networkc)
+        return ;
+
+      try {
+	loginc->isOwner = networkc->_lastReceived["data"]["data"]["players"].getValueDocument().elementsCount() == 1;
+	for (auto i :  networkc->_lastReceived["data"]["data"]["generators"].getValueDocument().getKeys())
+	  loginc->generators.push_back(networkc->_lastReceived["data"]["data"]["generators"][i].getValueString());
+      }
+      catch (const bson::BsonException &e) {
+	logs::getLogger()[logs::ERRORS] << "Cannot check for room ownership : '" << e.what() << "'" << std::endl;
+	return ;
+      }
+
+      if (!loginc->isOwner) {
+	sf::Text wait;
+
+	try {
+	  wait.setFont(assetc->store.getFont("gui").getLowLevelFont());
+	  wait.setString(assetc->store.getText("waitforgamestart").getText());
+	  wait.setPosition(500, 360);
+	  windowc->window->draw(wait);
+	} catch (const graphic::AssetException &e) {
+	  logs::getLogger()[logs::ASSET] << e.what() << std::endl;
+	}
+      }
+
+      if (loginc->isOwner) {
+        sf::Text wait;
+
+	if (loginc->generators.size() == 0) {
+	  try {
+            wait.setFont(assetc->store.getFont("gui").getLowLevelFont());
+            wait.setString(assetc->store.getText("nogenerator").getText());
+            wait.setPosition(500, 360);
+            windowc->window->draw(wait);
+          } catch (const graphic::AssetException &e) {
+            logs::getLogger()[logs::ASSET] << e.what() << std::endl;
+          }
+	}
+	else {
+
+	  if (validate) {
+	    networkc->_clientTCP.addMessage(protocol::client::gameStart(loginc->generators[index % loginc->generators.size()]).getBufferString() + network::magic);
+	    stateMachine->_nextState = "s_game";
+	  }
+	  
+	  try {
+	    wait.setFont(assetc->store.getFont("gui").getLowLevelFont());
+	    wait.setString(assetc->store.getText("choosegenerator").getText() + loginc->generators[index % loginc->generators.size()]);
+	    wait.setPosition(500, 360);
+	    windowc->window->draw(wait);
+	  } catch (const graphic::AssetException &e) {
+	    logs::getLogger()[logs::ASSET] << e.what() << std::endl;
+	  }
+	}
+      }
+    }
+
+
+    void SysMenu::running(ECS::WorldData &world) { 
+      Component::CompAsset *assetc = dynamic_cast<Component::CompAsset*>(world._systemEntity.getComponent(ECS::Component::STANDARD_ASSET));
+      Component::CompWindow *windowc = dynamic_cast<Component::CompWindow*>(world._systemEntity.getComponent(ECS::Component::WINDOW));
+      Component::CompScore *scorec = dynamic_cast<Component::CompScore*>(world._systemEntity.getComponent(ECS::Component::SCORE));
+      
+      if (windowc && windowc->window && assetc && scorec) {
+        try {
+          std::string scoreString = assetc->store.getText("scoregui").getText() + std::to_string(scorec->score);
+
+          for (ECS::Entity::Entity *entity : world._gameEntities) {
+            if (entity->getId() >= 1 && entity->getId() <= 4) {
+              Component::CompLife *lifec = dynamic_cast<Component::CompLife*>(entity->getComponent(ECS::Component::LIFE));
+              if (lifec)
+                scoreString += "   P" + std::to_string(entity->getId()) + assetc->store.getText("lifegui").getText() + std::to_string(lifec->getCurrentLife());
+            }
+          }
+          sf::Text score(scoreString, assetc->store.getFont("gui").getLowLevelFont());
+          score.setPosition(20.0, 20.0);
+          windowc->window->draw(score);
+        } catch (const graphic::AssetException &e) {
+          logs::getLogger()[logs::ASSET] << e.what() << std::endl;
+        }
+      }
+    }    
   }
 }

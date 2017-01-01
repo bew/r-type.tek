@@ -10,7 +10,11 @@ namespace ECS {
   namespace Component {
     CompLogin::CompLogin(void) :
       login(""),
-      password("")
+      password(""),
+      room(""),
+      roomPassword(""),
+      isOwner(false),
+      generators()
     {};
     
     const std::string &CompLogin::getType() const {

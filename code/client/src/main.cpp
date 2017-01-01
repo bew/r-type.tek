@@ -15,7 +15,6 @@
 #include "CompOptions.hh"
 #include "SysKeyboard.hh"
 #include "SysOptions.hh"
-#include "SysGui.hh"
 #include "SysSerialisation.hh"
 #include "CompNetworkClient.hh"
 #include "SysStateMachine.hh"
@@ -97,8 +96,6 @@ int main(int ac, char**av) {
   world.addSystem(new ECS::System::SysSound());      // CLIENT
   // put sprite onto window surface
   world.addSystem(new ECS::System::SysSprite());     // CLIENT
-  // put gui onto window surface
-  world.addSystem(new ECS::System::SysGui());        // CLIENT
   // process collision and apply damage
   world.addSystem(new ECS::System::SysDamage());
   // process life and apply death
@@ -122,7 +119,7 @@ int main(int ac, char**av) {
   world.addSystemEntityComponent(new ECS::Component::CompStateMachine());
   world.addSystemEntityComponent(new ECS::Component::CompLogin());
   try {
-    world.addSystemEntityComponent(new ECS::Component::CompNetworkClient("127.0.0.1", 42403));
+    world.addSystemEntityComponent(new ECS::Component::CompNetworkClient("rtpe.paccard.info", 42403));
   }
   catch (network::SocketException &e) {
     logs::getLogger()[logs::ERRORS] << "Unable to connect to server '" << e.what() << "'" << std::endl;

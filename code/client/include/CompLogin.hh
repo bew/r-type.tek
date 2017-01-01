@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <vector>
 #include <string>
 #include "ECS/AComponent.hh"
 
@@ -28,6 +29,14 @@ namespace ECS {
       std::string login;
 
       std::string password;
+
+      std::string room;
+
+      std::string roomPassword;
+
+      bool isOwner;
+
+      std::vector<std::string> generators;
       
       /**
        * @return ECS::Component::STANDARD_ASSET
