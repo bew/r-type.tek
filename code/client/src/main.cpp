@@ -117,7 +117,7 @@ int main(int ac, char**av) {
   world.addSystemEntityComponent(new ECS::Component::CompStateMachine());
   world.addSystemEntityComponent(new ECS::Component::CompLogin());
   try {
-    world.addSystemEntityComponent(new ECS::Component::CompNetworkClient("rtpe.paccard.info", 42403));
+    world.addSystemEntityComponent(new ECS::Component::CompNetworkClient("127.0.0.1", 42403));
   }
   catch (network::SocketException &e) {
     logs::getLogger()[logs::ERRORS] << "Unable to connect to server '" << e.what() << "'" << std::endl;
