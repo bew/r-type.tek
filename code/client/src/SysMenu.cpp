@@ -92,18 +92,20 @@ namespace ECS {
       Component::CompLogin* loginc = dynamic_cast<Component::CompLogin *>(world._systemEntity.getComponent(ECS::Component::LOGIN));
       Component::CompNetworkClient* networkc = dynamic_cast<Component::CompNetworkClient *>(world._systemEntity.getComponent(ECS::Component::NETWORK_CLIENT));
       Component::CompStateMachine* stateMachine = dynamic_cast<Component::CompStateMachine *>(world._systemEntity.getComponent(ECS::Component::STATE_MACHINE));
-      sf::Text title;
+      sf::Text connect;
+      sf::Text create;
       sf::Text loginDesc;
       sf::Text passwordDesc;
       
       if (!windowc || !assetc || !loginc || !networkc)
 	return ;
 
-      title.setFont(assetc->store.getFont("gui").getLowLevelFont());
+      connect.setFont(assetc->store.getFont("gui").getLowLevelFont());
+      create.setFont(assetc->store.getFont("gui").getLowLevelFont());
       loginDesc.setFont(assetc->store.getFont("gui").getLowLevelFont());
       passwordDesc.setFont(assetc->store.getFont("gui").getLowLevelFont());
       
-      if (index % 3 == 0) {
+      if (index % 4 == 0) {
 	loginDesc.setFillColor(sf::Color::Green);
 	if (up || down)
 	  text_input = loginc->login;
@@ -111,7 +113,7 @@ namespace ECS {
 	  loginc->login = text_input;
       }
 
-      if (index % 3 == 1) {
+      else if (index % 4 == 1) {
 	passwordDesc.setFillColor(sf::Color::Green);
         if (up || down)
           text_input = loginc->password;
@@ -119,22 +121,33 @@ namespace ECS {
           loginc->password = text_input;
       }
 
-      if (index % 3 == 2) {
-	title.setFillColor(sf::Color::Green);
+      else if (index % 4 == 2) {
+	connect.setFillColor(sf::Color::Green);
         if (validate) {
 	  networkc->_clientTCP.addMessage(protocol::client::login(loginc->login, loginc->password).getBufferString() + network::magic);
 	  stateMachine->_nextState = "s_menu";
 	}
       }
+
+      else if (index % 4 == 3) {
+        create.setFillColor(sf::Color::Green);
+        if (validate) {
+          networkc->_clientTCP.addMessage(protocol::client::signUp(loginc->login, loginc->password).getBufferString() + network::magic);
+          stateMachine->_nextState = "s_auth";
+        }
+      }
         
       try {
-	title.setString(assetc->store.getText("loginin").getText());
+	connect.setString(assetc->store.getText("loginin").getText());
+	create.setString(assetc->store.getText("subscribe").getText());
 	loginDesc.setString(assetc->store.getText("login").getText() + loginc->login);
         passwordDesc.setString(assetc->store.getText("password").getText() + loginc->password);
         loginDesc.setPosition(500, 200);
         passwordDesc.setPosition(500, 300);
-	title.setPosition(500, 400);
-	windowc->window->draw(title);
+	connect.setPosition(500, 400);
+	create.setPosition(500, 500);
+	windowc->window->draw(connect);
+	windowc->window->draw(create);
 	windowc->window->draw(loginDesc);
         windowc->window->draw(passwordDesc);
       } catch (const graphic::AssetException &e) {
