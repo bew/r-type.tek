@@ -34,6 +34,7 @@ namespace ECS {
     void SysSerialisation::update(WorldData &world) {
       unserialize(world);
       serialize(world, &world._systemEntity);
+        return ;
       for (Entity::Entity *entity : world._gameEntities)
 	serialize(world, entity);
     }

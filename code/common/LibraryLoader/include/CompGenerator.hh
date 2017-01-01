@@ -38,6 +38,11 @@ namespace ECS {
        * @return ECS::Component::GENERATOR
        */
       virtual const std::string &getType() const;
+
+      /**
+       * Has the generator initialisation happen yet
+       */
+      bool loaded;
     };
   }
 }

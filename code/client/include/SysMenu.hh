@@ -25,6 +25,8 @@
 #include "ECS/CompScore.hh"
 #include "ECS/CompLife.hh"
 #include "Network/SocketException.hh"
+#include "LibraryLoader/CompGenerator.hh"
+#include "ECS/CompBlueprint.hh"
 
 #include "SysWindow.hh"
 #include "CompStateMachine.hh"
@@ -50,11 +52,16 @@ namespace ECS {
        */
       virtual void update(ECS::WorldData &world);
 
+      // Menu functions
       void menuSignup(ECS::WorldData &world);
       void menuRoomChoose(ECS::WorldData &world);
       void menuGameLaunch(ECS::WorldData &world);
       void running(ECS::WorldData &world);
 
+      // Management functions:
+      void getGenerators(ECS::WorldData &world);
+      void beginSolo(ECS::WorldData &world);
+      
       typedef void(SysMenu::*Menu)(ECS::WorldData &world);
 
     private:

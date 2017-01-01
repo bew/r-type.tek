@@ -21,7 +21,7 @@ namespace network {
     /**
      * Buffer size of the buffers
      */
-    static const size_t BUFFER_SIZE = 4960;
+    static const size_t BUFFER_SIZE = 215654;
 
     /**
      * Representation of socket abstraction

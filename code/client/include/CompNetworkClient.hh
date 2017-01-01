@@ -69,6 +69,11 @@ namespace ECS
              */
             ~CompNetworkClient();
 
+	  /**
+	   * @throw SocketException
+	   */
+	  void connectTCP(void);
+
             /**
              * get the type of component
              * @return string that represents his type
@@ -98,6 +103,17 @@ namespace ECS
              * represents one client tcp
              */
             network::ClientTCP _clientTCP;
+	  
+	  /**
+	   * The server address
+	   */
+	  std::string _address;
+
+	  /**
+	   * The server port
+	   */
+	  short _port;
+
 
             /**
              * Store the last packet received
@@ -114,10 +130,6 @@ namespace ECS
              */
              std::string _serverToken;
 
-	  /**
-	   * The server address
-	   */
-	  std::string _address;
         };
     }
 }

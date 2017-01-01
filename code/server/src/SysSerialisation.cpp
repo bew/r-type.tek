@@ -5,6 +5,7 @@
  */
 
 #include "SysSerialisation.hh"
+#include "ECS/World.hh"
 
 namespace ECS {
     namespace System {
@@ -39,13 +40,13 @@ namespace ECS {
             for (auto connected : serverc->_server.getConnections()) {
                 bson::Document message = protocol::client::entityUpdate(serverc->_serverToken, entity->getId(), components);
                 serverc->_server.addMessage(connected, message.getBufferString() + network::magic);
-		try {
-		  serverc->_server.update();
-		}
-		catch (const network::SocketException &e) {
-		  logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
-		  return;
-		}
+	    }
+	    try {
+	      serverc->_server.update();
+	    }
+	    catch (const network::SocketException &e) {
+	      logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
+	      return;
 	    }
         }
       

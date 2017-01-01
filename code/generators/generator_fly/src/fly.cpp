@@ -25,6 +25,7 @@
 #include "ECS/CompDeath.hh"
 #include "ECS/CompIA.hh"
 #include "ECS/CompScore.hh"
+#include "LibraryLoader/CompGenerator.hh"
 
 const std::string &Empty::getName(void) const {
   return _generator_name;
@@ -37,9 +38,10 @@ Empty::Empty(void) :
 void Empty::update(ECS::WorldData &world) {
   ECS::Component::CompTick *tickc = dynamic_cast<ECS::Component::CompTick *>(world._systemEntity.getComponent(ECS::Component::TICK));
   ECS::Component::CompBlueprint *blueprintsc = dynamic_cast<ECS::Component::CompBlueprint *>(world._systemEntity.getComponent(ECS::Component::BLUEPRINT));
+  ECS::Component::CompGenerator *generatorc = dynamic_cast<ECS::Component::CompGenerator *>(world._systemEntity.getComponent(ECS::Component::GENERATOR));
 
   if (tickc && blueprintsc) {
-    if (tickc->tick == 1) {
+    if (!generatorc->loaded) {
       logs::getLogger().registerLogLevel(&logs::assetLogLevel);
       logs::getLogger().registerBasicsLogLevel();
       
@@ -132,6 +134,7 @@ void Empty::update(ECS::WorldData &world) {
 	   entity->addComponent(new ECS::Component::CompController());  
 	}
       }
+      generatorc->loaded = true;
     }
     if (!(tickc->tick % 90)) {
       try {

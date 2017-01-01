@@ -37,6 +37,8 @@ namespace ECS {
       bool isOwner;
 
       std::vector<std::string> generators;
+
+      bool solo;
       
       /**
        * @return ECS::Component::STANDARD_ASSET

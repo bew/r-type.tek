@@ -14,7 +14,8 @@ namespace ECS {
       room(""),
       roomPassword(""),
       isOwner(false),
-      generators()
+      generators(),
+      solo(false)
     {};
     
     const std::string &CompLogin::getType() const {
