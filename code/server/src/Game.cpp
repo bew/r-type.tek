@@ -36,8 +36,8 @@
 #include "LibraryLoader/CompGenerator.hh"
 #include "LibraryLoader/SysGenerator.hh"
 
-Game::Game(Room & room, const std::string& generatorName, const std::string &serverToken, const std::vector<std::string>& clientTokens) :
-        _room(&room), _generatorName(generatorName), _serverToken(serverToken), _clientTokens(clientTokens)
+Game::Game(Room & room, const Dependent_ptr<IGenerator, LibraryLoader>& generator, const std::string &serverToken, const std::vector<std::string>& clientTokens) :
+        _room(&room), _generator(generator), _serverToken(serverToken), _clientTokens(clientTokens)
 {}
 
 Game::~Game() {}
@@ -72,13 +72,7 @@ void Game::initECS() {
 
     ECS::Component::CompGenerator *generator = new ECS::Component::CompGenerator();
 
-    try {
-        std::shared_ptr<LibraryLoader> module(new LibraryLoader("./generators/" + _generatorName));
-        Dependent_ptr<IGenerator, LibraryLoader> generatorRef(module->newInstance(), module);
-        generator->generator = generatorRef;
-    } catch (const LibraryLoaderException &e) {
-        logs::getLogger()[logs::ERRORS] << e.what() << std::endl;
-    }
+    generator->generator = _generator;
 
     _world.addSystemEntityComponent(generator);
     _world.addSystemEntityComponent(new ECS::Component::CompBlueprint());
@@ -98,7 +92,7 @@ void Game::initECS() {
 short Game::getServerUdpPort() {
     ECS::Component::CompNetworkServer *compNetworkServer =
             dynamic_cast<ECS::Component::CompNetworkServer*>(_world._world._systemEntity.getComponent(ECS::Component::NETWORK_SERVER));
-    return (compNetworkServer ? compNetworkServer->port : static_cast<short>(-1));
+    return (compNetworkServer ? compNetworkServer->_port : static_cast<short>(-1));
 }
 
 void Game::runECS() {

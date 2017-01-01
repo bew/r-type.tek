@@ -111,7 +111,7 @@ void Server::processMessage(std::shared_ptr<network::ClientTCP> client)
 
 std::string Server::getClientInformation(const std::shared_ptr<network::ClientTCP> client) {
     std::string ip;
-    short port;
+    unsigned short port;
     client->getSocket().getInfos(network::ASocketTCP::PEER, ip, port);
 
     return std::string("(ip: " + ip + ", port: " + std::to_string(port) + ")");

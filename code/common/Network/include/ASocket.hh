@@ -56,6 +56,13 @@ namespace network {
          */
         Socket_t getSocket() const;
 
+        /**
+         * Get the port assigned to the socket
+         *
+         * @return the port assigned to the socket
+         */
+        unsigned short getPort(void) const;
+
     protected:
 
         /**

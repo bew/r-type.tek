@@ -7,8 +7,6 @@
 #include "Logs/Logger.hh"
 #include "Protocol/Server.hh"
 #include "FSWatcher/AFileSystemWatcher.hh"
-#include "LibraryLoader/ALibraryLoader.hh"
-#include "LibraryLoader/Dependent_ptr.hpp"
 
 #include "ServerRouter.hpp"
 #include "ServerLogLevel.hh"
@@ -261,7 +259,7 @@ bool ServerRouter::RoomKickHandler(Request & req)
     Room &room = _server->_rooms.at(player->currentRoom);
 
     // Check if player is the room's master
-    if (this->isPlayerRoomMaster(req, player, room))
+    if (!this->isPlayerRoomMaster(req, player, room))
         return false;
 
     bson::Document const &rdata = req.getData();
@@ -318,7 +316,7 @@ bool ServerRouter::GameStartHandler(Request & req)
     Room &room = _server->_rooms.at(player->currentRoom);
 
     // Check if player is the room's master
-    if (this->isPlayerRoomMaster(req, player, room))
+    if (!this->isPlayerRoomMaster(req, player, room))
         return false;
 
     // Check if the game is not already started or done
@@ -335,8 +333,8 @@ bool ServerRouter::GameStartHandler(Request & req)
     //  Check the generator name
     bson::Document const &rdata = req.getData();
     std::string generatorName = rdata["generator"].getValueString();
-    std::vector<std::string> generators = this->getAvailableGenerators();
-    if (std::find(generators.begin(), generators.end(), generatorName) == generators.end()) {
+    this->getAvailableGenerators();
+    if (!_generators.count(generatorName)) {
         std::string errorMessage = "Unknow generator '" + generatorName + "'.";
         logs::getLogger()[logs::SERVER] << errorMessage << _server->getClientInformation(req.getClient()) << std::endl;
         return replyFail(req, pa::notFound(timestamp, errorMessage));
@@ -348,7 +346,7 @@ bool ServerRouter::GameStartHandler(Request & req)
         clientsTokens.push_back(kv.second->token);
 
     // Launch the Game
-    room.game = new Game(room, generatorName, _server->_serverToken, clientsTokens);
+    room.game = new Game(room, _generators.at(generatorName), _server->_serverToken, clientsTokens);
     try {
         room.game->initECS();
         room.game->launch();
@@ -382,6 +380,7 @@ bool ServerRouter::GameStartHandler(Request & req)
                                                                 kv.second->token,
                                                                 _server->_serverToken).getBufferString() +
                                     network::magic);
+    logs::getLogger()[logs::SERVER] << "Has GameStart. (on port: " << static_cast<unsigned short>(port) << ")" << _server->getClientInformation(req.getClient()) << std::endl;
 }
 
 bool ServerRouter::GameLeaveHandler(Request &req)
@@ -411,6 +410,7 @@ bool ServerRouter::GameLeaveHandler(Request &req)
 
     player->isPlaying = false;
     sendToRoomOtherPlayers(req, room, protocol::server::gameLeave(player->name));
+    logs::getLogger()[logs::SERVER] << "Has GameLeave." << _server->getClientInformation(req.getClient()) << std::endl;
     return replyOk(req);
 }
 
@@ -445,6 +445,7 @@ bool ServerRouter::GetAvailableRoomsHandler(Request & req)
     }
     rooms << bson::Document::ARRAY_DISABLED;
 
+    logs::getLogger()[logs::SERVER] << "Has GetAvailableRooms." << _server->getClientInformation(req.getClient()) << std::endl;
     return replyOk(req, rooms);
 }
 
@@ -471,6 +472,7 @@ bool ServerRouter::GetAvailableGenerators(Request & req) {
         generatorsDocument << generator;
     generatorsDocument << bson::Document::ARRAY_DISABLED;
 
+    logs::getLogger()[logs::SERVER] << "Has GetAvailableGenerators." << _server->getClientInformation(req.getClient()) << std::endl;
     // Return the answer with the generators
     return replyOk(req, generatorsDocument);
 }
@@ -511,7 +513,7 @@ void ServerRouter::sendToRoomPlayers(Room &room, bson::Document const &broadcast
     }
 }
 
-std::vector<std::string> ServerRouter::getAvailableGenerators() const {
+std::vector<std::string> ServerRouter::getAvailableGenerators() {
     std::vector<std::string> generators;
     std::string folder = "./generators/";
     FileSystemWatcher watcher(folder);
@@ -521,13 +523,16 @@ std::vector<std::string> ServerRouter::getAvailableGenerators() const {
             try {
                 std::shared_ptr<LibraryLoader> module(new LibraryLoader(folder + i.first));
                 Dependent_ptr<IGenerator, LibraryLoader> instance(module->newInstance(), module);
-                generators.push_back(instance->getName());
+                _generators[instance->getName()] = instance;
             } catch (const LibraryLoaderException &e) {
                 std::string errorMessage = std::string("Can't get the library name: ") + e.what();
                 logs::getLogger()[logs::SERVER] << errorMessage << std::endl;
             }
         }
     }
+
+    for (const auto& generator : _generators)
+        generators.push_back(generator.first);
 
     return generators;
 }

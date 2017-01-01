@@ -11,6 +11,9 @@
 
 class Game;
 
+#include "LibraryLoader/ALibraryLoader.hh"
+#include "LibraryLoader/Dependent_ptr.hpp"
+
 #include "Concurrency/ATask.hh"
 #include "Network/ServerUDP.hh"
 #include "ECS/World.hh"
@@ -25,13 +28,7 @@ private:
     /**
      * Generator's name to use
      */
-    std::string _generatorName;
-
-    /**
-     * Port to use for the UDP connection
-     * FIXME: is this needed ? as it's stored in the network Component...
-     */
-    int32_t _port;
+    Dependent_ptr<IGenerator, LibraryLoader> _generator;
 
     /**
      * Store the server token that need to match for all the UDP request
@@ -58,11 +55,11 @@ public:
      * Ctor
      *
      * @param room The room which contain this game
-     * @param generatorName the generator's name to use
+     * @param generator the generator to use
      * @param serverToken that need to match for all the UDP request
      * @param clientTokens the tokens of the clients of the game
      */
-    Game(Room & room, const std::string& generatorName, const std::string& serverToken, const std::vector<std::string>& clientTokens);
+    Game(Room & room, const Dependent_ptr<IGenerator, LibraryLoader>& generator, const std::string& serverToken, const std::vector<std::string>& clientTokens);
 
     Game(const Game& game) = delete;
 
