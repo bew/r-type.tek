@@ -125,13 +125,6 @@ namespace network
          */
         void deleteClosedConnections();
 
-        /**
-         * Allow to get the socket
-         *
-         * @return the socket
-         */
-        const SocketUDP& getSocket(void) const;
-
     private:
         /**
          * Represents one socket tcp
