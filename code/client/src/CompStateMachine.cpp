@@ -10,17 +10,15 @@ namespace ECS
 {
     namespace Component
     {
-        CompStateMachine::CompStateMachine() : AComponent(), _sm(),
-                                               _currentState("")
+        CompStateMachine::CompStateMachine() :
+	  AComponent(),
+	  _sm(),
+	  _currentState("")
         {
-            std::shared_ptr<state_machine::State<std::string>> sAuth = std::make_shared<state_machine::State<std::string>>(
-                "s_auth");
-            std::shared_ptr<state_machine::State<std::string>> sMenu = std::make_shared<state_machine::State<std::string>>(
-                "s_menu");
-            std::shared_ptr<state_machine::State<std::string>> sRoom = std::make_shared<state_machine::State<std::string>>(
-                "s_room_wait");
-            std::shared_ptr<state_machine::State<std::string>> sGame = std::make_shared<state_machine::State<std::string>>(
-                "s_game");
+            std::shared_ptr<state_machine::State<std::string>> sAuth = std::make_shared<state_machine::State<std::string>>("s_auth");
+            std::shared_ptr<state_machine::State<std::string>> sMenu = std::make_shared<state_machine::State<std::string>>("s_menu");
+            std::shared_ptr<state_machine::State<std::string>> sRoom = std::make_shared<state_machine::State<std::string>>("s_room_wait");
+            std::shared_ptr<state_machine::State<std::string>> sGame = std::make_shared<state_machine::State<std::string>>("s_game");
 
             sAuth->addLink("login", sMenu->getName());
             sAuth->addLink("signup", sAuth->getName());

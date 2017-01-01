@@ -67,6 +67,11 @@ namespace ECS
 	         */
             void addComponent(ECS::Component::AComponent *comp);
 
+	  /**
+	   * @return Components
+	   */
+	  const std::map<const std::string, Component::AComponent *> &getComponents(void) const;
+
         private:
             /**
              * Id of the entity.
@@ -75,7 +80,7 @@ namespace ECS
 
             /**
       	     * Map of components of the entity.
-	         */
+	     */
             std::map<const std::string, Component::AComponent *> _components;
         };
 

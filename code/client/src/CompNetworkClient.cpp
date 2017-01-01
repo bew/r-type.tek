@@ -12,7 +12,10 @@ namespace ECS
     {
         CompNetworkClient::CompNetworkClient(const std::string &ip, unsigned short port) :
             _clientUDP(ip, port), _clientTCP()
-        {}
+        {
+	  network::SockAddr addr(port, ip);
+	  _clientTCP.connect(addr);
+	}
 
         CompNetworkClient::CompNetworkClient(const network::SockAddr &addr) :
             _clientUDP(addr), _clientTCP()

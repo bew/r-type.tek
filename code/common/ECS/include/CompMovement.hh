@@ -43,10 +43,22 @@ namespace ECS
              */
 	  CompMovement(coordinates<int> coor = {0, 0}, float speed = 0, coordinates<float> dir = {0.0, 0.0});
 
-            /**
-             * Destructor.
-             */
-            ~CompMovement();
+	  /**
+	   * Destructor.
+	   */
+	  ~CompMovement();
+	  
+	  /**
+	   * @return a document describing the component state
+	   */
+	  virtual bson::Document serialize() const;
+	  
+	  /**
+	   * @param document State to write into the component
+	   */
+	  virtual void deserialize(const bson::Document& document);
+	  
+
 
 	  /**
 	   * @return A pointer to a new CompMevement with a state similar to this
