@@ -34,11 +34,20 @@ namespace ECS {
        */
       std::string _successor;
 
-      /**
-       * @return A pointer to a new CompSuccessor with a state similar to this
-       */
-      virtual AComponent *clone(void) const;
+        /**
+         * @return A pointer to a new CompSprite with a state similar to this
+         */
+        virtual AComponent *clone(void) const;
 
+        /**
+         * @return a document describing the component state
+         */
+        virtual bson::Document serialize() const;
+
+        /**
+         * @param document State to write into the component
+         */
+        virtual void deserialize(const bson::Document& document);
 
       /**
        * @return ECS::Component::SUCCESSOR

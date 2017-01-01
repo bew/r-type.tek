@@ -20,5 +20,15 @@ namespace ECS {
       return new CompSuccessor(_successor);
     }
 
+      bson::Document CompSuccessor::serialize() const {
+          bson::Document doc;
+          doc << u8"successor" << _successor;
+          return doc;
+      };
+
+      void  CompSuccessor::deserialize(const bson::Document& document) {
+          document[u8"successor"] >> _successor;
+      }
+
   }
 }

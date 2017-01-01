@@ -38,11 +38,21 @@ namespace ECS {
 	     * @param mid_width Half the width of the hitbox.
 	     * @param mid_height Half the height of the hitbox.
 	     */
-	    CompHitbox(unsigned mid_width, unsigned mid_height);
+	    CompHitbox(int mid_width, int mid_height);
 	    /**
 	     * Destructor
 	     */
 	    ~CompHitbox();
+
+		/**
+         * @return a document describing the component state
+         */
+		virtual bson::Document serialize() const;
+
+		/**
+         * @param document State to write into the component
+         */
+		virtual void deserialize(const bson::Document& document);
 
 	  /**
 	   * @return A pointer to a new CompHitbox with a state similar to this
@@ -58,11 +68,11 @@ namespace ECS {
 	    /**
 	     * Half the width of the hitbox.
 	     */
-	    const unsigned	_midWidth;
+	    int _midWidth;
 	    /**
 	     * Half the height of the hitbox.
 	     */
-	    const unsigned	_midHeight;
+	    int	_midHeight;
 	};
 
     }

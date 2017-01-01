@@ -6,12 +6,12 @@
 
 #pragma once
 
+#include <iostream>
+
 #include "ECS/World.hh"
 #include "ECS/Entity.hh"
 #include "ECS/ISystem.hh"
 #include "Graphic/SpriteAsset.hh"
-#include "CompAsset.hh"
-#include "CompWindow.hh"
 #include "ECS/CompSprite.hh"
 #include "ECS/CompMovement.hh"
 #include "Logs/Logger.hh"
@@ -21,60 +21,50 @@
 #include "Graphic/AnimatedSpriteAsset.hh"
 #include "SFML/Graphics/Sprite.hpp"
 #include "SFML/Graphics.hpp"
-#include "SysWindow.hh"
-#include <iostream>
+#include "Protocol/Client.hh"
+#include "ECS/CompScore.hh"
+#include "ECS/CompLife.hh"
+#include "Network/SocketException.hh"
 
-#define NB_ITEMS 3
+#include "SysWindow.hh"
+#include "CompStateMachine.hh"
+#include "CompNetworkClient.hh"
+#include "CompAsset.hh"
+#include "CompWindow.hh"
+#include "CompLogin.hh"
 
 namespace ECS {
-    namespace System {
+  namespace System {
 
-        /**
-         * System for sprite
-         */
-        class SysMenu : public ISystem {
-        public:
+    /**
+     * System for Menu
+     */
+    class SysMenu : public ISystem {
+    public:
 
-            SysMenu();
-            /**
-             * Update method
-             *
-             * @param world All the data about the world
-             */
-            virtual void update(ECS::WorldData &world);
-            void drawRoomMenu(sf::RenderWindow &window) const;
-            void drawSignMenu(sf::RenderWindow &window) const;
-            void login(sf::RenderWindow &window);
-            void signUpLogin(sf::RenderWindow &window);
-            void pwd(sf::RenderWindow &window);
-            void pwdSignUp(sf::RenderWindow &window);
-            void menuSignup();
-            void menuRoom();
-            void MoveUp();
-            void MoveUpSign();
-            void MoveDown();
-            void MoveDownSign();
-            int GetPressedItem() const;
-            bool isUserLogged() const;
-            bool isPwdCorrect() const;
-            const std::string & getCryptedPwd() const;
-            const std::string & getLogin() const;
+      SysMenu();
+      /**
+       * Update method
+       *
+       * @param world All the data about the world
+       */
+      virtual void update(ECS::WorldData &world);
 
-        private:
-            float _w;
-            float _h;
-            bool _userlogged;
-            bool _userpwd;
-            bool _userSignup;
-            bool _pwdSignup;
-            std::string _cryptedPwd;
-            std::string _user;
-            std::string _pwd;
-            int _selectedItemIndex;
-            sf::Font _font;
-            sf::Text _menu[NB_ITEMS];
-            sf::Text _inputLogin[2];
-            sf::Text _signUp[2];
-        };
-    }
+      void menuSignup(ECS::WorldData &world);
+      void menuRoomChoose(ECS::WorldData &world);
+      void menuGameLaunch(ECS::WorldData &world);
+      void running(ECS::WorldData &world);
+
+      typedef void(SysMenu::*Menu)(ECS::WorldData &world);
+
+    private:
+      unsigned index;
+      bool up;
+      bool down;
+      std::string text_input;
+      bool validate;
+
+      std::map<std::string, Menu> _reactions;
+    };
+  }
 }

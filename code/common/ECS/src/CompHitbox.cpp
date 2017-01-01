@@ -13,8 +13,8 @@ namespace ECS
   namespace Component
   {
     
-    CompHitbox::CompHitbox(unsigned mid_width, unsigned mid_height)
-      : AComponent(CLONABLE_MASK), _midWidth(mid_width), _midHeight(mid_height)
+    CompHitbox::CompHitbox(int mid_width, int mid_height)
+      : AComponent(CLONABLE_MASK | SERVER_SERIALIZABLE_MASK), _midWidth(mid_width), _midHeight(mid_height)
     {
     }
     
@@ -30,5 +30,17 @@ namespace ECS
     {
       return Component::HITBOX;
     }
+
+      bson::Document  CompHitbox::serialize() const {
+        bson::Document doc;
+        doc << u8"midWidth" << _midWidth;
+        doc << u8"midHeight" << _midHeight;
+        return doc;
+      };
+
+      void  CompHitbox::deserialize(const bson::Document& document) {
+        document[u8"midWidth"] >> _midWidth;
+        document[u8"midHeight"] >> _midHeight;
+      }
   }
 }
