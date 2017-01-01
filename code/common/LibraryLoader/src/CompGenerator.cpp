@@ -8,7 +8,8 @@
 
 namespace ECS {
   namespace Component {
-    CompGenerator::CompGenerator()
+    CompGenerator::CompGenerator() :
+      loaded(false)
     {}
 
     const std::string &CompGenerator::getType() const {

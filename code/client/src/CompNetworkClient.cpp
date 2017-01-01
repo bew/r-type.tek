@@ -10,13 +10,9 @@ namespace ECS
 {
     namespace Component
     {
-        CompNetworkClient::CompNetworkClient(const std::string &paddress, unsigned short port) :
-            _clientUDP(nullptr), _clientTCP()
-        {
-	  _address = paddress;
-	  network::SockAddr addr(port, _address);
-	  _clientTCP.connect(addr);
-	}
+        CompNetworkClient::CompNetworkClient(const std::string &address, unsigned short port) :
+	  _clientUDP(nullptr), _clientTCP(), _address(address), _port(port)
+        {}
 
         CompNetworkClient::CompNetworkClient(const network::SockAddr &addr) :
             _clientUDP(nullptr), _clientTCP()
@@ -26,6 +22,11 @@ namespace ECS
         {
 	  delete _clientUDP;
         }
+
+      void CompNetworkClient::connectTCP(void) {
+	network::SockAddr addr(_port, _address);
+	_clientTCP.connect(addr);
+      }
 
         const std::string &CompNetworkClient::getType() const
         {
