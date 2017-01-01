@@ -117,13 +117,10 @@ bool ServerRouter::LogoutHandler(Request & req)
 
     if (!player->currentRoom.empty() && _server->_rooms.count(player->currentRoom)) {
         Room &room = _server->_rooms.at(player->currentRoom);
-        if (room.players.count(player->name)) {
-            // if client was in game => send game leave
-            if (player->isPlaying)
-                sendToRoomOtherPlayers(req, room, protocol::server::gameLeave(player->name));
+        if (player->isPlaying) {
+            sendToRoomOtherPlayers(req, room, protocol::server::gameLeave(player->name));
             player->isPlaying = false;
         }
-        // if client was in room => send room leave
         sendToRoomOtherPlayers(req, room, protocol::server::roomLeave(player->name));
 
         room.players.erase(player->name);
@@ -228,6 +225,11 @@ bool ServerRouter::RoomLeaveHandler(Request & req)
     Room &room = _server->_rooms.at(player->currentRoom);
 
     replyOk(req);
+
+    if (player->isPlaying) {
+        sendToRoomOtherPlayers(req, room, protocol::server::gameLeave(player->name));
+        player->isPlaying = false;
+    }
     sendToRoomPlayers(room, protocol::server::roomLeave(player->name));
 
     room.players.erase(player->name);
@@ -272,6 +274,13 @@ bool ServerRouter::RoomKickHandler(Request & req)
         std::string errorMessage = "No player named '" + targetName + "' to kick.";
         logs::getLogger()[logs::SERVER] << errorMessage << _server->getClientInformation(req.getClient()) << std::endl;
         return replyFail(req, pa::notFound(getTimestamp(req), errorMessage));
+    }
+
+    // If the kicked player was playing
+    std::shared_ptr<Player> &kickedPlayer = room.players.at(targetName);
+    if (kickedPlayer->isPlaying) {
+        sendToRoomOtherPlayers(req, room, protocol::server::gameLeave(targetName));
+        kickedPlayer->isPlaying = false;
     }
 
     // remove player from room
