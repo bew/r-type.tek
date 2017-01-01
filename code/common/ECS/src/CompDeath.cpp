@@ -21,5 +21,15 @@ namespace ECS {
       return new CompDeath(_delay);
     }
 
+      bson::Document  CompDeath::serialize() const {
+          bson::Document doc;
+          doc << u8"delay" << _delay;
+          return doc;
+      };
+
+      void  CompDeath::deserialize(const bson::Document& document) {
+          document[u8"delay"] >> _delay;
+      }
+
   }
 }

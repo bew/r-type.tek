@@ -38,9 +38,9 @@ namespace ECS {
        */
       virtual const std::string &getType() const;
 
-        /**
-      * @return a document describing the component state
-      */
+       /**
+        * @return a document describing the component state
+        */
         virtual bson::Document serialize() const;
 
         /**
