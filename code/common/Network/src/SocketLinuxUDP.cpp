@@ -28,9 +28,16 @@ namespace network
 
     void SocketLinuxUDP::bind(SockAddr &hostInfos)
     {
+        int enable = 1;
+        if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) != 0)
+            throw SocketException("could not bind TCP socket: " + std::to_string(errno));
+
         sockaddr_in addr = hostInfos.getAddr();
         if (::bind(_socket, reinterpret_cast<sockaddr *>(&addr), sizeof(addr)))
             throw SocketException(std::string("could not bind UDP socket, error code: ") + strerror(errno));
+
+        socklen_t len = sizeof(addr);
+        ::getsockname(_socket, reinterpret_cast<sockaddr *>(&addr), &len);
     }
 
     std::string SocketLinuxUDP::recv(SockAddr& from)
