@@ -1,0 +1,840 @@
+
+Network Working Group                                         C. Paccard
+Request for Comments: 4242                                       Epitech
+Category: Experimental                                     November 2016
+
+                              R-Type protocol
+
+Status of this Memo
+
+   This memo defines an Experimental Protocol for the Internet
+   community. This memo does not specify an Internet standard of any
+   kind. Discussion and suggestions for improvement are requested.
+   Distribution of this memo is unlimited.
+
+Copyright Notice
+
+   Copyright (C) The Internet Society (2016).  All Rights Reserved.
+
+Abstract
+
+   The R-Type protocol is intended to ensure a good communication between
+   the clients which run a game on a server which host it. Both will send
+   their data into BSON, a binary format of JSON [1].
+
+      The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+      NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED",  "MAY", and
+      "OPTIONAL" in this document are to be interpreted as described in
+      RFC 2119.
+
+   Note that the force of these words is modified by the requirement
+   level of the document in which they are used.
+
+Table of Contents
+
+   1.   Introduction  . . . . . . . . . . . . . . . . . . . . . . . . 2
+   2.   Schema  . . . . . . . . . . . . . . . . . . . . . . . . . . . 3
+   3.   Composition of a packet . . . . . . . . . . . . . . . . . . . 3
+   3a.   Header . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+   3b.   Data   . . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+   3c.   Exemple  . . . . . . . . . . . . . . . . . . . . . . . . . . 4
+   4.   Commands from client  . . . . . . . . . . . . . . . . . . . . 4
+   4a.   SignUp (TCP) . . . . . . . . . . . . . . . . . . . . . . . . 5
+   4b.   Login (TCP)  . . . . . . . . . . . . . . . . . . . . . . . . 5
+   4c.   Logout (TCP) . . . . . . . . . . . . . . . . . . . . . . . . 6
+   4g.   GetAvalaibleRooms (TCP)  . . . . . . . . . . . . . . . . . . 6
+   4d.   RoomJoin (TCP) . . . . . . . . . . . . . . . . . . . . . . . 7
+   4e.   RoomLeave (TCP)  . . . . . . . . . . . . . . . . . . . . . . 8
+   4f.   RoomKick (TCP) . . . . . . . . . . . . . . . . . . . . . . . 8
+   4i.   GameStart (TCP)  . . . . . . . . . . . . . . . . . . . . . . 9
+   4j.   GameLeave (TCP)  . . . . . . . . . . . . . . . . . . . . . . 9
+   4k.   EntityUpdate (UDP) . . . . . . . . . . . . . . . . . . . . . 10
+   5.   Commands from server  . . . . . . . . . . . . . . . . . . . . 10
+
+
+
+Paccard                       Experimental                      [Page 1]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RFC 4242 R-Type                 protocol                   November 2016
+
+
+   5a.   RoomJoin (TCP) . . . . . . . . . . . . . . . . . . . . . . . 11
+   5b.   RoomLeave (TCP)  . . . . . . . . . . . . . . . . . . . . . . 11
+   5c.   RoomKick (TCP) . . . . . . . . . . . . . . . . . . . . . . . 12
+   5d.   GameStart (TCP)  . . . . . . . . . . . . . . . . . . . . . . 12
+   5e.   GameLeave (TCP)  . . . . . . . . . . . . . . . . . . . . . . 13
+   5f.   EntityUpdate (UDP) . . . . . . . . . . . . . . . . . . . . . 13
+   6.   Reception of a packet . . . . . . . . . . . . . . . . . . . . 13
+   6a.   200  . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   6b.   400  . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   6c.   401  . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   6d.   403  . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   6e.   404  . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   6f.   429  . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   6g.   500  . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   6h.   501  . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   6i.   503  . . . . . . . . . . . . . . . . . . . . . . . . . . . . 14
+   7.   Security Considerations . . . . . . . . . . . . . . . . . . . 15
+   8.   References  . . . . . . . . . . . . . . . . . . . . . . . . . 15
+   9.   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . 15
+   10.  Full Copyright Statement  . . . . . . . . . . . . . . . . . . 15
+
+1.  Introduction
+
+   R-Type (アール・タイプ Āru Taipu?) is a side scrolling shoot-em-up
+   arcade game produced by Irem in 1987. The player controls a space
+   fighter named the R-9 to defend humanity against a mysterious
+   powerful alien life-form known as the "Bydo".
+
+   The game is made up of several sequential levels, with a boss enemy
+   at the end of each. The player controls a small spacecraft and must
+   navigate terrain and fight enemies using the various ship weapons.
+
+   In this version, the number of players is up to 4, and to do so
+   it need a client/server architecture with a protocol to communicate.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Paccard                       Experimental                      [Page 2]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RFC 4242 R-Type                 protocol                   November 2016
+
+
+2.  Schema
+
+   Different states of the Player, with transitionnal commands.
+
+             +-------+
+   This is a | State |
+             +-------+
+
+   All arrows start on the bottom of a State.
+
+                 +----------+
+               __| S_NoAuth |____
+              /  +----------+    \
+       SignUp \_______/|         |
+                       |         |
+                     Login       |
+                       |         |
+                  +--------+     | Logout
+              ____| S_Lost |     |
+             /    +--------+     *
+             |         |  \_____/|
+             |         |         |
+             |      RoomJoin     |
+             |         |         |
+   RoomLeave |    +---------+    |
+   RoomKick  |   _| S_Lobby |    |
+             |  / +---------+    *
+             \__|_____/|  \_____/|
+                |      |         |
+                |  GameStart     |
+                |      |         |
+      GameLeave | +--------+     |
+                \_| S_Game |     |
+                  +--------+     |
+                          \______/
+
+3.  Composition of a packet
+
+   This section describe the composition of a packet. All the packets
+   that are sent or received MUST follow this composition. If not,
+   please see section 5 for the correct answer to return.
+   A packet is composed of two values:
+   -header : document =&gt; informations about the packet
+   -data : document =&gt; data of the packet
+   Refer to the subsections below for the content of each one.
+
+
+
+
+
+
+Paccard                       Experimental                      [Page 3]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RFC 4242 R-Type                 protocol                   November 2016
+
+
+3a.  Header
+
+   A header MUST be composed of:
+   -magic : int32 =&gt; Identify the request for the R-Type software
+   -timestamp : int64 =&gt; Timestamp of when the request has been prepared
+   -action : string =&gt; Which action represent the packet
+   -version : string =&gt; The current version of the protocol
+
+3b.  Data
+
+   The content of data it's not fixed. It depend of the action written
+   in the header. Refer to section 3 and 4 for the data that need to be
+   set in each actions.
+
+3c.  Exemple
+
+   The following exemple is a JSON in order to be human readable:
+   {
+        "header": {
+                "magic": 1918729278,
+                "timestamp": 1479878728,
+                "action": "Login",
+                "version": "1.0"
+        },
+        "data": {
+                "username": "tazrof",
+                "password": "secretPassword"
+        }
+   }
+
+4.  Commands from client
+
+   This section describe the commands available from the client.
+   Each commands will describe the data that need to compose the packet.
+   Please see section 2 to learn how to build a packet.
+   The list of commands available are:
+   -SignUp (TCP)
+   -Login (TCP)
+   -Logout (TCP)
+   -RoomJoin (TCP)
+   -RoomLeave (TCP)
+   -RoomKick (TCP)
+   -GetAvalaibleRooms (TCP)
+   -GameStart (TCP)
+   -GameLeave (TCP)
+   -EntityUpdate (UDP)
+
+
+
+
+
+Paccard                       Experimental                      [Page 4]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RFC 4242 R-Type                 protocol                   November 2016
+
+
+4a.  SignUp (TCP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the player to register on the server. This feature
+   allow the player to lock his username and make score everywhere as
+   well as compare himself with the others on the leaderboard.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be composed of:
+   -username : string =&gt; The username of the player
+   -password : string =&gt; The password link to the username
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   The answer MUST be one of them:
+   200, 400, 429, 500, 501, 503
+   If the request is sucessful (200), the data MUST be empty.
+
+4b.  Login (TCP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the player to login on the server with the account
+   previously created with the action "SignUp". This action MUST be
+   executed before any other commands beside the action "SignUp".
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be composed of:
+   -username : string =&gt; The username of the player
+   -password : string =&gt; The password link to the username
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   The answer MUST be one of them:
+   200, 400, 401, 429, 500, 501, 503
+   If the request is sucessful (200), the data MUST be empty.
+
+
+
+
+
+
+
+
+
+
+Paccard                       Experimental                      [Page 5]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RFC 4242 R-Type                 protocol                   November 2016
+
+
+4c.  Logout (TCP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the player to logout of the server.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be empty.
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   The answer MUST be one of them:
+   200, 400, 401, 403, 429, 500, 501, 503
+   If the request is sucessful (200), the data MUST be empty.
+
+4i.  GetAvailableRooms (TCP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the client to query all the available rooms
+   remaining on the server.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be empty.
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   The answer MUST be one of them:
+   200, 400, 401, 403, 429, 500, 501, 503
+   If the request is sucessful (200), the data MUST be composed of a
+   document array which is only composed of documents with the following
+   fields:
+   -name : string =&gt; the name of the room
+   -master : string =&gt; the name of room master (player username)
+   -totalSlots : int32 =&gt; the total number of slots inside
+   -availableSlots : int32 =&gt; the total number of slots avalaible inside
+
+
+
+
+
+
+
+
+
+Paccard                       Experimental                      [Page 6]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RFC 4242 R-Type                 protocol                   November 2016
+
+
+   Exemple:
+   [
+      {
+         "name": "Fast rush, fat pl, no noob",
+         "master": "tazrof",
+         "totalSlots": 4,
+         "availableSlots": 1
+      },
+      {
+         "name": "Do you want to play with me ?",
+         "master": "kevin",
+         "totalSlots": 4,
+         "availableSlots": 3
+      }
+   ]
+
+4d.  RoomJoin (TCP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the player to join a room and wait for other
+   players to join too before launching a game. If the room does not
+   exist, it will create it and the player would be the room master.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be composed of:
+   -name : string =&gt; The name of the room
+   The data MAY be composed of:
+   -password : string =&gt; The optionnal password for the room
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   The answer MUST be one of them:
+   200, 400, 401, 403, 404, 429, 500, 501, 503
+   If the request is sucessful (200), the data MUST be composed of :
+   -players : document =&gt; array of strings with player's username
+   -generators : document =&gt; array of strings with generators' name
+   Exemple:
+   {
+        "players": ["tazrof", "mikaza", "nekhot", "kevin"],
+        "data": ["Generator A", "Generator B", "Generator C"]
+   }
+
+
+
+
+
+
+
+Paccard                       Experimental                      [Page 7]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RFC 4242 R-Type                 protocol                   November 2016
+
+
+4e.  RoomLeave (TCP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the player to leave a room he has joined
+   previously.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be empty.
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   The answer MUST be one of them:
+   200, 400, 401, 403, 429, 500, 501, 503
+   If the request is sucessful (200), the data MUST be empty.
+
+4f.  RoomKick (TCP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the room master to kick an other player that has
+   joined.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be composed of:
+   -username : string =&gt; The username of the player to kick
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   The answer MUST be one of them:
+   200, 400, 401, 403, 404, 429, 500, 501, 503
+   If the request is sucessful (200), the data MUST be empty.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Paccard                       Experimental                      [Page 8]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RFC 4242 R-Type                 protocol                   November 2016
+
+
+4g.  GameStart (TCP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the room master to launch the game with the other
+   players inside the room.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be composed of :
+   -generator : string =&gt; the name of the generator to use for the game
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   The answer MUST be one of them:
+   200, 400, 401, 403, 429, 500, 501, 503
+   If the request is sucessful (200), the data MUST be empty.
+
+4h.  GameLeave (TCP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the player to leave the current game he is
+   playing.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be empty.
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   The answer MUST be one of them:
+   200, 400, 401, 403, 429, 500, 501, 503
+   If the request is sucessful (200), the data MUST be empty.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Paccard                       Experimental                      [Page 9]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RFC 4242 R-Type                 protocol                   November 2016
+
+
+4j.  EntityUpdate (UDP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the client to update an entity on the server side.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be composed of:
+   -token : string =&gt; The token provided by the server action GameStart
+   -entity_id : int64 =&gt; Unique identifier of the entity
+   -components : document =&gt; keys inside are the component's type
+                             and their value is a sub-document with
+                             key-value pair which represent
+                             the fields to update (can be empty)
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   There is no answer.
+
+5.  Commands from server
+
+   This section describe the commands available from the server to be
+   sent to the client. Each commands will have the data that need to
+   compose the packet. Please see section 2 to learn how to build a
+   packet.
+   The list of commands available are:
+   -RoomJoin (TCP)
+   -RoomLeave (TCP)
+   -RoomKick (TCP)
+   -GameStart (TCP)
+   -GameLeave (TCP)
+   -EntityUpdate (UDP)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Paccard                       Experimental                     [Page 10]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RFC 4242 R-Type                 protocol                   November 2016
+
+
+5a.  RoomJoin (TCP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the server to broadcast that a player has joined a
+   room to all other the players present in the room.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be composed of:
+   -username : string =&gt; The username of the player who just joined
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   The answer MUST be one of them:
+   200, 400, 429, 500, 501, 503
+   If the request is sucessful (200), the data MUST be empty.
+
+5b.  RoomLeave (TCP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the server to broadcast that a player has leaved
+   the room to all other players the present in the room.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be composed of:
+   -username : string =&gt; The username of the player who just leaved
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   The answer MUST be one of them:
+   200, 400, 429, 500, 501, 503
+   If the request is sucessful (200), the data MUST be empty.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Paccard                       Experimental                     [Page 11]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RFC 4242 R-Type                 protocol                   November 2016
+
+
+5c.  RoomKick (TCP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the server to broadcast that a player has been
+   kicked of the room to all the other players present in the room.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be composed of:
+   -username : string =&gt; The username of the player who has been kick
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   The answer MUST be one of them:
+   200, 400, 429, 500, 501, 503
+   If the request is sucessful (200), the data MUST be empty.
+
+5d.  GameStart (TCP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the server to broadcast that the game has start
+   to all the players present in the room.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be composed of:
+   -clientToken : string =&gt; An authentication token that the client need
+                            to include in each UDP request to
+                            authenticate himself to the server
+   -serverToken : string =&gt; An authentication token that the client will
+                            receive in each UDP request to authenticate
+                            the server
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   The answer MUST be one of them:
+   200, 400, 429, 500, 501, 503
+   If the request is sucessful (200), the data MUST be empty.
+
+
+
+
+
+
+
+
+
+Paccard                       Experimental                     [Page 12]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RFC 4242 R-Type                 protocol                   November 2016
+
+
+5e.  GameLeave (TCP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the server to broadcast that a player has leaved
+   to all the other players present in the game.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be composed of:
+   -username : string =&gt; The username of the player who just leaved
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   The answer MUST be one of them:
+   200, 400, 429, 500, 501, 503
+   If the request is sucessful (200), the data MUST be empty.
+
+5f.  EntityUpdate (UDP)
+
+   *********************************************************************
+   *                            Description                            *
+   *********************************************************************
+   This command allow the server to update an entity on the client side.
+   *********************************************************************
+   *                              Request                              *
+   *********************************************************************
+   The data MUST be composed of:
+   -token : string =&gt; The internal server's token given to the clients
+   -entity_id : int64 =&gt; Unique identifier of the entity
+   -components : document =&gt; Keys inside are the component's type
+                 and their value is a sub-document with
+                 key-value pair which represent
+                 the fields to update (can be empty)
+   *********************************************************************
+   *                              Answers                              *
+   *********************************************************************
+   There is no answer.
+
+6.  Reception of a packet
+
+   Whenever an action other than "Answer" is received, an action
+   "Answer" MUST be send in return. It MUST have the following data:
+   -code : int32 =&gt; The code of the answer
+   -message : string =&gt; A signification of the code
+   -timestamp : int64 =&gt; Timestamp of the answered command
+   -data : document =&gt; data to return (can be empty) (!! 200 only !!)
+
+
+
+Paccard                       Experimental                     [Page 13]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RFC 4242 R-Type                 protocol                   November 2016
+
+
+6a.  200
+
+   This code mean that the request has been correctly handle and
+   everything went right.
+
+6b.  400
+
+   This code mean that the request which has been received is a
+   bad request (malformed request syntax). The request will be ignored.
+
+6c.  401
+
+   This code mean that the request is unauthorized, specifically for
+   use when authentication is required and has failed or has not yet
+   been provided.
+
+6d.  403
+
+   This code mean that the request was a valid request, but the server
+   is refusing to respond to it. The user might be logged in but
+   does not have the necessary permissions for the resource.
+
+6e.  404
+
+   This code mean that the request has been ignored because the
+   requested resource could not be found.
+
+6f.  429
+
+   This code mean that the request has been ignored because the user
+   has sent too many requests in a given amount of time.
+
+6g.  500
+
+   This code mean that the request has generate an internal error but
+   without more precisions of the error's nature.
+
+
+6h.  501
+
+   This code mean that the request action is either not recognize or the
+   version are not compatible for the receiver.
+
+6i.  503
+
+   This code mean that the request has been ignored because the receiver
+   is currently unavailable (because it is overloaded or down for
+   maintenance). Generally, this is a temporary state.
+
+
+
+Paccard                       Experimental                     [Page 14]
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+RFC 4242 R-Type                 protocol                   November 2016
+
+
+7.  Security Considerations
+
+   This RFC raises no security issues.
+
+8.  References
+
+   [1]  http://bsonspec.org/spec.html
+
+9.  Authors' Addresses
+
+   Christopher Paccard
+   Epitech
+   24 rue pasteur
+   94270 Le Kremlin-Bicêtre
+   France
+
+   Phone: +33 6 63 82 87 32
+   Email: christopher.paccard@epitech.eu
+
+10. Full Copyright Statement
+
+   Copyright (C) The Internet Society (1997).  All Rights Reserved.
+
+   This document and translations of it may be copied and furnished to
+   others, and derivative works that comment on or otherwise explain it
+   or assist in its implmentation may be prepared, copied, published and
+   distributed, in whole or in part, without restriction of any kind,
+   provided that the above copyright notice and this paragraph are
+   included on all such copies and derivative works.  However, this
+   document itself may not be modified in any way, such as by removing
+   the copyright notice or references to the Internet Society or other
+   Internet organizations, except as needed for the purpose of
+   developing Internet standards in which case the procedures for
+   copyrights defined in the Internet Standards process must be
+   followed, or as required to translate it into languages other than
+   English.
+
+   The limited permissions granted above are perpetual and will not be
+   revoked by the Internet Society or its successors or assigns.
+
+   This document and the information contained herein is provided on an
+   "AS IS" basis and THE INTERNET SOCIETY AND THE INTERNET ENGINEERING
+   TASK FORCE DISCLAIMS ALL WARRANTIES, EXPRESS OR IMPLIED, INCLUDING
+   BUT NOT LIMITED TO ANY WARRANTY THAT THE USE OF THE INFORMATION
+   HEREIN WILL NOT INFRINGE ANY RIGHTS OR ANY IMPLIED WARRANTIES OF
+   MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE."
+
+
+
+
+
+Paccard                       Experimental                     [Page 15]
+
